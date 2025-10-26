@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Authentication</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #1a1a1a;
+            color: #fff;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #333;
+            border-radius: 8px;
+            background: #2a2a2a;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+            background: #0ea5e9;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
+        button:hover {
+            background: #0284c7;
+        }
+        input {
+            padding: 8px;
+            margin: 5px 0;
+            width: 100%;
+            background: #333;
+            border: 1px solid #444;
+            color: white;
+            border-radius: 4px;
+        }
+        .result {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 4px;
+            background: #333;
+        }
+        .success {
+            background: #065f46;
+            border: 1px solid #10b981;
+        }
+        .error {
+            background: #7f1d1d;
+            border: 1px solid #ef4444;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔐 Authentication System Test</h1>
+
+    <div class="test-section">
+        <h2>1. Test Signup</h2>
+        <input type="text" id="signup-username" placeholder="Username (e.g., testuser123)">
+        <input type="password" id="signup-password" placeholder="Password (min 6 chars)">
+        <button onclick="testSignup()">Test Signup</button>
+        <div id="signup-result" class="result" style="display:none;"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>2. Test Login</h2>
+        <input type="text" id="login-username" placeholder="Username">
+        <input type="password" id="login-password" placeholder="Password">
+        <button onclick="testLogin()">Test Login</button>
+        <div id="login-result" class="result" style="display:none;"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>3. Test Existing User</h2>
+        <p>Try logging in with existing user: <strong>mike</strong></p>
+        <button onclick="testExistingUser()">Quick Test with 'mike'</button>
+        <div id="existing-result" class="result" style="display:none;"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>4. Current Session</h2>
+        <button onclick="checkSession()">Check Current Session</button>
+        <button onclick="logout()">Logout</button>
+        <div id="session-result" class="result" style="display:none;"></div>
+    </div>
+
+    <script>
+        // Initialize Supabase client (using environment variables from .env)
+        const SUPABASE_URL = import.meta.env?.VITE_SUPABASE_URL || prompt('Enter SUPABASE_URL:');
+        const SUPABASE_ANON_KEY = import.meta.env?.VITE_SUPABASE_ANON_KEY || prompt('Enter SUPABASE_ANON_KEY:');
+
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        async function testSignup() {
+            const username = document.getElementById('signup-username').value;
+            const password = document.getElementById('signup-password').value;
+            const resultDiv = document.getElementById('signup-result');
+
+            resultDiv.style.display = 'block';
+            resultDiv.className = 'result';
+            resultDiv.textContent = 'Testing signup...';
+
+            try {
+                // Check username availability
+                const { data: isAvailable, error: checkError } = await supabase
+                    .rpc('check_username_available', { username_input: username });
+
+                if (checkError) throw checkError;
+                if (!isAvailable) throw new Error('Username already taken');
+
+                // Create account with placeholder email
+                const placeholderEmail = `${username}@placeholder.ghetto.finance`;
+                const { data, error } = await supabase.auth.signUp({
+                    email: placeholderEmail,
+                    password,
+                    options: {
+                        data: {
+                            username,
+                            display_name: username
+                        }
+                    }
+                });
+
+                if (error) throw error;
+
+                resultDiv.className = 'result success';
+                resultDiv.innerHTML = `
+                    ✅ Signup successful!<br>
+                    Username: ${username}<br>
+                    User ID: ${data.user?.id}<br>
+                    Email (internal): ${data.user?.email}
+                `;
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.textContent = `❌ Signup failed: ${error.message}`;
+            }
+        }
+
+        async function testLogin() {
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+            const resultDiv = document.getElementById('login-result');
+
+            resultDiv.style.display = 'block';
+            resultDiv.className = 'result';
+            resultDiv.textContent = 'Testing login...';
+
+            try {
+                // Get auth email from username
+                const { data: authResult, error: lookupError } = await supabase
+                    .rpc('authenticate_user_by_username', { username_input: username });
+
+                if (lookupError) throw lookupError;
+                if (!authResult?.success) throw new Error(authResult?.message || 'Authentication failed');
+
+                // Login with auth email
+                const { data, error } = await supabase.auth.signInWithPassword({
+                    email: authResult.auth_email,
+                    password
+                });
+
+                if (error) throw error;
+
+                resultDiv.className = 'result success';
+                resultDiv.innerHTML = `
+                    ✅ Login successful!<br>
+                    Username: ${username}<br>
+                    User ID: ${data.user?.id}<br>
+                    Session: Active
+                `;
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.textContent = `❌ Login failed: ${error.message}`;
+            }
+        }
+
+        async function testExistingUser() {
+            const resultDiv = document.getElementById('existing-result');
+
+            resultDiv.style.display = 'block';
+            resultDiv.className = 'result';
+            resultDiv.textContent = 'Testing authentication function...';
+
+            try {
+                // Test the database function
+                const { data: authResult, error } = await supabase
+                    .rpc('authenticate_user_by_username', { username_input: 'mike' });
+
+                if (error) throw error;
+
+                resultDiv.className = 'result success';
+                resultDiv.innerHTML = `
+                    ✅ Authentication function test:<br>
+                    <pre>${JSON.stringify(authResult, null, 2)}</pre>
+                `;
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.textContent = `❌ Test failed: ${error.message}`;
+            }
+        }
+
+        async function checkSession() {
+            const resultDiv = document.getElementById('session-result');
+            resultDiv.style.display = 'block';
+
+            try {
+                const { data: { session }, error } = await supabase.auth.getSession();
+
+                if (error) throw error;
+
+                if (session) {
+                    resultDiv.className = 'result success';
+                    resultDiv.innerHTML = `
+                        ✅ Active session found!<br>
+                        User ID: ${session.user.id}<br>
+                        Email: ${session.user.email}<br>
+                        Username: ${session.user.user_metadata?.username}
+                    `;
+                } else {
+                    resultDiv.className = 'result';
+                    resultDiv.textContent = 'No active session';
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.textContent = `❌ Error: ${error.message}`;
+            }
+        }
+
+        async function logout() {
+            const resultDiv = document.getElementById('session-result');
+            resultDiv.style.display = 'block';
+
+            try {
+                const { error } = await supabase.auth.signOut();
+                if (error) throw error;
+
+                resultDiv.className = 'result success';
+                resultDiv.textContent = '✅ Logged out successfully';
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.textContent = `❌ Logout failed: ${error.message}`;
+            }
+        }
+
+        // Check session on load
+        window.addEventListener('load', () => {
+            console.log('Supabase client initialized');
+            console.log('URL:', SUPABASE_URL);
+        });
+    </script>
+</body>
+</html>
