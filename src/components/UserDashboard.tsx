@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, User, Settings, ShoppingBag, Wallet, MessageCircle, Share2, Package, TrendingUp, AlertCircle, Activity, Bell, Shield, Star, Award, Copy, Check, ExternalLink, Calendar, DollarSign, Users, Target, BarChart3 } from 'lucide-react';
+import { X, User, Settings, ShoppingBag, Wallet, MessageCircle, Share2, Package, TrendingUp, AlertCircle, Activity, Bell, Shield, Star, Award, Copy, Check, ExternalLink, Calendar, DollarSign, Users, Target, BarChart3, Clock } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { useReferrals } from '../hooks/useReferrals';
 import { useCart } from '../hooks/useCart';

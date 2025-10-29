@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, User, Settings, Shield, Store, MessageCircle, Star, MapPin, Globe, Calendar, CreditCard as Edit, Camera, Save, AtSign, Share2, DollarSign } from 'lucide-react';
+import { X, User, Settings, Shield, Store, MessageCircle, Star, MapPin, Globe, Calendar, CreditCard as Edit, Camera, Save, AtSign, Share2, DollarSign, Package } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { useSocialSystem } from '../hooks/useSocialSystem';
 import { useSellerProducts } from '../hooks/useSellerProducts';
@@ -289,7 +289,6 @@ export function UserProfile({ isOpen, onClose }: UserProfileProps) {
             { id: 'profile', label: 'Profile', icon: User },
             { id: 'settings', label: 'Settings', icon: Settings },
             { id: 'referrals', label: 'Referrals', icon: Share2 },
-            { id: 'referrals', label: 'Referrals', icon: Share2 },
             { id: 'store', label: 'Store', icon: Store },
           ].map(({ id, label, icon: Icon }) => (
             <button
@@ -448,112 +447,6 @@ export function UserProfile({ isOpen, onClose }: UserProfileProps) {
                     Save Changes
                   </button>
                 </div>
-              </div>
-            </div>
-          )}
-
-          {/* Referrals Tab */}
-          {activeTab === 'referrals' && (
-            <div className="space-y-6">
-              <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
-                <h4 className="text-lg font-black text-white mb-4 uppercase">Your Referral Link</h4>
-                {referralCode ? (
-                  <>
-                    <p className="text-gray-400 mb-3">Share this link to invite new users and earn rewards!</p>
-                    <div className="flex items-center space-x-2 bg-gray-700 rounded-lg p-3">
-                      <input
-                        type="text"
-                        readOnly
-                        value={`${window.location.origin}/?ref=${referralCode.code}`}
-                        className="flex-1 bg-transparent text-neon-blue font-mono text-sm outline-none"
-                      />
-                      <button
-                        onClick={() => navigator.clipboard.writeText(`${window.location.origin}/?ref=${referralCode.code}`)}
-                        className="px-3 py-1 bg-neon-blue hover:bg-neon-blue/80 text-black rounded-lg text-sm font-medium"
-                      >
-                        Copy
-                      </button>
-                    </div>
-                  </>
-                ) : (
-                  <p className="text-gray-400">Loading referral code...</p>
-                )}
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
-                  <h4 className="text-lg font-black text-white mb-4 uppercase">Referral Balance</h4>
-                  <div className="flex items-center justify-between mb-4">
-                    <p className="text-4xl font-black text-neon-blue">
-                      {referralBalance?.balanceGhetto.toFixed(2) || '0.00'} GHETTO
-                    </p>
-                    <DollarSign className="w-10 h-10 text-neon-blue" />
-                  </div>
-                  {referralBalance && parseFloat(platformSettings.referral_min_redeem_ghetto) && referralBalance.balanceGhetto >= parseFloat(platformSettings.referral_min_redeem_ghetto) ? (
-                    <div className="space-y-3">
-                      <input
-                        type="number"
-                        step="0.01"
-                        min={parseFloat(platformSettings.referral_min_redeem_ghetto)}
-                        max={referralBalance.balanceGhetto}
-                        value={redeemAmount}
-                        onChange={(e) => setRedeemAmount(e.target.value)}
-                        className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-neon-blue text-white"
-                        placeholder={`Min ${platformSettings.referral_min_redeem_ghetto} GHETTO`}
-                      />
-                      <button
-                        onClick={handleRedeemBalance}
-                        disabled={referralsLoading || !redeemAmount || parseFloat(redeemAmount) < parseFloat(platformSettings.referral_min_redeem_ghetto)}
-                        className="w-full py-3 bg-neon-blue hover:bg-neon-blue/80 text-black rounded-lg transition-colors font-black uppercase"
-                      >
-                        {referralsLoading ? 'Redeeming...' : 'Redeem GHETTO'}
-                      </button>
-                    </div>
-                  ) : (
-                    <p className="text-gray-400 text-sm">
-                      Earn more GHETTO to reach the minimum redemption of {platformSettings.referral_min_redeem_ghetto || 'N/A'} GHETTO.
-                    </p>
-                  )}
-                </div>
-
-                <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
-                  <h4 className="text-lg font-black text-white mb-4 uppercase">Referred Users ({referredUsers.length})</h4>
-                  {referredUsers.length > 0 ? (
-                    <div className="space-y-3">
-                      {referredUsers.map((refUser) => (
-                        <div key={refUser.id} className="flex items-center justify-between bg-gray-700 rounded-lg p-3">
-                          <p className="text-white font-medium">User ID: {refUser.referredUserId.slice(0, 8)}...</p>
-                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                            refUser.accountRewardClaimed ? 'bg-green-500/20 text-green-400' : 'bg-yellow-500/20 text-yellow-400'
-                          }`}>
-                            {refUser.accountRewardClaimed ? 'Account Reward Claimed' : 'Account Pending'}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <p className="text-gray-400 text-sm">No users referred yet.</p>
-                  )}
-                </div>
-              </div>
-
-              <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
-                <h4 className="text-lg font-black text-white mb-4 uppercase">Referral Transactions</h4>
-                {referralTransactions.length > 0 ? (
-                  <div className="space-y-3">
-                    {referralTransactions.map((tx) => (
-                      <div key={tx.id} className="flex items-center justify-between bg-gray-700 rounded-lg p-3">
-                        <p className="text-white font-medium capitalize">{tx.type.replace('_', ' ')}</p>
-                        <p className={`font-black ${tx.amountGhetto >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                          {tx.amountGhetto >= 0 ? '+' : ''}{tx.amountGhetto.toFixed(2)} GHETTO
-                        </p>
-                        <p className="text-gray-400 text-xs">{formatDistanceToNow(tx.createdAt, { addSuffix: true })}</p>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <p className="text-gray-400 text-sm">No referral transactions yet.</p>
-                )}
               </div>
             </div>
           )}
