@@ -165,7 +165,20 @@ export function useSiteMaster() {
   const [whitelistedContracts, setWhitelistedContracts] = useState<WhitelistedContract[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [contractLoading, setContractLoading] = useState(false);
-  
+
+  // Referral system state
+  const [referralStats, setReferralStats] = useState<ReferralSystemStats | null>(null);
+  const [referralSettings, setReferralSettings] = useState<ReferralSettings | null>(null);
+  const [allReferralCodes, setAllReferralCodes] = useState<any[]>([]);
+  const [allReferredUsers, setAllReferredUsers] = useState<any[]>([]);
+  const [allReferralTransactions, setAllReferralTransactions] = useState<any[]>([]);
+  const [allReferralBalances, setAllReferralBalances] = useState<any[]>([]);
+
+  // Reporting and moderation state
+  const [violationReports, setViolationReports] = useState<any[]>([]);
+  const [moderationActions, setModerationActions] = useState<any[]>([]);
+  const [userRoles, setUserRoles] = useState<any[]>([]);
+
   const { user } = useAuth();
   const { sendMessage, createConversation } = useMessaging();
   const { provider, account } = useWeb3();
@@ -845,6 +858,389 @@ export function useSiteMaster() {
     };
   };
 
+  // Referral System Management Functions
+  const loadReferralSystemData = async () => {
+    if (!isSiteMaster) return;
+
+    setIsLoading(true);
+    try {
+      const supabaseClient = requireSupabase();
+
+      // Load referral codes
+      const { data: codes, error: codesError } = await supabaseClient
+        .from('referral_codes')
+        .select('*')
+        .order('created_at', { ascending: false });
+      if (codesError) throw codesError;
+      setAllReferralCodes(codes || []);
+
+      // Load referred users
+      const { data: referred, error: referredError } = await supabaseClient
+        .from('referred_users')
+        .select('*')
+        .order('created_at', { ascending: false });
+      if (referredError) throw referredError;
+      setAllReferredUsers(referred || []);
+
+      // Load referral transactions
+      const { data: transactions, error: transactionsError } = await supabaseClient
+        .from('referral_transactions')
+        .select('*')
+        .order('created_at', { ascending: false });
+      if (transactionsError) throw transactionsError;
+      setAllReferralTransactions(transactions || []);
+
+      // Load referral balances
+      const { data: balances, error: balancesError } = await supabaseClient
+        .from('referral_balances')
+        .select('*')
+        .order('balance_ghetto', { ascending: false });
+      if (balancesError) throw balancesError;
+      setAllReferralBalances(balances || []);
+
+      // Load referral settings from platform_settings
+      const { data: settings, error: settingsError } = await supabaseClient
+        .from('platform_settings')
+        .select('*')
+        .in('key', [
+          'referral_signup_reward_ghetto',
+          'referral_first_purchase_reward_ghetto',
+          'referral_commission_rate_percent',
+          'referral_min_redeem_ghetto',
+          'referral_max_redeem_ghetto'
+        ]);
+      if (settingsError) throw settingsError;
+
+      const settingsMap: Record<string, string> = {};
+      settings?.forEach(s => { settingsMap[s.key] = s.value; });
+
+      setReferralSettings({
+        signupRewardGhetto: parseFloat(settingsMap['referral_signup_reward_ghetto'] || '0'),
+        firstPurchaseRewardGhetto: parseFloat(settingsMap['referral_first_purchase_reward_ghetto'] || '0'),
+        commissionPercent: parseFloat(settingsMap['referral_commission_rate_percent'] || '0'),
+        minRedeemGhetto: parseFloat(settingsMap['referral_min_redeem_ghetto'] || '0'),
+        maxRedeemGhetto: parseFloat(settingsMap['referral_max_redeem_ghetto'] || '0'),
+        referralCodeLength: 6,
+        referralLinkExpiry: 0,
+      });
+
+      // Calculate stats
+      const totalGhettoEarned = transactions?.reduce((sum, tx) =>
+        tx.type !== 'redemption' ? sum + parseFloat(tx.amount_ghetto) : sum, 0) || 0;
+      const totalGhettoRedeemed = transactions?.filter(tx => tx.type === 'redemption')
+        .reduce((sum, tx) => sum + Math.abs(parseFloat(tx.amount_ghetto)), 0) || 0;
+      const activeReferrers = new Set(referred?.map(r => r.referrer_id)).size;
+
+      setReferralStats({
+        totalReferrers: activeReferrers,
+        totalReferredUsers: referred?.length || 0,
+        totalGhettoEarned,
+        totalGhettoRedeemed,
+        activeReferralCodes: codes?.length || 0,
+        pendingRewards: balances?.reduce((sum, b) => sum + parseFloat(b.balance_ghetto), 0) || 0,
+        averageReferralsPerUser: activeReferrers > 0 ? (referred?.length || 0) / activeReferrers : 0,
+        conversionRate: 0,
+      });
+
+    } catch (error) {
+      console.error('Failed to load referral system data:', error);
+      handleSupabaseError(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const updateReferralSettings = async (settings: Partial<ReferralSettings>) => {
+    if (!isSiteMaster) throw new Error('Unauthorized');
+
+    setIsLoading(true);
+    try {
+      const supabaseClient = requireSupabase();
+
+      const updates: Array<{ key: string; value: string }> = [];
+
+      if (settings.signupRewardGhetto !== undefined) {
+        updates.push({ key: 'referral_signup_reward_ghetto', value: settings.signupRewardGhetto.toString() });
+      }
+      if (settings.firstPurchaseRewardGhetto !== undefined) {
+        updates.push({ key: 'referral_first_purchase_reward_ghetto', value: settings.firstPurchaseRewardGhetto.toString() });
+      }
+      if (settings.commissionPercent !== undefined) {
+        updates.push({ key: 'referral_commission_rate_percent', value: settings.commissionPercent.toString() });
+      }
+      if (settings.minRedeemGhetto !== undefined) {
+        updates.push({ key: 'referral_min_redeem_ghetto', value: settings.minRedeemGhetto.toString() });
+      }
+      if (settings.maxRedeemGhetto !== undefined) {
+        updates.push({ key: 'referral_max_redeem_ghetto', value: settings.maxRedeemGhetto.toString() });
+      }
+
+      for (const update of updates) {
+        const { error } = await supabaseClient
+          .from('platform_settings')
+          .upsert({ key: update.key, value: update.value }, { onConflict: 'key' });
+
+        if (error) throw error;
+      }
+
+      // Reload settings
+      await loadReferralSystemData();
+
+      return true;
+    } catch (error) {
+      console.error('Failed to update referral settings:', error);
+      handleSupabaseError(error);
+      return false;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const forceClaimReward = async (referredUserId: string, rewardType: 'signup' | 'first_purchase') => {
+    if (!isSiteMaster) throw new Error('Unauthorized');
+
+    setIsLoading(true);
+    try {
+      const supabaseClient = requireSupabase();
+
+      const field = rewardType === 'signup' ? 'account_reward_claimed' : 'first_purchase_reward_claimed';
+
+      const { error } = await supabaseClient
+        .from('referred_users')
+        .update({ [field]: true })
+        .eq('referred_user_id', referredUserId);
+
+      if (error) throw error;
+
+      await loadReferralSystemData();
+      return true;
+    } catch (error) {
+      console.error('Failed to force claim reward:', error);
+      handleSupabaseError(error);
+      return false;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const adjustUserReferralBalance = async (userId: string, amount: number, reason: string) => {
+    if (!isSiteMaster) throw new Error('Unauthorized');
+
+    setIsLoading(true);
+    try {
+      const supabaseClient = requireSupabase();
+
+      // Update balance
+      const { data: currentBalance } = await supabaseClient
+        .from('referral_balances')
+        .select('balance_ghetto')
+        .eq('user_id', userId)
+        .single();
+
+      const newBalance = (currentBalance ? parseFloat(currentBalance.balance_ghetto) : 0) + amount;
+
+      await supabaseClient
+        .from('referral_balances')
+        .upsert({
+          user_id: userId,
+          balance_ghetto: newBalance,
+          updated_at: new Date().toISOString(),
+        }, { onConflict: 'user_id' });
+
+      // Log transaction
+      await supabaseClient
+        .from('referral_transactions')
+        .insert({
+          user_id: userId,
+          type: amount > 0 ? 'commission' : 'redemption',
+          amount_ghetto: amount,
+          source_id: user?.id,
+        });
+
+      // Log audit event
+      await supabaseClient.rpc('log_audit_event', {
+        p_user_id: user?.id,
+        p_action_type: 'referral_balance_adjustment',
+        p_action_description: `Adjusted referral balance for user ${userId} by ${amount} GHETTO. Reason: ${reason}`,
+        p_target_type: 'user',
+        p_target_id: userId,
+        p_metadata: { amount, reason },
+      });
+
+      await loadReferralSystemData();
+      return true;
+    } catch (error) {
+      console.error('Failed to adjust referral balance:', error);
+      handleSupabaseError(error);
+      return false;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Content Moderation Functions
+  const loadViolationReports = async () => {
+    if (!isSiteMaster) return;
+
+    try {
+      const supabaseClient = requireSupabase();
+
+      const { data, error } = await supabaseClient
+        .from('platform_violation_reports')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setViolationReports(data || []);
+    } catch (error) {
+      console.error('Failed to load violation reports:', error);
+      handleSupabaseError(error);
+    }
+  };
+
+  const reviewViolationReport = async (reportId: string, status: string, resolutionNotes: string, actionTaken: string) => {
+    if (!isSiteMaster) throw new Error('Unauthorized');
+
+    setIsLoading(true);
+    try {
+      const supabaseClient = requireSupabase();
+
+      const { error } = await supabaseClient
+        .from('platform_violation_reports')
+        .update({
+          status,
+          reviewed_by: user?.id,
+          reviewed_at: new Date().toISOString(),
+          resolution_notes: resolutionNotes,
+          action_taken: actionTaken,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', reportId);
+
+      if (error) throw error;
+
+      // Log moderation action
+      await supabaseClient
+        .from('moderation_actions')
+        .insert({
+          moderator_id: user?.id,
+          action_type: status === 'resolved' ? 'approve' : 'reject',
+          target_type: 'report',
+          target_id: reportId,
+          reason: resolutionNotes,
+          details: actionTaken,
+          report_id: reportId,
+        });
+
+      await loadViolationReports();
+      return true;
+    } catch (error) {
+      console.error('Failed to review violation report:', error);
+      handleSupabaseError(error);
+      return false;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Role Management Functions
+  const loadUserRoles = async () => {
+    if (!isSiteMaster) return;
+
+    try {
+      const supabaseClient = requireSupabase();
+
+      const { data, error } = await supabaseClient
+        .from('user_roles')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setUserRoles(data || []);
+    } catch (error) {
+      console.error('Failed to load user roles:', error);
+      handleSupabaseError(error);
+    }
+  };
+
+  const assignUserRole = async (userId: string, role: string, expiresAt?: Date, notes?: string) => {
+    if (!isSiteMaster) throw new Error('Unauthorized');
+
+    setIsLoading(true);
+    try {
+      const supabaseClient = requireSupabase();
+
+      const { error } = await supabaseClient
+        .from('user_roles')
+        .insert({
+          user_id: userId,
+          role,
+          granted_by: user?.id,
+          granted_at: new Date().toISOString(),
+          expires_at: expiresAt?.toISOString(),
+          is_active: true,
+          notes,
+        });
+
+      if (error) throw error;
+
+      // Log audit event
+      await supabaseClient.rpc('log_audit_event', {
+        p_user_id: user?.id,
+        p_action_type: 'role_assignment',
+        p_action_description: `Assigned role ${role} to user ${userId}`,
+        p_target_type: 'user',
+        p_target_id: userId,
+        p_metadata: { role, expires_at: expiresAt?.toISOString(), notes },
+      });
+
+      await loadUserRoles();
+      return true;
+    } catch (error) {
+      console.error('Failed to assign user role:', error);
+      handleSupabaseError(error);
+      return false;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const revokeUserRole = async (roleId: string) => {
+    if (!isSiteMaster) throw new Error('Unauthorized');
+
+    setIsLoading(true);
+    try {
+      const supabaseClient = requireSupabase();
+
+      const { error } = await supabaseClient
+        .from('user_roles')
+        .update({ is_active: false })
+        .eq('id', roleId);
+
+      if (error) throw error;
+
+      await loadUserRoles();
+      return true;
+    } catch (error) {
+      console.error('Failed to revoke user role:', error);
+      handleSupabaseError(error);
+      return false;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Load all site master data
+  useEffect(() => {
+    if (isSiteMaster) {
+      loadSiteMasterData();
+      loadContractSettings();
+      loadReferralSystemData();
+      loadViolationReports();
+      loadUserRoles();
+    }
+  }, [isSiteMaster, account]);
+
   return {
     isSiteMaster,
     disputes,
@@ -856,7 +1252,20 @@ export function useSiteMaster() {
     whitelistedContracts,
     isLoading,
     contractLoading,
-    
+
+    // Referral system data
+    referralStats,
+    referralSettings,
+    allReferralCodes,
+    allReferredUsers,
+    allReferralTransactions,
+    allReferralBalances,
+
+    // Moderation data
+    violationReports,
+    moderationActions,
+    userRoles,
+
     // Original functions
     resolveDispute,
     suspendUser,
@@ -865,7 +1274,7 @@ export function useSiteMaster() {
     getDisputeStats,
     getTransactionStats,
     getUserStats,
-    
+
     // Contract management functions
     loadContractSettings,
     updatePlatformFee,
@@ -881,6 +1290,20 @@ export function useSiteMaster() {
     unpauseGhettoTransfers,
     checkAddressBlacklisted,
     checkContractWhitelisted,
-    
+
+    // Referral management functions
+    loadReferralSystemData,
+    updateReferralSettings,
+    forceClaimReward,
+    adjustUserReferralBalance,
+
+    // Content moderation functions
+    loadViolationReports,
+    reviewViolationReport,
+
+    // Role management functions
+    loadUserRoles,
+    assignUserRole,
+    revokeUserRole,
   };
 }

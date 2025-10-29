@@ -4,7 +4,7 @@ import { Shield, Search, ShoppingCart, User, Wallet, TrendingUp, Package, Messag
 import { AdvancedSearch, SearchFilters } from './components/AdvancedSearch';
 import { GraffitiLogo } from './components/GraffitiLogo';
 import { AuthModal } from './components/AuthModal';
-import { UserProfile } from './components/UserProfile';
+import { UserDashboard } from './components/UserDashboard';
 import { Cart } from './components/Cart';
 import { BuyNowModal } from './components/BuyNowModal';
 import { MakeOfferModal } from './components/MakeOfferModal';
@@ -805,8 +805,8 @@ function App() {
         onClose={() => setShowAuthModal(false)}
         initialMode={authMode}
       />
-      <UserProfile 
-        isOpen={showUserProfile} 
+      <UserDashboard
+        isOpen={showUserProfile}
         onClose={() => setShowUserProfile(false)}
       />
       <BuyNowModal 
