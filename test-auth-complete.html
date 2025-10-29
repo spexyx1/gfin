@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Authentication System Test</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #fff;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            color: #00d9ff;
+            text-shadow: 0 0 10px rgba(0, 217, 255, 0.5);
+        }
+
+        .test-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .test-card {
+            background: #2a2a2a;
+            border: 1px solid #444;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .test-card h2 {
+            color: #00d9ff;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .test-card h2::before {
+            content: '✦';
+            color: #ff006e;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #aaa;
+            font-size: 0.9em;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            background: #1a1a1a;
+            border: 1px solid #444;
+            border-radius: 6px;
+            color: #fff;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #00d9ff;
+            box-shadow: 0 0 10px rgba(0, 217, 255, 0.3);
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #00d9ff 0%, #0099ff 100%);
+            color: #000;
+            border: none;
+            border-radius: 6px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 217, 255, 0.5);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            background: #555;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .result {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 0.9em;
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result.success {
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid #10b981;
+            color: #10b981;
+            display: block;
+        }
+
+        .result.error {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid #ef4444;
+            color: #ef4444;
+            display: block;
+        }
+
+        .result.info {
+            background: rgba(0, 217, 255, 0.2);
+            border: 1px solid #00d9ff;
+            color: #00d9ff;
+            display: block;
+        }
+
+        .status-panel {
+            background: #2a2a2a;
+            border: 1px solid #444;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .status-panel h2 {
+            color: #00d9ff;
+            margin-bottom: 15px;
+        }
+
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .status-item {
+            background: #1a1a1a;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 3px solid #00d9ff;
+        }
+
+        .status-item strong {
+            display: block;
+            color: #00d9ff;
+            margin-bottom: 5px;
+        }
+
+        .status-item span {
+            color: #aaa;
+        }
+
+        pre {
+            background: #1a1a1a;
+            padding: 10px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 0.85em;
+            color: #00d9ff;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .badge.online {
+            background: #10b981;
+            color: #000;
+        }
+
+        .badge.offline {
+            background: #ef4444;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔐 Authentication System Test Suite</h1>
+
+        <div class="status-panel">
+            <h2>System Status <span id="connection-status" class="badge offline">OFFLINE</span></h2>
+            <div class="status-grid">
+                <div class="status-item">
+                    <strong>Supabase URL</strong>
+                    <span id="status-url">Loading...</span>
+                </div>
+                <div class="status-item">
+                    <strong>Current User</strong>
+                    <span id="status-user">Not logged in</span>
+                </div>
+                <div class="status-item">
+                    <strong>Session Status</strong>
+                    <span id="status-session">No session</span>
+                </div>
+                <div class="status-item">
+                    <strong>Last Action</strong>
+                    <span id="status-action">None</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="test-grid">
+            <!-- Test 1: Sitemaster Login -->
+            <div class="test-card">
+                <h2>Sitemaster Login Test</h2>
+                <p style="margin-bottom: 15px; color: #aaa; font-size: 0.9em;">
+                    Test the sitemaster account with credentials:<br>
+                    <strong style="color: #fff;">Username:</strong> sitemaster<br>
+                    <strong style="color: #fff;">Password:</strong> keystone
+                </p>
+                <button onclick="testSitemasterLogin()">🔑 Test Sitemaster Login</button>
+                <div id="sitemaster-result" class="result"></div>
+            </div>
+
+            <!-- Test 2: Username Availability -->
+            <div class="test-card">
+                <h2>Username Availability Check</h2>
+                <div class="input-group">
+                    <label>Username to check:</label>
+                    <input type="text" id="check-username" placeholder="Enter username">
+                </div>
+                <button onclick="testUsernameAvailability()">🔍 Check Availability</button>
+                <div id="availability-result" class="result"></div>
+            </div>
+
+            <!-- Test 3: New User Signup -->
+            <div class="test-card">
+                <h2>New User Signup</h2>
+                <div class="input-group">
+                    <label>Username (3-20 chars):</label>
+                    <input type="text" id="signup-username" placeholder="testuser123">
+                </div>
+                <div class="input-group">
+                    <label>Password (min 6 chars):</label>
+                    <input type="password" id="signup-password" placeholder="password123">
+                </div>
+                <button onclick="testSignup()">✨ Create Account</button>
+                <div id="signup-result" class="result"></div>
+            </div>
+
+            <!-- Test 4: Login with New Account -->
+            <div class="test-card">
+                <h2>Login Test</h2>
+                <div class="input-group">
+                    <label>Username:</label>
+                    <input type="text" id="login-username" placeholder="sitemaster">
+                </div>
+                <div class="input-group">
+                    <label>Password:</label>
+                    <input type="password" id="login-password" placeholder="keystone">
+                </div>
+                <button onclick="testLogin()">🚀 Login</button>
+                <div id="login-result" class="result"></div>
+            </div>
+
+            <!-- Test 5: Session Check -->
+            <div class="test-card">
+                <h2>Session Management</h2>
+                <button onclick="checkSession()">📊 Check Current Session</button>
+                <button onclick="logout()" style="background: linear-gradient(135deg, #ff006e 0%, #ff5555 100%);">🚪 Logout</button>
+                <div id="session-result" class="result"></div>
+            </div>
+
+            <!-- Test 6: Edge Cases -->
+            <div class="test-card">
+                <h2>Edge Case Tests</h2>
+                <button onclick="testEdgeCases()">🧪 Run Edge Case Tests</button>
+                <div id="edge-result" class="result"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Supabase
+        const SUPABASE_URL = 'https://nnlwgwlvdrvwbmzeugfe.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ubHdnd2x2ZHJ2d2JtemV1Z2ZlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkwODI2MjgsImV4cCI6MjA3NDY1ODYyOH0.7IMMcK-tLMgYWnAZFK6oxXXeTOoRb_3OJl269ySU5uI';
+
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // Initialize status
+        window.addEventListener('load', () => {
+            document.getElementById('status-url').textContent = SUPABASE_URL;
+            document.getElementById('connection-status').textContent = 'ONLINE';
+            document.getElementById('connection-status').className = 'badge online';
+            checkSession();
+        });
+
+        // Update status helper
+        function updateStatus(action) {
+            document.getElementById('status-action').textContent = action;
+        }
+
+        // Test 1: Sitemaster Login
+        async function testSitemasterLogin() {
+            const resultDiv = document.getElementById('sitemaster-result');
+            resultDiv.className = 'result info';
+            resultDiv.textContent = '🔄 Testing sitemaster login...';
+            updateStatus('Sitemaster login test');
+
+            try {
+                // First, authenticate to get email
+                const { data: authResult, error: authError } = await supabase
+                    .rpc('authenticate_user_by_username', { username_input: 'sitemaster' });
+
+                if (authError) throw authError;
+                if (!authResult?.success) throw new Error(authResult?.message || 'Authentication lookup failed');
+
+                // Now login with the email
+                const { data, error } = await supabase.auth.signInWithPassword({
+                    email: authResult.auth_email,
+                    password: 'keystone'
+                });
+
+                if (error) throw error;
+
+                resultDiv.className = 'result success';
+                resultDiv.innerHTML = `
+                    ✅ <strong>SITEMASTER LOGIN SUCCESSFUL!</strong><br><br>
+                    <strong>Username:</strong> sitemaster<br>
+                    <strong>User ID:</strong> ${data.user.id}<br>
+                    <strong>Session:</strong> Active<br>
+                    <strong>Verified:</strong> Yes<br><br>
+                    <em>The sitemaster account is working perfectly!</em>
+                `;
+
+                document.getElementById('status-user').textContent = 'sitemaster';
+                document.getElementById('status-session').textContent = 'Active';
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.textContent = `❌ FAILED: ${error.message}`;
+            }
+        }
+
+        // Test 2: Username Availability
+        async function testUsernameAvailability() {
+            const username = document.getElementById('check-username').value;
+            const resultDiv = document.getElementById('availability-result');
+
+            if (!username) {
+                resultDiv.className = 'result error';
+                resultDiv.textContent = '❌ Please enter a username';
+                return;
+            }
+
+            resultDiv.className = 'result info';
+            resultDiv.textContent = '🔄 Checking availability...';
+            updateStatus('Username availability check');
+
+            try {
+                const { data, error } = await supabase
+                    .rpc('check_username_available', { username_input: username });
+
+                if (error) throw error;
+
+                if (data) {
+                    resultDiv.className = 'result success';
+                    resultDiv.innerHTML = `
+                        ✅ <strong>Username "${username}" is AVAILABLE!</strong><br>
+                        You can use this username for signup.
+                    `;
+                } else {
+                    resultDiv.className = 'result error';
+                    resultDiv.innerHTML = `
+                        ❌ <strong>Username "${username}" is already taken</strong><br>
+                        Please choose a different username.
+                    `;
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.textContent = `❌ Error: ${error.message}`;
+            }
+        }
+
+        // Test 3: New User Signup
+        async function testSignup() {
+            const username = document.getElementById('signup-username').value;
+            const password = document.getElementById('signup-password').value;
+            const resultDiv = document.getElementById('signup-result');
+
+            if (!username || !password) {
+                resultDiv.className = 'result error';
+                resultDiv.textContent = '❌ Please fill in all fields';
+                return;
+            }
+
+            resultDiv.className = 'result info';
+            resultDiv.textContent = '🔄 Creating account...';
+            updateStatus('User signup');
+
+            try {
+                // Check availability first
+                const { data: isAvailable, error: checkError } = await supabase
+                    .rpc('check_username_available', { username_input: username });
+
+                if (checkError) throw checkError;
+                if (!isAvailable) throw new Error('Username already taken');
+
+                // Create account
+                const placeholderEmail = `${username}@placeholder.ghetto.finance`;
+                const { data, error } = await supabase.auth.signUp({
+                    email: placeholderEmail,
+                    password,
+                    options: {
+                        data: {
+                            username: username,
+                            display_name: username
+                        }
+                    }
+                });
+
+                if (error) throw error;
+
+                resultDiv.className = 'result success';
+                resultDiv.innerHTML = `
+                    ✅ <strong>ACCOUNT CREATED SUCCESSFULLY!</strong><br><br>
+                    <strong>Username:</strong> ${username}<br>
+                    <strong>User ID:</strong> ${data.user.id}<br>
+                    <strong>Status:</strong> Active<br><br>
+                    <em>You can now login with this account!</em>
+                `;
+
+                document.getElementById('status-user').textContent = username;
+                document.getElementById('status-session').textContent = 'Active (new user)';
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.textContent = `❌ Signup failed: ${error.message}`;
+            }
+        }
+
+        // Test 4: Login
+        async function testLogin() {
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+            const resultDiv = document.getElementById('login-result');
+
+            if (!username || !password) {
+                resultDiv.className = 'result error';
+                resultDiv.textContent = '❌ Please fill in all fields';
+                return;
+            }
+
+            resultDiv.className = 'result info';
+            resultDiv.textContent = '🔄 Logging in...';
+            updateStatus('User login');
+
+            try {
+                // Get auth email from username
+                const { data: authResult, error: authError } = await supabase
+                    .rpc('authenticate_user_by_username', { username_input: username });
+
+                if (authError) throw authError;
+                if (!authResult?.success) throw new Error(authResult?.message || 'Invalid credentials');
+
+                // Login with email
+                const { data, error } = await supabase.auth.signInWithPassword({
+                    email: authResult.auth_email,
+                    password
+                });
+
+                if (error) throw error;
+
+                resultDiv.className = 'result success';
+                resultDiv.innerHTML = `
+                    ✅ <strong>LOGIN SUCCESSFUL!</strong><br><br>
+                    <strong>Username:</strong> ${username}<br>
+                    <strong>User ID:</strong> ${data.user.id}<br>
+                    <strong>Session:</strong> Active<br><br>
+                    <em>Welcome back!</em>
+                `;
+
+                document.getElementById('status-user').textContent = username;
+                document.getElementById('status-session').textContent = 'Active';
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.textContent = `❌ Login failed: ${error.message}`;
+            }
+        }
+
+        // Test 5: Session Check
+        async function checkSession() {
+            const resultDiv = document.getElementById('session-result');
+            resultDiv.className = 'result info';
+            resultDiv.textContent = '🔄 Checking session...';
+            updateStatus('Session check');
+
+            try {
+                const { data: { session }, error } = await supabase.auth.getSession();
+
+                if (error) throw error;
+
+                if (session) {
+                    resultDiv.className = 'result success';
+                    resultDiv.innerHTML = `
+                        ✅ <strong>ACTIVE SESSION FOUND</strong><br><br>
+                        <strong>User ID:</strong> ${session.user.id}<br>
+                        <strong>Email:</strong> ${session.user.email}<br>
+                        <strong>Username:</strong> ${session.user.user_metadata?.username || 'N/A'}<br>
+                        <strong>Created:</strong> ${new Date(session.user.created_at).toLocaleString()}<br><br>
+                        <pre>${JSON.stringify(session.user.user_metadata, null, 2)}</pre>
+                    `;
+
+                    document.getElementById('status-user').textContent = session.user.user_metadata?.username || 'Unknown';
+                    document.getElementById('status-session').textContent = 'Active';
+                } else {
+                    resultDiv.className = 'result info';
+                    resultDiv.textContent = 'ℹ️ No active session found. Please login.';
+                    document.getElementById('status-user').textContent = 'Not logged in';
+                    document.getElementById('status-session').textContent = 'No session';
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.textContent = `❌ Error: ${error.message}`;
+            }
+        }
+
+        // Logout
+        async function logout() {
+            const resultDiv = document.getElementById('session-result');
+            resultDiv.className = 'result info';
+            resultDiv.textContent = '🔄 Logging out...';
+            updateStatus('Logout');
+
+            try {
+                const { error } = await supabase.auth.signOut();
+                if (error) throw error;
+
+                resultDiv.className = 'result success';
+                resultDiv.textContent = '✅ Logged out successfully';
+
+                document.getElementById('status-user').textContent = 'Not logged in';
+                document.getElementById('status-session').textContent = 'No session';
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.textContent = `❌ Logout failed: ${error.message}`;
+            }
+        }
+
+        // Test 6: Edge Cases
+        async function testEdgeCases() {
+            const resultDiv = document.getElementById('edge-result');
+            resultDiv.className = 'result info';
+            resultDiv.textContent = '🔄 Running edge case tests...';
+            updateStatus('Edge case tests');
+
+            const tests = [];
+
+            try {
+                // Test 1: Username with @
+                const test1 = await supabase.rpc('authenticate_user_by_username', { username_input: '@sitemaster' });
+                tests.push(`✓ Username with @ prefix: ${test1.data?.success ? 'PASS' : 'FAIL'}`);
+
+                // Test 2: Invalid username format
+                const test2 = await supabase.rpc('check_username_available', { username_input: 'ab' });
+                tests.push(`✓ Too short username: ${!test2.data ? 'PASS' : 'FAIL'}`);
+
+                // Test 3: Username with spaces
+                const test3 = await supabase.rpc('check_username_available', { username_input: 'user name' });
+                tests.push(`✓ Username with spaces: ${!test3.data ? 'PASS' : 'FAIL'}`);
+
+                // Test 4: Case insensitive check
+                const test4 = await supabase.rpc('authenticate_user_by_username', { username_input: 'SITEMASTER' });
+                tests.push(`✓ Case insensitive: ${test4.data?.success ? 'PASS' : 'FAIL'}`);
+
+                resultDiv.className = 'result success';
+                resultDiv.innerHTML = `
+                    <strong>Edge Case Test Results:</strong><br><br>
+                    ${tests.join('<br>')}
+                `;
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.textContent = `❌ Test error: ${error.message}`;
+            }
+        }
+    </script>
+</body>
+</html>
