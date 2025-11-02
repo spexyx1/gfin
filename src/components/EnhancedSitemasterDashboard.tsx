@@ -27,11 +27,22 @@ export function EnhancedSitemasterDashboard() {
     getSetting,
     updateSetting,
     getSettingsByCategory,
+    getFeatureToggles,
+    toggleFeature,
+    getRateConfigurations,
+    updateRate,
+    getEscrowOrders,
+    cancelEscrowOrder,
+    forceReleaseEscrow,
+    searchTransactions,
+    getAllMessages,
+    getAllPosts,
+    getAllProducts,
     refresh
   } = useEnhancedSitemaster();
 
   const [hasAccess, setHasAccess] = useState(false);
-  const [activeTab, setActiveTab] = useState<'overview' | 'users' | 'content' | 'flags' | 'suspensions' | 'activity' | 'settings'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'users' | 'content' | 'flags' | 'suspensions' | 'activity' | 'settings' | 'features' | 'rates' | 'escrow' | 'transactions' | 'messages'>('overview');
   const [stats, setStats] = useState<any>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<any[]>([]);
@@ -40,11 +51,19 @@ export function EnhancedSitemasterDashboard() {
   const [showMessageModal, setShowMessageModal] = useState(false);
   const [messageForm, setMessageForm] = useState({ subject: '', message: '', priority: 'normal' });
   const [platformSettings, setPlatformSettings] = useState<any[]>([]);
+  const [featureToggles, setFeatureToggles] = useState<any[]>([]);
+  const [rateConfigs, setRateConfigs] = useState<any[]>([]);
+  const [escrowOrders, setEscrowOrders] = useState<any[]>([]);
+  const [allMessages, setAllMessages] = useState<any[]>([]);
 
   useEffect(() => {
     isSitemaster().then(setHasAccess);
     getPlatformStats().then(setStats);
-    getSettingsByCategory('platform').then(setPlatformSettings);
+    getSettingsByCategory('general').then(setPlatformSettings);
+    getFeatureToggles().then(setFeatureToggles);
+    getRateConfigurations().then(setRateConfigs);
+    getEscrowOrders().then(setEscrowOrders);
+    getAllMessages().then(setAllMessages);
   }, []);
 
   if (loading) {
@@ -172,7 +191,7 @@ export function EnhancedSitemasterDashboard() {
         )}
 
         <div className="mb-6 flex gap-2 border-b border-gray-200 overflow-x-auto">
-          {['overview', 'users', 'content', 'flags', 'suspensions', 'activity', 'settings'].map((tab) => (
+          {['overview', 'users', 'content', 'flags', 'suspensions', 'activity', 'features', 'rates', 'escrow', 'transactions', 'messages', 'settings'].map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab as any)}
@@ -512,6 +531,279 @@ export function EnhancedSitemasterDashboard() {
                       <td className="px-6 py-4 text-sm text-gray-600">{log.ip_address || 'N/A'}</td>
                       <td className="px-6 py-4 text-sm text-gray-500">
                         {new Date(log.created_at).toLocaleString()}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'features' && (
+          <div className="grid md:grid-cols-2 gap-6">
+            {featureToggles.map((feature) => (
+              <div key={feature.id} className="bg-white shadow-md rounded-lg p-6">
+                <div className="flex items-center justify-between mb-3">
+                  <h4 className="font-semibold text-gray-900">{feature.feature_name}</h4>
+                  <button
+                    onClick={async () => {
+                      await toggleFeature(feature.feature_name, !feature.enabled);
+                      const updated = await getFeatureToggles();
+                      setFeatureToggles(updated);
+                      alert(`Feature ${feature.enabled ? 'disabled' : 'enabled'}`);
+                    }}
+                    className={`px-4 py-2 rounded-lg font-medium ${
+                      feature.enabled
+                        ? 'bg-green-100 text-green-800 hover:bg-green-200'
+                        : 'bg-red-100 text-red-800 hover:bg-red-200'
+                    }`}
+                  >
+                    {feature.enabled ? 'Enabled' : 'Disabled'}
+                  </button>
+                </div>
+                <p className="text-sm text-gray-600 mb-2">{feature.description}</p>
+                <p className="text-xs text-gray-500">Affects: {feature.affects_users?.join(', ')}</p>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {activeTab === 'rates' && (
+          <div className="grid md:grid-cols-2 gap-6">
+            {rateConfigs.map((rate) => (
+              <div key={rate.id} className="bg-white shadow-md rounded-lg p-6">
+                <h4 className="font-semibold text-gray-900 mb-2">{rate.rate_name}</h4>
+                <p className="text-sm text-gray-600 mb-3">{rate.description}</p>
+                <div className="mb-3">
+                  <span className="text-xs text-gray-500 mr-4">Type: {rate.rate_type}</span>
+                  {rate.min_value !== null && (
+                    <span className="text-xs text-gray-500">Range: {rate.min_value} - {rate.max_value}</span>
+                  )}
+                </div>
+                <div className="flex gap-2">
+                  <input
+                    type="number"
+                    step="0.01"
+                    defaultValue={rate.rate_value}
+                    min={rate.min_value || 0}
+                    max={rate.max_value || undefined}
+                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg"
+                    id={`rate-${rate.id}`}
+                  />
+                  <button
+                    onClick={async () => {
+                      const input = document.getElementById(`rate-${rate.id}`) as HTMLInputElement;
+                      const newValue = parseFloat(input.value);
+                      if (isNaN(newValue)) {
+                        alert('Invalid number');
+                        return;
+                      }
+                      await updateRate(rate.rate_name, newValue);
+                      const updated = await getRateConfigurations();
+                      setRateConfigs(updated);
+                      alert('Rate updated');
+                    }}
+                    className="bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700"
+                  >
+                    Update
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {activeTab === 'escrow' && (
+          <div>
+            <div className="mb-6 bg-white shadow-md rounded-lg p-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Escrow Orders Management</h3>
+              <div className="flex gap-3">
+                <button
+                  onClick={async () => {
+                    const all = await getEscrowOrders();
+                    setEscrowOrders(all);
+                  }}
+                  className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+                >
+                  All Orders
+                </button>
+                <button
+                  onClick={async () => {
+                    const funded = await getEscrowOrders('funded');
+                    setEscrowOrders(funded);
+                  }}
+                  className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
+                >
+                  Funded
+                </button>
+                <button
+                  onClick={async () => {
+                    const disputed = await getEscrowOrders('disputed');
+                    setEscrowOrders(disputed);
+                  }}
+                  className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
+                >
+                  Disputed
+                </button>
+              </div>
+            </div>
+
+            <div className="grid gap-4">
+              {escrowOrders.map((order) => (
+                <div key={order.id} className="bg-white shadow-md rounded-lg p-6">
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-3 mb-2">
+                        <h4 className="font-semibold text-gray-900">Order #{order.id.substring(0, 8)}</h4>
+                        <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                          order.status === 'completed' ? 'bg-green-100 text-green-800' :
+                          order.status === 'disputed' ? 'bg-red-100 text-red-800' :
+                          order.status === 'cancelled' ? 'bg-gray-100 text-gray-800' :
+                          'bg-blue-100 text-blue-800'
+                        }`}>
+                          {order.status}
+                        </span>
+                      </div>
+                      <p className="text-sm text-gray-600 mb-1">Buyer: {order.buyer?.username}</p>
+                      <p className="text-sm text-gray-600 mb-1">Seller: {order.seller?.username}</p>
+                      <p className="text-sm text-gray-600 mb-1">Amount: ${order.amount} USDC</p>
+                      <p className="text-xs text-gray-500">Created: {new Date(order.created_at).toLocaleString()}</p>
+                    </div>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={async () => {
+                          if (confirm('Force release escrow funds? This action cannot be undone.')) {
+                            const reason = prompt('Enter reason for force release:');
+                            if (reason) {
+                              await forceReleaseEscrow(order.id, reason);
+                              const updated = await getEscrowOrders();
+                              setEscrowOrders(updated);
+                              alert('Funds released');
+                            }
+                          }
+                        }}
+                        className="p-2 text-green-600 hover:bg-green-50 rounded-lg"
+                        title="Force Release"
+                      >
+                        <CheckCircle className="h-5 w-5" />
+                      </button>
+                      <button
+                        onClick={async () => {
+                          if (confirm('Cancel this escrow order?')) {
+                            const reason = prompt('Enter reason for cancellation:');
+                            if (reason) {
+                              await cancelEscrowOrder(order.id, reason);
+                              const updated = await getEscrowOrders();
+                              setEscrowOrders(updated);
+                              alert('Order cancelled');
+                            }
+                          }
+                        }}
+                        className="p-2 text-red-600 hover:bg-red-50 rounded-lg"
+                        title="Cancel Order"
+                      >
+                        <XCircle className="h-5 w-5" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+              {escrowOrders.length === 0 && (
+                <div className="bg-white shadow-md rounded-lg p-12 text-center text-gray-500">
+                  No escrow orders
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'transactions' && (
+          <div>
+            <div className="mb-6 bg-white shadow-md rounded-lg p-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Search Transactions</h3>
+              <div className="flex gap-3">
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyPress={(e) => e.key === 'Enter' && searchTransactions(searchQuery).then(setSearchResults)}
+                  placeholder="Search by order ID or description..."
+                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+                />
+                <button
+                  onClick={() => searchTransactions(searchQuery).then(setSearchResults)}
+                  className="bg-orange-600 text-white px-6 py-2 rounded-lg hover:bg-orange-700 flex items-center gap-2"
+                >
+                  <Search className="h-5 w-5" />
+                  Search
+                </button>
+              </div>
+            </div>
+
+            <div className="bg-white shadow-md rounded-lg overflow-hidden">
+              <div className="overflow-x-auto">
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Order ID</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Buyer</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Seller</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Amount</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {searchResults.map((tx) => (
+                      <tr key={tx.id} className="hover:bg-gray-50">
+                        <td className="px-6 py-4 text-sm font-mono text-gray-900">{tx.id.substring(0, 8)}...</td>
+                        <td className="px-6 py-4 text-sm text-gray-900">{tx.buyer?.username}</td>
+                        <td className="px-6 py-4 text-sm text-gray-900">{tx.seller?.username}</td>
+                        <td className="px-6 py-4 text-sm text-gray-900">${tx.amount}</td>
+                        <td className="px-6 py-4 text-sm">
+                          <span className="px-2 py-1 rounded-full text-xs bg-blue-100 text-blue-800">
+                            {tx.status}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 text-sm text-gray-500">
+                          {new Date(tx.created_at).toLocaleDateString()}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'messages' && (
+          <div className="bg-white shadow-md rounded-lg overflow-hidden">
+            <div className="p-6 border-b border-gray-200">
+              <h3 className="text-lg font-semibold text-gray-900">All Platform Messages</h3>
+              <p className="text-sm text-gray-600 mt-1">View all messages sent between users</p>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">From</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">To</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Preview</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {allMessages.slice(0, 50).map((msg) => (
+                    <tr key={msg.id} className="hover:bg-gray-50">
+                      <td className="px-6 py-4 text-sm text-gray-900">{msg.sender?.username}</td>
+                      <td className="px-6 py-4 text-sm text-gray-900">{msg.receiver?.username}</td>
+                      <td className="px-6 py-4 text-sm text-gray-600 max-w-md truncate">
+                        {msg.content || msg.message || 'No preview'}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-500">
+                        {new Date(msg.created_at).toLocaleString()}
                       </td>
                     </tr>
                   ))}

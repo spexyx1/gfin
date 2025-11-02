@@ -13,7 +13,7 @@ import { MessagingCenter } from './components/MessagingCenter';
 import { OrderManagement } from './components/OrderManagement';
 import { SellerDashboard } from './components/SellerDashboard';
 import { WalletDashboard } from './components/WalletDashboard';
-import { SiteMasterDashboard } from './components/SiteMasterDashboard';
+import { EnhancedSitemasterDashboard } from './components/EnhancedSitemasterDashboard';
 import { ProfileSetup } from './components/ProfileSetup';
 import { SocialHub } from './components/SocialHub';
 import { SocialPlatform } from './components/SocialPlatform';
@@ -728,13 +728,13 @@ function App() {
               </button>
               
               {isSiteMaster && (
-                <button 
-                  onClick={() => setShowSiteMaster(true)}
+                <Link
+                  to="/sitemaster"
                   className="relative p-2 text-apple-gray-500 hover:text-apple-red apple-hover"
                   title="Site Master Dashboard"
                 >
                   <Shield className="w-5 h-5" />
-                </button>
+                </Link>
               )}
               
               <Link
@@ -797,6 +797,7 @@ function App() {
       <Routes>
         <Route path="/" element={<MarketplaceContent />} />
         <Route path="/social" element={<SocialPlatform searchTerm={searchTerm} setSearchTerm={setSearchTerm} />} />
+        <Route path="/sitemaster" element={<EnhancedSitemasterDashboard />} />
       </Routes>
       
       {/* Modals */}
@@ -843,10 +844,6 @@ function App() {
     <WalletDashboard 
       isOpen={showWallet} 
       onClose={() => setShowWallet(false)}
-    />
-    <SiteMasterDashboard 
-      isOpen={showSiteMaster} 
-      onClose={() => setShowSiteMaster(false)}
     />
     <ProfileSetup 
       isOpen={showProfileSetup} 

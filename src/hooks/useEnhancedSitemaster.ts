@@ -284,6 +284,176 @@ export function useEnhancedSitemaster() {
     return data as PlatformSettings[];
   };
 
+  // Feature Toggle Management
+  const getFeatureToggles = async () => {
+    const { data, error } = await supabase
+      .from('feature_toggles')
+      .select('*')
+      .order('feature_name');
+
+    if (error) throw error;
+    return data;
+  };
+
+  const toggleFeature = async (featureName: string, enabled: boolean) => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error('Not authenticated');
+
+    const { data, error } = await supabase
+      .from('feature_toggles')
+      .update({
+        enabled,
+        last_toggled_by: user.id,
+        last_toggled_at: new Date().toISOString()
+      })
+      .eq('feature_name', featureName)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
+  };
+
+  // Rate Configuration Management
+  const getRateConfigurations = async () => {
+    const { data, error } = await supabase
+      .from('rate_configurations')
+      .select('*')
+      .eq('active', true)
+      .order('category', { ascending: true });
+
+    if (error) throw error;
+    return data;
+  };
+
+  const updateRate = async (rateName: string, newValue: number) => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error('Not authenticated');
+
+    const { data, error } = await supabase
+      .from('rate_configurations')
+      .update({
+        rate_value: newValue,
+        last_updated_by: user.id,
+        updated_at: new Date().toISOString()
+      })
+      .eq('rate_name', rateName)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
+  };
+
+  // Escrow Management
+  const getEscrowOrders = async (status?: string) => {
+    let query = supabase
+      .from('orders')
+      .select('*, buyer:profiles!buyer_id(username), seller:profiles!seller_id(username)')
+      .order('created_at', { ascending: false });
+
+    if (status) {
+      query = query.eq('status', status);
+    }
+
+    const { data, error } = await query;
+    if (error) throw error;
+    return data;
+  };
+
+  const cancelEscrowOrder = async (orderId: string, reason: string) => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error('Not authenticated');
+
+    // Update order status
+    const { error: orderError } = await supabase
+      .from('orders')
+      .update({
+        status: 'cancelled',
+        updated_at: new Date().toISOString()
+      })
+      .eq('id', orderId);
+
+    if (orderError) throw orderError;
+
+    // Log the cancellation
+    await supabase.from('activity_logs').insert({
+      user_id: user.id,
+      activity_type: 'sitemaster_cancel_order',
+      details: { order_id: orderId, reason }
+    });
+  };
+
+  const forceReleaseEscrow = async (orderId: string, reason: string) => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error('Not authenticated');
+
+    const { error } = await supabase
+      .from('orders')
+      .update({
+        status: 'funds_released',
+        funds_released_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      })
+      .eq('id', orderId);
+
+    if (error) throw error;
+
+    // Log the action
+    await supabase.from('activity_logs').insert({
+      user_id: user.id,
+      activity_type: 'sitemaster_force_release',
+      details: { order_id: orderId, reason }
+    });
+  };
+
+  // Transaction Search and Management
+  const searchTransactions = async (query: string) => {
+    const { data, error } = await supabase
+      .from('orders')
+      .select('*, buyer:profiles!buyer_id(username), seller:profiles!seller_id(username)')
+      .or(`id.ilike.%${query}%,description.ilike.%${query}%`)
+      .limit(50);
+
+    if (error) throw error;
+    return data;
+  };
+
+  const getAllMessages = async (limit: number = 100) => {
+    const { data, error } = await supabase
+      .from('messages')
+      .select('*, sender:profiles!sender_id(username), receiver:profiles!receiver_id(username)')
+      .order('created_at', { ascending: false })
+      .limit(limit);
+
+    if (error) throw error;
+    return data;
+  };
+
+  // View all platform data
+  const getAllPosts = async (limit: number = 100) => {
+    const { data, error } = await supabase
+      .from('social_posts')
+      .select('*, author:profiles(username)')
+      .eq('deleted', false)
+      .order('created_at', { ascending: false })
+      .limit(limit);
+
+    if (error) throw error;
+    return data;
+  };
+
+  const getAllProducts = async (limit: number = 100) => {
+    const { data, error } = await supabase
+      .from('products')
+      .select('*, seller:profiles!seller_id(username)')
+      .order('created_at', { ascending: false })
+      .limit(limit);
+
+    if (error) throw error;
+    return data;
+  };
+
   const fetchFlags = async () => {
     const { data, error } = await supabase
       .from('user_flags')
@@ -366,6 +536,17 @@ export function useEnhancedSitemaster() {
     getSetting,
     updateSetting,
     getSettingsByCategory,
+    getFeatureToggles,
+    toggleFeature,
+    getRateConfigurations,
+    updateRate,
+    getEscrowOrders,
+    cancelEscrowOrder,
+    forceReleaseEscrow,
+    searchTransactions,
+    getAllMessages,
+    getAllPosts,
+    getAllProducts,
     refresh: fetchAll
   };
 }
