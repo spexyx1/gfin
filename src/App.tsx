@@ -771,11 +771,6 @@ function App() {
                     </div>
                     <span className="text-white apple-font">{user.username}</span>
                   </button>
-                  {issitemaster && (
-                    <div className="flex items-center justify-center p-2" title="Sitemaster">
-                      <Shield className="w-5 h-5 text-red-500" />
-                    </div>
-                  )}
                   <button
                     onClick={logout}
                     className="btn-apple-secondary px-4 py-2 text-sm"
