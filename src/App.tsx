@@ -762,7 +762,7 @@ function App() {
               
               {user ? (
                 <div className="flex items-center space-x-4">
-                  <button 
+                  <button
                     onClick={() => setShowUserProfile(true)}
                     className="flex items-center space-x-2 p-2 glass-morphism rounded-apple apple-hover"
                   >
@@ -771,6 +771,11 @@ function App() {
                     </div>
                     <span className="text-white apple-font">{user.username}</span>
                   </button>
+                  {issitemaster && (
+                    <div className="flex items-center justify-center p-2" title="Sitemaster">
+                      <Shield className="w-5 h-5 text-red-500" />
+                    </div>
+                  )}
                   <button
                     onClick={logout}
                     className="btn-apple-secondary px-4 py-2 text-sm"
