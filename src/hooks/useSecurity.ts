@@ -274,7 +274,7 @@ export function useSecurity() {
       event => event.type === 'failed_login' && !event.success
     ).length;
 
-    return failedLogins >= 3; // 3 failed attempts in 1 minute
+    return failedLogins >= 5; // 5 failed attempts in 1 minute
   };
 
   // Generate security report
