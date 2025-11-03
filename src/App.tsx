@@ -14,6 +14,8 @@ import { OrderManagement } from './components/OrderManagement';
 import { SellerDashboard } from './components/SellerDashboard';
 import { WalletDashboard } from './components/WalletDashboard';
 import { EnhancedSitemasterDashboard } from './components/EnhancedSitemasterDashboard';
+import { TreasurerDashboard } from './components/TreasurerDashboard';
+import { MediatorDashboard } from './components/MediatorDashboard';
 import { ProfileSetup } from './components/ProfileSetup';
 import { SocialHub } from './components/SocialHub';
 import { SocialPlatform } from './components/SocialPlatform';
@@ -798,6 +800,8 @@ function App() {
         <Route path="/" element={<MarketplaceContent />} />
         <Route path="/social" element={<SocialPlatform searchTerm={searchTerm} setSearchTerm={setSearchTerm} />} />
         <Route path="/sitemaster" element={<EnhancedSitemasterDashboard />} />
+        <Route path="/treasurer" element={<TreasurerDashboard />} />
+        <Route path="/mediator" element={<MediatorDashboard />} />
       </Routes>
       
       {/* Modals */}

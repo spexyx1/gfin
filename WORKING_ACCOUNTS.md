@@ -7,7 +7,11 @@
 
 ## Active User Accounts
 
-### 1. Sitemaster (Platform Administrator)
+**Total Accounts:** 4 (3 Admin + 1 Regular User)
+
+### Administrative Accounts
+
+#### 1. Sitemaster (Platform Administrator)
 
 **Login Credentials:**
 ```
@@ -39,7 +43,51 @@ Password: keystone
 
 ---
 
-### 2. Mike (Regular User)
+#### 2. Treasurer (Financial Management)
+
+**Login Credentials:**
+```
+Username: treasurer
+Password: treasury2025
+```
+
+**Account Details:**
+- **User ID:** `e2ad1db0-8f62-487c-8219-0b04bbb32caa`
+- **Display Name:** Platform Treasurer
+- **Email:** `treasurer@placeholder.ghetto.finance` (internal only)
+- **Bio:** GHETTO FINANCE Platform Treasury & Token Manager
+- **Status:** ✅ Verified
+- **Role:** Treasurer
+- **Created:** November 3, 2025
+
+**Dashboard:** `/treasurer`
+
+---
+
+#### 3. Mediator (Dispute Resolution)
+
+**Login Credentials:**
+```
+Username: mediator
+Password: mediate2025
+```
+
+**Account Details:**
+- **User ID:** `c754da0c-5bd5-4e8c-a414-c2c46417b070`
+- **Display Name:** Platform Mediator
+- **Email:** `mediator@placeholder.ghetto.finance` (internal only)
+- **Bio:** GHETTO FINANCE Dispute Resolution & Mediation Specialist
+- **Status:** ✅ Verified
+- **Role:** Mediator
+- **Created:** November 3, 2025
+
+**Dashboard:** `/mediator`
+
+---
+
+### Regular User Accounts
+
+#### 4. Mike (Regular User)
 
 **Account Details:**
 - **Username:** `mike`
