@@ -6,6 +6,8 @@ import { useCart } from '../hooks/useCart';
 import { useMessaging } from '../hooks/useMessaging';
 import { useSellerProducts } from '../hooks/useSellerProducts';
 import { useSponsorship } from '../hooks/useSponsorship';
+import { useSiteMaster } from '../hooks/useSiteMaster';
+import { useEnhancedSitemaster } from '../hooks/useEnhancedSitemaster';
 import { formatDistanceToNow } from 'date-fns';
 import { OrderManagement } from './OrderManagement';
 import { WalletDashboard } from './WalletDashboard';
@@ -17,7 +19,7 @@ interface UserDashboardProps {
   onClose: () => void;
 }
 
-type DashboardSection = 'overview' | 'orders' | 'wallet' | 'messages' | 'referrals' | 'listings' | 'sponsorships' | 'disputes' | 'activity' | 'settings';
+type DashboardSection = 'overview' | 'orders' | 'wallet' | 'messages' | 'referrals' | 'listings' | 'sponsorships' | 'disputes' | 'activity' | 'settings' | 'sitemaster-users' | 'sitemaster-content' | 'sitemaster-flags' | 'sitemaster-settings' | 'sitemaster-escrow' | 'sitemaster-analytics';
 
 export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
   const [activeSection, setActiveSection] = useState<DashboardSection>('overview');
@@ -41,6 +43,26 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
   const { getUnreadCount } = useMessaging();
   const { products, getProductStats } = useSellerProducts();
   const { myInvestments, myRequests } = useSponsorship();
+  const { isSiteMaster } = useSiteMaster();
+  const {
+    flags,
+    suspensions,
+    activityLogs,
+    searchUsers,
+    searchListings,
+    flagUser,
+    resolveFlag,
+    suspendUser,
+    liftSuspension,
+    deleteContent,
+    getPlatformStats,
+    getSettingsByCategory,
+    updateSetting,
+    getEscrowOrders,
+    getAllProducts,
+    getAllMessages,
+    getAllPosts
+  } = useEnhancedSitemaster();
 
   const [unreadMessages, setUnreadMessages] = useState(0);
   const [redeemAmount, setRedeemAmount] = useState('');
@@ -52,12 +74,30 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
     marketingEmails: false,
     securityAlerts: true,
   });
+  const [platformStats, setPlatformStats] = useState<any>(null);
+  const [smSearchQuery, setSmSearchQuery] = useState('');
+  const [smSearchResults, setSmSearchResults] = useState<any[]>([]);
+  const [smEscrowOrders, setSmEscrowOrders] = useState<any[]>([]);
 
   useEffect(() => {
     if (user) {
       loadUnreadMessages();
+      if (isSiteMaster) {
+        loadSitemasterData();
+      }
     }
-  }, [user]);
+  }, [user, isSiteMaster]);
+
+  const loadSitemasterData = async () => {
+    try {
+      const stats = await getPlatformStats();
+      setPlatformStats(stats);
+      const orders = await getEscrowOrders();
+      setSmEscrowOrders(orders);
+    } catch (error) {
+      console.error('Failed to load sitemaster data:', error);
+    }
+  };
 
   const loadUnreadMessages = async () => {
     try {
@@ -115,7 +155,7 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
 
   if (!isOpen || !user) return null;
 
-  const menuItems = [
+  const baseMenuItems = [
     { id: 'overview', label: 'Overview', icon: Activity },
     { id: 'orders', label: 'Orders', icon: ShoppingBag, badge: 0 },
     { id: 'wallet', label: 'Wallet', icon: Wallet },
@@ -127,6 +167,17 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
     { id: 'activity', label: 'Activity', icon: Clock },
     { id: 'settings', label: 'Settings', icon: Settings },
   ];
+
+  const sitemasterMenuItems = isSiteMaster ? [
+    { id: 'sitemaster-users', label: 'SM: Users', icon: Users, badge: platformStats?.totalUsers || 0 },
+    { id: 'sitemaster-content', label: 'SM: Content', icon: Package, badge: platformStats?.totalProducts || 0 },
+    { id: 'sitemaster-flags', label: 'SM: Flags', icon: AlertCircle, badge: flags?.length || 0 },
+    { id: 'sitemaster-escrow', label: 'SM: Escrow', icon: Shield, badge: smEscrowOrders?.length || 0 },
+    { id: 'sitemaster-analytics', label: 'SM: Analytics', icon: BarChart3 },
+    { id: 'sitemaster-settings', label: 'SM: Settings', icon: Settings },
+  ] : [];
+
+  const menuItems = [...baseMenuItems, ...sitemasterMenuItems];
 
   const renderOverview = () => (
     <div className="space-y-6">
@@ -772,6 +823,245 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
                         <p className="text-white font-medium">Account created</p>
                         <p className="text-gray-400 text-sm">{formatDistanceToNow(user.createdAt, { addSuffix: true })}</p>
                       </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Sitemaster Sections */}
+            {activeSection === 'sitemaster-users' && (
+              <div className="space-y-6">
+                <div>
+                  <h2 className="text-3xl font-black text-red-500 mb-2">
+                    <Shield className="w-8 h-8 inline-block mr-2" />
+                    User Management
+                  </h2>
+                  <p className="text-gray-400">Search and manage platform users</p>
+                </div>
+
+                <div className="bg-gray-800 rounded-2xl p-6 border border-red-500/20">
+                  <div className="mb-6">
+                    <input
+                      type="text"
+                      value={smSearchQuery}
+                      onChange={(e) => setSmSearchQuery(e.target.value)}
+                      placeholder="Search users by username or email..."
+                      className="w-full bg-gray-900 text-white px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500"
+                    />
+                    <button
+                      onClick={async () => {
+                        const results = await searchUsers(smSearchQuery);
+                        setSmSearchResults(results);
+                      }}
+                      className="mt-3 px-6 py-2 bg-red-500 hover:bg-red-600 text-white rounded-xl font-bold transition-colors"
+                    >
+                      Search Users
+                    </button>
+                  </div>
+
+                  {smSearchResults.length > 0 && (
+                    <div className="space-y-3">
+                      {smSearchResults.map((searchUser: any) => (
+                        <div key={searchUser.id} className="bg-gray-900 p-4 rounded-xl">
+                          <div className="flex justify-between items-start">
+                            <div>
+                              <p className="text-white font-bold">{searchUser.username}</p>
+                              <p className="text-gray-400 text-sm">{searchUser.email}</p>
+                              <p className="text-gray-500 text-xs mt-1">ID: {searchUser.id}</p>
+                            </div>
+                            <div className="flex gap-2">
+                              <button
+                                onClick={() => flagUser(searchUser.id, 'suspicious_activity', 'Flagged by sitemaster')}
+                                className="px-3 py-1 bg-yellow-500 hover:bg-yellow-600 text-white rounded text-sm"
+                              >
+                                Flag
+                              </button>
+                              <button
+                                onClick={() => suspendUser(searchUser.id, 'Policy violation', 7)}
+                                className="px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded text-sm"
+                              >
+                                Suspend
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {activeSection === 'sitemaster-content' && (
+              <div className="space-y-6">
+                <div>
+                  <h2 className="text-3xl font-black text-red-500 mb-2">
+                    <Package className="w-8 h-8 inline-block mr-2" />
+                    Content Management
+                  </h2>
+                  <p className="text-gray-400">Monitor and moderate platform content</p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+                    <Package className="w-8 h-8 text-blue-400 mb-3" />
+                    <p className="text-3xl font-black text-white mb-1">{platformStats?.totalProducts || 0}</p>
+                    <p className="text-gray-400 text-sm">Total Products</p>
+                  </div>
+                  <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+                    <MessageCircle className="w-8 h-8 text-green-400 mb-3" />
+                    <p className="text-3xl font-black text-white mb-1">{platformStats?.totalMessages || 0}</p>
+                    <p className="text-gray-400 text-sm">Total Messages</p>
+                  </div>
+                  <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+                    <Users className="w-8 h-8 text-purple-400 mb-3" />
+                    <p className="text-3xl font-black text-white mb-1">{platformStats?.totalUsers || 0}</p>
+                    <p className="text-gray-400 text-sm">Total Users</p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeSection === 'sitemaster-flags' && (
+              <div className="space-y-6">
+                <div>
+                  <h2 className="text-3xl font-black text-red-500 mb-2">
+                    <AlertCircle className="w-8 h-8 inline-block mr-2" />
+                    Flagged Content
+                  </h2>
+                  <p className="text-gray-400">Review and resolve reported content</p>
+                </div>
+
+                <div className="space-y-3">
+                  {flags && flags.length > 0 ? (
+                    flags.map((flag: any) => (
+                      <div key={flag.id} className="bg-gray-800 rounded-2xl p-6 border border-yellow-500/20">
+                        <div className="flex justify-between items-start">
+                          <div>
+                            <p className="text-white font-bold">Flag Type: {flag.flag_type}</p>
+                            <p className="text-gray-400 text-sm mt-1">{flag.reason}</p>
+                            <p className="text-gray-500 text-xs mt-2">User ID: {flag.user_id}</p>
+                          </div>
+                          <button
+                            onClick={() => resolveFlag(flag.id)}
+                            className="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-xl font-bold"
+                          >
+                            Resolve
+                          </button>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="bg-gray-800 rounded-2xl p-12 border border-gray-700 text-center">
+                      <AlertCircle className="w-16 h-16 text-gray-600 mx-auto mb-4" />
+                      <h3 className="text-xl font-black text-white mb-2">No flagged content</h3>
+                      <p className="text-gray-400">All reports have been resolved</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {activeSection === 'sitemaster-escrow' && (
+              <div className="space-y-6">
+                <div>
+                  <h2 className="text-3xl font-black text-red-500 mb-2">
+                    <Shield className="w-8 h-8 inline-block mr-2" />
+                    Escrow Management
+                  </h2>
+                  <p className="text-gray-400">Monitor and manage escrow transactions</p>
+                </div>
+
+                <div className="space-y-3">
+                  {smEscrowOrders && smEscrowOrders.length > 0 ? (
+                    smEscrowOrders.map((order: any) => (
+                      <div key={order.id} className="bg-gray-800 rounded-2xl p-6 border border-blue-500/20">
+                        <div className="flex justify-between items-start">
+                          <div>
+                            <p className="text-white font-bold">Order: {order.order_number || order.id}</p>
+                            <p className="text-gray-400 text-sm">Status: {order.status}</p>
+                            <p className="text-gray-400 text-sm">Amount: ${order.amount}</p>
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="bg-gray-800 rounded-2xl p-12 border border-gray-700 text-center">
+                      <Shield className="w-16 h-16 text-gray-600 mx-auto mb-4" />
+                      <h3 className="text-xl font-black text-white mb-2">No escrow orders</h3>
+                      <p className="text-gray-400">No active escrow transactions</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {activeSection === 'sitemaster-analytics' && (
+              <div className="space-y-6">
+                <div>
+                  <h2 className="text-3xl font-black text-red-500 mb-2">
+                    <BarChart3 className="w-8 h-8 inline-block mr-2" />
+                    Platform Analytics
+                  </h2>
+                  <p className="text-gray-400">View platform statistics and trends</p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                  <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+                    <Users className="w-8 h-8 text-blue-400 mb-3" />
+                    <p className="text-3xl font-black text-white mb-1">{platformStats?.totalUsers || 0}</p>
+                    <p className="text-gray-400 text-sm">Total Users</p>
+                  </div>
+                  <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+                    <Package className="w-8 h-8 text-green-400 mb-3" />
+                    <p className="text-3xl font-black text-white mb-1">{platformStats?.totalProducts || 0}</p>
+                    <p className="text-gray-400 text-sm">Total Products</p>
+                  </div>
+                  <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+                    <ShoppingBag className="w-8 h-8 text-yellow-400 mb-3" />
+                    <p className="text-3xl font-black text-white mb-1">{platformStats?.totalOrders || 0}</p>
+                    <p className="text-gray-400 text-sm">Total Orders</p>
+                  </div>
+                  <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+                    <DollarSign className="w-8 h-8 text-purple-400 mb-3" />
+                    <p className="text-3xl font-black text-white mb-1">${platformStats?.totalRevenue || 0}</p>
+                    <p className="text-gray-400 text-sm">Total Revenue</p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeSection === 'sitemaster-settings' && (
+              <div className="space-y-6">
+                <div>
+                  <h2 className="text-3xl font-black text-red-500 mb-2">
+                    <Settings className="w-8 h-8 inline-block mr-2" />
+                    Platform Settings
+                  </h2>
+                  <p className="text-gray-400">Configure platform-wide settings</p>
+                </div>
+
+                <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+                  <h3 className="text-xl font-black text-white mb-4">System Configuration</h3>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between p-4 bg-gray-900 rounded-xl">
+                      <div>
+                        <p className="text-white font-bold">Maintenance Mode</p>
+                        <p className="text-gray-400 text-sm">Enable site-wide maintenance mode</p>
+                      </div>
+                      <button className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-xl">
+                        Toggle
+                      </button>
+                    </div>
+                    <div className="flex items-center justify-between p-4 bg-gray-900 rounded-xl">
+                      <div>
+                        <p className="text-white font-bold">User Registration</p>
+                        <p className="text-gray-400 text-sm">Allow new user signups</p>
+                      </div>
+                      <button className="px-4 py-2 bg-green-700 hover:bg-green-600 text-white rounded-xl">
+                        Enabled
+                      </button>
                     </div>
                   </div>
                 </div>
