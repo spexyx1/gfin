@@ -187,16 +187,6 @@ export function useSiteMaster() {
   // Check if user has sitemaster role from database
   const [isSiteMaster, setIsSiteMaster] = useState(false);
 
-  // Debug: Log when user changes
-  useEffect(() => {
-    console.log('[useSiteMaster] User changed:', {
-      hasUser: !!user,
-      userId: user?.id,
-      username: user?.username,
-      currentIsSiteMaster: isSiteMaster
-    });
-  }, [user, isSiteMaster]);
-
   useEffect(() => {
     const checkSitemasterRole = async () => {
       if (!user) {
@@ -205,7 +195,6 @@ export function useSiteMaster() {
       }
 
       if (!supabase) {
-        console.error('Supabase client not initialized');
         setIsSiteMaster(false);
         return;
       }
@@ -220,15 +209,20 @@ export function useSiteMaster() {
           .maybeSingle();
 
         if (error) {
-          console.error('Error checking sitemaster role:', error);
+          console.error('❌ Sitemaster check failed:', error);
           setIsSiteMaster(false);
           return;
         }
 
-        console.log('Sitemaster role check result:', { userId: user.id, data, isSiteMaster: !!data });
+        if (data) {
+          console.log('✅ SITEMASTER ROLE DETECTED - Shield icon should appear');
+        } else {
+          console.log('❌ No sitemaster role found for user:', user.username);
+        }
+
         setIsSiteMaster(!!data);
       } catch (error) {
-        console.error('Error checking sitemaster role:', error);
+        console.error('❌ Sitemaster check error:', error);
         setIsSiteMaster(false);
       }
     };
