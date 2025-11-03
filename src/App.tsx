@@ -75,6 +75,11 @@ function App() {
   const { getUserProfile } = useSocialSystem();
   const { products: allProducts, isLoading: productsLoading, loadProducts } = useProducts();
 
+  // Debug: Log isSiteMaster value
+  React.useEffect(() => {
+    console.log('🛡️ App.tsx - isSiteMaster value:', isSiteMaster, 'for user:', user?.username);
+  }, [isSiteMaster, user]);
+
   // State for unread message count
   const [unreadMessageCount, setUnreadMessageCount] = useState(0);
 
