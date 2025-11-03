@@ -26,7 +26,6 @@ import { ContactForm } from './components/ContactForm';
 import { useAuth } from './hooks/useAuth';
 import { useCart } from './hooks/useCart';
 import { useMessaging } from './hooks/useMessaging';
-import { useSiteMaster } from './hooks/useSiteMaster';
 import { useSocialSystem } from './hooks/useSocialSystem';
 import { useProducts } from './hooks/useProducts';
 
@@ -71,14 +70,9 @@ function App() {
   const { user, logout } = useAuth();
   const { addToCart, getItemCount } = useCart();
   const { getUnreadCount, createConversation } = useMessaging();
-  const { isSiteMaster } = useSiteMaster();
   const { getUserProfile } = useSocialSystem();
   const { products: allProducts, isLoading: productsLoading, loadProducts } = useProducts();
 
-  // Debug: Log isSiteMaster value
-  React.useEffect(() => {
-    console.log('🛡️ App.tsx - isSiteMaster value:', isSiteMaster, 'for user:', user?.username);
-  }, [isSiteMaster, user]);
 
   // State for unread message count
   const [unreadMessageCount, setUnreadMessageCount] = useState(0);
@@ -733,16 +727,6 @@ function App() {
               >
                 <Briefcase className="w-5 h-5" />
               </button>
-              
-              {isSiteMaster && (
-                <Link
-                  to="/sitemaster"
-                  className="relative p-2 text-red-500 hover:text-red-400 apple-hover"
-                  title="Site Master Dashboard"
-                >
-                  <Shield className="w-5 h-5" />
-                </Link>
-              )}
               
               <Link
                 to="/social"

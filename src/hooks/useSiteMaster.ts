@@ -189,16 +189,12 @@ export function useSiteMaster() {
 
   useEffect(() => {
     const checkSitemasterRole = async () => {
-      console.log('🔍 Checking sitemaster role for user:', user?.username, 'user.id:', user?.id);
-
       if (!user) {
-        console.log('❌ No user logged in');
         setIsSiteMaster(false);
         return;
       }
 
       if (!supabase) {
-        console.log('❌ Supabase not initialized');
         setIsSiteMaster(false);
         return;
       }
@@ -213,22 +209,14 @@ export function useSiteMaster() {
           .maybeSingle();
 
         if (error) {
-          console.error('❌ Sitemaster check failed:', error);
+          console.error('Sitemaster check failed:', error);
           setIsSiteMaster(false);
           return;
         }
 
-        console.log('📊 Sitemaster role query result:', data);
-
-        if (data) {
-          console.log('✅ SITEMASTER ROLE DETECTED - Shield icon should appear', 'Setting isSiteMaster to TRUE');
-          setIsSiteMaster(true);
-        } else {
-          console.log('❌ No sitemaster role found for user:', user.username);
-          setIsSiteMaster(false);
-        }
+        setIsSiteMaster(!!data);
       } catch (error) {
-        console.error('❌ Sitemaster check error:', error);
+        console.error('Sitemaster check error:', error);
         setIsSiteMaster(false);
       }
     };
