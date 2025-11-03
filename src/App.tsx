@@ -732,7 +732,7 @@ function App() {
               {isSiteMaster && (
                 <Link
                   to="/sitemaster"
-                  className="relative p-2 text-apple-gray-500 hover:text-apple-red apple-hover"
+                  className="relative p-2 text-red-500 hover:text-red-400 apple-hover"
                   title="Site Master Dashboard"
                 >
                   <Shield className="w-5 h-5" />
