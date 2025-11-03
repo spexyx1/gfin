@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useEnhancedSitemaster } from '../hooks/useEnhancedSitemaster';
+import { SitemasterAnalytics } from './SitemasterAnalytics';
+import { SitemasterUserDetails } from './SitemasterUserDetails';
 import {
   Shield, Search, Ban, Flag, MessageSquare, Activity, Settings,
   Users, Package, TrendingUp, AlertTriangle, Eye, Lock, Unlock,
-  BarChart3, FileText, XCircle, CheckCircle
+  BarChart3, FileText, XCircle, CheckCircle, Trash2, RefreshCw
 } from 'lucide-react';
 
 export function EnhancedSitemasterDashboard() {
