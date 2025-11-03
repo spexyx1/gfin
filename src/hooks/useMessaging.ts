@@ -42,7 +42,7 @@ export function useMessaging() {
             created_at
           )
         `)
-        .contains('participants', [user.id])
+        .filter('participants', 'cs', `{"${user.id}"}`)
         .order('updated_at', { ascending: false });
 
       if (error) {
@@ -364,7 +364,7 @@ export function useMessaging() {
         .from('conversations')
         .delete()
         .eq('id', conversationId)
-        .contains('participants', [user.id]);
+        .filter('participants', 'cs', `{"${user.id}"}`);
 
       if (error) {
         throw error;
