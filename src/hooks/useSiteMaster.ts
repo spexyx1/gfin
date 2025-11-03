@@ -190,16 +190,19 @@ export function useSiteMaster() {
   useEffect(() => {
     const checkSitemasterRole = async () => {
       if (!user) {
+        console.log('[useSiteMaster] No user logged in');
         setIsSiteMaster(false);
         return;
       }
 
       if (!supabase) {
+        console.error('[useSiteMaster] Supabase client not available');
         setIsSiteMaster(false);
         return;
       }
 
       try {
+        console.log('[useSiteMaster] Checking sitemaster role for user:', user.id);
         const { data, error } = await supabase
           .from('user_admin_roles')
           .select('*')
@@ -209,14 +212,20 @@ export function useSiteMaster() {
           .maybeSingle();
 
         if (error) {
-          console.error('Sitemaster check failed:', error);
+          console.error('[useSiteMaster] Database query error:', error);
           setIsSiteMaster(false);
           return;
         }
 
-        setIsSiteMaster(!!data);
+        const hasSitemasterRole = !!data;
+        console.log('[useSiteMaster] Role check result:', hasSitemasterRole, 'data:', data);
+        setIsSiteMaster(hasSitemasterRole);
+
+        if (hasSitemasterRole) {
+          console.log('[useSiteMaster] ✓ SITEMASTER ACCESS GRANTED');
+        }
       } catch (error) {
-        console.error('Sitemaster check error:', error);
+        console.error('[useSiteMaster] Exception during role check:', error);
         setIsSiteMaster(false);
       }
     };

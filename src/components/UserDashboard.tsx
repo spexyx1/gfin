@@ -81,9 +81,13 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
 
   useEffect(() => {
     if (user) {
+      console.log('[UserDashboard] User loaded:', user.username, 'isSiteMaster:', isSiteMaster);
       loadUnreadMessages();
       if (isSiteMaster) {
+        console.log('[UserDashboard] Loading sitemaster data...');
         loadSitemasterData();
+      } else {
+        console.log('[UserDashboard] User is not a sitemaster');
       }
     }
   }, [user, isSiteMaster]);
@@ -178,7 +182,14 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
     { id: 'sitemaster-wizardry', label: 'SM: Wizardry', icon: Wand2 },
   ] : [];
 
+  React.useEffect(() => {
+    console.log('[UserDashboard] Sitemaster menu items count:', sitemasterMenuItems.length);
+    console.log('[UserDashboard] Total menu items:', menuItems.length);
+  }, [sitemasterMenuItems.length, menuItems.length]);
+
   const menuItems = [...baseMenuItems, ...sitemasterMenuItems];
+
+  console.log('[UserDashboard] isSiteMaster:', isSiteMaster, 'Sitemaster items:', sitemasterMenuItems.length);
 
   const renderOverview = () => (
     <div className="space-y-6">

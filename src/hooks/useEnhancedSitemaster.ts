@@ -64,18 +64,39 @@ export function useEnhancedSitemaster() {
   const [error, setError] = useState<string | null>(null);
 
   const isSitemaster = async () => {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return false;
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        console.log('[useEnhancedSitemaster] No authenticated user');
+        return false;
+      }
 
-    const { data } = await supabase
-      .from('user_admin_roles')
-      .select('*')
-      .eq('user_id', user.id)
-      .eq('role_type', 'sitemaster')
-      .eq('active', true)
-      .maybeSingle();
+      console.log('[useEnhancedSitemaster] Checking sitemaster role for user:', user.id);
+      const { data, error } = await supabase
+        .from('user_admin_roles')
+        .select('*')
+        .eq('user_id', user.id)
+        .eq('role_type', 'sitemaster')
+        .eq('active', true)
+        .maybeSingle();
 
-    return !!data;
+      if (error) {
+        console.error('[useEnhancedSitemaster] Database error:', error);
+        return false;
+      }
+
+      const hasSitemasterRole = !!data;
+      console.log('[useEnhancedSitemaster] Role check result:', hasSitemasterRole, 'data:', data);
+
+      if (hasSitemasterRole) {
+        console.log('[useEnhancedSitemaster] ✓ SITEMASTER ACCESS GRANTED');
+      }
+
+      return hasSitemasterRole;
+    } catch (error) {
+      console.error('[useEnhancedSitemaster] Exception:', error);
+      return false;
+    }
   };
 
   const flagUser = async (userId: string, flagType: string, reason: string, evidence: any = {}) => {
