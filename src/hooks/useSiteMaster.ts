@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from './useAuth';
-import { useEscrow } from './useEscrow';
 import { useMessaging } from './useMessaging';
-import { useReferrals } from './useReferrals';
 import { useWeb3 } from './useWeb3';
 import { supabase, requireSupabase, handleSupabaseError } from '../lib/supabase';
 import { ethers } from 'ethers';
@@ -189,28 +187,18 @@ export function useSiteMaster() {
 
   useEffect(() => {
     const checkSitemasterRole = async () => {
-      console.log('========== SITEMASTER ROLE CHECK START ==========');
-      console.log('[useSiteMaster] Current user object:', JSON.stringify(user, null, 2));
-
       if (!user) {
-        console.log('[useSiteMaster] ❌ No user logged in');
         setIsSiteMaster(false);
         return;
       }
 
       if (!supabase) {
-        console.error('[useSiteMaster] ❌ Supabase client not available');
+        console.error('[useSiteMaster] Supabase client not available');
         setIsSiteMaster(false);
         return;
       }
 
       try {
-        console.log('[useSiteMaster] 🔍 Checking sitemaster role for user:', user.id);
-        console.log('[useSiteMaster] Username:', user.username);
-        console.log('[useSiteMaster] Expected user ID: 7746376e-96ef-4c4b-b37d-2296ff3ceed4');
-        console.log('[useSiteMaster] Actual user ID:', user.id);
-        console.log('[useSiteMaster] IDs match:', user.id === '7746376e-96ef-4c4b-b37d-2296ff3ceed4');
-
         const { data, error } = await supabase
           .from('user_admin_roles')
           .select('*')
@@ -219,30 +207,17 @@ export function useSiteMaster() {
           .eq('active', true)
           .maybeSingle();
 
-        console.log('[useSiteMaster] Query completed');
-        console.log('[useSiteMaster] Error:', error);
-        console.log('[useSiteMaster] Data:', JSON.stringify(data, null, 2));
-
         if (error) {
-          console.error('[useSiteMaster] ❌ Database query error:', error);
+          console.error('[useSiteMaster] Database query error:', error);
           setIsSiteMaster(false);
           return;
         }
 
-        const hasSitemasterRole = !!data;
-        console.log('[useSiteMaster] Has sitemaster role:', hasSitemasterRole);
-        setIsSiteMaster(hasSitemasterRole);
-
-        if (hasSitemasterRole) {
-          console.log('[useSiteMaster] ✅ SITEMASTER ACCESS GRANTED');
-        } else {
-          console.log('[useSiteMaster] ❌ NO SITEMASTER ROLE FOUND');
-        }
+        setIsSiteMaster(!!data);
       } catch (error) {
-        console.error('[useSiteMaster] ❌ Exception during role check:', error);
+        console.error('[useSiteMaster] Exception during role check:', error);
         setIsSiteMaster(false);
       }
-      console.log('========== SITEMASTER ROLE CHECK END ==========');
     };
 
     checkSitemasterRole();
