@@ -225,7 +225,6 @@ export function useSiteMaster() {
 
         if (error) {
           console.error('[useSiteMaster] ❌ Database query error:', error);
-          alert('SITEMASTER CHECK FAILED: ' + JSON.stringify(error));
           setIsSiteMaster(false);
           return;
         }
@@ -235,15 +234,12 @@ export function useSiteMaster() {
         setIsSiteMaster(hasSitemasterRole);
 
         if (hasSitemasterRole) {
-          console.log('[useSiteMaster] ✅✅✅ SITEMASTER ACCESS GRANTED ✅✅✅');
-          alert('SITEMASTER ACCESS GRANTED!');
+          console.log('[useSiteMaster] ✅ SITEMASTER ACCESS GRANTED');
         } else {
           console.log('[useSiteMaster] ❌ NO SITEMASTER ROLE FOUND');
-          alert('NO SITEMASTER ROLE FOUND FOR USER: ' + user.username);
         }
       } catch (error) {
         console.error('[useSiteMaster] ❌ Exception during role check:', error);
-        alert('EXCEPTION: ' + JSON.stringify(error));
         setIsSiteMaster(false);
       }
       console.log('========== SITEMASTER ROLE CHECK END ==========');
