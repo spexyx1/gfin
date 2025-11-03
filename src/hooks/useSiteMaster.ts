@@ -184,7 +184,34 @@ export function useSiteMaster() {
   const { provider, account } = useWeb3();
 
   // Check if current user is site master
-  const isSiteMaster = user?.email === 'master@ghetto.finance' || user?.username === 'sitemaster';
+  // Check if user has sitemaster role from database
+  const [isSiteMaster, setIsSiteMaster] = useState(false);
+
+  useEffect(() => {
+    const checkSitemasterRole = async () => {
+      if (!user) {
+        setIsSiteMaster(false);
+        return;
+      }
+
+      try {
+        const { data } = await supabase
+          .from('user_admin_roles')
+          .select('*')
+          .eq('user_id', user.id)
+          .eq('role_type', 'sitemaster')
+          .eq('active', true)
+          .maybeSingle();
+
+        setIsSiteMaster(!!data);
+      } catch (error) {
+        console.error('Error checking sitemaster role:', error);
+        setIsSiteMaster(false);
+      }
+    };
+
+    checkSitemasterRole();
+  }, [user]);
 
   useEffect(() => {
     if (isSiteMaster) {
