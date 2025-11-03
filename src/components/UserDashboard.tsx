@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, User, Settings, ShoppingBag, Wallet, MessageCircle, Share2, Package, TrendingUp, AlertCircle, Activity, Bell, Shield, Star, Award, Copy, Check, ExternalLink, Calendar, DollarSign, Users, Target, BarChart3, Clock } from 'lucide-react';
+import { X, User, Settings, ShoppingBag, Wallet, MessageCircle, Share2, Package, TrendingUp, AlertCircle, Activity, Bell, Shield, Star, Award, Copy, Check, ExternalLink, Calendar, DollarSign, Users, Target, BarChart3, Clock, Wand2 } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { useReferrals } from '../hooks/useReferrals';
 import { useCart } from '../hooks/useCart';
@@ -19,7 +19,7 @@ interface UserDashboardProps {
   onClose: () => void;
 }
 
-type DashboardSection = 'overview' | 'orders' | 'wallet' | 'messages' | 'referrals' | 'listings' | 'sponsorships' | 'disputes' | 'activity' | 'settings' | 'sitemaster-users' | 'sitemaster-content' | 'sitemaster-flags' | 'sitemaster-settings' | 'sitemaster-escrow' | 'sitemaster-analytics';
+type DashboardSection = 'overview' | 'orders' | 'wallet' | 'messages' | 'referrals' | 'listings' | 'sponsorships' | 'disputes' | 'activity' | 'settings' | 'sitemaster-users' | 'sitemaster-content' | 'sitemaster-flags' | 'sitemaster-settings' | 'sitemaster-escrow' | 'sitemaster-analytics' | 'sitemaster-wizardry';
 
 export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
   const [activeSection, setActiveSection] = useState<DashboardSection>('overview');
@@ -175,6 +175,7 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
     { id: 'sitemaster-escrow', label: 'SM: Escrow', icon: Shield, badge: smEscrowOrders?.length || 0 },
     { id: 'sitemaster-analytics', label: 'SM: Analytics', icon: BarChart3 },
     { id: 'sitemaster-settings', label: 'SM: Settings', icon: Settings },
+    { id: 'sitemaster-wizardry', label: 'SM: Wizardry', icon: Wand2 },
   ] : [];
 
   const menuItems = [...baseMenuItems, ...sitemasterMenuItems];
@@ -1064,6 +1065,100 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
                       </button>
                     </div>
                   </div>
+                </div>
+              </div>
+            )}
+
+            {activeSection === 'sitemaster-wizardry' && (
+              <div className="space-y-6">
+                <div>
+                  <h2 className="text-3xl font-black text-purple-500 mb-2">
+                    <Wand2 className="w-8 h-8 inline-block mr-2" />
+                    Wizardry
+                  </h2>
+                  <p className="text-gray-400">Advanced magical operations and powerful commands</p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="bg-gradient-to-br from-purple-900/50 to-pink-900/50 rounded-2xl p-6 border border-purple-500/30">
+                    <Wand2 className="w-12 h-12 text-purple-400 mb-4" />
+                    <h3 className="text-xl font-black text-white mb-2">Database Spells</h3>
+                    <p className="text-gray-300 text-sm mb-4">Execute powerful database operations</p>
+                    <div className="space-y-2">
+                      <button className="w-full px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-xl font-bold transition-colors">
+                        Purge Old Data
+                      </button>
+                      <button className="w-full px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-xl font-bold transition-colors">
+                        Reindex Tables
+                      </button>
+                      <button className="w-full px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-xl font-bold transition-colors">
+                        Optimize Storage
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="bg-gradient-to-br from-blue-900/50 to-cyan-900/50 rounded-2xl p-6 border border-blue-500/30">
+                    <Shield className="w-12 h-12 text-blue-400 mb-4" />
+                    <h3 className="text-xl font-black text-white mb-2">Security Enchantments</h3>
+                    <p className="text-gray-300 text-sm mb-4">Cast protective spells on the platform</p>
+                    <div className="space-y-2">
+                      <button className="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold transition-colors">
+                        Scan for Threats
+                      </button>
+                      <button className="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold transition-colors">
+                        Audit Permissions
+                      </button>
+                      <button className="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold transition-colors">
+                        Fortify Defenses
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="bg-gradient-to-br from-green-900/50 to-emerald-900/50 rounded-2xl p-6 border border-green-500/30">
+                    <Activity className="w-12 h-12 text-green-400 mb-4" />
+                    <h3 className="text-xl font-black text-white mb-2">Performance Rituals</h3>
+                    <p className="text-gray-300 text-sm mb-4">Invoke speed and efficiency</p>
+                    <div className="space-y-2">
+                      <button className="w-full px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-xl font-bold transition-colors">
+                        Clear Cache
+                      </button>
+                      <button className="w-full px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-xl font-bold transition-colors">
+                        Rebuild Indexes
+                      </button>
+                      <button className="w-full px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-xl font-bold transition-colors">
+                        Optimize Routes
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="bg-gradient-to-br from-red-900/50 to-orange-900/50 rounded-2xl p-6 border border-red-500/30">
+                    <AlertCircle className="w-12 h-12 text-red-400 mb-4" />
+                    <h3 className="text-xl font-black text-white mb-2">Forbidden Incantations</h3>
+                    <p className="text-gray-300 text-sm mb-4">Use with extreme caution</p>
+                    <div className="space-y-2">
+                      <button className="w-full px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-xl font-bold transition-colors">
+                        Nuclear Reset
+                      </button>
+                      <button className="w-full px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-xl font-bold transition-colors">
+                        Force Migrations
+                      </button>
+                      <button className="w-full px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-xl font-bold transition-colors">
+                        Override All
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-gray-800 rounded-2xl p-6 border border-purple-500/30">
+                  <h3 className="text-xl font-black text-purple-400 mb-4">Spell Console</h3>
+                  <div className="bg-gray-900 rounded-xl p-4 font-mono text-sm">
+                    <p className="text-green-400">$ <span className="text-white">Ready to cast spells...</span></p>
+                    <p className="text-gray-500 mt-2"># Execute custom commands with wizard privileges</p>
+                    <p className="text-gray-500"># Type 'help' for available incantations</p>
+                  </div>
+                  <button className="mt-4 px-6 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-xl font-bold transition-colors">
+                    Open Spell Terminal
+                  </button>
                 </div>
               </div>
             )}
