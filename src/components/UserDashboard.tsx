@@ -182,14 +182,7 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
     { id: 'sitemaster-wizardry', label: 'SM: Wizardry', icon: Wand2 },
   ] : [];
 
-  React.useEffect(() => {
-    console.log('[UserDashboard] Sitemaster menu items count:', sitemasterMenuItems.length);
-    console.log('[UserDashboard] Total menu items:', menuItems.length);
-  }, [sitemasterMenuItems.length, menuItems.length]);
-
   const menuItems = [...baseMenuItems, ...sitemasterMenuItems];
-
-  console.log('[UserDashboard] isSiteMaster:', isSiteMaster, 'Sitemaster items:', sitemasterMenuItems.length);
 
   const renderOverview = () => (
     <div className="space-y-6">
