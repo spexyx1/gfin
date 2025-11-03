@@ -73,7 +73,7 @@ function App() {
   const { getUnreadCount, createConversation } = useMessaging();
   const { getUserProfile } = useSocialSystem();
   const { products: allProducts, isLoading: productsLoading, loadProducts } = useProducts();
-  const { isSiteMaster } = useSiteMaster();
+  const { issitemaster } = useSiteMaster();
 
 
   // State for unread message count
@@ -696,7 +696,7 @@ function App() {
             </div>
 
             <div className="flex items-center justify-center space-x-6 flex-1">
-              {isSiteMaster && (
+              {issitemaster && (
                 <Link
                   to="/sitemaster"
                   className="relative p-2 text-red-500 hover:text-red-400 apple-hover"

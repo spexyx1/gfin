@@ -43,7 +43,7 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
   const { getUnreadCount } = useMessaging();
   const { products, getProductStats } = useSellerProducts();
   const { myInvestments, myRequests } = useSponsorship();
-  const { isSiteMaster } = useSiteMaster();
+  const { issitemaster } = useSiteMaster();
   const {
     flags,
     suspensions,
@@ -81,16 +81,16 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
 
   useEffect(() => {
     if (user) {
-      console.log('[UserDashboard] User loaded:', user.username, 'isSiteMaster:', isSiteMaster);
+      console.log('[UserDashboard] User loaded:', user.username, 'issitemaster:', issitemaster);
       loadUnreadMessages();
-      if (isSiteMaster) {
+      if (issitemaster) {
         console.log('[UserDashboard] Loading sitemaster data...');
         loadSitemasterData();
       } else {
         console.log('[UserDashboard] User is not a sitemaster');
       }
     }
-  }, [user, isSiteMaster]);
+  }, [user, issitemaster]);
 
   const loadSitemasterData = async () => {
     try {
@@ -172,7 +172,7 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
     { id: 'settings', label: 'Settings', icon: Settings },
   ];
 
-  const sitemasterMenuItems = isSiteMaster ? [
+  const sitemasterMenuItems = issitemaster ? [
     { id: 'sitemaster-users', label: 'SM: Users', icon: Users, badge: platformStats?.totalUsers || 0 },
     { id: 'sitemaster-content', label: 'SM: Content', icon: Package, badge: platformStats?.totalProducts || 0 },
     { id: 'sitemaster-flags', label: 'SM: Flags', icon: AlertCircle, badge: flags?.length || 0 },

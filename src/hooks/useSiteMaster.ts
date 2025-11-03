@@ -183,18 +183,18 @@ export function useSiteMaster() {
 
   // Check if current user is site master
   // Check if user has sitemaster role from database
-  const [isSiteMaster, setIsSiteMaster] = useState(false);
+  const [issitemaster, setIssitemaster] = useState(false);
 
   useEffect(() => {
     const checkSitemasterRole = async () => {
       if (!user) {
-        setIsSiteMaster(false);
+        setIssitemaster(false);
         return;
       }
 
       if (!supabase) {
         console.error('[useSiteMaster] Supabase client not available');
-        setIsSiteMaster(false);
+        setIssitemaster(false);
         return;
       }
 
@@ -209,14 +209,14 @@ export function useSiteMaster() {
 
         if (error) {
           console.error('[useSiteMaster] Database query error:', error);
-          setIsSiteMaster(false);
+          setIssitemaster(false);
           return;
         }
 
-        setIsSiteMaster(!!data);
+        setIssitemaster(!!data);
       } catch (error) {
         console.error('[useSiteMaster] Exception during role check:', error);
-        setIsSiteMaster(false);
+        setIssitemaster(false);
       }
     };
 
@@ -224,11 +224,11 @@ export function useSiteMaster() {
   }, [user]);
 
   useEffect(() => {
-    if (isSiteMaster) {
+    if (issitemaster) {
       loadSiteMasterData();
       loadContractSettings();
     }
-  }, [isSiteMaster, account]);
+  }, [issitemaster, account]);
 
   const getContracts = async () => {
     if (!provider || !account) {
@@ -897,7 +897,7 @@ export function useSiteMaster() {
 
   // Referral System Management Functions
   const loadReferralSystemData = async () => {
-    if (!isSiteMaster) return;
+    if (!issitemaster) return;
 
     setIsLoading(true);
     try {
@@ -988,7 +988,7 @@ export function useSiteMaster() {
   };
 
   const updateReferralSettings = async (settings: Partial<ReferralSettings>) => {
-    if (!isSiteMaster) throw new Error('Unauthorized');
+    if (!issitemaster) throw new Error('Unauthorized');
 
     setIsLoading(true);
     try {
@@ -1034,7 +1034,7 @@ export function useSiteMaster() {
   };
 
   const forceClaimReward = async (referredUserId: string, rewardType: 'signup' | 'first_purchase') => {
-    if (!isSiteMaster) throw new Error('Unauthorized');
+    if (!issitemaster) throw new Error('Unauthorized');
 
     setIsLoading(true);
     try {
@@ -1061,7 +1061,7 @@ export function useSiteMaster() {
   };
 
   const adjustUserReferralBalance = async (userId: string, amount: number, reason: string) => {
-    if (!isSiteMaster) throw new Error('Unauthorized');
+    if (!issitemaster) throw new Error('Unauthorized');
 
     setIsLoading(true);
     try {
@@ -1117,7 +1117,7 @@ export function useSiteMaster() {
 
   // Content Moderation Functions
   const loadViolationReports = async () => {
-    if (!isSiteMaster) return;
+    if (!issitemaster) return;
 
     try {
       const supabaseClient = requireSupabase();
@@ -1136,7 +1136,7 @@ export function useSiteMaster() {
   };
 
   const reviewViolationReport = async (reportId: string, status: string, resolutionNotes: string, actionTaken: string) => {
-    if (!isSiteMaster) throw new Error('Unauthorized');
+    if (!issitemaster) throw new Error('Unauthorized');
 
     setIsLoading(true);
     try {
@@ -1182,7 +1182,7 @@ export function useSiteMaster() {
 
   // Role Management Functions
   const loadUserRoles = async () => {
-    if (!isSiteMaster) return;
+    if (!issitemaster) return;
 
     try {
       const supabaseClient = requireSupabase();
@@ -1201,7 +1201,7 @@ export function useSiteMaster() {
   };
 
   const assignUserRole = async (userId: string, role: string, expiresAt?: Date, notes?: string) => {
-    if (!isSiteMaster) throw new Error('Unauthorized');
+    if (!issitemaster) throw new Error('Unauthorized');
 
     setIsLoading(true);
     try {
@@ -1243,7 +1243,7 @@ export function useSiteMaster() {
   };
 
   const revokeUserRole = async (roleId: string) => {
-    if (!isSiteMaster) throw new Error('Unauthorized');
+    if (!issitemaster) throw new Error('Unauthorized');
 
     setIsLoading(true);
     try {
@@ -1269,17 +1269,17 @@ export function useSiteMaster() {
 
   // Load all site master data
   useEffect(() => {
-    if (isSiteMaster) {
+    if (issitemaster) {
       loadSiteMasterData();
       loadContractSettings();
       loadReferralSystemData();
       loadViolationReports();
       loadUserRoles();
     }
-  }, [isSiteMaster, account]);
+  }, [issitemaster, account]);
 
   return {
-    isSiteMaster,
+    issitemaster,
     disputes,
     transactions,
     userAccounts,
