@@ -696,13 +696,15 @@ function App() {
             </div>
 
             <div className="flex items-center justify-center space-x-6 flex-1">
-              <Link
-                to="/sitemaster"
-                className="relative p-2 text-red-500 hover:text-red-400 apple-hover"
-                title="Sitemaster Dashboard"
-              >
-                <Shield className="w-5 h-5" />
-              </Link>
+              {isSiteMaster && (
+                <Link
+                  to="/sitemaster"
+                  className="relative p-2 text-red-500 hover:text-red-400 apple-hover"
+                  title="Sitemaster Dashboard"
+                >
+                  <Shield className="w-5 h-5" />
+                </Link>
+              )}
               <button
                 onClick={() => setShowMessages(true)}
                 className="relative p-2 text-apple-gray-500 hover:text-white apple-hover"
