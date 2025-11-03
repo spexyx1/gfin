@@ -75,6 +75,16 @@ function App() {
   const { getUserProfile } = useSocialSystem();
   const { products: allProducts, isLoading: productsLoading, loadProducts } = useProducts();
 
+  // Debug: Log shield icon status
+  React.useEffect(() => {
+    console.log('[App] Shield Icon Status:', {
+      hasUser: !!user,
+      username: user?.username,
+      isSiteMaster,
+      shouldShowShield: !!isSiteMaster
+    });
+  }, [user, isSiteMaster]);
+
   // State for unread message count
   const [unreadMessageCount, setUnreadMessageCount] = useState(0);
 
