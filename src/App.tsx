@@ -696,18 +696,13 @@ function App() {
             </div>
 
             <div className="flex items-center justify-center space-x-6 flex-1">
-              {isSiteMaster && (
-                <Link
-                  to="/sitemaster"
-                  className="relative p-2 text-red-500 hover:text-red-400 apple-hover group"
-                  title="Sitemaster Dashboard"
-                >
-                  <Shield className="w-5 h-5" style={{ filter: 'drop-shadow(0 0 8px rgba(239, 68, 68, 0.6))' }} />
-                  <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-red-600 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                    Sitemaster
-                  </span>
-                </Link>
-              )}
+              <Link
+                to="/sitemaster"
+                className="relative p-2 text-red-500 hover:text-red-400 apple-hover"
+                title="Sitemaster Dashboard"
+              >
+                <Shield className="w-5 h-5" />
+              </Link>
               <button
                 onClick={() => setShowMessages(true)}
                 className="relative p-2 text-apple-gray-500 hover:text-white apple-hover"
