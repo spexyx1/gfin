@@ -319,96 +319,73 @@ function App() {
           <div className="glass-morphism rounded-apple p-8 max-w-6xl mx-auto">
             <h2 className="text-3xl apple-title text-neon-blue text-center mb-8">HOW IT WORKS</h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-7 gap-4 items-start">
-              <div className="text-center">
-                <div className="w-16 h-16 bg-yellow-500/20 rounded-full flex items-center justify-center mx-auto mb-3 border-2 border-yellow-500/50">
-                  <Wallet className="w-8 h-8 text-yellow-400" />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+              <div className="glass-morphism rounded-apple p-6">
+                <div className="w-16 h-16 bg-yellow-500/20 rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-yellow-500/50">
+                  <ShoppingCart className="w-8 h-8 text-yellow-400" />
                 </div>
-                <div className="text-xs apple-title text-neon-yellow mb-2">STEP 1</div>
-                <p className="text-xs text-neon-orange apple-font leading-relaxed">
-                  Seller deposits GHETTO collateral
+                <div className="text-sm apple-title text-neon-yellow mb-3 text-center">STEP 1</div>
+                <p className="text-sm text-neon-orange apple-font leading-relaxed text-center">
+                  Buyer selects items they want to buy
                 </p>
               </div>
 
-              <div className="hidden md:flex items-center justify-center">
-                <div className="w-full h-0.5 bg-gradient-to-r from-yellow-500/50 to-green-500/50"></div>
-              </div>
-
-              <div className="text-center">
-                <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-3 border-2 border-green-500/50">
-                  <ShoppingCart className="w-8 h-8 text-green-400" />
+              <div className="glass-morphism rounded-apple p-6">
+                <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-green-500/50">
+                  <Wallet className="w-8 h-8 text-green-400" />
                 </div>
-                <div className="text-xs apple-title text-neon-yellow mb-2">STEP 2</div>
-                <p className="text-xs text-neon-orange apple-font leading-relaxed">
-                  Buyer pays with crypto
+                <div className="text-sm apple-title text-neon-yellow mb-3 text-center">STEP 2</div>
+                <p className="text-sm text-neon-orange apple-font leading-relaxed text-center">
+                  Buyer pays with crypto of seller's choice as listed, or buyer can use connected DEX to swap their tokens for that of seller's preference. <span className="text-neon-yellow font-semibold">GHETTO is gas-free and cheaper!</span>
                 </p>
               </div>
 
-              <div className="hidden md:flex items-center justify-center">
-                <div className="w-full h-0.5 bg-gradient-to-r from-green-500/50 to-blue-500/50"></div>
-              </div>
-
-              <div className="text-center">
-                <div className="w-16 h-16 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-3 border-2 border-blue-500/50">
+              <div className="glass-morphism rounded-apple p-6">
+                <div className="w-16 h-16 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-blue-500/50">
                   <Shield className="w-8 h-8 text-blue-400" />
                 </div>
-                <div className="text-xs apple-title text-neon-yellow mb-2">STEP 3</div>
-                <p className="text-xs text-neon-orange apple-font leading-relaxed">
-                  Smart contract locks funds
-                </p>
-              </div>
-
-              <div className="hidden md:flex items-center justify-center">
-                <div className="w-full h-0.5 bg-gradient-to-r from-blue-500/50 to-orange-500/50"></div>
-              </div>
-
-              <div className="text-center">
-                <div className="w-16 h-16 bg-orange-500/20 rounded-full flex items-center justify-center mx-auto mb-3 border-2 border-orange-500/50">
-                  <Package className="w-8 h-8 text-orange-400" />
-                </div>
-                <div className="text-xs apple-title text-neon-yellow mb-2">STEP 4</div>
-                <p className="text-xs text-neon-orange apple-font leading-relaxed">
-                  Seller ships with tracking
+                <div className="text-sm apple-title text-neon-yellow mb-3 text-center">STEP 3</div>
+                <p className="text-sm text-neon-orange apple-font leading-relaxed text-center">
+                  Buyer's funds get held in escrow smart contract, and holds seller collateral for the same amount as required prior to listing item
                 </p>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-start mt-8">
-              <div className="text-center">
-                <div className="w-16 h-16 bg-cyan-500/20 rounded-full flex items-center justify-center mx-auto mb-3 border-2 border-cyan-500/50">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="glass-morphism rounded-apple p-6">
+                <div className="w-16 h-16 bg-orange-500/20 rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-orange-500/50">
+                  <Package className="w-8 h-8 text-orange-400" />
+                </div>
+                <div className="text-sm apple-title text-neon-yellow mb-3 text-center">STEP 4</div>
+                <p className="text-sm text-neon-orange apple-font leading-relaxed text-center">
+                  Seller ships or delivers item with tracking, if available
+                </p>
+              </div>
+
+              <div className="glass-morphism rounded-apple p-6">
+                <div className="w-16 h-16 bg-cyan-500/20 rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-cyan-500/50">
                   <User className="w-8 h-8 text-cyan-400" />
                 </div>
-                <div className="text-xs apple-title text-neon-yellow mb-2">STEP 5</div>
-                <p className="text-xs text-neon-orange apple-font leading-relaxed">
-                  Buyer confirms delivery or auto-releases after 7 days
+                <div className="text-sm apple-title text-neon-yellow mb-3 text-center">STEP 5</div>
+                <p className="text-sm text-neon-orange apple-font leading-relaxed text-center">
+                  Buyer confirms delivery or disputes for moderation. An official member of the moderation team will review the case and release the funds held in escrow in full or in part to the correct side
                 </p>
               </div>
 
-              <div className="text-center">
-                <div className="w-16 h-16 bg-teal-500/20 rounded-full flex items-center justify-center mx-auto mb-3 border-2 border-teal-500/50">
+              <div className="glass-morphism rounded-apple p-6">
+                <div className="w-16 h-16 bg-teal-500/20 rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-teal-500/50">
                   <TrendingUp className="w-8 h-8 text-teal-400" />
                 </div>
-                <div className="text-xs apple-title text-neon-yellow mb-2">STEP 6</div>
-                <p className="text-xs text-neon-orange apple-font leading-relaxed">
-                  Smart contract releases funds to seller automatically
-                </p>
-              </div>
-
-              <div className="text-center">
-                <div className="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-3 border-2 border-red-500/50">
-                  <AtSign className="w-8 h-8 text-red-400" />
-                </div>
-                <div className="text-xs apple-title text-neon-yellow mb-2">IF DISPUTE</div>
-                <p className="text-xs text-neon-orange apple-font leading-relaxed">
-                  Site master team resolves within 90 days based on evidence
+                <div className="text-sm apple-title text-neon-yellow mb-3 text-center">STEP 6</div>
+                <p className="text-sm text-neon-orange apple-font leading-relaxed text-center">
+                  If all's good, funds are released to the seller, and everyone can continue on their merry way!
                 </p>
               </div>
             </div>
 
             <div className="mt-8 pt-6 border-t border-white/10 text-center">
-              <p className="text-sm text-apple-gray-400 apple-font max-w-2xl mx-auto leading-relaxed">
-                All transactions are secured by blockchain smart contracts. Seller collateral and buyer payments are held until successful delivery.
-                Platform fees: <span className="text-neon-yellow">2.5% with GHETTO</span> or <span className="text-neon-orange">3.75% with other crypto</span>.
+              <p className="text-sm text-apple-gray-400 apple-font max-w-3xl mx-auto leading-relaxed">
+                <span className="text-neon-yellow font-semibold">All transactions are 100% secured, and moderated by trained specialists for integrity.</span>
               </p>
             </div>
           </div>
