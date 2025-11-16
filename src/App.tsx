@@ -261,56 +261,56 @@ function App() {
                 <div className="w-10 h-10 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-2">
                   <Shield className="w-5 h-5 text-green-400" />
                 </div>
-                <div className="text-sm apple-title text-neon-yellow">Smart Escrow</div>
+                <div className="text-xs apple-title text-neon-yellow leading-tight">Advanced Smart Escrow Function Facilitates Safe Transactions</div>
               </div>
 
               <div className="glass-morphism rounded-apple p-4 text-center">
                 <div className="w-10 h-10 bg-yellow-500/20 rounded-full flex items-center justify-center mx-auto mb-2">
                   <TrendingUp className="w-5 h-5 text-yellow-400" />
                 </div>
-                <div className="text-sm apple-title text-neon-yellow">Token Economy</div>
+                <div className="text-xs apple-title text-neon-yellow leading-tight">Gasless Transfers and Lower Fees With GHETTO</div>
               </div>
 
               <div className="glass-morphism rounded-apple p-4 text-center">
                 <div className="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-2">
                   <User className="w-5 h-5 text-blue-400" />
                 </div>
-                <div className="text-sm apple-title text-neon-yellow">Disputes</div>
+                <div className="text-xs apple-title text-neon-yellow leading-tight">Moderated Dispute Resolution By Trained Specialists</div>
               </div>
 
               <div className="glass-morphism rounded-apple p-4 text-center">
                 <div className="w-10 h-10 bg-gray-500/20 rounded-full flex items-center justify-center mx-auto mb-2">
                   <AtSign className="w-5 h-5 text-gray-400" />
                 </div>
-                <div className="text-sm apple-title text-neon-yellow">Stealth Mode</div>
+                <div className="text-xs apple-title text-neon-yellow leading-tight">Stealth Options For Users and Full Privacy</div>
               </div>
 
               <div className="glass-morphism rounded-apple p-4 text-center">
                 <div className="w-10 h-10 bg-cyan-500/20 rounded-full flex items-center justify-center mx-auto mb-2">
                   <Users className="w-5 h-5 text-cyan-400" />
                 </div>
-                <div className="text-sm apple-title text-neon-yellow">Social Network</div>
+                <div className="text-xs apple-title text-neon-yellow leading-tight">Dedicated Community Hub</div>
               </div>
 
               <div className="glass-morphism rounded-apple p-4 text-center">
                 <div className="w-10 h-10 bg-orange-500/20 rounded-full flex items-center justify-center mx-auto mb-2">
                   <CreditCard className="w-5 h-5 text-orange-400" />
                 </div>
-                <div className="text-sm apple-title text-neon-yellow">Multi-Crypto</div>
+                <div className="text-xs apple-title text-neon-yellow leading-tight">Crypto Native with DEX's and Ease of Use</div>
               </div>
 
               <div className="glass-morphism rounded-apple p-4 text-center">
                 <div className="w-10 h-10 bg-teal-500/20 rounded-full flex items-center justify-center mx-auto mb-2">
                   <Package className="w-5 h-5 text-teal-400" />
                 </div>
-                <div className="text-sm apple-title text-neon-yellow">Seller Protection</div>
+                <div className="text-xs apple-title text-neon-yellow leading-tight">Seller Protection and Best-in-Class Fees</div>
               </div>
 
               <div className="glass-morphism rounded-apple p-4 text-center">
                 <div className="w-10 h-10 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-2">
                   <MessageCircle className="w-5 h-5 text-red-400" />
                 </div>
-                <div className="text-sm apple-title text-neon-yellow">Secure Messaging</div>
+                <div className="text-xs apple-title text-neon-yellow leading-tight">Military Grade Encryption and Security Across All Features, including Messaging</div>
               </div>
             </div>
           </div>
