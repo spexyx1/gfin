@@ -480,7 +480,7 @@ export function useEnhancedSitemaster() {
     const { data, error } = await supabase
       .from('profiles')
       .select('*')
-      .order('created_at', { ascending: false })
+      .order('username', { ascending: true })
       .range(offset, offset + limit - 1);
 
     if (error) throw error;

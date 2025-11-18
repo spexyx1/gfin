@@ -40,6 +40,8 @@ export function EnhancedSitemasterDashboard() {
     getAllMessages,
     getAllPosts,
     getAllProducts,
+    getAllUsers,
+    getAllTransactions,
     refresh
   } = useEnhancedSitemaster();
 
@@ -47,8 +49,6 @@ export function EnhancedSitemasterDashboard() {
   const [activeTab, setActiveTab] = useState<'overview' | 'users' | 'content' | 'flags' | 'suspensions' | 'activity' | 'settings' | 'features' | 'rates' | 'escrow' | 'transactions' | 'messages'>('overview');
   const [stats, setStats] = useState<any>(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState<any[]>([]);
-  const [searchType, setSearchType] = useState<'users' | 'listings'>('users');
   const [selectedUser, setSelectedUser] = useState<any>(null);
   const [showMessageModal, setShowMessageModal] = useState(false);
   const [messageForm, setMessageForm] = useState({ subject: '', message: '', priority: 'normal' });
@@ -57,15 +57,31 @@ export function EnhancedSitemasterDashboard() {
   const [rateConfigs, setRateConfigs] = useState<any[]>([]);
   const [escrowOrders, setEscrowOrders] = useState<any[]>([]);
   const [allMessages, setAllMessages] = useState<any[]>([]);
+  const [allUsers, setAllUsers] = useState<any[]>([]);
+  const [allTransactions, setAllTransactions] = useState<any[]>([]);
+  const [allProducts, setAllProducts] = useState<any[]>([]);
+  const [allPosts, setAllPosts] = useState<any[]>([]);
 
   useEffect(() => {
-    isSitemaster().then(setHasAccess);
-    getPlatformStats().then(setStats);
-    getSettingsByCategory('general').then(setPlatformSettings);
-    getFeatureToggles().then(setFeatureToggles);
-    getRateConfigurations().then(setRateConfigs);
-    getEscrowOrders().then(setEscrowOrders);
-    getAllMessages().then(setAllMessages);
+    const loadData = async () => {
+      const hasRole = await isSitemaster();
+      setHasAccess(hasRole);
+
+      if (hasRole) {
+        getPlatformStats().then(setStats);
+        getSettingsByCategory('general').then(setPlatformSettings);
+        getFeatureToggles().then(setFeatureToggles);
+        getRateConfigurations().then(setRateConfigs);
+        getEscrowOrders().then(setEscrowOrders);
+        getAllMessages().then(setAllMessages);
+        getAllUsers().then(setAllUsers);
+        getAllTransactions().then(setAllTransactions);
+        getAllProducts().then(setAllProducts);
+        getAllPosts().then(setAllPosts);
+      }
+    };
+
+    loadData();
   }, []);
 
   if (loading) {
@@ -91,18 +107,6 @@ export function EnhancedSitemasterDashboard() {
     );
   }
 
-  const handleSearch = async () => {
-    if (!searchQuery.trim()) return;
-
-    try {
-      const results = searchType === 'users'
-        ? await searchUsers(searchQuery)
-        : await searchListings(searchQuery);
-      setSearchResults(results);
-    } catch (err: any) {
-      alert('Search error: ' + err.message);
-    }
-  };
 
   const handleSuspendUser = async (userId: string) => {
     const reason = prompt('Enter reason for suspension:');
@@ -290,34 +294,34 @@ export function EnhancedSitemasterDashboard() {
         {activeTab === 'users' && (
           <div>
             <div className="mb-6 bg-white shadow-md rounded-lg p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Search Users</h3>
-              <div className="flex gap-3">
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-                  placeholder="Search by username or name..."
-                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
-                />
-                <button
-                  onClick={handleSearch}
-                  className="bg-orange-600 text-white px-6 py-2 rounded-lg hover:bg-orange-700 flex items-center gap-2"
-                >
-                  <Search className="h-5 w-5" />
-                  Search
-                </button>
-              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                <Users className="h-5 w-5" />
+                All Users ({allUsers.length})
+              </h3>
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Filter by username or name..."
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+              />
             </div>
 
             <div className="grid gap-4">
-              {searchResults.map((user) => (
-                <div key={user.id} className="bg-white shadow-md rounded-lg p-6">
+              {allUsers
+                .filter(user =>
+                  !searchQuery ||
+                  user.username?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                  user.full_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                  user.display_name?.toLowerCase().includes(searchQuery.toLowerCase())
+                )
+                .map((user) => (
+                <div key={user.id} className="bg-white shadow-md rounded-lg p-6 hover:shadow-lg transition-shadow">
                   <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <h4 className="font-semibold text-gray-900 text-lg">{user.username}</h4>
-                      {user.full_name && (
-                        <p className="text-sm text-gray-600">{user.full_name}</p>
+                    <div className="flex-1 cursor-pointer" onClick={() => setSelectedUser(user)}>
+                      <h4 className="font-semibold text-gray-900 text-lg hover:text-orange-600">{user.username}</h4>
+                      {(user.full_name || user.display_name) && (
+                        <p className="text-sm text-gray-600">{user.display_name || user.full_name}</p>
                       )}
                       <p className="text-xs text-gray-500 mt-1">ID: {user.id}</p>
                     </div>
@@ -357,7 +361,7 @@ export function EnhancedSitemasterDashboard() {
                   </div>
                 </div>
               ))}
-              {searchResults.length === 0 && searchQuery && (
+              {allUsers.length === 0 && (
                 <div className="bg-white shadow-md rounded-lg p-12 text-center text-gray-500">
                   No users found
                 </div>
@@ -369,63 +373,96 @@ export function EnhancedSitemasterDashboard() {
         {activeTab === 'content' && (
           <div>
             <div className="mb-6 bg-white shadow-md rounded-lg p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Search Content</h3>
-              <div className="space-y-3">
-                <div className="flex gap-3">
-                  <select
-                    value={searchType}
-                    onChange={(e) => setSearchType(e.target.value as any)}
-                    className="px-4 py-2 border border-gray-300 rounded-lg"
-                  >
-                    <option value="users">Users</option>
-                    <option value="listings">Listings</option>
-                  </select>
-                  <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-                    placeholder={`Search ${searchType}...`}
-                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
-                  />
-                  <button
-                    onClick={handleSearch}
-                    className="bg-orange-600 text-white px-6 py-2 rounded-lg hover:bg-orange-700"
-                  >
-                    <Search className="h-5 w-5" />
-                  </button>
-                </div>
-              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                <Package className="h-5 w-5" />
+                Products & Posts
+              </h3>
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Filter products and posts..."
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+              />
             </div>
 
-            <div className="grid md:grid-cols-2 gap-4">
-              {searchResults.map((item) => (
-                <div key={item.id} className="bg-white shadow-md rounded-lg p-6">
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <h4 className="font-semibold text-gray-900">{item.name || item.username}</h4>
-                      <p className="text-sm text-gray-600 mt-1 line-clamp-2">
-                        {item.description || item.full_name}
-                      </p>
+            <div className="space-y-6">
+              <div>
+                <h4 className="text-md font-semibold text-gray-800 mb-3">Products ({allProducts.length})</h4>
+                <div className="grid md:grid-cols-2 gap-4">
+                  {allProducts
+                    .filter(item => !searchQuery || item.name?.toLowerCase().includes(searchQuery.toLowerCase()) || item.description?.toLowerCase().includes(searchQuery.toLowerCase()))
+                    .map((item) => (
+                    <div key={item.id} className="bg-white shadow-md rounded-lg p-6 hover:shadow-lg transition-shadow">
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <h4 className="font-semibold text-gray-900">{item.name}</h4>
+                          <p className="text-sm text-gray-600 mt-1 line-clamp-2">{item.description}</p>
+                          <p className="text-xs text-gray-500 mt-1">${item.price}</p>
+                        </div>
+                        <button
+                          onClick={async () => {
+                            if (confirm('Delete this product?')) {
+                              const reason = prompt('Enter reason for deletion:');
+                              if (reason) {
+                                await deleteContent('product', item.id, reason);
+                                alert('Product deleted');
+                                getAllProducts().then(setAllProducts);
+                              }
+                            }
+                          }}
+                          className="p-2 text-red-600 hover:bg-red-50 rounded-lg"
+                        >
+                          <XCircle className="h-5 w-5" />
+                        </button>
+                      </div>
                     </div>
-                    <button
-                      onClick={async () => {
-                        if (confirm('Delete this content?')) {
-                          const reason = prompt('Enter reason for deletion:');
-                          if (reason) {
-                            await deleteContent(searchType === 'listings' ? 'product' : 'user', item.id, reason);
-                            alert('Content deleted');
-                            handleSearch();
-                          }
-                        }
-                      }}
-                      className="p-2 text-red-600 hover:bg-red-50 rounded-lg"
-                    >
-                      <XCircle className="h-5 w-5" />
-                    </button>
-                  </div>
+                  ))}
+                  {allProducts.length === 0 && (
+                    <div className="col-span-2 bg-white shadow-md rounded-lg p-8 text-center text-gray-500">
+                      No products found
+                    </div>
+                  )}
                 </div>
-              ))}
+              </div>
+
+              <div>
+                <h4 className="text-md font-semibold text-gray-800 mb-3">Social Posts ({allPosts.length})</h4>
+                <div className="grid md:grid-cols-2 gap-4">
+                  {allPosts
+                    .filter(item => !searchQuery || item.content?.toLowerCase().includes(searchQuery.toLowerCase()))
+                    .map((item) => (
+                    <div key={item.id} className="bg-white shadow-md rounded-lg p-6 hover:shadow-lg transition-shadow">
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <p className="text-sm text-gray-900 line-clamp-3">{item.content}</p>
+                          <p className="text-xs text-gray-500 mt-2">By: {item.user_id}</p>
+                        </div>
+                        <button
+                          onClick={async () => {
+                            if (confirm('Delete this post?')) {
+                              const reason = prompt('Enter reason for deletion:');
+                              if (reason) {
+                                await deleteContent('post', item.id, reason);
+                                alert('Post deleted');
+                                getAllPosts().then(setAllPosts);
+                              }
+                            }
+                          }}
+                          className="p-2 text-red-600 hover:bg-red-50 rounded-lg"
+                        >
+                          <XCircle className="h-5 w-5" />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                  {allPosts.length === 0 && (
+                    <div className="col-span-2 bg-white shadow-md rounded-lg p-8 text-center text-gray-500">
+                      No posts found
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
         )}
@@ -504,40 +541,62 @@ export function EnhancedSitemasterDashboard() {
         )}
 
         {activeTab === 'activity' && (
-          <div className="bg-white shadow-md rounded-lg overflow-hidden">
-            <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                      Activity Type
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                      User ID
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                      IP Address
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                      Timestamp
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                  {activityLogs.map((log) => (
-                    <tr key={log.id} className="hover:bg-gray-50">
-                      <td className="px-6 py-4 text-sm text-gray-900">{log.activity_type}</td>
-                      <td className="px-6 py-4 text-sm text-gray-600 font-mono">
-                        {log.user_id ? log.user_id.substring(0, 8) + '...' : 'N/A'}
-                      </td>
-                      <td className="px-6 py-4 text-sm text-gray-600">{log.ip_address || 'N/A'}</td>
-                      <td className="px-6 py-4 text-sm text-gray-500">
-                        {new Date(log.created_at).toLocaleString()}
-                      </td>
+          <div>
+            <div className="mb-6 bg-white shadow-md rounded-lg p-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                <Activity className="h-5 w-5" />
+                Recent Activity ({activityLogs.length})
+              </h3>
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Filter by activity type, user ID, or IP..."
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+              />
+            </div>
+            <div className="bg-white shadow-md rounded-lg overflow-hidden">
+              <div className="overflow-x-auto">
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                        Activity Type
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                        User ID
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                        IP Address
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                        Timestamp
+                      </th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {activityLogs
+                      .filter(log =>
+                        !searchQuery ||
+                        log.activity_type?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                        log.user_id?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                        log.ip_address?.toLowerCase().includes(searchQuery.toLowerCase())
+                      )
+                      .map((log) => (
+                      <tr key={log.id} className="hover:bg-gray-50">
+                        <td className="px-6 py-4 text-sm text-gray-900">{log.activity_type}</td>
+                        <td className="px-6 py-4 text-sm text-gray-600 font-mono">
+                          {log.user_id ? log.user_id.substring(0, 8) + '...' : 'N/A'}
+                        </td>
+                        <td className="px-6 py-4 text-sm text-gray-600">{log.ip_address || 'N/A'}</td>
+                        <td className="px-6 py-4 text-sm text-gray-500">
+                          {new Date(log.created_at).toLocaleString()}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         )}
@@ -619,8 +678,11 @@ export function EnhancedSitemasterDashboard() {
         {activeTab === 'escrow' && (
           <div>
             <div className="mb-6 bg-white shadow-md rounded-lg p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Escrow Orders Management</h3>
-              <div className="flex gap-3">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                <Lock className="h-5 w-5" />
+                All Escrow Orders ({escrowOrders.length})
+              </h3>
+              <div className="flex gap-3 mb-4">
                 <button
                   onClick={async () => {
                     const all = await getEscrowOrders();
@@ -628,7 +690,7 @@ export function EnhancedSitemasterDashboard() {
                   }}
                   className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
                 >
-                  All Orders
+                  Refresh
                 </button>
                 <button
                   onClick={async () => {
@@ -637,7 +699,7 @@ export function EnhancedSitemasterDashboard() {
                   }}
                   className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
                 >
-                  Funded
+                  Funded Only
                 </button>
                 <button
                   onClick={async () => {
@@ -646,14 +708,28 @@ export function EnhancedSitemasterDashboard() {
                   }}
                   className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
                 >
-                  Disputed
+                  Disputed Only
                 </button>
               </div>
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Filter by order ID, buyer, or seller..."
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+              />
             </div>
 
             <div className="grid gap-4">
-              {escrowOrders.map((order) => (
-                <div key={order.id} className="bg-white shadow-md rounded-lg p-6">
+              {escrowOrders
+                .filter(order =>
+                  !searchQuery ||
+                  order.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                  order.buyer?.username?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                  order.seller?.username?.toLowerCase().includes(searchQuery.toLowerCase())
+                )
+                .map((order) => (
+                <div key={order.id} className="bg-white shadow-md rounded-lg p-6 hover:shadow-lg transition-shadow">
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-2">
@@ -723,24 +799,17 @@ export function EnhancedSitemasterDashboard() {
         {activeTab === 'transactions' && (
           <div>
             <div className="mb-6 bg-white shadow-md rounded-lg p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Search Transactions</h3>
-              <div className="flex gap-3">
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  onKeyPress={(e) => e.key === 'Enter' && searchTransactions(searchQuery).then(setSearchResults)}
-                  placeholder="Search by order ID or description..."
-                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
-                />
-                <button
-                  onClick={() => searchTransactions(searchQuery).then(setSearchResults)}
-                  className="bg-orange-600 text-white px-6 py-2 rounded-lg hover:bg-orange-700 flex items-center gap-2"
-                >
-                  <Search className="h-5 w-5" />
-                  Search
-                </button>
-              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                <CreditCard className="h-5 w-5" />
+                All Transactions ({allTransactions.length})
+              </h3>
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Filter by order ID, buyer, or seller..."
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+              />
             </div>
 
             <div className="bg-white shadow-md rounded-lg overflow-hidden">
@@ -749,6 +818,7 @@ export function EnhancedSitemasterDashboard() {
                   <thead className="bg-gray-50">
                     <tr>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Order ID</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Product</th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Buyer</th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Seller</th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Amount</th>
@@ -757,14 +827,27 @@ export function EnhancedSitemasterDashboard() {
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
-                    {searchResults.map((tx) => (
-                      <tr key={tx.id} className="hover:bg-gray-50">
+                    {allTransactions
+                      .filter(tx =>
+                        !searchQuery ||
+                        tx.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                        tx.buyer?.username?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                        tx.seller?.username?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                        tx.product?.name?.toLowerCase().includes(searchQuery.toLowerCase())
+                      )
+                      .map((tx) => (
+                      <tr key={tx.id} className="hover:bg-gray-50 cursor-pointer">
                         <td className="px-6 py-4 text-sm font-mono text-gray-900">{tx.id.substring(0, 8)}...</td>
-                        <td className="px-6 py-4 text-sm text-gray-900">{tx.buyer?.username}</td>
-                        <td className="px-6 py-4 text-sm text-gray-900">{tx.seller?.username}</td>
-                        <td className="px-6 py-4 text-sm text-gray-900">${tx.amount}</td>
+                        <td className="px-6 py-4 text-sm text-gray-900">{tx.product?.name || 'N/A'}</td>
+                        <td className="px-6 py-4 text-sm text-gray-900">{tx.buyer?.username || tx.buyer?.display_name}</td>
+                        <td className="px-6 py-4 text-sm text-gray-900">{tx.seller?.username || tx.seller?.display_name}</td>
+                        <td className="px-6 py-4 text-sm text-gray-900">${tx.total_amount || tx.amount}</td>
                         <td className="px-6 py-4 text-sm">
-                          <span className="px-2 py-1 rounded-full text-xs bg-blue-100 text-blue-800">
+                          <span className={`px-2 py-1 rounded-full text-xs ${
+                            tx.status === 'completed' ? 'bg-green-100 text-green-800' :
+                            tx.status === 'cancelled' ? 'bg-red-100 text-red-800' :
+                            'bg-blue-100 text-blue-800'
+                          }`}>
                             {tx.status}
                           </span>
                         </td>
