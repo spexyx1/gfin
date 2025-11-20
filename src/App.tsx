@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Routes, Route, Link, useLocation } from 'react-router-dom';
-import { Shield, Search, ShoppingCart, User, Wallet, TrendingUp, Package, MessageCircle, Store, CreditCard, Users, AtSign, Filter, Globe, Mail, DollarSign, ShoppingBag, Briefcase, UserCircle } from 'lucide-react';
+import { Shield, Search, ShoppingCart, User, Wallet, TrendingUp, Package, MessageCircle, Store, CreditCard, Users, AtSign, Filter, Globe, Mail, DollarSign, ShoppingBag, Briefcase, UserCircle, Smartphone } from 'lucide-react';
 import { AdvancedSearch, SearchFilters } from './components/AdvancedSearch';
 import { GraffitiLogo } from './components/GraffitiLogo';
 import { AuthModal } from './components/AuthModal';
@@ -23,6 +23,7 @@ import { SecurityDashboard } from './components/SecurityDashboard';
 import { FAQ } from './components/FAQ';
 import { LegalPage } from './components/LegalPage';
 import { ContactForm } from './components/ContactForm';
+import { PWAInstallButton } from './components/PWAInstallButton';
 import { useAuth } from './hooks/useAuth';
 import { useCart } from './hooks/useCart';
 import { useMessaging } from './hooks/useMessaging';
@@ -608,6 +609,10 @@ function App() {
           </div>
 
           <div className="border-t border-white/10 pt-8">
+            <div className="max-w-md mx-auto mb-8">
+              <PWAInstallButton />
+            </div>
+
             <div className="flex flex-col md:flex-row justify-center md:justify-between items-center space-y-4 md:space-y-0">
               <p className="text-sm font-bold bg-gradient-to-r from-gray-300 via-gray-400 to-gray-500 bg-clip-text text-transparent" style={{textShadow: '0 0 20px rgba(255,255,255,0.3)'}}>
                 &copy; 2025 GHETTO FINANCE. All rights reserved.

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, ChevronDown, ChevronUp, HelpCircle, Shield, Wallet, Users, MessageCircle, Store, Gavel, TrendingUp, Gift } from 'lucide-react';
+import { X, ChevronDown, ChevronUp, HelpCircle, Shield, Wallet, Users, MessageCircle, Store, Gavel, TrendingUp, Gift, Smartphone, Download, Chrome, Apple, Wifi, WifiOff, Home } from 'lucide-react';
 
 interface FAQProps {
   isOpen: boolean;
@@ -393,6 +393,120 @@ const faqData: FAQItem[] = [
     answer: 'Yes! Our platform is fully responsive and works on mobile devices. You can also use mobile wallet apps that support WalletConnect for transactions.',
     category: 'Technical',
     icon: HelpCircle
+  },
+
+  // Mobile App & Installation
+  {
+    id: 'what-is-pwa',
+    question: 'What is the GHETTO FINANCE mobile app?',
+    answer: 'GHETTO FINANCE is a Progressive Web App (PWA) - a modern web application that works like a native app on your phone. You can install it directly from your browser without going through app stores. It provides a native app experience with offline support, push notifications, and takes up minimal space (only 5-8 MB vs 50-200 MB for typical native apps).',
+    category: 'Mobile App & Installation',
+    icon: Smartphone
+  },
+  {
+    id: 'how-to-install-android',
+    question: 'How do I install the app on Android?',
+    answer: '1) Open this website in Chrome, Edge, or Samsung Internet browser. 2) Look for the "Install App" button in the footer or an automatic install banner at the bottom of your screen. 3) Tap "Install" or "Add to Home Screen". 4) The app icon will appear on your home screen. 5) Tap the icon to open GHETTO FINANCE like any other app - it will open fullscreen without browser bars!',
+    category: 'Mobile App & Installation',
+    icon: Chrome
+  },
+  {
+    id: 'how-to-install-ios',
+    question: 'How do I install the app on iPhone?',
+    answer: '1) Open this website in Safari browser (must be Safari, not Chrome). 2) Tap the Share button at the bottom of the screen (square with arrow pointing up). 3) Scroll down and tap "Add to Home Screen". 4) Tap "Add" in the top right corner. 5) The GHETTO FINANCE icon will appear on your home screen and work like a native app!',
+    category: 'Mobile App & Installation',
+    icon: Apple
+  },
+  {
+    id: 'pwa-storage-size',
+    question: 'How much storage does the app use?',
+    answer: 'The app is extremely lightweight, using only 5-8 MB of storage - about the size of 10 photos on your phone. This includes the app shell (3 MB), critical pages (2 MB), and icons (1 MB). Images and other content are loaded on-demand only when you view them, not stored permanently. You can clear the cache anytime through your browser settings.',
+    category: 'Mobile App & Installation',
+    icon: Download
+  },
+  {
+    id: 'pwa-data-usage',
+    question: 'Will the app use a lot of mobile data?',
+    answer: 'No, the app is designed for minimal data usage. After the initial 5-8 MB download, only the content you actively view is loaded. Product images load only when visible, and you can enable offline mode to use cached content with zero data usage. The app also respects your browser\'s Data Saver mode for even lower usage.',
+    category: 'Mobile App & Installation',
+    icon: Wifi
+  },
+  {
+    id: 'pwa-offline-mode',
+    question: 'Can I use the app offline?',
+    answer: 'Yes! Once installed, you can browse your orders, view your products, check your wallet balance, and access previously viewed content without an internet connection. Core features like browsing your own data work offline. When you reconnect, the app automatically syncs messages and order updates. You\'ll see a network status indicator when offline.',
+    category: 'Mobile App & Installation',
+    icon: WifiOff
+  },
+  {
+    id: 'pwa-permissions',
+    question: 'What permissions does the app need?',
+    answer: 'The app is privacy-focused and NEVER requests location, sensors, contacts, or microphone access. The only permission requested is Camera access (ONLY when you want to upload product photos), and Push Notifications (ONLY if you opt-in for order/message alerts). You can deny all permissions and still use the full platform. No tracking, no invasive permissions.',
+    category: 'Mobile App & Installation',
+    icon: Shield
+  },
+  {
+    id: 'pwa-privacy-data',
+    question: 'Is my data safe in the app?',
+    answer: 'Absolutely. The app stores minimal data locally (only essential app files and your cached content). It works seamlessly with VPNs and privacy browsers like Brave or Firefox Focus. Unlike native apps, PWAs don\'t have device IDs or tracking systems. You can clear all app data anytime through browser settings, and the app is fully compatible with incognito/private browsing mode.',
+    category: 'Mobile App & Installation',
+    icon: Shield
+  },
+  {
+    id: 'pwa-vs-native-app',
+    question: 'How is this different from a regular app?',
+    answer: 'PWAs provide 95% of native app features (offline mode, push notifications, home screen icon, fullscreen mode, camera access) while being faster, lighter, and more private. The main differences: PWAs aren\'t in app stores (no 30% fees!), use 90% less storage, update automatically without downloads, and don\'t collect device tracking data. Perfect for privacy-conscious crypto users.',
+    category: 'Mobile App & Installation',
+    icon: Smartphone
+  },
+  {
+    id: 'pwa-updates',
+    question: 'How do app updates work?',
+    answer: 'Updates are completely automatic and instant. When we release new features or fixes, they download in the background the next time you open the app. No manual updates, no waiting for app store approval, no large downloads. You always have the latest version automatically. You might see a brief "Updating..." message, but it happens seamlessly.',
+    category: 'Mobile App & Installation',
+    icon: Download
+  },
+  {
+    id: 'pwa-notifications',
+    question: 'Will I get notifications for orders and messages?',
+    answer: 'Yes, if you opt-in! After installing the app, you can enable push notifications to receive alerts for new messages, order updates, dispute resolutions, and system announcements. Notifications are optional and can be enabled/disabled anytime in your device settings. We never spam - only important transactional notifications.',
+    category: 'Mobile App & Installation',
+    icon: MessageCircle
+  },
+  {
+    id: 'set-as-homepage',
+    question: 'How do I set GHETTO FINANCE as my browser homepage?',
+    answer: 'To set as homepage: Chrome: Settings → On startup → Open a specific page → Add "https://your-domain.com". Firefox: Settings → Home → Homepage and new windows → Custom URLs. Safari: Preferences → General → Homepage. Edge: Settings → Start, home, and new tabs → Open these pages. This makes GHETTO FINANCE load automatically when you open your browser.',
+    category: 'Mobile App & Installation',
+    icon: Home
+  },
+  {
+    id: 'uninstall-pwa',
+    question: 'How do I uninstall the app?',
+    answer: 'Android: Long-press the app icon on your home screen → tap "Uninstall" or "Remove". iOS: Long-press the icon → tap "Remove App" → "Delete App". Alternatively, you can clear all app data through your browser settings: Chrome → Settings → Site Settings → find the site → Clear & Reset. This removes all cached data and the app.',
+    category: 'Mobile App & Installation',
+    icon: Smartphone
+  },
+  {
+    id: 'pwa-battery-usage',
+    question: 'Does the app drain my battery?',
+    answer: 'No! Unlike many native apps, the PWA has zero background processes unless you explicitly enable push notifications. It uses the same power as browsing the website - only when actively in use. No location tracking, no background data syncing, no battery drain when closed. Most users report better battery life than traditional marketplace apps.',
+    category: 'Mobile App & Installation',
+    icon: Smartphone
+  },
+  {
+    id: 'pwa-multiple-devices',
+    question: 'Can I use the app on multiple devices?',
+    answer: 'Yes! Install the app on your phone, tablet, and any other devices. Your account syncs across all devices automatically. Login once on each device, and all your orders, messages, wallet data, and settings stay in sync. You can seamlessly switch between devices - start browsing on your phone and complete checkout on your tablet.',
+    category: 'Mobile App & Installation',
+    icon: Smartphone
+  },
+  {
+    id: 'pwa-works-everywhere',
+    question: 'Does the app work in all countries?',
+    answer: 'Yes! The PWA works globally on any device with a modern web browser. There are no geo-restrictions or regional app store limitations. Whether you\'re using an Android phone, iPhone, tablet, or desktop, you get the same full-featured experience. Perfect for international crypto trading without borders.',
+    category: 'Mobile App & Installation',
+    icon: Smartphone
   }
 ];
 
@@ -407,6 +521,7 @@ const categories = [
   'Referral Program',
   'Site Master & Moderation',
   'Reputation & Suspensions',
+  'Mobile App & Installation',
   'Technical'
 ];
 

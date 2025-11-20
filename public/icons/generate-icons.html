@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Generate PWA Icons</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      background: #000;
+      font-family: Arial, sans-serif;
+      color: #fff;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    canvas {
+      border: 2px solid #333;
+      margin: 10px;
+      display: none;
+    }
+    .icon-preview {
+      display: inline-block;
+      margin: 10px;
+      text-align: center;
+    }
+    .icon-preview img {
+      border: 2px solid #FFFF00;
+      border-radius: 20%;
+    }
+    .icon-preview p {
+      margin: 5px 0;
+      font-size: 12px;
+      color: #FFFF00;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 style="color: #FFFF00;">GHETTO FINANCE PWA Icons Generator</h1>
+    <p style="color: #FF6600;">Right-click each icon below and "Save Image As..." to download.</p>
+    <div id="icons"></div>
+  </div>
+
+  <script>
+    const sizes = [72, 96, 128, 144, 152, 192, 384, 512];
+    const iconsContainer = document.getElementById('icons');
+
+    sizes.forEach(size => {
+      const canvas = document.createElement('canvas');
+      canvas.width = size;
+      canvas.height = size;
+      const ctx = canvas.getContext('2d');
+
+      const gradient = ctx.createLinearGradient(0, 0, size, size);
+      gradient.addColorStop(0, '#ff00ff');
+      gradient.addColorStop(0.33, '#00ffff');
+      gradient.addColorStop(0.66, '#ffff00');
+      gradient.addColorStop(1, '#ff00ff');
+
+      ctx.fillStyle = '#000000';
+      ctx.fillRect(0, 0, size, size);
+
+      ctx.fillStyle = gradient;
+      ctx.font = `bold ${size * 0.7}px Impact, Arial Black, sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+
+      ctx.strokeStyle = '#000000';
+      ctx.lineWidth = size * 0.04;
+      ctx.strokeText('G', size / 2, size / 2);
+
+      ctx.fillText('G', size / 2, size / 2);
+
+      const preview = document.createElement('div');
+      preview.className = 'icon-preview';
+
+      const img = document.createElement('img');
+      img.src = canvas.toDataURL('image/png');
+      img.width = size > 192 ? 192 : size;
+      img.download = `icon-${size}x${size}.png`;
+
+      const label = document.createElement('p');
+      label.textContent = `${size}x${size}`;
+
+      preview.appendChild(img);
+      preview.appendChild(label);
+      iconsContainer.appendChild(preview);
+    });
+  </script>
+</body>
+</html>
