@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useEnhancedSitemaster } from '../hooks/useEnhancedSitemaster';
 import { SitemasterAnalytics } from './SitemasterAnalytics';
 import { SitemasterUserDetails } from './SitemasterUserDetails';
+import { ReputationManagement } from './ReputationManagement';
 import {
   Shield, Search, Ban, Flag, MessageSquare, Activity, Settings,
   Users, Package, TrendingUp, AlertTriangle, Eye, Lock, Unlock,
@@ -46,7 +47,7 @@ export function EnhancedSitemasterDashboard() {
   } = useEnhancedSitemaster();
 
   const [hasAccess, setHasAccess] = useState(true);
-  const [activeTab, setActiveTab] = useState<'overview' | 'users' | 'content' | 'flags' | 'suspensions' | 'activity' | 'settings' | 'features' | 'rates' | 'escrow' | 'transactions' | 'messages'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'users' | 'content' | 'flags' | 'suspensions' | 'activity' | 'reputation' | 'settings' | 'features' | 'rates' | 'escrow' | 'transactions' | 'messages'>('overview');
   const [stats, setStats] = useState<any>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedUser, setSelectedUser] = useState<any>(null);
@@ -197,7 +198,7 @@ export function EnhancedSitemasterDashboard() {
         )}
 
         <div className="mb-6 flex gap-2 border-b border-gray-200 overflow-x-auto">
-          {['overview', 'users', 'content', 'flags', 'suspensions', 'activity', 'features', 'rates', 'escrow', 'transactions', 'messages', 'settings'].map((tab) => (
+          {['overview', 'users', 'content', 'flags', 'suspensions', 'activity', 'reputation', 'features', 'rates', 'escrow', 'transactions', 'messages', 'settings'].map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab as any)}
@@ -896,6 +897,10 @@ export function EnhancedSitemasterDashboard() {
               </table>
             </div>
           </div>
+        )}
+
+        {activeTab === 'reputation' && (
+          <ReputationManagement />
         )}
 
         {activeTab === 'settings' && (

@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { X, User, Settings, Shield, Store, MessageCircle, Star, MapPin, Globe, Calendar, CreditCard as Edit, Camera, Save, AtSign, Share2, DollarSign, Package } from 'lucide-react';
+import { X, User, Settings, Shield, Store, MessageCircle, Star, MapPin, Globe, Calendar, CreditCard as Edit, Camera, Save, AtSign, Share2, DollarSign, Package, CheckCircle, AlertTriangle } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { useSocialSystem } from '../hooks/useSocialSystem';
 import { useSellerProducts } from '../hooks/useSellerProducts';
 import { useMessaging } from '../hooks/useMessaging';
 import { useReferrals } from '../hooks/useReferrals';
+import { useReputation } from '../hooks/useReputation';
 import { formatDistanceToNow } from 'date-fns';
 
 interface UserProfileProps {
@@ -34,10 +35,18 @@ export function UserProfile({ isOpen, onClose }: UserProfileProps) {
   const { products, getProductStats } = useSellerProducts();
   const { createConversation } = useMessaging();
   const { referralCode, referredUsers, referralBalance, referralTransactions, platformSettings, isLoading: referralsLoading, redeemBalance } = useReferrals();
+  const { getMyReputation, requestCollateralRedemption } = useReputation();
   const [redeemAmount, setRedeemAmount] = useState('');
+  const [reputation, setReputation] = useState<any>(null);
 
   const userProfile = user ? getUserProfile(user.id) : null;
   const productStats = getProductStats();
+
+  useEffect(() => {
+    if (user) {
+      getMyReputation().then(rep => setReputation(rep)).catch(console.error);
+    }
+  }, [user]);
 
   useEffect(() => {
     if (userProfile) {
@@ -311,8 +320,77 @@ export function UserProfile({ isOpen, onClose }: UserProfileProps) {
           {/* Profile Tab */}
           {activeTab === 'profile' && (
             <div className="space-y-6">
+              {/* Reputation Badge */}
+              {reputation && (
+                <div className={`rounded-2xl p-6 border-2 ${
+                  reputation.is_suspended ? 'bg-red-900/20 border-red-500' :
+                  reputation.status === 'caution' ? 'bg-yellow-900/20 border-yellow-500' :
+                  'bg-green-900/20 border-green-500'
+                }`}>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      {reputation.is_suspended ? (
+                        <AlertTriangle className="w-10 h-10 text-red-500" />
+                      ) : reputation.status === 'caution' ? (
+                        <AlertTriangle className="w-10 h-10 text-yellow-500" />
+                      ) : (
+                        <CheckCircle className="w-10 h-10 text-green-500" />
+                      )}
+                      <div>
+                        <p className="text-2xl font-black text-white uppercase">
+                          {reputation.is_suspended ? 'SUSPENDED' : reputation.status}
+                        </p>
+                        <p className="text-sm text-gray-400">Transaction Reputation</p>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-xl font-bold text-white">{reputation.total_transactions}</p>
+                      <p className="text-xs text-gray-400">Total Transactions</p>
+                    </div>
+                  </div>
+                  {reputation.is_suspended && reputation.suspension_end_date && (
+                    <div className="mt-4 pt-4 border-t border-white/10">
+                      <p className="text-sm text-red-300">
+                        Suspension ends: {new Date(reputation.suspension_end_date).toLocaleDateString()}
+                      </p>
+                    </div>
+                  )}
+                  {reputation.collateral_held && (
+                    <div className="mt-4 pt-4 border-t border-white/10">
+                      <div className="flex items-center justify-between">
+                        <p className="text-sm text-orange-300 font-semibold">
+                          ⚠️ Collateral held pending redemption review
+                        </p>
+                        {!reputation.collateral_redemption_requested && (
+                          <button
+                            onClick={async () => {
+                              if (confirm('Request collateral redemption? This will be reviewed by a sitemaster.')) {
+                                try {
+                                  await requestCollateralRedemption();
+                                  alert('Redemption request submitted');
+                                  const rep = await getMyReputation();
+                                  setReputation(rep);
+                                } catch (error: any) {
+                                  alert('Error: ' + error.message);
+                                }
+                              }
+                            }}
+                            className="px-3 py-1 bg-orange-600 text-white rounded hover:bg-orange-700 text-sm"
+                          >
+                            Request Redemption
+                          </button>
+                        )}
+                        {reputation.collateral_redemption_requested && (
+                          <span className="text-xs text-orange-300">Request pending review</span>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+
               {/* Profile Stats */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                 <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700 text-center">
                   <Star className="w-8 h-8 text-yellow-400 mx-auto mb-3" />
                   <p className="text-2xl font-black text-white">{user.rating || 0}</p>
@@ -320,15 +398,23 @@ export function UserProfile({ isOpen, onClose }: UserProfileProps) {
                 </div>
 
                 <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700 text-center">
-                  <Package className="w-8 h-8 text-green-400 mx-auto mb-3" />
-                  <p className="text-2xl font-black text-white">{productStats.total}</p>
-                  <p className="text-gray-400 text-sm">Products Listed</p>
+                  <CheckCircle className="w-8 h-8 text-green-400 mx-auto mb-3" />
+                  <p className="text-2xl font-black text-white">{reputation?.successful_count || 0}</p>
+                  <p className="text-gray-400 text-sm">Successful</p>
                 </div>
 
                 <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700 text-center">
-                  <MessageCircle className="w-8 h-8 text-blue-400 mx-auto mb-3" />
-                  <p className="text-2xl font-black text-white">{userProfile?.stats.completedTrades || 0}</p>
-                  <p className="text-gray-400 text-sm">Completed Trades</p>
+                  <Package className="w-8 h-8 text-blue-400 mx-auto mb-3" />
+                  <p className="text-2xl font-black text-white">{productStats.total}</p>
+                  <p className="text-gray-400 text-sm">Products</p>
+                </div>
+
+                <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700 text-center">
+                  <Calendar className="w-8 h-8 text-purple-400 mx-auto mb-3" />
+                  <p className="text-xl font-black text-white">
+                    {reputation?.member_since ? formatDistanceToNow(new Date(reputation.member_since), { addSuffix: false }) : 'New'}
+                  </p>
+                  <p className="text-gray-400 text-sm">Member</p>
                 </div>
               </div>
 
