@@ -34,7 +34,7 @@ const faqData: FAQItem[] = [
   {
     id: 'supported-currencies',
     question: 'What cryptocurrencies do you support?',
-    answer: 'Transactions are usually settled with GHETTO & GRAIN; our utility tokens. Other acceptable tokens are BTC, ETH, BCH, MATIC, USDC. Other tokens may be swapped using the built-in swap function.',
+    answer: 'Transactions are usually settled with GHETTO & GRAIN; our utility tokens. Other acceptable tokens are BTC, ETH, BCH, MATIC, USDC, XMR (Monero). Other tokens may be swapped using the built-in swap function.',
     category: 'Getting Started',
     icon: HelpCircle
   },
@@ -307,6 +307,78 @@ const faqData: FAQItem[] = [
     icon: Gavel
   },
 
+  // Reputation & Suspensions
+  {
+    id: 'reputation-system',
+    question: 'How does the reputation system work?',
+    answer: 'All users start with "Reliable" status. Your reputation tracks transaction outcomes: successful transactions (when escrow is released) and disputed transactions. After 3 unsuccessful transactions, your status changes to "Caution". The system only counts transactions from the last 12 months.',
+    category: 'Reputation & Suspensions',
+    icon: Shield
+  },
+  {
+    id: 'automatic-suspensions',
+    question: 'What triggers automatic suspension?',
+    answer: 'Automatic suspension is triggered by either: (1) 3 consecutive unsuccessful transactions, or (2) 3 unsuccessful transactions within 14 days. This protects the community from problematic traders. Suspensions escalate: 1st = 30 days, 2nd = 60 days, 3rd = 90 days.',
+    category: 'Reputation & Suspensions',
+    icon: Shield
+  },
+  {
+    id: 'what-is-unsuccessful-transaction',
+    question: 'What counts as an unsuccessful transaction?',
+    answer: 'An unsuccessful transaction is one where a dispute is filed and resolved against you. Successful transactions are those where the buyer releases escrow funds without dispute. Failed deliveries, incorrect items, and unresolved disputes all count as unsuccessful.',
+    category: 'Reputation & Suspensions',
+    icon: Shield
+  },
+  {
+    id: 'suspension-duration',
+    question: 'How long do suspensions last?',
+    answer: 'Suspension duration escalates with each offense: First suspension is 30 days, second is 60 days, third is 90 days. After suspension ends, your status automatically returns to "Reliable" and your consecutive failure count resets. However, your suspension history remains.',
+    category: 'Reputation & Suspensions',
+    icon: Shield
+  },
+  {
+    id: 'third-suspension-collateral',
+    question: 'What happens on the third suspension?',
+    answer: 'On your third suspension, your seller collateral is held by the platform. You cannot withdraw it until you request collateral redemption through your profile. A sitemaster will review your case, transaction history, and improvement efforts before deciding to release or permanently forfeit the collateral.',
+    category: 'Reputation & Suspensions',
+    icon: Shield
+  },
+  {
+    id: 'suspension-override',
+    question: 'Can suspensions be overridden?',
+    answer: 'Yes. Sitemaster administrators can override suspensions if there were extenuating circumstances or errors. All overrides are logged with reasons. Users can appeal suspensions by contacting support with evidence. False reports or system errors may result in immediate override.',
+    category: 'Reputation & Suspensions',
+    icon: Shield
+  },
+  {
+    id: 'collateral-redemption-request',
+    question: 'How do I request collateral redemption?',
+    answer: 'If your collateral is held after a third suspension, you can request redemption through your user profile. Click the "Request Redemption" button in the reputation section. A sitemaster will review your request, considering your overall history, recent behavior improvements, and circumstances of your suspensions.',
+    category: 'Reputation & Suspensions',
+    icon: Shield
+  },
+  {
+    id: 'improving-reputation',
+    question: 'How do I improve my reputation?',
+    answer: 'Complete successful transactions to reset your consecutive failure count. Each successful transaction (where buyer releases escrow) resets the consecutive counter to zero. Communicate clearly with buyers, ship promptly, resolve issues quickly, and maintain quality. Moving from "Caution" back to "Reliable" happens through consistent positive transactions.',
+    category: 'Reputation & Suspensions',
+    icon: Shield
+  },
+  {
+    id: 'reputation-appeals',
+    question: 'Can I appeal my reputation status?',
+    answer: 'While the reputation system is automated based on transaction outcomes, you can appeal specific dispute resolutions that affected your reputation. Contact support with evidence if you believe a dispute was resolved unfairly. Successful appeals may result in status adjustments and suspension overrides.',
+    category: 'Reputation & Suspensions',
+    icon: Shield
+  },
+  {
+    id: 'viewing-reputation-history',
+    question: 'Can I see my reputation history?',
+    answer: 'Yes! Your user profile displays your current reputation status, total transactions, successful count, disputed count, and member duration. Administrators can view complete reputation history including all status changes, suspensions, and moderator actions through the reputation management dashboard.',
+    category: 'Reputation & Suspensions',
+    icon: Shield
+  },
+
   // Technical
   {
     id: 'supported-browsers',
@@ -334,6 +406,7 @@ const categories = [
   'Sponsorships & Staking',
   'Referral Program',
   'Site Master & Moderation',
+  'Reputation & Suspensions',
   'Technical'
 ];
 

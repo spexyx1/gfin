@@ -475,6 +475,7 @@ export const mockCryptoPrices: CryptoPrice[] = [
   { symbol: 'GHETTO', name: 'Ghetto Finance', price: 1.25, change24h: 5.67 },
   { symbol: 'BTC', name: 'Bitcoin', price: 43250.00, change24h: 2.45 },
   { symbol: 'ETH', name: 'Ethereum', price: 2650.00, change24h: -1.23 },
+  { symbol: 'XMR', name: 'Monero', price: 168.75, change24h: 3.12 },
   { symbol: 'SOL', name: 'Solana', price: 125.50, change24h: 4.67 },
   { symbol: 'ADA', name: 'Cardano', price: 0.52, change24h: 1.89 },
 ];
