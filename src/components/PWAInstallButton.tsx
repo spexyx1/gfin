@@ -21,7 +21,13 @@ export function PWAInstallButton() {
                                 (window.navigator as any).standalone === true;
     setIsInstalled(isInStandaloneMode);
 
-    if (!isInStandaloneMode && !isIOSDevice) {
+    if (isInStandaloneMode) {
+      return;
+    }
+
+    if (isIOSDevice) {
+      setShowInstallButton(true);
+    } else {
       const handleBeforeInstallPrompt = (e: Event) => {
         e.preventDefault();
         setDeferredPrompt(e as BeforeInstallPromptEvent);
@@ -30,13 +36,17 @@ export function PWAInstallButton() {
 
       window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
 
+      setTimeout(() => {
+        if (!deferredPrompt) {
+          setShowInstallButton(true);
+        }
+      }, 1000);
+
       return () => {
         window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
       };
-    } else if (isIOSDevice && !isInStandaloneMode) {
-      setShowInstallButton(true);
     }
-  }, []);
+  }, [deferredPrompt]);
 
   const handleInstallClick = async () => {
     if (isIOS) {
@@ -45,6 +55,7 @@ export function PWAInstallButton() {
     }
 
     if (!deferredPrompt) {
+      setShowIOSInstructions(true);
       return;
     }
 
@@ -90,8 +101,10 @@ export function PWAInstallButton() {
           <div className="bg-gray-900 rounded-3xl border border-gray-700 w-full max-w-md shadow-2xl">
             <div className="flex items-center justify-between p-6 border-b border-gray-700">
               <div className="flex items-center space-x-3">
-                <Apple className="h-6 w-6 text-neon-yellow" />
-                <h2 className="text-xl font-black text-white uppercase">Install on iPhone</h2>
+                {isIOS ? <Apple className="h-6 w-6 text-neon-yellow" /> : <Chrome className="h-6 w-6 text-neon-yellow" />}
+                <h2 className="text-xl font-black text-white uppercase">
+                  {isIOS ? 'Install on iPhone' : 'Install App'}
+                </h2>
               </div>
               <button
                 onClick={() => setShowIOSInstructions(false)}
@@ -103,48 +116,94 @@ export function PWAInstallButton() {
 
             <div className="p-6 space-y-6">
               <div className="bg-gray-800 rounded-xl p-4 border border-gray-700">
-                <p className="text-neon-orange font-medium mb-4 text-sm">
-                  Follow these steps to install GHETTO FINANCE on your iPhone:
-                </p>
-                <ol className="space-y-4 text-sm text-gray-300">
-                  <li className="flex items-start space-x-3">
-                    <span className="flex-shrink-0 w-6 h-6 bg-neon-yellow text-black rounded-full flex items-center justify-center font-black text-xs">
-                      1
-                    </span>
-                    <span>
-                      Tap the <strong className="text-neon-blue">Share button</strong> at the bottom of Safari (square with arrow pointing up)
-                    </span>
-                  </li>
-                  <li className="flex items-start space-x-3">
-                    <span className="flex-shrink-0 w-6 h-6 bg-neon-yellow text-black rounded-full flex items-center justify-center font-black text-xs">
-                      2
-                    </span>
-                    <span>
-                      Scroll down and tap <strong className="text-neon-blue">"Add to Home Screen"</strong>
-                    </span>
-                  </li>
-                  <li className="flex items-start space-x-3">
-                    <span className="flex-shrink-0 w-6 h-6 bg-neon-yellow text-black rounded-full flex items-center justify-center font-black text-xs">
-                      3
-                    </span>
-                    <span>
-                      Tap <strong className="text-neon-blue">"Add"</strong> in the top right corner
-                    </span>
-                  </li>
-                  <li className="flex items-start space-x-3">
-                    <span className="flex-shrink-0 w-6 h-6 bg-neon-yellow text-black rounded-full flex items-center justify-center font-black text-xs">
-                      4
-                    </span>
-                    <span>
-                      The GHETTO FINANCE icon will appear on your home screen!
-                    </span>
-                  </li>
-                </ol>
+                {isIOS ? (
+                  <>
+                    <p className="text-neon-orange font-medium mb-4 text-sm">
+                      Follow these steps to install GHETTO FINANCE on your iPhone:
+                    </p>
+                    <ol className="space-y-4 text-sm text-gray-300">
+                      <li className="flex items-start space-x-3">
+                        <span className="flex-shrink-0 w-6 h-6 bg-neon-yellow text-black rounded-full flex items-center justify-center font-black text-xs">
+                          1
+                        </span>
+                        <span>
+                          Tap the <strong className="text-neon-blue">Share button</strong> at the bottom of Safari (square with arrow pointing up)
+                        </span>
+                      </li>
+                      <li className="flex items-start space-x-3">
+                        <span className="flex-shrink-0 w-6 h-6 bg-neon-yellow text-black rounded-full flex items-center justify-center font-black text-xs">
+                          2
+                        </span>
+                        <span>
+                          Scroll down and tap <strong className="text-neon-blue">"Add to Home Screen"</strong>
+                        </span>
+                      </li>
+                      <li className="flex items-start space-x-3">
+                        <span className="flex-shrink-0 w-6 h-6 bg-neon-yellow text-black rounded-full flex items-center justify-center font-black text-xs">
+                          3
+                        </span>
+                        <span>
+                          Tap <strong className="text-neon-blue">"Add"</strong> in the top right corner
+                        </span>
+                      </li>
+                      <li className="flex items-start space-x-3">
+                        <span className="flex-shrink-0 w-6 h-6 bg-neon-yellow text-black rounded-full flex items-center justify-center font-black text-xs">
+                          4
+                        </span>
+                        <span>
+                          The GHETTO FINANCE icon will appear on your home screen!
+                        </span>
+                      </li>
+                    </ol>
+                  </>
+                ) : (
+                  <>
+                    <p className="text-neon-orange font-medium mb-4 text-sm">
+                      To install GHETTO FINANCE as an app on Chrome/Android:
+                    </p>
+                    <ol className="space-y-4 text-sm text-gray-300">
+                      <li className="flex items-start space-x-3">
+                        <span className="flex-shrink-0 w-6 h-6 bg-neon-yellow text-black rounded-full flex items-center justify-center font-black text-xs">
+                          1
+                        </span>
+                        <span>
+                          Open this site in <strong className="text-neon-blue">Chrome browser</strong> on Android
+                        </span>
+                      </li>
+                      <li className="flex items-start space-x-3">
+                        <span className="flex-shrink-0 w-6 h-6 bg-neon-yellow text-black rounded-full flex items-center justify-center font-black text-xs">
+                          2
+                        </span>
+                        <span>
+                          Look for an <strong className="text-neon-blue">"Install"</strong> banner at the top or bottom of the screen
+                        </span>
+                      </li>
+                      <li className="flex items-start space-x-3">
+                        <span className="flex-shrink-0 w-6 h-6 bg-neon-yellow text-black rounded-full flex items-center justify-center font-black text-xs">
+                          3
+                        </span>
+                        <span>
+                          Or tap the <strong className="text-neon-blue">3-dot menu</strong> and select "Install app" or "Add to Home screen"
+                        </span>
+                      </li>
+                      <li className="flex items-start space-x-3">
+                        <span className="flex-shrink-0 w-6 h-6 bg-neon-yellow text-black rounded-full flex items-center justify-center font-black text-xs">
+                          4
+                        </span>
+                        <span>
+                          The app icon will appear on your home screen!
+                        </span>
+                      </li>
+                    </ol>
+                  </>
+                )}
               </div>
 
               <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-xl p-4">
                 <p className="text-xs text-yellow-400">
-                  <strong className="font-black">NOTE:</strong> This feature only works in Safari browser on iOS. If you're using Chrome or another browser, please open this site in Safari first.
+                  <strong className="font-black">NOTE:</strong> {isIOS
+                    ? 'This feature only works in Safari browser on iOS. If you\'re using Chrome or another browser, please open this site in Safari first.'
+                    : 'For best results, use Chrome browser on Android. Desktop browsers may require HTTPS and meeting PWA installation criteria.'}
                 </p>
               </div>
 
