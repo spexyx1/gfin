@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { X, Wallet, Send, CreditCard, ArrowUpDown, TrendingUp, Plus, Minus, Link, Shield, Eye, EyeOff } from 'lucide-react';
+import { X, Wallet, Send, CreditCard, ArrowUpDown, TrendingUp, Plus, Minus, Link, Shield, Eye, EyeOff, Repeat } from 'lucide-react';
 import { useWallet } from '../hooks/useWallet';
 import { useWeb3 } from '../hooks/useWeb3';
 import { useExchange } from '../hooks/useExchange';
 import { useHoudiniSwap } from '../hooks/useHoudiniSwap';
+import { SwapInterface } from './SwapInterface';
 import { formatDistanceToNow } from 'date-fns';
 
 interface WalletDashboardProps {
@@ -23,7 +24,7 @@ interface ConnectedWallet {
 }
 
 export function WalletDashboard({ isOpen, onClose }: WalletDashboardProps) {
-  const [activeTab, setActiveTab] = useState<'connect' | 'overview' | 'send' | 'buy' | 'swap' | 'trade'>('connect');
+  const [activeTab, setActiveTab] = useState<'connect' | 'overview' | 'send' | 'buy' | 'swap' | 'trade' | 'atomic-swap'>('connect');
   const [sendForm, setSendForm] = useState({ to: '', amount: '', asset: 'ETH' });
   const [buyForm, setBuyForm] = useState({ asset: 'ETH', amount: '', paymentMethod: 'card' as 'card' | 'bank' });
   const [swapForm, setSwapForm] = useState({ fromAsset: 'ETH', toAsset: 'USDC', fromAmount: '' });
@@ -180,6 +181,7 @@ export function WalletDashboard({ isOpen, onClose }: WalletDashboardProps) {
                 { id: 'send', label: 'SEND', icon: Send },
                 { id: 'buy', label: 'BUY', icon: CreditCard },
                 { id: 'swap', label: 'SWAP', icon: ArrowUpDown },
+                { id: 'atomic-swap', label: 'ATOMIC SWAP', icon: Repeat },
                 { id: 'trade', label: 'TRADE', icon: TrendingUp },
               ].map(({ id, label, icon: Icon }) => (
                 <button
@@ -652,6 +654,13 @@ export function WalletDashboard({ isOpen, onClose }: WalletDashboardProps) {
           )}
 
           {/* Trade Tab */}
+          {/* Atomic Swap Tab */}
+          {activeTab === 'atomic-swap' && connectedWallets.length > 0 && (
+            <div className="flex-1 overflow-y-auto p-8">
+              <SwapInterface userAddress={connectedWallets[0].address} />
+            </div>
+          )}
+
           {activeTab === 'trade' && (
             <div className="flex-1 overflow-y-auto p-8">
               <h3 className="text-2xl font-black text-white mb-8 uppercase">Exchange Trading</h3>

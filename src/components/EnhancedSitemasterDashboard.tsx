@@ -3,6 +3,7 @@ import { useEnhancedSitemaster } from '../hooks/useEnhancedSitemaster';
 import { SitemasterAnalytics } from './SitemasterAnalytics';
 import { SitemasterUserDetails } from './SitemasterUserDetails';
 import { ReputationManagement } from './ReputationManagement';
+import { SitemasterSwapControls } from './SitemasterSwapControls';
 import {
   Shield, Search, Ban, Flag, MessageSquare, Activity, Settings,
   Users, Package, TrendingUp, AlertTriangle, Eye, Lock, Unlock,
@@ -198,7 +199,7 @@ export function EnhancedSitemasterDashboard() {
         )}
 
         <div className="mb-6 flex gap-2 border-b border-gray-200 overflow-x-auto">
-          {['overview', 'users', 'content', 'flags', 'suspensions', 'activity', 'reputation', 'features', 'rates', 'escrow', 'transactions', 'messages', 'settings'].map((tab) => (
+          {['overview', 'users', 'content', 'flags', 'suspensions', 'activity', 'reputation', 'features', 'rates', 'escrow', 'transactions', 'messages', 'swap-tokens', 'settings'].map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab as any)}
@@ -901,6 +902,10 @@ export function EnhancedSitemasterDashboard() {
 
         {activeTab === 'reputation' && (
           <ReputationManagement />
+        )}
+
+        {activeTab === 'swap-tokens' && (
+          <SitemasterSwapControls />
         )}
 
         {activeTab === 'settings' && (
