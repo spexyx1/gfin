@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Globe, Plus, Search, TrendingUp, Users, MessageCircle, Heart, Share2, Eye, Filter, MapPin, DollarSign, Tag, Clock, Star, Flag, Send, Image, Paperclip } from 'lucide-react';
+import { ArrowLeft, Globe, Plus, Search, TrendingUp, Users, MessageCircle, Heart, Share2, Eye, Filter, MapPin, DollarSign, Tag, Clock, Star, Flag, Send, Image, Paperclip, Home } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useSocialSystem } from '../hooks/useSocialSystem';
 import { useAuth } from '../hooks/useAuth';
 import { useMessaging } from '../hooks/useMessaging';
 import { formatDistanceToNow } from 'date-fns';
+import { HousingMarketplace } from './HousingMarketplace';
 
 interface SocialPlatformProps {
   searchTerm: string;
@@ -391,6 +392,7 @@ export function SocialPlatform({ searchTerm, setSearchTerm }: SocialPlatformProp
                 { id: 'communities', label: 'Communities', icon: Users },
                 { id: 'deals', label: 'Deals', icon: DollarSign },
                 { id: 'classifieds', label: 'Classifieds', icon: Tag },
+                { id: 'housing-nfts', label: 'Housing NFTs', icon: Home },
               ].map(({ id, label, icon: Icon }) => (
                 <button
                   key={id}
@@ -469,11 +471,12 @@ export function SocialPlatform({ searchTerm, setSearchTerm }: SocialPlatformProp
             <div className="flex items-center justify-between">
               <div>
                 <h2 className="text-2xl font-black text-white uppercase">
-                  {selectedCommunity 
-                    ? communities.find(c => c.id === selectedCommunity)?.name 
+                  {selectedCommunity
+                    ? communities.find(c => c.id === selectedCommunity)?.name
                     : activeTab === 'deals' ? 'Deals & Offers'
                     : activeTab === 'classifieds' ? 'Classifieds'
                     : activeTab === 'communities' ? 'Communities'
+                    : activeTab === 'housing-nfts' ? 'Housing NFT Marketplace'
                     : 'Social Feed'
                   }
                 </h2>
@@ -520,7 +523,9 @@ export function SocialPlatform({ searchTerm, setSearchTerm }: SocialPlatformProp
 
           {/* Content Area */}
           <div className="flex-1 overflow-y-auto p-6">
-            {activeTab === 'communities' && !selectedCommunity ? (
+            {activeTab === 'housing-nfts' ? (
+              <HousingMarketplace />
+            ) : activeTab === 'communities' && !selectedCommunity ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredCommunities.map((community) => (
                   <div key={community.id} className="bg-gray-800 rounded-2xl p-6 border border-gray-700 hover:border-neon-blue/30 transition-all duration-300">
