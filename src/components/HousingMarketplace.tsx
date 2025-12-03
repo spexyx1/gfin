@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Home, MapPin, Heart, TrendingUp, Users, DollarSign, Building, Globe, X, ChevronRight, CheckCircle, Clock, Hammer } from 'lucide-react';
+import { Home, MapPin, Heart, TrendingUp, Users, DollarSign, Building, Globe, X, ChevronRight, CheckCircle, Clock, Hammer, HelpCircle, Award } from 'lucide-react';
 import { useHousingMarketplace } from '../hooks/useHousingMarketplace';
+import { HousingFAQ } from './HousingFAQ';
 import type { HousingProject } from '../types/housing';
 
 export function HousingMarketplace() {
@@ -8,6 +9,7 @@ export function HousingMarketplace() {
   const [selectedProject, setSelectedProject] = useState<HousingProject | null>(null);
   const [filterCountry, setFilterCountry] = useState<string>('all');
   const [filterStatus, setFilterStatus] = useState<string>('all');
+  const [activeView, setActiveView] = useState<'marketplace' | 'faq'>('marketplace');
 
   const countries = ['USA', 'Egypt', 'Cambodia', 'Thailand', 'South Africa', 'India'];
   const usaCities = ['Detroit', 'Appalachia', 'Los Angeles', 'San Francisco', 'New Orleans'];
@@ -85,12 +87,45 @@ export function HousingMarketplace() {
             </div>
             <div className="flex items-center space-x-2">
               <TrendingUp className="w-5 h-5 text-neon-orange" />
-              <span className="text-gray-300">Revenue Sharing</span>
+              <span className="text-gray-300">Revenue Sharing: 85% Tenant / 10% Sponsor / 5% Platform</span>
             </div>
+            <div className="flex items-center space-x-2">
+              <Award className="w-5 h-5 text-neon-yellow" />
+              <span className="text-gray-300">Lifetime Fee Waiver</span>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-center gap-4 mt-8">
+            <button
+              onClick={() => setActiveView('marketplace')}
+              className={`flex items-center space-x-2 px-6 py-3 rounded-lg font-black transition-all duration-300 ${
+                activeView === 'marketplace'
+                  ? 'bg-gradient-to-r from-neon-yellow to-neon-orange text-black shadow-lg'
+                  : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+              }`}
+            >
+              <Building className="w-5 h-5" />
+              <span>Browse Projects</span>
+            </button>
+            <button
+              onClick={() => setActiveView('faq')}
+              className={`flex items-center space-x-2 px-6 py-3 rounded-lg font-black transition-all duration-300 ${
+                activeView === 'faq'
+                  ? 'bg-gradient-to-r from-neon-yellow to-neon-orange text-black shadow-lg'
+                  : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+              }`}
+            >
+              <HelpCircle className="w-5 h-5" />
+              <span>FAQ & Info</span>
+            </button>
           </div>
         </div>
 
-        <div className="mb-8 flex flex-wrap gap-4 items-center justify-between bg-gray-900/50 p-6 rounded-2xl border border-gray-700">
+        {activeView === 'faq' ? (
+          <HousingFAQ />
+        ) : (
+          <>
+            <div className="mb-8 flex flex-wrap gap-4 items-center justify-between bg-gray-900/50 p-6 rounded-2xl border border-gray-700">
           <div className="flex flex-wrap gap-4">
             <select
               value={filterCountry}
@@ -151,17 +186,19 @@ export function HousingMarketplace() {
             <p className="text-gray-400 text-lg">No projects match your filters</p>
           </div>
         )}
-      </div>
 
-      {selectedProject && (
-        <ProjectDetailModal
-          project={selectedProject}
-          onClose={() => setSelectedProject(null)}
-          onPurchase={handlePurchase}
-          getStatusColor={getStatusColor}
-          getStatusIcon={getStatusIcon}
-        />
-      )}
+        {selectedProject && (
+          <ProjectDetailModal
+            project={selectedProject}
+            onClose={() => setSelectedProject(null)}
+            onPurchase={handlePurchase}
+            getStatusColor={getStatusColor}
+            getStatusIcon={getStatusIcon}
+          />
+        )}
+      </>
+        )}
+      </div>
     </div>
   );
 }
@@ -361,9 +398,50 @@ function ProjectDetailModal({ project, onClose, onPurchase, getStatusColor, getS
             </div>
           </div>
 
+          <div className="bg-blue-900/20 border border-blue-500/30 rounded-xl p-4 mb-6">
+            <h4 className="text-blue-200 font-black mb-2 flex items-center space-x-2">
+              <Heart className="w-4 h-4" />
+              <span>What You're Purchasing</span>
+            </h4>
+            <p className="text-blue-100 text-sm mb-2">
+              <strong>Revenue-Sharing Rights:</strong> You are purchasing revenue-sharing rights, NOT property ownership. The platform retains ownership of all properties to ensure long-term sustainability and tenant security.
+            </p>
+            <p className="text-blue-100 text-sm">
+              Your NFT gives you the right to receive <strong>10% of revenue</strong> generated when your partnered tenant sells goods or services through our platform.
+            </p>
+          </div>
+
           <div className="bg-yellow-900/20 border border-yellow-500/30 rounded-xl p-4 mb-6">
-            <p className="text-yellow-200 text-sm">
-              <strong>Partnership Opportunity:</strong> NFT holders can establish direct partnerships with tenants who will offer their skills, goods, or services through the platform. Revenue is shared between tenants (70%), sponsors (25%), and platform (5%).
+            <h4 className="text-yellow-200 font-black mb-2 flex items-center space-x-2">
+              <TrendingUp className="w-4 h-4" />
+              <span>Partnership & Revenue Model</span>
+            </h4>
+            <p className="text-yellow-100 text-sm mb-3">
+              Tenants offer their skills, goods, or services through the platform. Revenue is shared to maximize tenant success:
+            </p>
+            <div className="grid grid-cols-3 gap-2 text-xs">
+              <div className="bg-green-900/30 p-2 rounded text-center">
+                <div className="text-green-400 font-black text-lg">85%</div>
+                <div className="text-green-200">Tenant</div>
+              </div>
+              <div className="bg-blue-900/30 p-2 rounded text-center">
+                <div className="text-blue-400 font-black text-lg">10%</div>
+                <div className="text-blue-200">Sponsor</div>
+              </div>
+              <div className="bg-gray-800/50 p-2 rounded text-center">
+                <div className="text-gray-400 font-black text-lg">5%</div>
+                <div className="text-gray-300">Platform</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-green-900/20 border border-green-500/30 rounded-xl p-4 mb-6">
+            <h4 className="text-green-200 font-black mb-2 flex items-center space-x-2">
+              <Award className="w-4 h-4" />
+              <span>Lifetime Benefits</span>
+            </h4>
+            <p className="text-green-100 text-sm">
+              <strong>Platform Fee Waiver:</strong> Both you and your partnered tenant receive a <strong>lifetime waiver</strong> of platform listing fees. List and sell your own items with zero fees, forever. This benefit alone can save thousands over time.
             </p>
           </div>
 

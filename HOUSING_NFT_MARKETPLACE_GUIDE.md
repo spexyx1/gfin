@@ -92,21 +92,43 @@ Every NFT purchase:
 ## Revenue Sharing Model
 
 **Standard Split:**
-- Tenant: 70% (primary beneficiary)
-- Sponsor: 25% (investment return + impact)
-- Platform: 5% (operational costs)
+- Tenant: 85% (maximize their success)
+- Sponsor: 10% (meaningful return on generosity)
+- Platform: 5% (management fee for sustainability)
 
 **Example:**
-Tenant sells handmade crafts for $100
-- Tenant receives: $70
-- Sponsor receives: $25
-- Platform receives: $5
+Tenant sells handmade crafts for $1,000
+- Tenant receives: $850
+- Sponsor receives: $100
+- Platform receives: $50
 
 This model ensures:
-- Tenants have strong incentive to succeed
-- Sponsors see tangible return on generosity
-- Platform remains sustainable
+- Tenants have maximum incentive to succeed
+- Sponsors receive meaningful returns while prioritizing impact
+- Platform remains sustainable with minimal overhead
 - Everyone wins together
+
+## Ownership Structure
+
+**Important Clarification:**
+- **Property Ownership:** The platform retains legal ownership of all housing properties
+- **Revenue Rights:** Sponsors purchase revenue-sharing rights through NFTs
+- **Tenant Security:** Platform ownership ensures long-term housing stability
+- **Sponsor Benefits:** NFT holders receive revenue share + lifetime platform fee waiver
+
+This structure protects tenants from displacement while creating a sustainable investment model for sponsors.
+
+## Lifetime Platform Fee Waiver
+
+**Special Benefit for Sponsors & Tenants:**
+Both sponsors and their partnered tenants receive a **lifetime waiver** of platform listing fees. This means:
+- List your own items for sale with zero fees, forever
+- No listing charges, no selling fees on your personal items
+- Benefit compounds over years of platform use
+- Can save thousands in fees over time
+- Our thank you for changing lives through generosity
+
+This is **in addition to** the revenue-sharing rights—you get both benefits for life.
 
 ## Target: 200 Initial Projects
 
@@ -180,8 +202,12 @@ This model ensures:
 - **Results**:
   - Family has stable housing for first time in 5 years
   - Generated $15,000 in first year of sales
-  - Sponsors received $3,750 total dividends
+  - Tenant received: $12,750 (85% - building her future)
+  - Sponsors received: $1,500 total dividends (10% - $75 each)
+  - Platform fee: $750 (5% - sustainability)
   - Children thriving in school
+  - Mother expanded to sell at local markets
+  - Sponsors gained lifetime platform fee waiver
   - Neighborhood block seeing renewed investment
 
 ## Getting Started
@@ -279,7 +305,9 @@ With faith, compassion, and action, all things are possible.
 **Access:** Social Platform → Housing NFTs Tab
 **Admin Tools:** Sitemaster/Treasurer roles can create projects
 **Database Tables:** housing_projects, housing_nfts, tenant_partnerships, partnership_revenues, project_updates
-**Revenue Split:** 70% Tenant / 25% Sponsor / 5% Platform
+**Revenue Split:** 85% Tenant / 10% Sponsor / 5% Platform
+**Ownership:** Platform retains property ownership; sponsors get revenue rights
+**Benefits:** Lifetime platform listing fee waiver for sponsors & tenants
 **Target:** 200 initial projects across 10+ global locations
 
 **Status:** ✅ LIVE AND READY TO CHANGE LIVES
