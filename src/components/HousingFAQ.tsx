@@ -144,51 +144,51 @@ export function HousingFAQ() {
     : faqData.filter(faq => faq.category === filterCategory);
 
   return (
-    <div className="max-w-4xl mx-auto">
-      <div className="text-center mb-12">
-        <div className="flex items-center justify-center mb-6">
+    <div className="max-w-4xl mx-auto px-2 sm:px-4">
+      <div className="text-center mb-8 sm:mb-12">
+        <div className="flex items-center justify-center mb-4 sm:mb-6">
           <div className="relative">
-            <Home className="w-16 h-16 text-neon-yellow" />
-            <Heart className="w-8 h-8 text-red-500 absolute -bottom-2 -right-2 animate-pulse" />
+            <Home className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 text-neon-yellow" />
+            <Heart className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-red-500 absolute -bottom-2 -right-2 animate-pulse" />
           </div>
         </div>
 
-        <h2 className="text-4xl font-black mb-4 bg-gradient-to-r from-neon-yellow via-neon-orange to-neon-yellow bg-clip-text text-transparent uppercase">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-black mb-3 sm:mb-4 bg-gradient-to-r from-neon-yellow via-neon-orange to-neon-yellow bg-clip-text text-transparent uppercase px-2">
           Frequently Asked Questions
         </h2>
-        <p className="text-gray-300 text-lg max-w-2xl mx-auto">
+        <p className="text-gray-300 text-sm sm:text-base md:text-lg max-w-2xl mx-auto px-4">
           Everything you need to know about changing lives through housing sponsorship
         </p>
       </div>
 
-      <div className="mb-8 flex flex-wrap gap-2 justify-center">
+      <div className="mb-6 sm:mb-8 grid grid-cols-2 sm:flex sm:flex-wrap gap-2 justify-center">
         {categories.map(({ id, label, icon: Icon }) => (
           <button
             key={id}
             onClick={() => setFilterCategory(id)}
-            className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-300 ${
+            className={`flex items-center justify-center sm:justify-start space-x-1.5 sm:space-x-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg transition-all duration-300 min-h-[44px] ${
               filterCategory === id
                 ? 'bg-gradient-to-r from-neon-yellow to-neon-orange text-black'
-                : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+                : 'bg-gray-800 text-gray-300 hover:bg-gray-700 active:bg-gray-600'
             }`}
           >
-            <Icon className="w-4 h-4" />
-            <span className="font-bold text-sm">{label}</span>
+            <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
+            <span className="font-bold text-xs sm:text-sm">{label}</span>
           </button>
         ))}
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-3 sm:space-y-4">
         {filteredFAQs.map((faq, index) => (
           <div
             key={index}
-            className="bg-gray-900 rounded-xl border border-gray-700 overflow-hidden hover:border-neon-yellow/30 transition-all duration-300"
+            className="bg-gray-900 rounded-xl border border-gray-700 overflow-hidden hover:border-neon-yellow/30 active:border-neon-yellow/50 transition-all duration-300"
           >
             <button
               onClick={() => setOpenIndex(openIndex === index ? null : index)}
-              className="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-gray-800/50 transition-colors"
+              className="w-full px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between text-left hover:bg-gray-800/50 active:bg-gray-800 transition-colors min-h-[56px]"
             >
-              <span className="text-white font-bold pr-4">{faq.question}</span>
+              <span className="text-white font-bold pr-3 sm:pr-4 text-sm sm:text-base">{faq.question}</span>
               {openIndex === index ? (
                 <ChevronUp className="w-5 h-5 text-neon-yellow flex-shrink-0" />
               ) : (
@@ -197,9 +197,9 @@ export function HousingFAQ() {
             </button>
 
             {openIndex === index && (
-              <div className="px-6 pb-4">
+              <div className="px-4 sm:px-6 pb-3 sm:pb-4">
                 <div className="pt-2 pb-2 border-t border-gray-800">
-                  <p className="text-gray-300 leading-relaxed">{faq.answer}</p>
+                  <p className="text-gray-300 leading-relaxed text-sm sm:text-base">{faq.answer}</p>
                 </div>
               </div>
             )}
@@ -208,24 +208,24 @@ export function HousingFAQ() {
       </div>
 
       {filteredFAQs.length === 0 && (
-        <div className="text-center py-16">
-          <p className="text-gray-400 text-lg">No FAQs found in this category</p>
+        <div className="text-center py-12 sm:py-16">
+          <p className="text-gray-400 text-base sm:text-lg">No FAQs found in this category</p>
         </div>
       )}
 
-      <div className="mt-12 bg-gradient-to-br from-blue-900/30 to-green-900/30 rounded-2xl p-8 border border-blue-500/30">
-        <div className="flex items-start space-x-4">
-          <TrendingUp className="w-8 h-8 text-neon-green flex-shrink-0 mt-1" />
-          <div>
-            <h3 className="text-2xl font-black text-white mb-3">Still Have Questions?</h3>
-            <p className="text-gray-300 mb-4">
+      <div className="mt-8 sm:mt-12 bg-gradient-to-br from-blue-900/30 to-green-900/30 rounded-2xl p-4 sm:p-6 md:p-8 border border-blue-500/30">
+        <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4">
+          <TrendingUp className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-neon-green flex-shrink-0 mt-1" />
+          <div className="flex-1">
+            <h3 className="text-xl sm:text-2xl font-black text-white mb-2 sm:mb-3">Still Have Questions?</h3>
+            <p className="text-gray-300 mb-3 sm:mb-4 text-sm sm:text-base">
               We're here to help you understand how your generosity can change lives. Every question matters, and we're committed to complete transparency.
             </p>
-            <div className="flex flex-wrap gap-4">
-              <button className="px-6 py-3 bg-gradient-to-r from-neon-yellow to-neon-orange text-black font-black rounded-lg hover:shadow-lg hover:shadow-neon-yellow/50 transition-all duration-300">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+              <button className="px-4 sm:px-6 py-3 bg-gradient-to-r from-neon-yellow to-neon-orange text-black font-black rounded-lg hover:shadow-lg hover:shadow-neon-yellow/50 active:shadow-neon-orange/50 transition-all duration-300 text-sm sm:text-base min-h-[44px]">
                 Contact Support
               </button>
-              <button className="px-6 py-3 bg-gray-800 hover:bg-gray-700 text-white font-black rounded-lg transition-colors">
+              <button className="px-4 sm:px-6 py-3 bg-gray-800 hover:bg-gray-700 active:bg-gray-600 text-white font-black rounded-lg transition-colors text-sm sm:text-base min-h-[44px]">
                 Browse Projects
               </button>
             </div>
@@ -233,8 +233,8 @@ export function HousingFAQ() {
         </div>
       </div>
 
-      <div className="mt-8 p-6 bg-yellow-900/20 border border-yellow-500/30 rounded-xl">
-        <p className="text-yellow-200 text-center italic">
+      <div className="mt-6 sm:mt-8 p-4 sm:p-6 bg-yellow-900/20 border border-yellow-500/30 rounded-xl">
+        <p className="text-yellow-200 text-center italic text-sm sm:text-base">
           "There is so much talent and skill being lost and untapped; people just need an opportunity. If we work together, we can make it happen, with God's help."
         </p>
       </div>
