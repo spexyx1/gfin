@@ -22,31 +22,25 @@ export interface CartItem {
   quantity: number;
 }
 
-export interface User {
+export interface BaseUser {
   id: string;
-  name: string;
-  email: string;
   username: string;
+  name: string;
+  avatar?: string;
   walletAddress?: string;
   isSeller: boolean;
-  rating: number;
   verified: boolean;
-  avatar?: string;
   createdAt: Date;
   lastLogin?: Date;
 }
 
-export interface AuthUser {
-  id: string;
-  username: string;
+export interface User extends BaseUser {
+  email: string;
+  rating: number;
+}
+
+export interface AuthUser extends BaseUser {
   email?: string;
-  name: string;
-  avatar?: string;
-  walletAddress?: string;
-  isSeller: boolean;
-  verified: boolean;
-  createdAt: Date;
-  lastLogin?: Date;
 }
 
 export interface Order {

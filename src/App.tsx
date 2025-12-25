@@ -31,30 +31,13 @@ import { useMessaging } from './hooks/useMessaging';
 import { useSocialSystem } from './hooks/useSocialSystem';
 import { useProducts } from './hooks/useProducts';
 import { useSiteMaster } from './hooks/useSiteMaster';
+import { useModalManager } from './hooks/useModalManager';
+import { useProductFilter } from './hooks/useProductFilter';
 
 
 function App() {
   const location = useLocation();
   const [searchTerm, setSearchTerm] = useState('');
-  const [showAuthModal, setShowAuthModal] = useState(false);
-  const [showUserProfile, setShowUserProfile] = useState(false);
-  const [showCart, setShowCart] = useState(false);
-  const [showBuyNow, setShowBuyNow] = useState(false);
-  const [showMakeOffer, setShowMakeOffer] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState<any>(null);
-  const [showMessages, setShowMessages] = useState(false);
-  const [showOrders, setShowOrders] = useState(false);
-  const [showSellerDashboard, setShowSellerDashboard] = useState(false);
-  const [showWallet, setShowWallet] = useState(false);
-  const [showSiteMaster, setShowSiteMaster] = useState(false);
-  const [showProfileSetup, setShowProfileSetup] = useState(false);
-  const [showSocialHub, setShowSocialHub] = useState(false);
-  const [showFAQ, setShowFAQ] = useState(false);
-  const [showLegal, setShowLegal] = useState(false);
-  const [showContact, setShowContact] = useState(false);
-  const [showSecurity, setShowSecurity] = useState(false);
-  const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
-  const [showReportListing, setShowReportListing] = useState(false);
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [searchFilters, setSearchFilters] = useState<SearchFilters>({
@@ -69,13 +52,14 @@ function App() {
     sortBy: 'relevance',
     tags: [],
   });
-  
+
   const { user, logout } = useAuth();
   const { addToCart, getItemCount } = useCart();
   const { getUnreadCount, createConversation } = useMessaging();
   const { getUserProfile } = useSocialSystem();
   const { products: allProducts, isLoading: productsLoading, loadProducts } = useProducts();
   const { issitemaster } = useSiteMaster();
+  const { openModal, closeModal, isOpen, getData } = useModalManager();
 
 
   // State for unread message count
@@ -103,7 +87,7 @@ function App() {
   // Listen for showLegal event from AuthModal
   React.useEffect(() => {
     const handleShowLegal = () => {
-      setShowLegal(true);
+      openModal('legal');
     };
 
     window.addEventListener('showLegal', handleShowLegal);
@@ -111,58 +95,13 @@ function App() {
     return () => {
       window.removeEventListener('showLegal', handleShowLegal);
     };
-  }, []);
+  }, [openModal]);
 
   // Check if we're on the social platform page
   const isSocialPage = location.pathname === '/social';
 
-  const filteredProducts = useMemo(() => {
-    let filtered = allProducts.filter(product => {
-      // Basic search term
-      const matchesBasicSearch = searchTerm === '' || 
-        product.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        product.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        product.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()));
-      
-      // Advanced search filters
-      const matchesAdvancedSearch = searchFilters.query === '' ||
-        product.title.toLowerCase().includes(searchFilters.query.toLowerCase()) ||
-        product.description.toLowerCase().includes(searchFilters.query.toLowerCase()) ||
-        product.tags.some(tag => tag.toLowerCase().includes(searchFilters.query.toLowerCase()));
-      
-      const matchesCategory = searchFilters.category === 'all' || product.category === searchFilters.category;
-      const matchesPrice = product.price >= searchFilters.priceMin && product.price <= searchFilters.priceMax;
-      const matchesSeller = searchFilters.seller === '' || product.seller.name === searchFilters.seller;
-      const matchesVerified = !searchFilters.verifiedOnly || product.seller.verified;
-      const matchesStock = !searchFilters.inStockOnly || product.inStock;
-      const matchesTags = searchFilters.tags.length === 0 || 
-        searchFilters.tags.some(tag => product.tags.includes(tag));
-      
-      return matchesBasicSearch && matchesAdvancedSearch && matchesCategory && 
-             matchesPrice && matchesSeller && matchesVerified && matchesStock && matchesTags;
-    });
-
-    // Apply sorting
-    switch (searchFilters.sortBy) {
-      case 'price_low':
-        filtered.sort((a, b) => a.price - b.price);
-        break;
-      case 'price_high':
-        filtered.sort((a, b) => b.price - a.price);
-        break;
-      case 'newest':
-        filtered.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-        break;
-      case 'rating':
-        filtered.sort((a, b) => b.seller.rating - a.seller.rating);
-        break;
-      default:
-        // Relevance - keep original order
-        break;
-    }
-
-    return filtered;
-  }, [searchTerm, searchFilters]);
+  // Use product filter hook
+  const filteredProducts = useProductFilter(allProducts, searchTerm, searchFilters);
 
   const handleAdvancedSearch = (filters: SearchFilters) => {
     setSearchFilters(filters);
@@ -172,7 +111,7 @@ function App() {
   const handleAddToCart = (product: any) => {
     if (!user) {
       setAuthMode('login');
-      setShowAuthModal(true);
+      openModal('auth');
       return;
     }
     addToCart(product);
@@ -181,41 +120,38 @@ function App() {
   const handleBuyNow = (product: any) => {
     if (!user) {
       setAuthMode('login');
-      setShowAuthModal(true);
+      openModal('auth');
       return;
     }
-    setSelectedProduct(product);
-    setShowBuyNow(true);
+    openModal('buyNow', product);
   };
 
   const handleMakeOffer = (product: any) => {
     if (!user) {
       setAuthMode('login');
-      setShowAuthModal(true);
+      openModal('auth');
       return;
     }
-    setSelectedProduct(product);
-    setShowMakeOffer(true);
+    openModal('makeOffer', product);
   };
 
   const handleContactSeller = async (sellerId: string) => {
     if (!user) {
       setAuthMode('login');
-      setShowAuthModal(true);
+      openModal('auth');
       return;
     }
-    
+
     try {
       await createConversation(sellerId);
-      setShowMessages(true);
+      openModal('messages');
     } catch (error) {
       console.error('Failed to create conversation:', error);
     }
   };
 
   const handleReportListing = (product: any) => {
-    setSelectedProduct(product);
-    setShowReportListing(true);
+    openModal('reportListing', product);
   };
 
 
@@ -553,7 +489,7 @@ function App() {
                 />
                 {!isSocialPage && (
                   <button
-                  onClick={() => setShowAdvancedSearch(true)}
+                  onClick={() => openModal('advancedSearch')}
                   className="absolute right-4 top-1/2 transform -translate-y-1/2 p-2 text-apple-gray-500 hover:text-apple-blue apple-hover"
                   title="Advanced Search"
                 >
@@ -574,7 +510,7 @@ function App() {
                 </Link>
               )}
               <button
-                onClick={() => setShowMessages(true)}
+                onClick={() => openModal('messages')}
                 className="relative p-2 text-apple-gray-500 hover:text-white apple-hover"
                 title="Messages"
               >
@@ -586,27 +522,27 @@ function App() {
                 )}
               </button>
               <button
-                onClick={() => setShowWallet(true)}
+                onClick={() => openModal('wallet')}
                 className="relative p-2 text-apple-gray-500 hover:text-white apple-hover"
                 title="Wallet"
               >
                 <Wallet className="w-5 h-5" />
               </button>
               <button
-                onClick={() => setShowOrders(true)}
+                onClick={() => openModal('orders')}
                 className="relative p-2 text-apple-gray-500 hover:text-white apple-hover"
                 title="My Orders"
               >
                 <ShoppingBag className="w-5 h-5" />
               </button>
               <button
-                onClick={() => setShowSellerDashboard(true)}
+                onClick={() => openModal('sellerDashboard')}
                 className="relative p-2 text-apple-gray-500 hover:text-white apple-hover"
                 title="Seller Dashboard"
               >
                 <Briefcase className="w-5 h-5" />
               </button>
-              
+
               <Link
                 to="/social"
                 className="relative p-2 text-apple-gray-500 hover:text-white apple-hover"
@@ -614,9 +550,9 @@ function App() {
               >
                 <Globe className="w-5 h-5" />
               </Link>
-              
-              <button 
-                onClick={() => setShowCart(true)}
+
+              <button
+                onClick={() => openModal('cart')}
                 className="relative p-2 text-apple-gray-500 hover:text-white apple-hover"
                 title="Shopping Cart"
               >
@@ -627,11 +563,11 @@ function App() {
                   </span>
                 )}
               </button>
-              
+
               {user ? (
                 <div className="flex items-center space-x-4">
                   <button
-                    onClick={() => setShowUserProfile(true)}
+                    onClick={() => openModal('userProfile')}
                     className="flex items-center space-x-2 p-2 glass-morphism rounded-apple apple-hover"
                   >
                     <div className="w-8 h-8 bg-apple-blue rounded-full flex items-center justify-center">
@@ -650,7 +586,7 @@ function App() {
                 <button
                   onClick={() => {
                     setAuthMode('login');
-                    setShowAuthModal(true);
+                    openModal('auth');
                   }}
                   className="btn-apple-primary px-6 py-2"
                 >
@@ -710,12 +646,12 @@ function App() {
                   </Link>
                 </li>
                 <li>
-                  <button onClick={() => setShowSellerDashboard(true)} className="text-sm font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent hover:from-white hover:to-gray-200 transition-all">
+                  <button onClick={() => openModal('sellerDashboard')} className="text-sm font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent hover:from-white hover:to-gray-200 transition-all">
                     Sell Products
                   </button>
                 </li>
                 <li>
-                  <button onClick={() => setShowWallet(true)} className="text-sm font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent hover:from-white hover:to-gray-200 transition-all">
+                  <button onClick={() => openModal('wallet')} className="text-sm font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent hover:from-white hover:to-gray-200 transition-all">
                     Wallet
                   </button>
                 </li>
@@ -726,22 +662,22 @@ function App() {
               <h4 className="font-black mb-6 text-sm uppercase tracking-wider bg-gradient-to-br from-gray-200 via-gray-300 to-gray-400 bg-clip-text text-transparent" style={{textShadow: '0 0 30px rgba(255,255,255,0.5)'}}>Support</h4>
               <ul className="space-y-3">
                 <li>
-                  <button onClick={() => setShowFAQ(true)} className="text-sm font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent hover:from-white hover:to-gray-200 transition-all">
+                  <button onClick={() => openModal('faq')} className="text-sm font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent hover:from-white hover:to-gray-200 transition-all">
                     FAQ
                   </button>
                 </li>
                 <li>
-                  <button onClick={() => setShowContact(true)} className="text-sm font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent hover:from-white hover:to-gray-200 transition-all">
+                  <button onClick={() => openModal('contact')} className="text-sm font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent hover:from-white hover:to-gray-200 transition-all">
                     Contact Us
                   </button>
                 </li>
                 <li>
-                  <button onClick={() => setShowLegal(true)} className="text-sm font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent hover:from-white hover:to-gray-200 transition-all">
+                  <button onClick={() => openModal('legal')} className="text-sm font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent hover:from-white hover:to-gray-200 transition-all">
                     Privacy Policy
                   </button>
                 </li>
                 <li>
-                  <button onClick={() => setShowLegal(true)} className="text-sm font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent hover:from-white hover:to-gray-200 transition-all">
+                  <button onClick={() => openModal('legal')} className="text-sm font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent hover:from-white hover:to-gray-200 transition-all">
                     Terms of Service
                   </button>
                 </li>
@@ -793,81 +729,81 @@ function App() {
       
       {/* Modals */}
       <AuthModal
-        isOpen={showAuthModal}
-        onClose={() => setShowAuthModal(false)}
+        isOpen={isOpen('auth')}
+        onClose={() => closeModal('auth')}
         initialMode={authMode}
       />
       <UserDashboard
-        isOpen={showUserProfile}
-        onClose={() => setShowUserProfile(false)}
+        isOpen={isOpen('userProfile')}
+        onClose={() => closeModal('userProfile')}
       />
-      <BuyNowModal 
-        isOpen={showBuyNow} 
-        onClose={() => setShowBuyNow(false)}
-        product={selectedProduct}
+      <BuyNowModal
+        isOpen={isOpen('buyNow')}
+        onClose={() => closeModal('buyNow')}
+        product={getData('buyNow')}
       />
-      <MakeOfferModal 
-        isOpen={showMakeOffer} 
-        onClose={() => setShowMakeOffer(false)}
-        product={selectedProduct}
+      <MakeOfferModal
+        isOpen={isOpen('makeOffer')}
+        onClose={() => closeModal('makeOffer')}
+        product={getData('makeOffer')}
       />
-      <ReportListingModal 
-        isOpen={showReportListing} 
-        onClose={() => setShowReportListing(false)}
-        product={selectedProduct}
+      <ReportListingModal
+        isOpen={isOpen('reportListing')}
+        onClose={() => closeModal('reportListing')}
+        product={getData('reportListing')}
       />
-    <Cart 
-      isOpen={showCart} 
-      onClose={() => setShowCart(false)}
+    <Cart
+      isOpen={isOpen('cart')}
+      onClose={() => closeModal('cart')}
     />
-    <MessagingCenter 
-      isOpen={showMessages} 
-      onClose={() => setShowMessages(false)}
+    <MessagingCenter
+      isOpen={isOpen('messages')}
+      onClose={() => closeModal('messages')}
     />
-    <OrderManagement 
-      isOpen={showOrders} 
-      onClose={() => setShowOrders(false)}
+    <OrderManagement
+      isOpen={isOpen('orders')}
+      onClose={() => closeModal('orders')}
     />
-    <SellerDashboard 
-      isOpen={showSellerDashboard} 
-      onClose={() => setShowSellerDashboard(false)}
+    <SellerDashboard
+      isOpen={isOpen('sellerDashboard')}
+      onClose={() => closeModal('sellerDashboard')}
     />
-    <WalletDashboard 
-      isOpen={showWallet} 
-      onClose={() => setShowWallet(false)}
+    <WalletDashboard
+      isOpen={isOpen('wallet')}
+      onClose={() => closeModal('wallet')}
     />
-    <ProfileSetup 
-      isOpen={showProfileSetup} 
-      onClose={() => setShowProfileSetup(false)}
+    <ProfileSetup
+      isOpen={isOpen('profileSetup')}
+      onClose={() => closeModal('profileSetup')}
     />
-    <SocialHub 
-      isOpen={showSocialHub} 
-      onClose={() => setShowSocialHub(false)}
+    <SocialHub
+      isOpen={isOpen('socialHub')}
+      onClose={() => closeModal('socialHub')}
     />
-    <FAQ 
-      isOpen={showFAQ} 
-      onClose={() => setShowFAQ(false)}
+    <FAQ
+      isOpen={isOpen('faq')}
+      onClose={() => closeModal('faq')}
       onContactClick={() => {
-        setShowFAQ(false);
-        setShowContact(true);
+        closeModal('faq');
+        openModal('contact');
       }}
     />
-    <LegalPage 
-      isOpen={showLegal} 
-      onClose={() => setShowLegal(false)}
+    <LegalPage
+      isOpen={isOpen('legal')}
+      onClose={() => closeModal('legal')}
     />
-    <ContactForm 
-      isOpen={showContact} 
-      onClose={() => setShowContact(false)}
+    <ContactForm
+      isOpen={isOpen('contact')}
+      onClose={() => closeModal('contact')}
     />
-    <AdvancedSearch 
-      isOpen={showAdvancedSearch} 
-      onClose={() => setShowAdvancedSearch(false)}
+    <AdvancedSearch
+      isOpen={isOpen('advancedSearch')}
+      onClose={() => closeModal('advancedSearch')}
       onSearch={handleAdvancedSearch}
     />
     <SecurityDashboard
-      isOpen={showSecurity}
-      onClose={() => setShowSecurity(false)}
+      isOpen={isOpen('security')}
+      onClose={() => closeModal('security')}
     />
     </div>
   );
