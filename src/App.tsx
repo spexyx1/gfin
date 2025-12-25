@@ -1,30 +1,32 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, lazy, Suspense } from 'react';
 import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import { Shield, Search, ShoppingCart, User, Wallet, TrendingUp, Package, MessageCircle, Store, CreditCard, Users, AtSign, Filter, Globe, Mail, DollarSign, ShoppingBag, Briefcase, UserCircle, Smartphone } from 'lucide-react';
-import { AdvancedSearch, SearchFilters } from './components/AdvancedSearch';
+import { SearchFilters } from './components/AdvancedSearch';
 import { GraffitiLogo } from './components/GraffitiLogo';
 import { AuthModal } from './components/AuthModal';
-import { UserDashboard } from './components/UserDashboard';
-import { Cart } from './components/Cart';
-import { BuyNowModal } from './components/BuyNowModal';
-import { MakeOfferModal } from './components/MakeOfferModal';
-import { ReportListingModal } from './components/ReportListingModal';
-import { MessagingCenter } from './components/MessagingCenter';
-import { OrderManagement } from './components/OrderManagement';
-import { SellerDashboard } from './components/SellerDashboard';
-import { WalletDashboard } from './components/WalletDashboard';
-import { EnhancedSitemasterDashboard } from './components/EnhancedSitemasterDashboard';
-import { TreasurerDashboard } from './components/TreasurerDashboard';
-import { MediatorDashboard } from './components/MediatorDashboard';
-import { ProfileSetup } from './components/ProfileSetup';
-import { SocialHub } from './components/SocialHub';
-import { SocialPlatform } from './components/SocialPlatform';
-import { SecurityDashboard } from './components/SecurityDashboard';
-import { FAQ } from './components/FAQ';
-import { LegalPage } from './components/LegalPage';
-import { ContactForm } from './components/ContactForm';
 import { PWAInstallButton } from './components/PWAInstallButton';
 import { MobileNetworkIndicator } from './components/MobileNetworkIndicator';
+
+const AdvancedSearch = lazy(() => import('./components/AdvancedSearch').then(m => ({ default: m.AdvancedSearch })));
+const UserDashboard = lazy(() => import('./components/UserDashboard').then(m => ({ default: m.UserDashboard })));
+const Cart = lazy(() => import('./components/Cart').then(m => ({ default: m.Cart })));
+const BuyNowModal = lazy(() => import('./components/BuyNowModal').then(m => ({ default: m.BuyNowModal })));
+const MakeOfferModal = lazy(() => import('./components/MakeOfferModal').then(m => ({ default: m.MakeOfferModal })));
+const ReportListingModal = lazy(() => import('./components/ReportListingModal').then(m => ({ default: m.ReportListingModal })));
+const MessagingCenter = lazy(() => import('./components/MessagingCenter').then(m => ({ default: m.MessagingCenter })));
+const OrderManagement = lazy(() => import('./components/OrderManagement').then(m => ({ default: m.OrderManagement })));
+const SellerDashboard = lazy(() => import('./components/SellerDashboard').then(m => ({ default: m.SellerDashboard })));
+const WalletDashboard = lazy(() => import('./components/WalletDashboard').then(m => ({ default: m.WalletDashboard })));
+const EnhancedSitemasterDashboard = lazy(() => import('./components/EnhancedSitemasterDashboard').then(m => ({ default: m.EnhancedSitemasterDashboard })));
+const TreasurerDashboard = lazy(() => import('./components/TreasurerDashboard').then(m => ({ default: m.TreasurerDashboard })));
+const MediatorDashboard = lazy(() => import('./components/MediatorDashboard').then(m => ({ default: m.MediatorDashboard })));
+const ProfileSetup = lazy(() => import('./components/ProfileSetup').then(m => ({ default: m.ProfileSetup })));
+const SocialHub = lazy(() => import('./components/SocialHub').then(m => ({ default: m.SocialHub })));
+const SocialPlatform = lazy(() => import('./components/SocialPlatform').then(m => ({ default: m.SocialPlatform })));
+const SecurityDashboard = lazy(() => import('./components/SecurityDashboard').then(m => ({ default: m.SecurityDashboard })));
+const FAQ = lazy(() => import('./components/FAQ').then(m => ({ default: m.FAQ })));
+const LegalPage = lazy(() => import('./components/LegalPage').then(m => ({ default: m.LegalPage })));
+const ContactForm = lazy(() => import('./components/ContactForm').then(m => ({ default: m.ContactForm })));
 import { useAuth } from './hooks/useAuth';
 import { useCart } from './hooks/useCart';
 import { useMessaging } from './hooks/useMessaging';
@@ -33,6 +35,7 @@ import { useProducts } from './hooks/useProducts';
 import { useSiteMaster } from './hooks/useSiteMaster';
 import { useModalManager } from './hooks/useModalManager';
 import { useProductFilter } from './hooks/useProductFilter';
+import { logger } from './utils/logger';
 
 
 function App() {
@@ -73,7 +76,7 @@ function App() {
           const count = await getUnreadCount();
           setUnreadMessageCount(count);
         } catch (error) {
-          console.error('Failed to load unread count:', error);
+          logger.error('Failed to load unread count', 'App', error);
           setUnreadMessageCount(0);
         }
       } else {
@@ -146,7 +149,7 @@ function App() {
       await createConversation(sellerId);
       openModal('messages');
     } catch (error) {
-      console.error('Failed to create conversation:', error);
+      logger.error('Failed to create conversation', 'App', error);
     }
   };
 
@@ -600,13 +603,19 @@ function App() {
       
       
       {/* Main Content with Routing */}
-      <Routes>
-        <Route path="/" element={<MarketplaceContent />} />
-        <Route path="/social" element={<SocialPlatform searchTerm={searchTerm} setSearchTerm={setSearchTerm} />} />
-        <Route path="/sitemaster" element={<EnhancedSitemasterDashboard />} />
-        <Route path="/treasurer" element={<TreasurerDashboard />} />
-        <Route path="/mediator" element={<MediatorDashboard />} />
-      </Routes>
+      <Suspense fallback={
+        <div className="flex items-center justify-center min-h-screen">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"></div>
+        </div>
+      }>
+        <Routes>
+          <Route path="/" element={<MarketplaceContent />} />
+          <Route path="/social" element={<SocialPlatform searchTerm={searchTerm} setSearchTerm={setSearchTerm} />} />
+          <Route path="/sitemaster" element={<EnhancedSitemasterDashboard />} />
+          <Route path="/treasurer" element={<TreasurerDashboard />} />
+          <Route path="/mediator" element={<MediatorDashboard />} />
+        </Routes>
+      </Suspense>
 
       {/* Global Footer */}
       <footer className="glass-morphism mt-24 border-t border-white/10 bg-gradient-to-b from-transparent to-gray-900/50">
@@ -733,78 +742,80 @@ function App() {
         onClose={() => closeModal('auth')}
         initialMode={authMode}
       />
-      <UserDashboard
-        isOpen={isOpen('userProfile')}
-        onClose={() => closeModal('userProfile')}
-      />
-      <BuyNowModal
-        isOpen={isOpen('buyNow')}
-        onClose={() => closeModal('buyNow')}
-        product={getData('buyNow')}
-      />
-      <MakeOfferModal
-        isOpen={isOpen('makeOffer')}
-        onClose={() => closeModal('makeOffer')}
-        product={getData('makeOffer')}
-      />
-      <ReportListingModal
-        isOpen={isOpen('reportListing')}
-        onClose={() => closeModal('reportListing')}
-        product={getData('reportListing')}
-      />
-    <Cart
-      isOpen={isOpen('cart')}
-      onClose={() => closeModal('cart')}
-    />
-    <MessagingCenter
-      isOpen={isOpen('messages')}
-      onClose={() => closeModal('messages')}
-    />
-    <OrderManagement
-      isOpen={isOpen('orders')}
-      onClose={() => closeModal('orders')}
-    />
-    <SellerDashboard
-      isOpen={isOpen('sellerDashboard')}
-      onClose={() => closeModal('sellerDashboard')}
-    />
-    <WalletDashboard
-      isOpen={isOpen('wallet')}
-      onClose={() => closeModal('wallet')}
-    />
-    <ProfileSetup
-      isOpen={isOpen('profileSetup')}
-      onClose={() => closeModal('profileSetup')}
-    />
-    <SocialHub
-      isOpen={isOpen('socialHub')}
-      onClose={() => closeModal('socialHub')}
-    />
-    <FAQ
-      isOpen={isOpen('faq')}
-      onClose={() => closeModal('faq')}
-      onContactClick={() => {
-        closeModal('faq');
-        openModal('contact');
-      }}
-    />
-    <LegalPage
-      isOpen={isOpen('legal')}
-      onClose={() => closeModal('legal')}
-    />
-    <ContactForm
-      isOpen={isOpen('contact')}
-      onClose={() => closeModal('contact')}
-    />
-    <AdvancedSearch
-      isOpen={isOpen('advancedSearch')}
-      onClose={() => closeModal('advancedSearch')}
-      onSearch={handleAdvancedSearch}
-    />
-    <SecurityDashboard
-      isOpen={isOpen('security')}
-      onClose={() => closeModal('security')}
-    />
+      <Suspense fallback={<div />}>
+        <UserDashboard
+          isOpen={isOpen('userProfile')}
+          onClose={() => closeModal('userProfile')}
+        />
+        <BuyNowModal
+          isOpen={isOpen('buyNow')}
+          onClose={() => closeModal('buyNow')}
+          product={getData('buyNow')}
+        />
+        <MakeOfferModal
+          isOpen={isOpen('makeOffer')}
+          onClose={() => closeModal('makeOffer')}
+          product={getData('makeOffer')}
+        />
+        <ReportListingModal
+          isOpen={isOpen('reportListing')}
+          onClose={() => closeModal('reportListing')}
+          product={getData('reportListing')}
+        />
+        <Cart
+          isOpen={isOpen('cart')}
+          onClose={() => closeModal('cart')}
+        />
+        <MessagingCenter
+          isOpen={isOpen('messages')}
+          onClose={() => closeModal('messages')}
+        />
+        <OrderManagement
+          isOpen={isOpen('orders')}
+          onClose={() => closeModal('orders')}
+        />
+        <SellerDashboard
+          isOpen={isOpen('sellerDashboard')}
+          onClose={() => closeModal('sellerDashboard')}
+        />
+        <WalletDashboard
+          isOpen={isOpen('wallet')}
+          onClose={() => closeModal('wallet')}
+        />
+        <ProfileSetup
+          isOpen={isOpen('profileSetup')}
+          onClose={() => closeModal('profileSetup')}
+        />
+        <SocialHub
+          isOpen={isOpen('socialHub')}
+          onClose={() => closeModal('socialHub')}
+        />
+        <FAQ
+          isOpen={isOpen('faq')}
+          onClose={() => closeModal('faq')}
+          onContactClick={() => {
+            closeModal('faq');
+            openModal('contact');
+          }}
+        />
+        <LegalPage
+          isOpen={isOpen('legal')}
+          onClose={() => closeModal('legal')}
+        />
+        <ContactForm
+          isOpen={isOpen('contact')}
+          onClose={() => closeModal('contact')}
+        />
+        <AdvancedSearch
+          isOpen={isOpen('advancedSearch')}
+          onClose={() => closeModal('advancedSearch')}
+          onSearch={handleAdvancedSearch}
+        />
+        <SecurityDashboard
+          isOpen={isOpen('security')}
+          onClose={() => closeModal('security')}
+        />
+      </Suspense>
     </div>
   );
 }

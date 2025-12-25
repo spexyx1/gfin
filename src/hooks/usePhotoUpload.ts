@@ -2,6 +2,8 @@ import { useState, useCallback } from 'react';
 import { ProductImage } from '../types';
 import { supabase, requireSupabase, handleSupabaseError } from '../lib/supabase';
 import { useAuth } from './useAuth';
+import { VALIDATION_CONFIG } from '../config/constants';
+import { logger } from '../utils/logger';
 
 export function usePhotoUpload() {
   const [isUploading, setIsUploading] = useState(false);
@@ -22,7 +24,7 @@ export function usePhotoUpload() {
         throw new Error('Please select a valid image file');
       }
 
-      if (file.size > 10 * 1024 * 1024) { // 10MB limit
+      if (file.size > VALIDATION_CONFIG.upload.maxImageSize) {
         throw new Error('Image size must be less than 10MB');
       }
 
@@ -117,10 +119,10 @@ export function usePhotoUpload() {
         .remove([filePath]);
 
       if (error) {
-        console.error('Failed to delete image from storage:', error);
+        logger.error('Failed to delete image from storage', 'usePhotoUpload', error);
       }
     } catch (error) {
-      console.error('Error deleting image:', error);
+      logger.error('Error deleting image', 'usePhotoUpload', error);
     }
   }, [user]);
   const setPrimaryPhoto = useCallback((imageId: string, images: ProductImage[]): ProductImage[] => {

@@ -7,6 +7,8 @@ import { supabase, requireSupabase, handleSupabaseError } from '../lib/supabase'
 import { ethers } from 'ethers';
 import React from 'react';
 import { useSponsorship } from './useSponsorship';
+import { TRANSACTION_CONFIG } from '../config/constants';
+import { logger } from '../utils/logger';
 
 // ERC20 ABI for USDC token
 const ERC20_ABI = [
@@ -410,9 +412,8 @@ export function useEscrow() {
   // Calculate total fee for a payment
   const calculateTotalFee = async (amount: number, paymentTokenAddress: string): Promise<number> => {
     if (!provider) {
-      // Fallback calculation
-      const baseFee = amount * 0.025; // 2.5%
-      const additionalFee = paymentTokenAddress !== GHETTO_CONTRACT_ADDRESS ? amount * 0.0125 : 0; // 1.25%
+      const baseFee = amount * 0.025;
+      const additionalFee = paymentTokenAddress !== GHETTO_CONTRACT_ADDRESS ? amount * TRANSACTION_CONFIG.fees.platformFee : 0;
       return baseFee + additionalFee;
     }
 
@@ -423,10 +424,9 @@ export function useEscrow() {
       const feeWei = await escrowContract.calculateTotalFee(paymentTokenAddress, amountWei);
       return parseFloat(ethers.formatUnits(feeWei, decimals));
     } catch (error) {
-      console.error('Failed to calculate fee:', error);
-      // Fallback calculation
-      const baseFee = amount * 0.025; // 2.5%
-      const additionalFee = paymentTokenAddress !== GHETTO_CONTRACT_ADDRESS ? amount * 0.0125 : 0; // 1.25%
+      logger.error('Failed to calculate fee', 'useEscrow', error);
+      const baseFee = amount * 0.025;
+      const additionalFee = paymentTokenAddress !== GHETTO_CONTRACT_ADDRESS ? amount * TRANSACTION_CONFIG.fees.platformFee : 0;
       return baseFee + additionalFee;
     }
   };

@@ -1,6 +1,7 @@
 import { useState, useEffect, createContext, useContext } from 'react';
 import { AuthUser } from '../types';
 import { supabase, requireSupabase, handleSupabaseError } from '../lib/supabase';
+import { logger } from '../utils/logger';
 import type { User, Session } from '@supabase/supabase-js';
 
 interface AuthContextType {
@@ -97,7 +98,7 @@ export function useAuth() {
         lastLogin: new Date(),
       };
     } catch (error) {
-      console.error('Error converting user:', error);
+      logger.error('Error converting user', 'useAuth', error);
       throw error;
     }
   };
@@ -114,7 +115,7 @@ export function useAuth() {
         const { data: { session }, error } = await supabase.auth.getSession();
         
         if (error) {
-          console.error('Error getting session:', error);
+          logger.error('Error getting session', 'useAuth', error);
           setUser(null);
         } else if (session?.user) {
           const authUser = await convertToAuthUser(session.user);
@@ -123,7 +124,7 @@ export function useAuth() {
           setUser(null);
         }
       } catch (error) {
-        console.error('Error in getInitialSession:', error);
+        logger.error('Error in getInitialSession', 'useAuth', error);
         setUser(null);
       } finally {
         setIsLoading(false);
@@ -147,7 +148,7 @@ export function useAuth() {
               setIsLoading(false);
             }
           } catch (error) {
-            console.error('Error in auth state change:', error);
+            logger.error('Error in auth state change', 'useAuth', error);
             setUser(null);
             setIsLoading(false);
           }
@@ -181,7 +182,7 @@ export function useAuth() {
       });
 
       if (error) {
-        console.error('Login error:', error);
+        logger.error('Login error', 'useAuth', error);
         setIsLoading(false);
         throw new Error('Invalid username or password');
       }
@@ -241,7 +242,7 @@ export function useAuth() {
       });
 
       if (error) {
-        console.error('Signup error:', error);
+        logger.error('Signup error', 'useAuth', error);
         setIsLoading(false);
         throw new Error(error.message || 'Failed to create account');
       }
@@ -272,12 +273,12 @@ export function useAuth() {
       const { error } = await supabaseClient.auth.signOut();
       
       if (error) {
-        console.error('Logout error:', error);
+        logger.error('Logout error', 'useAuth', error);
       }
-      
+
       setUser(null);
     } catch (error) {
-      console.error('Logout failed:', error);
+      logger.error('Logout failed', 'useAuth', error);
       setUser(null);
     }
   };

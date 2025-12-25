@@ -118,6 +118,11 @@ export const VALIDATION_CONFIG = {
     minPrice: 0.01,
     maxPrice: 1000000,
   },
+  upload: {
+    maxImageSize: 10 * 1024 * 1024,
+    maxVideoSize: 100 * 1024 * 1024,
+    allowedImageTypes: ['image/jpeg', 'image/png', 'image/gif', 'image/webp'],
+  },
 } as const;
 
 export const ROUTES = {
