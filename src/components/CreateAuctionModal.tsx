@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { X, Gavel, TrendingUp, TrendingDown, Clock, DollarSign, Zap, AlertCircle, CheckCircle } from 'lucide-react';
 import { SellerProduct, AuctionFormData } from '../types';
-import { useAuthContext } from '../hooks/useAuth';
+import { useAuth } from '../hooks/useAuth';
+import { useTerms } from '../hooks/useTerms';
 
 interface CreateAuctionModalProps {
   isOpen: boolean;
@@ -11,7 +12,8 @@ interface CreateAuctionModalProps {
 }
 
 export function CreateAuctionModal({ isOpen, onClose, product, onCreateAuction }: CreateAuctionModalProps) {
-  const { needsTermsAcceptance } = useAuthContext();
+  const { user } = useAuth();
+  const { needsTermsAcceptance } = useTerms();
   const [auctionType, setAuctionType] = useState<'english' | 'dutch'>('english');
   const [startPrice, setStartPrice] = useState('');
   const [reservePrice, setReservePrice] = useState('');

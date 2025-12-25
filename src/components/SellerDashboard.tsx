@@ -3,7 +3,8 @@ import { Plus, Package, DollarSign, Eye, CreditCard as Edit, Trash2, Camera, Sta
 import { useSellerProducts } from '../hooks/useSellerProducts';
 import { useWeb3 } from '../hooks/useWeb3';
 import { useEscrow } from '../hooks/useEscrow';
-import { useAuthContext } from '../hooks/useAuth';
+import { useAuth } from '../hooks/useAuth';
+import { useTerms } from '../hooks/useTerms';
 import { PhotoUpload } from './PhotoUpload';
 import { SellerProduct, ProductImage } from '../types';
 
@@ -27,7 +28,8 @@ export function SellerDashboard({ isOpen, onClose }: SellerDashboardProps) {
   const [productImages, setProductImages] = useState<ProductImage[]>([]);
 
   const { account } = useWeb3();
-  const { needsTermsAcceptance } = useAuthContext();
+  const { user } = useAuth();
+  const { needsTermsAcceptance } = useTerms();
   const { getSellerCollateralInfo, depositGhettoCollateral } = useEscrow();
   const {
     products,

@@ -3,7 +3,8 @@ import { X, Zap, Shield, CreditCard, AlertTriangle, CheckCircle, Info } from 'lu
 import { Product } from '../types';
 import { useWeb3 } from '../hooks/useWeb3';
 import { useEscrow } from '../hooks/useEscrow';
-import { useAuthContext } from '../hooks/useAuth';
+import { useAuth } from '../hooks/useAuth';
+import { useTerms } from '../hooks/useTerms';
 import { PaymentOption } from '../types';
 
 interface BuyNowModalProps {
@@ -19,7 +20,8 @@ export function BuyNowModal({ isOpen, onClose, product }: BuyNowModalProps) {
   const [selectedPaymentToken, setSelectedPaymentToken] = useState('GHETTO');
   const [estimatedFee, setEstimatedFee] = useState(0);
   const { account, connectWallet } = useWeb3();
-  const { needsTermsAcceptance } = useAuthContext();
+  const { user } = useAuth();
+  const { needsTermsAcceptance } = useTerms();
   const { createEscrow, fundOrder, checkTokenBalance, calculateTotalFee, isLoading } = useEscrow();
 
   const paymentOptions: PaymentOption[] = [
