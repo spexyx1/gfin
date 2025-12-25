@@ -24,6 +24,7 @@ import { FAQ } from './components/FAQ';
 import { LegalPage } from './components/LegalPage';
 import { ContactForm } from './components/ContactForm';
 import { PWAInstallButton } from './components/PWAInstallButton';
+import { MobileNetworkIndicator } from './components/MobileNetworkIndicator';
 import { useAuth } from './hooks/useAuth';
 import { useCart } from './hooks/useCart';
 import { useMessaging } from './hooks/useMessaging';
@@ -522,6 +523,8 @@ function App() {
   );
   return (
     <div className="min-h-screen bg-apple-gray-950">
+      <MobileNetworkIndicator />
+
       {/* Header */}
       <header className={`glass-morphism border-b border-white/10 sticky top-0 z-50 ${
         isSocialPage ? 'bg-gray-900/95' : ''

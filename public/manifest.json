@@ -3,10 +3,13 @@
     "short_name": "GHETTO FINANCE",
     "description": "Decentralized P2P marketplace with blockchain-powered escrow protection. Trade anything legal with crypto. Privacy-focused, lightweight, and secure.",
     "start_url": "/",
+    "scope": "/",
     "display": "standalone",
+    "display_override": ["standalone", "fullscreen", "minimal-ui"],
     "background_color": "#000000",
     "theme_color": "#FFFF00",
     "orientation": "portrait-primary",
+    "prefer_related_applications": false,
     "icons": [
         {
             "src": "/icons/icon-72x72.svg",

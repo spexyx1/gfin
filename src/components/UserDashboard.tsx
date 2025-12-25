@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, User, Settings, ShoppingBag, Wallet, MessageCircle, Share2, Package, TrendingUp, AlertCircle, Activity, Bell, Shield, Star, Award, Copy, Check, ExternalLink, Calendar, DollarSign, Users, Target, BarChart3, Clock, Wand2 } from 'lucide-react';
+import { X, User, Settings, ShoppingBag, Wallet, MessageCircle, Share2, Package, TrendingUp, AlertCircle, Activity, Bell, Shield, Star, Award, Copy, Check, ExternalLink, Calendar, DollarSign, Users, Target, BarChart3, Clock, Wand2, WifiOff } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { useReferrals } from '../hooks/useReferrals';
 import { useCart } from '../hooks/useCart';
@@ -8,11 +8,13 @@ import { useSellerProducts } from '../hooks/useSellerProducts';
 import { useSponsorship } from '../hooks/useSponsorship';
 import { useSiteMaster } from '../hooks/useSiteMaster';
 import { useEnhancedSitemaster } from '../hooks/useEnhancedSitemaster';
+import { useNetworkStatus } from '../hooks/useNetworkStatus';
 import { formatDistanceToNow } from 'date-fns';
 import { OrderManagement } from './OrderManagement';
 import { WalletDashboard } from './WalletDashboard';
 import { MessagingCenter } from './MessagingCenter';
 import { SellerDashboard } from './SellerDashboard';
+import { OfflineBanner } from './OfflineBanner';
 
 interface UserDashboardProps {
   isOpen: boolean;
@@ -30,6 +32,7 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
   const [copiedLink, setCopiedLink] = useState(false);
 
   const { user, updateProfile } = useAuth();
+  const { isOffline, isOnline } = useNetworkStatus();
   const {
     referralCode,
     referredUsers,
@@ -733,6 +736,12 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
 
           {/* Main Content */}
           <div className="flex-1 overflow-y-auto p-8">
+            {isOffline && (
+              <OfflineBanner
+                cacheAge="a few minutes"
+                onRefresh={() => window.location.reload()}
+              />
+            )}
             {activeSection === 'overview' && renderOverview()}
             {activeSection === 'referrals' && renderReferrals()}
             {activeSection === 'listings' && renderListings()}
