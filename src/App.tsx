@@ -27,6 +27,7 @@ const SecurityDashboard = lazy(() => import('./components/SecurityDashboard').th
 const FAQ = lazy(() => import('./components/FAQ').then(m => ({ default: m.FAQ })));
 const LegalPage = lazy(() => import('./components/LegalPage').then(m => ({ default: m.LegalPage })));
 const ContactForm = lazy(() => import('./components/ContactForm').then(m => ({ default: m.ContactForm })));
+const BlockchainManagement = lazy(() => import('./components/BlockchainManagement').then(m => ({ default: m.BlockchainManagement })));
 import { useAuth } from './hooks/useAuth';
 import { useCart } from './hooks/useCart';
 import { useMessaging } from './hooks/useMessaging';
@@ -612,6 +613,7 @@ function App() {
           <Route path="/" element={<MarketplaceContent />} />
           <Route path="/social" element={<SocialPlatform searchTerm={searchTerm} setSearchTerm={setSearchTerm} />} />
           <Route path="/sitemaster" element={<EnhancedSitemasterDashboard />} />
+          <Route path="/blockchain" element={<BlockchainManagement />} />
           <Route path="/treasurer" element={<TreasurerDashboard />} />
           <Route path="/mediator" element={<MediatorDashboard />} />
         </Routes>

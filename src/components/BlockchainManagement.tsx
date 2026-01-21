@@ -1,0 +1,69 @@
+import React, { useState } from 'react';
+import { Coins, Shield, BarChart3, Activity } from 'lucide-react';
+import { BlockchainTokenDashboard } from './BlockchainTokenDashboard';
+import { BlockchainEscrowDashboard } from './BlockchainEscrowDashboard';
+
+export function BlockchainManagement() {
+  const [activeView, setActiveView] = useState<'token' | 'escrow' | 'analytics'>('token');
+
+  return (
+    <div className="min-h-screen bg-gray-900">
+      {/* Navigation */}
+      <div className="bg-gray-800 border-b border-gray-700">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center gap-6 py-4">
+            <button
+              onClick={() => setActiveView('token')}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${
+                activeView === 'token'
+                  ? 'bg-orange-600 text-white'
+                  : 'text-gray-400 hover:text-white hover:bg-gray-700'
+              }`}
+            >
+              <Coins className="h-5 w-5" />
+              Token Management
+            </button>
+            <button
+              onClick={() => setActiveView('escrow')}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${
+                activeView === 'escrow'
+                  ? 'bg-orange-600 text-white'
+                  : 'text-gray-400 hover:text-white hover:bg-gray-700'
+              }`}
+            >
+              <Shield className="h-5 w-5" />
+              Escrow Management
+            </button>
+            <button
+              onClick={() => setActiveView('analytics')}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${
+                activeView === 'analytics'
+                  ? 'bg-orange-600 text-white'
+                  : 'text-gray-400 hover:text-white hover:bg-gray-700'
+              }`}
+              disabled
+            >
+              <BarChart3 className="h-5 w-5" />
+              Analytics (Coming Soon)
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Content */}
+      <div>
+        {activeView === 'token' && <BlockchainTokenDashboard />}
+        {activeView === 'escrow' && <BlockchainEscrowDashboard />}
+        {activeView === 'analytics' && (
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center text-white">
+            <Activity className="h-16 w-16 mx-auto mb-4 text-gray-600" />
+            <h3 className="text-2xl font-bold mb-2">Analytics Dashboard Coming Soon</h3>
+            <p className="text-gray-400">
+              Advanced blockchain analytics and insights will be available here
+            </p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
