@@ -33,7 +33,7 @@ export const useContractAddresses = (network: string) => {
         const addressMap: ContractAddresses = {
           ghettoToken: import.meta.env.VITE_GHETTO_TOKEN_ADDRESS || null,
           escrow: import.meta.env.VITE_ESCROW_CONTRACT_ADDRESS || null,
-          usdc: import.meta.env.VITE_USDC_CONTRACT_ADDRESS || null,
+          usdc: import.meta.env.VITE_USDC_ADDRESS || import.meta.env.VITE_USDC_CONTRACT_ADDRESS || null,
         };
 
         if (data) {
@@ -56,7 +56,7 @@ export const useContractAddresses = (network: string) => {
         setAddresses({
           ghettoToken: import.meta.env.VITE_GHETTO_TOKEN_ADDRESS || null,
           escrow: import.meta.env.VITE_ESCROW_CONTRACT_ADDRESS || null,
-          usdc: import.meta.env.VITE_USDC_CONTRACT_ADDRESS || null,
+          usdc: import.meta.env.VITE_USDC_ADDRESS || import.meta.env.VITE_USDC_CONTRACT_ADDRESS || null,
         });
       } finally {
         setLoading(false);

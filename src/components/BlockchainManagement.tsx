@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Coins, Shield, BarChart3, Activity } from 'lucide-react';
+import { Coins, Shield, BarChart3, Activity, Settings } from 'lucide-react';
 import { BlockchainTokenDashboard } from './BlockchainTokenDashboard';
 import { BlockchainEscrowDashboard } from './BlockchainEscrowDashboard';
+import { ContractDeploymentAdmin } from './ContractDeploymentAdmin';
 
 export function BlockchainManagement() {
-  const [activeView, setActiveView] = useState<'token' | 'escrow' | 'analytics'>('token');
+  const [activeView, setActiveView] = useState<'token' | 'escrow' | 'contracts' | 'analytics'>('token');
 
   return (
     <div className="min-h-screen bg-gray-900">
@@ -35,6 +36,17 @@ export function BlockchainManagement() {
               Escrow Management
             </button>
             <button
+              onClick={() => setActiveView('contracts')}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${
+                activeView === 'contracts'
+                  ? 'bg-orange-600 text-white'
+                  : 'text-gray-400 hover:text-white hover:bg-gray-700'
+              }`}
+            >
+              <Settings className="h-5 w-5" />
+              Contract Deployments
+            </button>
+            <button
               onClick={() => setActiveView('analytics')}
               className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${
                 activeView === 'analytics'
@@ -54,6 +66,7 @@ export function BlockchainManagement() {
       <div>
         {activeView === 'token' && <BlockchainTokenDashboard />}
         {activeView === 'escrow' && <BlockchainEscrowDashboard />}
+        {activeView === 'contracts' && <ContractDeploymentAdmin />}
         {activeView === 'analytics' && (
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center text-white">
             <Activity className="h-16 w-16 mx-auto mb-4 text-gray-600" />
