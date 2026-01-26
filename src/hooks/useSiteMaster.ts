@@ -5,9 +5,8 @@ import { useWeb3 } from './useWeb3';
 import { supabase, requireSupabase, handleSupabaseError } from '../lib/supabase';
 import { ethers } from 'ethers';
 
-// Contract addresses
-const ESCROW_CONTRACT_ADDRESS = import.meta.env.VITE_ESCROW_CONTRACT_ADDRESS || '0x1234567890123456789012345678901234567890';
-const GHETTO_CONTRACT_ADDRESS = import.meta.env.VITE_GHETTO_TOKEN_ADDRESS || '0xB0b86a33E6417c4c4c4c4c4c4c4c4c4c4c4c4c4c';
+const ESCROW_CONTRACT_ADDRESS = import.meta.env.VITE_ESCROW_CONTRACT_ADDRESS;
+const GHETTO_CONTRACT_ADDRESS = import.meta.env.VITE_GHETTO_TOKEN_ADDRESS;
 
 // Contract ABIs
 const ESCROW_ABI = [
@@ -281,25 +280,8 @@ export function useSiteMaster() {
         owner: ghettoOwner,
       });
 
-      // Load blacklisted addresses (mock data for now - in real app would query events)
-      setBlacklistedAddresses([
-        {
-          address: '0x1234567890123456789012345678901234567890',
-          reason: 'Fraudulent activity',
-          blacklistedAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000),
-          blacklistedBy: 'sitemaster',
-        },
-      ]);
-
-      // Load whitelisted contracts (mock data for now)
-      setWhitelistedContracts([
-        {
-          address: ESCROW_CONTRACT_ADDRESS,
-          name: 'Escrow Contract',
-          whitelistedAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
-          whitelistedBy: 'sitemaster',
-        },
-      ]);
+      setBlacklistedAddresses([]);
+      setWhitelistedContracts([]);
 
     } catch (error) {
       console.error('Failed to load contract settings:', error);
@@ -309,110 +291,9 @@ export function useSiteMaster() {
   };
 
   const loadSiteMasterData = () => {
-    // Load mock data for demonstration
-    const mockDisputes: DisputeCase[] = [
-      {
-        id: 'dispute_001',
-        orderId: 'order_001',
-        buyerId: '0x1234567890123456789012345678901234567890',
-        sellerId: '0x2345678901234567890123456789012345678901',
-        productTitle: 'Premium Hardware Wallet',
-        amount: 199.99,
-        disputeReason: 'Product not as described - missing biometric feature',
-        createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000),
-        deadline: new Date(Date.now() + 85 * 24 * 60 * 60 * 1000),
-        status: 'pending',
-        evidence: [
-          {
-            id: 'evidence_001',
-            submittedBy: '0x1234567890123456789012345678901234567890',
-            type: 'text',
-            content: 'The product description clearly stated biometric authentication, but the received item only has PIN protection.',
-            timestamp: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000)
-          }
-        ],
-        priority: 'medium'
-      },
-      {
-        id: 'dispute_002',
-        orderId: 'order_002',
-        buyerId: '0x3456789012345678901234567890123456789012',
-        sellerId: '0x4567890123456789012345678901234567890123',
-        productTitle: 'NFT Art Collection License',
-        amount: 129.99,
-        disputeReason: 'Never received product after payment',
-        createdAt: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000),
-        deadline: new Date(Date.now() + 75 * 24 * 60 * 60 * 1000),
-        status: 'under_review',
-        evidence: [],
-        priority: 'high'
-      }
-    ];
-
-    const mockTransactions: TransactionRecord[] = [
-      {
-        id: 'tx_001',
-        orderId: 'order_001',
-        buyerId: '0x1234567890123456789012345678901234567890',
-        sellerId: '0x2345678901234567890123456789012345678901',
-        amount: 199.99,
-        status: 'disputed',
-        createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000),
-        flagged: true,
-        flagReason: 'Dispute raised by buyer'
-      },
-      {
-        id: 'tx_002',
-        orderId: 'order_002',
-        buyerId: '0x3456789012345678901234567890123456789012',
-        sellerId: '0x4567890123456789012345678901234567890123',
-        amount: 129.99,
-        status: 'disputed',
-        createdAt: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000),
-        flagged: true,
-        flagReason: 'Non-delivery claim'
-      },
-      {
-        id: 'tx_003',
-        orderId: 'order_003',
-        buyerId: '0x5678901234567890123456789012345678901234',
-        sellerId: '0x6789012345678901234567890123456789012345',
-        amount: 799.99,
-        status: 'completed',
-        createdAt: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000),
-        completedAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000),
-        flagged: false
-      }
-    ];
-
-    const mockUsers: UserAccount[] = [
-      {
-        id: '0x1234567890123456789012345678901234567890',
-        username: 'cryptobuyer1',
-        email: 'buyer1@example.com',
-        status: 'active',
-        totalTransactions: 5,
-        totalDisputes: 1,
-        riskScore: 2,
-        joinedAt: new Date(Date.now() - 90 * 24 * 60 * 60 * 1000),
-        lastActivity: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000)
-      },
-      {
-        id: '0x2345678901234567890123456789012345678901',
-        username: 'techseller',
-        email: 'seller1@example.com',
-        status: 'under_review',
-        totalTransactions: 12,
-        totalDisputes: 2,
-        riskScore: 4,
-        joinedAt: new Date(Date.now() - 180 * 24 * 60 * 60 * 1000),
-        lastActivity: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000)
-      }
-    ];
-
-    setDisputes(mockDisputes);
-    setTransactions(mockTransactions);
-    setUserAccounts(mockUsers);
+    setDisputes([]);
+    setTransactions([]);
+    setUserAccounts([]);
   };
 
   // Escrow Contract Management Functions

@@ -1,61 +1,42 @@
 import { useState, useEffect } from 'react';
 import { TradeOrder, ExchangeRate } from '../types';
+import { fetchTokenPrice, getExchangeRate } from '../services/priceService';
 
 export function useExchange() {
   const [orders, setOrders] = useState<TradeOrder[]>([]);
   const [rates, setRates] = useState<ExchangeRate[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Mock exchange rates
   useEffect(() => {
-    const mockRates: ExchangeRate[] = [
-      { from: 'BTC', to: 'USD', rate: 43250.00, timestamp: new Date() },
-      { from: 'ETH', to: 'USD', rate: 2650.00, timestamp: new Date() },
-      { from: 'SOL', to: 'USD', rate: 125.50, timestamp: new Date() },
-      { from: 'USDC', to: 'USD', rate: 1.00, timestamp: new Date() },
-      { from: 'BTC', to: 'ETH', rate: 16.32, timestamp: new Date() },
-      { from: 'ETH', to: 'SOL', rate: 21.12, timestamp: new Date() },
-    ];
-    setRates(mockRates);
+    const loadRates = async () => {
+      const tokens = ['BTC', 'ETH', 'SOL', 'USDC', 'MATIC', 'BNB'];
+      const ratesList: ExchangeRate[] = [];
 
-    // Mock existing orders
-    const mockOrders: TradeOrder[] = [
-      {
-        id: 'order1',
-        type: 'buy',
-        orderType: 'limit',
-        pair: 'ETH/USDC',
-        amount: 1.0,
-        price: 2600,
-        filled: 0,
-        status: 'open',
-        createdAt: new Date(Date.now() - 3600000),
-        updatedAt: new Date(Date.now() - 3600000),
-      },
-      {
-        id: 'order2',
-        type: 'sell',
-        orderType: 'market',
-        pair: 'BTC/USDC',
-        amount: 0.01,
-        filled: 0.01,
-        status: 'filled',
-        createdAt: new Date(Date.now() - 7200000),
-        updatedAt: new Date(Date.now() - 7000000),
-      },
-    ];
-    setOrders(mockOrders);
+      for (const token of tokens) {
+        const price = await fetchTokenPrice(token);
+        if (price) {
+          ratesList.push({
+            from: token,
+            to: 'USD',
+            rate: price.usd,
+            timestamp: new Date(price.last_updated_at * 1000)
+          });
+        }
+      }
+
+      setRates(ratesList);
+    };
+
+    loadRates();
+    const interval = setInterval(loadRates, 60000);
+    return () => clearInterval(interval);
   }, []);
 
-  const getRate = (from: string, to: string): number => {
-    const rate = rates.find(r => r.from === from && r.to === to);
-    if (rate) return rate.rate;
-    
-    // Try reverse rate
-    const reverseRate = rates.find(r => r.from === to && r.to === from);
-    if (reverseRate) return 1 / reverseRate.rate;
-    
-    return 0;
+  const getRate = async (from: string, to: string): Promise<number> => {
+    if (from === to) return 1;
+
+    const rate = await getExchangeRate(from, to);
+    return rate || 0;
   };
 
   const placeBuyOrder = async (
@@ -66,8 +47,6 @@ export function useExchange() {
   ) => {
     setIsLoading(true);
     try {
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
       const newOrder: TradeOrder = {
         id: `order_${Date.now()}`,
         type: 'buy',
@@ -99,8 +78,6 @@ export function useExchange() {
   ) => {
     setIsLoading(true);
     try {
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
       const newOrder: TradeOrder = {
         id: `order_${Date.now()}`,
         type: 'sell',
@@ -127,10 +104,8 @@ export function useExchange() {
   const cancelOrder = async (orderId: string) => {
     setIsLoading(true);
     try {
-      await new Promise(resolve => setTimeout(resolve, 500));
-      
-      setOrders(prev => prev.map(order => 
-        order.id === orderId 
+      setOrders(prev => prev.map(order =>
+        order.id === orderId
           ? { ...order, status: 'cancelled' as const, updatedAt: new Date() }
           : order
       ));
@@ -143,18 +118,9 @@ export function useExchange() {
   };
 
   const getOrderBook = (pair: string) => {
-    // Mock order book data
     return {
-      bids: [
-        { price: 2645, amount: 1.5 },
-        { price: 2640, amount: 2.1 },
-        { price: 2635, amount: 0.8 },
-      ],
-      asks: [
-        { price: 2655, amount: 1.2 },
-        { price: 2660, amount: 1.8 },
-        { price: 2665, amount: 2.5 },
-      ],
+      bids: [],
+      asks: [],
     };
   };
 

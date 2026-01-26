@@ -142,9 +142,9 @@ export function CreateAuctionModal({ isOpen, onClose, product, onCreateAuction }
               <div className="bg-gray-800 rounded-2xl p-4 mb-6 border border-gray-700">
                 <div className="flex items-start space-x-4">
                   <img
-                    src={product.images[0]?.url || 'https://images.pexels.com/photos/7567482/pexels-photo-7567482.jpeg?auto=compress&cs=tinysrgb&w=400'}
+                    src={product.images[0]?.url || ''}
                     alt={product.title}
-                    className="w-20 h-20 object-cover rounded-xl"
+                    className="w-20 h-20 object-cover rounded-xl bg-gray-800"
                   />
                   <div className="flex-1">
                     <h3 className="text-gray-200 font-black uppercase mb-1">{product.title}</h3>

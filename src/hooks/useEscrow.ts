@@ -79,10 +79,9 @@ export function useEscrow() {
   const { addresses } = useContractAddresses(networkName.toLowerCase().replace(' ', ''));
   const { calculateSponsorPayouts, recordSponsorTransactions } = useSponsorship();
 
-  // Get contract addresses with fallbacks
-  const ESCROW_CONTRACT_ADDRESS = addresses.escrow || import.meta.env.VITE_ESCROW_CONTRACT_ADDRESS || '0x1234567890123456789012345678901234567890';
-  const USDC_CONTRACT_ADDRESS = addresses.usdc || import.meta.env.VITE_USDC_CONTRACT_ADDRESS || '0xA0b86a33E6417c4c4c4c4c4c4c4c4c4c4c4c4c4c';
-  const GHETTO_CONTRACT_ADDRESS = addresses.ghettoToken || import.meta.env.VITE_GHETTO_TOKEN_ADDRESS || '0xB0b86a33E6417c4c4c4c4c4c4c4c4c4c4c4c4c4c';
+  const ESCROW_CONTRACT_ADDRESS = addresses.escrow || import.meta.env.VITE_ESCROW_CONTRACT_ADDRESS;
+  const USDC_CONTRACT_ADDRESS = addresses.usdc || import.meta.env.VITE_USDC_CONTRACT_ADDRESS;
+  const GHETTO_CONTRACT_ADDRESS = addresses.ghettoToken || import.meta.env.VITE_GHETTO_TOKEN_ADDRESS;
 
   // Helper function to get token decimals
   const getTokenDecimals = async (tokenAddress: string): Promise<number> => {

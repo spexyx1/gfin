@@ -247,7 +247,7 @@ export function OrderManagement({ isOpen, onClose }: OrderManagementProps) {
 
                     <div className="flex items-center gap-4 mb-4">
                       <img
-                        src={order.productImage || 'https://images.pexels.com/photos/7567482/pexels-photo-7567482.jpeg?auto=compress&cs=tinysrgb&w=400'}
+                        src={order.productImage || ''}
                         alt={order.productName || 'Product'}
                         className="w-16 h-16 rounded-lg object-cover"
                       />
@@ -455,7 +455,7 @@ export function OrderManagement({ isOpen, onClose }: OrderManagementProps) {
 
                       <div className="flex items-center gap-4 mb-4">
                         <img
-                          src={order.productImage || 'https://images.pexels.com/photos/7567482/pexels-photo-7567482.jpeg?auto=compress&cs=tinysrgb&w=400'}
+                          src={order.productImage || ''}
                           alt={order.productName || 'Product'}
                           className="w-16 h-16 rounded-lg object-cover"
                         />

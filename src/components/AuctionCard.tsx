@@ -69,7 +69,7 @@ export function AuctionCard({ auction, onClick, onQuickBid }: AuctionCardProps) 
     return auction.auctionType === 'english' ? 'ENGLISH' : 'DUTCH';
   };
 
-  const imageUrl = auction.product?.image || 'https://images.pexels.com/photos/7567482/pexels-photo-7567482.jpeg?auto=compress&cs=tinysrgb&w=400';
+  const imageUrl = auction.product?.image || '';
 
   return (
     <div

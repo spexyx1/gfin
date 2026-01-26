@@ -3,8 +3,11 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App.tsx';
 import { AuthProvider } from './components/AuthProvider.tsx';
-import './lib/supabase.ts'; // Initialize Supabase client
+import './lib/supabase.ts';
+import { logEnvironmentStatus } from './utils/validateEnv';
 import './index.css';
+
+logEnvironmentStatus();
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {

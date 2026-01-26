@@ -57,7 +57,7 @@ export function WalletDashboard({ isOpen, onClose }: WalletDashboardProps) {
             name: 'MetaMask',
             type: 'browser',
             address: account,
-            balance: 2.5,
+            balance: 0,
             currency: 'ETH',
             icon: '🦊',
             connected: true,
@@ -65,25 +65,11 @@ export function WalletDashboard({ isOpen, onClose }: WalletDashboardProps) {
           setConnectedWallets(prev => [...prev.filter(w => w.id !== walletId), newWallet]);
         }
       } else {
-        // Simulate connection for other wallets
-        const wallet = availableWallets.find(w => w.id === walletId);
-        if (wallet) {
-          const mockAddress = `0x${Math.random().toString(16).substr(2, 40)}`;
-          const newWallet: ConnectedWallet = {
-            id: walletId,
-            name: wallet.name,
-            type: wallet.type,
-            address: mockAddress,
-            balance: Math.random() * 10,
-            currency: walletId === 'phantom' ? 'SOL' : 'ETH',
-            icon: wallet.icon,
-            connected: true,
-          };
-          setConnectedWallets(prev => [...prev.filter(w => w.id !== walletId), newWallet]);
-        }
+        throw new Error(`${walletId} wallet connection not yet implemented. Only MetaMask is currently supported.`);
       }
     } catch (error) {
       console.error('Failed to connect wallet:', error);
+      alert(error instanceof Error ? error.message : 'Failed to connect wallet');
     }
   };
 
