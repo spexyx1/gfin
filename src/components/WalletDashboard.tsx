@@ -6,21 +6,11 @@ import { useExchange } from '../hooks/useExchange';
 import { useHoudiniSwap } from '../hooks/useHoudiniSwap';
 import { SwapInterface } from './SwapInterface';
 import { formatDistanceToNow } from 'date-fns';
+import { useAppKit } from '@reown/appkit/react';
 
 interface WalletDashboardProps {
   isOpen: boolean;
   onClose: () => void;
-}
-
-interface ConnectedWallet {
-  id: string;
-  name: string;
-  type: 'browser' | 'mobile' | 'hardware';
-  address: string;
-  balance: number;
-  currency: string;
-  icon: string;
-  connected: boolean;
 }
 
 export function WalletDashboard({ isOpen, onClose }: WalletDashboardProps) {
@@ -29,56 +19,12 @@ export function WalletDashboard({ isOpen, onClose }: WalletDashboardProps) {
   const [buyForm, setBuyForm] = useState({ asset: 'ETH', amount: '', paymentMethod: 'card' as 'card' | 'bank' });
   const [swapForm, setSwapForm] = useState({ fromAsset: 'ETH', toAsset: 'USDC', fromAmount: '' });
   const [tradeForm, setTradeForm] = useState({ pair: 'ETH/USDC', amount: '', orderType: 'market' as 'market' | 'limit', price: '' });
-  const [connectedWallets, setConnectedWallets] = useState<ConnectedWallet[]>([]);
 
   const { balances, transactions, isLoading, sendCrypto, buyCrypto, swapCrypto, getTotalBalance } = useWallet();
-  const { account, connectWallet, disconnectWallet, isConnected } = useWeb3();
+  const { account, isConnected } = useWeb3();
   const { placeBuyOrder, placeSellOrder, orders } = useExchange();
   const { getQuote, executeSwap, quote } = useHoudiniSwap();
-
-  const availableWallets = [
-    { id: 'metamask', name: 'MetaMask', type: 'browser' as const, icon: '🦊', description: 'Ethereum & EVM chains' },
-    { id: 'walletconnect', name: 'WalletConnect', type: 'mobile' as const, icon: '🔗', description: '100+ wallet support' },
-    { id: 'coinbase', name: 'Coinbase Wallet', type: 'browser' as const, icon: '🔵', description: 'Browser extension' },
-    { id: 'phantom', name: 'Phantom', type: 'browser' as const, icon: '👻', description: 'Solana ecosystem' },
-    { id: 'trust', name: 'Trust Wallet', type: 'mobile' as const, icon: '🛡️', description: 'Mobile wallet' },
-    { id: 'ledger', name: 'Ledger', type: 'hardware' as const, icon: '🔐', description: 'Hardware wallet' },
-    { id: 'trezor', name: 'Trezor', type: 'hardware' as const, icon: '🔒', description: 'Hardware wallet' },
-    { id: 'rainbow', name: 'Rainbow', type: 'mobile' as const, icon: '🌈', description: 'Mobile wallet' },
-  ];
-
-  const handleConnectWallet = async (walletId: string) => {
-    try {
-      if (walletId === 'metamask') {
-        await connectWallet();
-        if (account) {
-          const newWallet: ConnectedWallet = {
-            id: walletId,
-            name: 'MetaMask',
-            type: 'browser',
-            address: account,
-            balance: 0,
-            currency: 'ETH',
-            icon: '🦊',
-            connected: true,
-          };
-          setConnectedWallets(prev => [...prev.filter(w => w.id !== walletId), newWallet]);
-        }
-      } else {
-        throw new Error(`${walletId} wallet connection not yet implemented. Only MetaMask is currently supported.`);
-      }
-    } catch (error) {
-      console.error('Failed to connect wallet:', error);
-      alert(error instanceof Error ? error.message : 'Failed to connect wallet');
-    }
-  };
-
-  const handleDisconnectWallet = (walletId: string) => {
-    if (walletId === 'metamask') {
-      disconnectWallet();
-    }
-    setConnectedWallets(prev => prev.filter(w => w.id !== walletId));
-  };
+  const { open } = useAppKit();
 
   const handleSend = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -191,7 +137,7 @@ export function WalletDashboard({ isOpen, onClose }: WalletDashboardProps) {
             <div className="text-center">
               <p className="text-gray-400 text-sm font-medium mb-1">Total Balance</p>
               <p className="text-2xl font-black text-white">
-                ${(getTotalBalance() + connectedWallets.reduce((sum, w) => sum + w.balance * 2650, 0)).toLocaleString()}
+                ${getTotalBalance().toLocaleString()}
               </p>
             </div>
           </div>
@@ -204,85 +150,43 @@ export function WalletDashboard({ isOpen, onClose }: WalletDashboardProps) {
             <div className="flex-1 overflow-y-auto p-8">
               <h3 className="text-2xl font-black text-white mb-8 uppercase">Connect DeFi Wallets</h3>
               
-              {/* Connected Wallets */}
-              {connectedWallets.length > 0 && (
+              {/* Wallet Connection */}
+              {isConnected && account ? (
                 <div className="mb-8">
-                  <h4 className="text-lg font-black text-white mb-4 uppercase">Connected Wallets</h4>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {connectedWallets.map((wallet) => (
-                      <div key={wallet.id} className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
-                        <div className="flex items-center justify-between mb-4">
-                          <div className="flex items-center space-x-3">
-                            <span className="text-2xl">{wallet.icon}</span>
-                            <div>
-                              <h5 className="text-white font-medium">{wallet.name}</h5>
-                              <p className="text-gray-400 text-sm font-mono">
-                                {wallet.address.slice(0, 6)}...{wallet.address.slice(-4)}
-                              </p>
-                            </div>
-                          </div>
-                          <button
-                            onClick={() => handleDisconnectWallet(wallet.id)}
-                            className="px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded text-sm transition-colors"
-                          >
-                            Disconnect
-                          </button>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span className="text-gray-400 text-sm">Balance:</span>
-                          <span className="text-white font-medium">
-                            {wallet.balance.toFixed(4)} {wallet.currency}
-                          </span>
+                  <h4 className="text-lg font-black text-white mb-4 uppercase">Connected Wallet</h4>
+                  <div className="bg-gray-800 rounded-2xl p-6 border-2 border-neon-blue/30">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center space-x-4">
+                        <Wallet className="text-neon-blue w-8 h-8" />
+                        <div>
+                          <h5 className="text-white font-medium">Connected Wallet</h5>
+                          <p className="text-gray-400 text-sm font-mono">
+                            {account.slice(0, 6)}...{account.slice(-4)}
+                          </p>
                         </div>
                       </div>
-                    ))}
+                      <button
+                        onClick={() => open()}
+                        className="px-4 py-2 bg-neon-blue hover:bg-neon-blue/80 text-black rounded-lg font-medium transition-colors"
+                      >
+                        Manage Wallet
+                      </button>
+                    </div>
                   </div>
                 </div>
-              )}
-
-              {/* Available Wallets */}
-              <div>
-                <h4 className="text-lg font-black text-white mb-4 uppercase">Available Wallets</h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {availableWallets.map((wallet) => {
-                    const isConnected = connectedWallets.some(w => w.id === wallet.id);
-                    
-                    return (
-                      <div key={wallet.id} className="bg-gray-800 rounded-2xl p-6 border border-gray-700 hover:border-neon-blue/30 transition-all duration-300">
-                        <div className="flex items-center space-x-4 mb-4">
-                          <span className="text-3xl">{wallet.icon}</span>
-                          <div>
-                            <h5 className="text-white font-medium">{wallet.name}</h5>
-                            <p className="text-gray-400 text-sm">{wallet.description}</p>
-                          </div>
-                        </div>
-                        
-                        <div className="flex items-center justify-between">
-                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                            wallet.type === 'browser' ? 'bg-blue-500/20 text-blue-400' :
-                            wallet.type === 'mobile' ? 'bg-green-500/20 text-green-400' :
-                            'bg-purple-500/20 text-purple-400'
-                          }`}>
-                            {wallet.type.toUpperCase()}
-                          </span>
-                          
-                          <button
-                            onClick={() => isConnected ? handleDisconnectWallet(wallet.id) : handleConnectWallet(wallet.id)}
-                            disabled={isLoading}
-                            className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                              isConnected
-                                ? 'bg-red-600 hover:bg-red-700 text-white'
-                                : 'bg-neon-blue hover:bg-neon-blue/80 text-black'
-                            }`}
-                          >
-                            {isConnected ? 'Disconnect' : 'Connect'}
-                          </button>
-                        </div>
-                      </div>
-                    );
-                  })}
+              ) : (
+                <div className="text-center py-12 mb-8">
+                  <Wallet className="w-16 h-16 text-gray-600 mx-auto mb-4" />
+                  <h4 className="text-xl font-black text-white mb-2 uppercase">Connect Your Wallet</h4>
+                  <p className="text-gray-400 mb-6">Connect with 300+ wallets including MetaMask, Coinbase, Trust, Ledger and more</p>
+                  <button
+                    onClick={() => open()}
+                    className="px-8 py-3 bg-neon-blue hover:bg-neon-blue/80 text-black rounded-lg font-black uppercase transition-colors"
+                  >
+                    Connect Wallet
+                  </button>
                 </div>
-              </div>
+              )}
 
               {/* Security Notice */}
               <div className="mt-8 bg-gray-800/50 rounded-2xl p-6 border border-gray-700">
@@ -337,36 +241,6 @@ export function WalletDashboard({ isOpen, onClose }: WalletDashboardProps) {
                   </div>
                 ))}
               </div>
-
-              {/* Connected Wallets Overview */}
-              {connectedWallets.length > 0 && (
-                <div className="mb-8">
-                  <h4 className="text-lg font-black text-white mb-4 uppercase">Connected Wallets</h4>
-                  <div className="space-y-3">
-                    {connectedWallets.map((wallet) => (
-                      <div key={wallet.id} className="bg-gray-800 rounded-xl p-4 border border-gray-700 flex items-center justify-between">
-                        <div className="flex items-center space-x-3">
-                          <span className="text-xl">{wallet.icon}</span>
-                          <div>
-                            <p className="text-white font-medium">{wallet.name}</p>
-                            <p className="text-gray-400 text-sm font-mono">
-                              {wallet.address.slice(0, 6)}...{wallet.address.slice(-4)}
-                            </p>
-                          </div>
-                        </div>
-                        <div className="text-right">
-                          <p className="text-white font-medium">
-                            {wallet.balance.toFixed(4)} {wallet.currency}
-                          </p>
-                          <p className="text-gray-400 text-sm">
-                            ${(wallet.balance * 2650).toLocaleString()}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
 
               {/* Recent Transactions */}
               <div>
@@ -641,9 +515,9 @@ export function WalletDashboard({ isOpen, onClose }: WalletDashboardProps) {
 
           {/* Trade Tab */}
           {/* Atomic Swap Tab */}
-          {activeTab === 'atomic-swap' && connectedWallets.length > 0 && (
+          {activeTab === 'atomic-swap' && isConnected && account && (
             <div className="flex-1 overflow-y-auto p-8">
-              <SwapInterface userAddress={connectedWallets[0].address} />
+              <SwapInterface userAddress={account} />
             </div>
           )}
 

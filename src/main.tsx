@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App.tsx';
 import { AuthProvider } from './components/AuthProvider.tsx';
+import { ReownProvider } from './providers/ReownProvider.tsx';
 import './lib/supabase.ts';
 import { logEnvironmentStatus } from './utils/validateEnv';
 import './index.css';
@@ -38,9 +39,11 @@ if ('serviceWorker' in navigator) {
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
-      <AuthProvider>
-        <App />
-      </AuthProvider>
+      <ReownProvider>
+        <AuthProvider>
+          <App />
+        </AuthProvider>
+      </ReownProvider>
     </BrowserRouter>
   </StrictMode>
 );
