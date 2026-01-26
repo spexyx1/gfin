@@ -783,6 +783,7 @@ function App() {
         <WalletDashboard
           isOpen={isOpen('wallet')}
           onClose={() => closeModal('wallet')}
+          initialTab={getData('wallet')?.initialTab}
         />
         <ProfileSetup
           isOpen={isOpen('profileSetup')}

@@ -11,10 +11,11 @@ import { useAppKit } from '@reown/appkit/react';
 interface WalletDashboardProps {
   isOpen: boolean;
   onClose: () => void;
+  initialTab?: 'connect' | 'overview' | 'send' | 'buy' | 'swap' | 'trade' | 'atomic-swap';
 }
 
-export function WalletDashboard({ isOpen, onClose }: WalletDashboardProps) {
-  const [activeTab, setActiveTab] = useState<'connect' | 'overview' | 'send' | 'buy' | 'swap' | 'trade' | 'atomic-swap'>('connect');
+export function WalletDashboard({ isOpen, onClose, initialTab }: WalletDashboardProps) {
+  const [activeTab, setActiveTab] = useState<'connect' | 'overview' | 'send' | 'buy' | 'swap' | 'trade' | 'atomic-swap'>(initialTab || 'connect');
   const [sendForm, setSendForm] = useState({ to: '', amount: '', asset: 'ETH' });
   const [buyForm, setBuyForm] = useState({ asset: 'ETH', amount: '', paymentMethod: 'card' as 'card' | 'bank' });
   const [swapForm, setSwapForm] = useState({ fromAsset: 'ETH', toAsset: 'USDC', fromAmount: '' });
@@ -515,9 +516,35 @@ export function WalletDashboard({ isOpen, onClose }: WalletDashboardProps) {
 
           {/* Trade Tab */}
           {/* Atomic Swap Tab */}
-          {activeTab === 'atomic-swap' && isConnected && account && (
+          {activeTab === 'atomic-swap' && (
             <div className="flex-1 overflow-y-auto p-8">
-              <SwapInterface userAddress={account} />
+              {!isConnected || !account ? (
+                <div className="text-center py-16">
+                  <Repeat className="w-16 h-16 text-gray-600 mx-auto mb-6" />
+                  <h3 className="text-2xl font-black text-white mb-4 uppercase">Connect Wallet for Atomic Swaps</h3>
+                  <p className="text-gray-400 mb-8 max-w-md mx-auto">
+                    Atomic Swaps require a connected wallet to create peer-to-peer token exchanges across different blockchains.
+                  </p>
+                  <button
+                    onClick={() => setActiveTab('connect')}
+                    className="px-8 py-3 bg-neon-blue hover:bg-neon-blue/80 text-black rounded-xl font-black uppercase transition-colors"
+                  >
+                    Connect Wallet
+                  </button>
+                </div>
+              ) : (
+                <>
+                  <div className="mb-6">
+                    <h3 className="text-2xl font-black text-white mb-4 uppercase">Peer-to-Peer Atomic Swaps</h3>
+                    <div className="bg-blue-500/10 border border-blue-500/20 rounded-2xl p-4">
+                      <p className="text-blue-300 text-sm">
+                        <strong className="text-blue-400">Trustless peer-to-peer trading:</strong> Create swap proposals with other users, both deposit tokens into escrow, and execute simultaneously. Perfect for negotiated trades and cross-chain swaps without intermediaries.
+                      </p>
+                    </div>
+                  </div>
+                  <SwapInterface userAddress={account} />
+                </>
+              )}
             </div>
           )}
 

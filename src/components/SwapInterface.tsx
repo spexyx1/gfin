@@ -91,7 +91,10 @@ export function SwapInterface({ userAddress }: SwapInterfaceProps) {
       {/* Create Swap Section */}
       <div className="glass-morphism rounded-2xl p-6 border border-white/10">
         <div className="flex items-center justify-between mb-6">
-          <h3 className="text-2xl font-black text-neon-yellow uppercase">Token Swap</h3>
+          <div>
+            <h3 className="text-2xl font-black text-neon-yellow uppercase">Peer-to-Peer Swap</h3>
+            <p className="text-xs text-gray-400 mt-1">Trustless token exchange with another user</p>
+          </div>
           <button
             onClick={() => setShowCreateSwap(!showCreateSwap)}
             className="px-4 py-2 bg-neon-blue hover:bg-neon-blue/80 text-black rounded-lg transition-colors font-bold"
@@ -201,9 +204,9 @@ export function SwapInterface({ userAddress }: SwapInterfaceProps) {
               <div className="flex items-start space-x-3">
                 <Info className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
                 <div className="text-xs text-blue-300 space-y-1">
-                  <p>Atomic swaps are peer-to-peer token exchanges that execute simultaneously or not at all.</p>
-                  <p>Both parties must deposit tokens within 24 hours for the swap to complete.</p>
-                  <p>If either party fails to deposit, all funds are returned automatically.</p>
+                  <p><strong className="text-blue-400">How it works:</strong> You create a swap proposal for a specific user. Both parties deposit tokens into escrow within 24 hours. The swap executes simultaneously or not at all - your funds are always safe.</p>
+                  <p><strong className="text-blue-400">Perfect for:</strong> Negotiated trades, OTC deals, and cross-chain swaps with trusted trading partners.</p>
+                  <p><strong className="text-blue-400">Safety:</strong> If either party doesn't deposit within 24 hours, all funds are automatically returned.</p>
                 </div>
               </div>
             </div>

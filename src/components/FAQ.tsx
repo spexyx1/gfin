@@ -94,14 +94,28 @@ const faqData: FAQItem[] = [
   {
     id: 'wallet-features',
     question: 'What wallet features are available?',
-    answer: 'Our integrated wallet supports sending/receiving crypto, buying crypto with fiat, swapping between currencies, trading on exchanges, and HoudiniSwap integration for DEX swaps.',
+    answer: 'Our integrated wallet supports sending/receiving crypto, buying crypto with fiat, instant token swaps, peer-to-peer atomic swaps, and trading on exchanges. All features are accessible through the wallet dashboard in the header.',
     category: 'Wallet & Payments',
     icon: Wallet
   },
   {
-    id: 'houdiniswap-integration',
-    question: 'What is HoudiniSwap integration?',
-    answer: 'HoudiniSwap is a decentralized exchange aggregator that finds the best prices across multiple DEXs. You can use it within our wallet for real-time crypto swaps with live pricing.',
+    id: 'atomic-swaps',
+    question: 'What are Atomic Swaps?',
+    answer: 'Atomic Swaps are peer-to-peer token exchanges that happen trustlessly between two users on different chains. Both parties create a swap proposal, deposit their tokens into escrow, and the swap executes simultaneously or not at all. Perfect for direct trades without intermediaries. Access this feature from the ATOMIC SWAP tab in your wallet.',
+    category: 'Wallet & Payments',
+    icon: Wallet
+  },
+  {
+    id: 'atomic-swap-vs-instant',
+    question: 'What\'s the difference between Atomic Swap and regular Swap?',
+    answer: 'Regular SWAP (in the swap tab) is instant and uses DEX liquidity pools - you swap immediately at market prices. ATOMIC SWAP (in the atomic-swap tab) is peer-to-peer - you propose a trade to another user, both deposit tokens, and execute when both parties are ready. Use regular swap for instant trades, atomic swap for negotiated peer-to-peer deals.',
+    category: 'Wallet & Payments',
+    icon: Wallet
+  },
+  {
+    id: 'how-to-atomic-swap',
+    question: 'How do I create an Atomic Swap?',
+    answer: 'Open your wallet dashboard, click the ATOMIC SWAP tab, connect your wallet, then click "New Swap". Select the tokens you\'re offering and requesting, enter amounts, add the recipient\'s address, and create the swap. Both parties have 24 hours to deposit tokens. If either party doesn\'t deposit, all funds are automatically returned.',
     category: 'Wallet & Payments',
     icon: Wallet
   },
