@@ -1,28 +1,31 @@
-import { createAppKit } from '@reown/appkit';
+import { createAppKit } from '@reown/appkit/react';
 import { EthersAdapter } from '@reown/appkit-adapter-ethers';
 import { polygon, polygonAmoy } from '@reown/appkit/networks';
 
-const projectId = import.meta.env.VITE_REOWN_PROJECT_ID;
+const projectId = import.meta.env.VITE_REOWN_PROJECT_ID || '';
 
 if (!projectId) {
-  console.warn('VITE_REOWN_PROJECT_ID is not set. Wallet connection will not work.');
+  console.warn('VITE_REOWN_PROJECT_ID is not set. Wallet connection features will be limited.');
 }
 
 const metadata = {
   name: 'Ghetto Marketplace',
   description: 'Decentralized marketplace with escrow and social features',
-  url: window.location.origin,
-  icons: [`${window.location.origin}/icons/icon-192x192.svg`]
+  url: typeof window !== 'undefined' ? window.location.origin : 'https://ghettofinance.com',
+  icons: [`${typeof window !== 'undefined' ? window.location.origin : 'https://ghettofinance.com'}/icons/icon-192x192.svg`]
 };
 
 const networkEnv = import.meta.env.VITE_NETWORK_ENV || 'mainnet';
 const networks = networkEnv === 'testnet' ? [polygonAmoy] : [polygon];
 
-export const reownConfig = {
+export const SUPPORTED_CHAIN_IDS = networks.map(n => n.id);
+export const DEFAULT_CHAIN_ID = networks[0].id;
+
+createAppKit({
   adapters: [new EthersAdapter()],
   networks,
   metadata,
-  projectId: projectId || '',
+  projectId,
   features: {
     analytics: true,
     email: false,
@@ -35,16 +38,4 @@ export const reownConfig = {
     '--w3m-accent': '#10b981',
     '--w3m-border-radius-master': '4px',
   }
-};
-
-let appKitInstance: ReturnType<typeof createAppKit> | null = null;
-
-export const getAppKit = () => {
-  if (!appKitInstance) {
-    appKitInstance = createAppKit(reownConfig);
-  }
-  return appKitInstance;
-};
-
-export const SUPPORTED_CHAIN_IDS = networks.map(n => n.id);
-export const DEFAULT_CHAIN_ID = networks[0].id;
+});
