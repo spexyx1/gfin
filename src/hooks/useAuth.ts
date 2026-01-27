@@ -271,12 +271,19 @@ export function useAuth() {
     try {
       const supabaseClient = requireSupabase();
       const { error } = await supabaseClient.auth.signOut();
-      
+
       if (error) {
         logger.error('Logout error', 'useAuth', error);
       }
 
       setUser(null);
+
+      // Clear cart on logout to prevent security issues
+      try {
+        localStorage.removeItem('cart');
+      } catch (e) {
+        logger.error('Failed to clear cart on logout', 'useAuth', e);
+      }
     } catch (error) {
       logger.error('Logout failed', 'useAuth', error);
       setUser(null);

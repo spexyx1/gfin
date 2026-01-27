@@ -2,10 +2,13 @@
 pragma solidity ^0.8.19;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract CryptoMarketplaceEscrow is ReentrancyGuard, Ownable {
+    using SafeERC20 for IERC20;
+
     IERC20 public immutable usdcToken;
     IERC20 public ghettoToken;
     
@@ -77,7 +80,7 @@ contract CryptoMarketplaceEscrow is ReentrancyGuard, Ownable {
         );
         
         sellerGhettoCollateral[msg.sender] -= _amount;
-        require(ghettoToken.transfer(msg.sender, _amount), "GHETTO transfer failed");
+        ghettoToken.safeTransfer(msg.sender, _amount);
         
         emit SellerCollateralWithdrawn(msg.sender, _amount);
     }
@@ -231,9 +234,9 @@ contract CryptoMarketplaceEscrow is ReentrancyGuard, Ownable {
     function withdrawSellerBalance(address _token) external nonReentrant {
         uint256 balance = sellerBalances[msg.sender][_token];
         require(balance > 0, "No balance to withdraw");
-        
+
         sellerBalances[msg.sender][_token] = 0;
-        IERC20(_token).transfer(msg.sender, balance);
+        IERC20(_token).safeTransfer(msg.sender, balance);
     }
     
     function getAvailableCollateral(address seller) external view returns (uint256) {
@@ -266,13 +269,13 @@ contract CryptoMarketplaceEscrow is ReentrancyGuard, Ownable {
     function resolveDispute(
         string memory _orderId,
         bool _favorBuyer
-    ) external onlyOwner {
+    ) external onlyOwner nonReentrant {
         Order storage order = orders[_orderId];
         require(order.status == OrderStatus.Disputed, "Order not in dispute");
-        
+
         if (_favorBuyer) {
             // Refund buyer
-            IERC20(order.paymentToken).transfer(order.buyer, order.amount);
+            IERC20(order.paymentToken).safeTransfer(order.buyer, order.amount);
             // Release seller held GHETTO collateral
             sellerHeldFunds[order.seller] -= order.amount;
             order.status = OrderStatus.Cancelled;

@@ -5,6 +5,7 @@ import { useWeb3 } from '../hooks/useWeb3';
 import { useEscrow } from '../hooks/useEscrow';
 import { useAuth } from '../hooks/useAuth';
 import { useTerms } from '../hooks/useTerms';
+import { useContractAddresses } from '../hooks/useContractAddresses';
 import { PaymentOption } from '../types';
 
 interface BuyNowModalProps {
@@ -19,10 +20,11 @@ export function BuyNowModal({ isOpen, onClose, product }: BuyNowModalProps) {
   const [orderId, setOrderId] = useState<string | null>(null);
   const [selectedPaymentToken, setSelectedPaymentToken] = useState('GHETTO');
   const [estimatedFee, setEstimatedFee] = useState(0);
-  const { account, connectWallet } = useWeb3();
+  const { account, connectWallet, networkName } = useWeb3();
   const { user } = useAuth();
   const { needsTermsAcceptance } = useTerms();
   const { createEscrow, fundOrder, checkTokenBalance, calculateTotalFee, isLoading } = useEscrow();
+  const { addresses, loading: loadingAddresses } = useContractAddresses(networkName?.toLowerCase().replace(' ', '') || 'polygon');
 
   const paymentOptions: PaymentOption[] = [
     { token: 'GHETTO', symbol: 'GHETTO', name: 'Ghetto Finance', feePercent: 2.5, isPreferred: true },
@@ -36,14 +38,19 @@ export function BuyNowModal({ isOpen, onClose, product }: BuyNowModalProps) {
 
   // Calculate fee when payment token or product changes
   React.useEffect(() => {
-    if (product) {
+    if (product && !loadingAddresses && addresses.ghettoToken && addresses.usdc) {
       const calculateFee = async () => {
-        const tokenAddress = selectedPaymentToken === 'GHETTO' 
-          ? '0xB0b86a33E6417c4c4c4c4c4c4c4c4c4c4c4c4c4c' 
+        const tokenAddress = selectedPaymentToken === 'GHETTO'
+          ? addresses.ghettoToken
           : selectedPaymentToken === 'USDC'
-          ? '0xA0b86a33E6417c4c4c4c4c4c4c4c4c4c4c4c4c4c'
+          ? addresses.usdc
           : '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE';
-        
+
+        if (!tokenAddress) {
+          setEstimatedFee(product.price * (selectedPaymentOption.feePercent / 100));
+          return;
+        }
+
         try {
           const fee = await calculateTotalFee(product.price, tokenAddress);
           setEstimatedFee(fee);
@@ -52,10 +59,10 @@ export function BuyNowModal({ isOpen, onClose, product }: BuyNowModalProps) {
           setEstimatedFee(product.price * (selectedPaymentOption.feePercent / 100));
         }
       };
-      
+
       calculateFee();
     }
-  }, [product, selectedPaymentToken, selectedPaymentOption, calculateTotalFee]);
+  }, [product, selectedPaymentToken, selectedPaymentOption, calculateTotalFee, loadingAddresses, addresses]);
 
   const handleBuyNow = async () => {
     if (!product || !account) {

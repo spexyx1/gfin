@@ -3,6 +3,7 @@ import { X, DollarSign, Send, AlertCircle, CheckCircle } from 'lucide-react';
 import { Product } from '../types';
 import { useMessaging } from '../hooks/useMessaging';
 import { useAuth } from '../hooks/useAuth';
+import { useTerms } from '../hooks/useTerms';
 
 interface MakeOfferModalProps {
   isOpen: boolean;
@@ -18,7 +19,8 @@ export function MakeOfferModal({ isOpen, onClose, product }: MakeOfferModalProps
   const [error, setError] = useState('');
 
   const { createConversation, sendMessage } = useMessaging();
-  const { user, needsTermsAcceptance } = useAuth();
+  const { user } = useAuth();
+  const { needsTermsAcceptance } = useTerms();
 
   const handleSubmitOffer = async (e: React.FormEvent) => {
     e.preventDefault();

@@ -3,8 +3,10 @@ import { X, Minus, Plus, ShoppingCart, CreditCard, Shield, CheckCircle } from 'l
 import { useCart } from '../hooks/useCart';
 import { useWeb3 } from '../hooks/useWeb3';
 import { useEscrow } from '../hooks/useEscrow';
+import { useContractAddresses } from '../hooks/useContractAddresses';
 import { useState, useMemo } from 'react';
 import { PaymentOption } from '../types';
+import { supabase } from '../lib/supabase';
 
 interface CartProps {
   isOpen: boolean;
@@ -13,8 +15,9 @@ interface CartProps {
 
 export function Cart({ isOpen, onClose }: CartProps) {
   const { items, updateQuantity, removeFromCart, getTotal, clearCart } = useCart();
-  const { account, connectWallet } = useWeb3();
+  const { account, connectWallet, networkName } = useWeb3();
   const { createEscrow, fundOrder, checkTokenBalance, calculateTotalFee, isLoading } = useEscrow();
+  const { addresses, loading: loadingAddresses } = useContractAddresses(networkName?.toLowerCase().replace(' ', '') || 'polygon');
   const [checkoutStep, setCheckoutStep] = useState<'review' | 'funding' | 'complete'>('review');
   const [orderIds, setOrderIds] = useState<string[]>([]);
   const [selectedPaymentToken, setSelectedPaymentToken] = useState('GHETTO');
@@ -44,12 +47,36 @@ export function Cart({ isOpen, onClose }: CartProps) {
       return;
     }
 
-    const tokenAddress = selectedPaymentToken === 'GHETTO' 
-      ? '0xB0b86a33E6417c4c4c4c4c4c4c4c4c4c4c4c4c4c' 
+    if (loadingAddresses || !addresses.ghettoToken || !addresses.usdc) {
+      alert('Contract addresses are still loading. Please wait a moment and try again.');
+      return;
+    }
+
+    const tokenAddress = selectedPaymentToken === 'GHETTO'
+      ? addresses.ghettoToken
       : selectedPaymentToken === 'USDC'
-      ? '0xA0b86a33E6417c4c4c4c4c4c4c4c4c4c4c4c4c4c'
+      ? addresses.usdc
       : '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE';
-    
+
+    // Check inventory for all products
+    const outOfStockItems: string[] = [];
+    for (const item of items) {
+      const { data: product } = await supabase
+        .from('products')
+        .select('in_stock, quantity')
+        .eq('id', item.product.id)
+        .single();
+
+      if (!product || !product.in_stock) {
+        outOfStockItems.push(item.product.title);
+      }
+    }
+
+    if (outOfStockItems.length > 0) {
+      alert(`The following items are no longer in stock: ${outOfStockItems.join(', ')}. Please remove them from your cart.`);
+      return;
+    }
+
     // Check token balance
     const hasBalance = await checkTokenBalance(totalWithFees, tokenAddress);
     if (!hasBalance) {
