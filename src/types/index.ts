@@ -204,7 +204,10 @@ export interface ReferralTransaction {
   createdAt: Date;
 }
 
-export type PlatformSetting = { key: string; value: string };
+export type PlatformSetting = {
+  setting_key: string;
+  setting_value: string;
+};
 
 export interface Auction {
   id: string;

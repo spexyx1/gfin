@@ -114,7 +114,7 @@ export function useReferrals() {
 
       const settingsMap: Record<string, string> = {};
       data.forEach((setting: PlatformSetting) => {
-        settingsMap[setting.key] = setting.value;
+        settingsMap[setting.setting_key] = setting.setting_value;
       });
       setPlatformSettings(settingsMap);
     } catch (err) {

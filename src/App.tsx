@@ -88,6 +88,21 @@ function App() {
     loadUnreadCount();
   }, [user, getUnreadCount]);
 
+  // Capture referral code from URL parameter
+  React.useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const refCode = urlParams.get('ref');
+
+    if (refCode) {
+      localStorage.setItem('referralCode', refCode);
+      logger.info(`Referral code captured: ${refCode}`, 'App');
+
+      // Clean URL without reloading the page
+      const newUrl = window.location.pathname;
+      window.history.replaceState({}, document.title, newUrl);
+    }
+  }, []);
+
   // Listen for showLegal event from AuthModal
   React.useEffect(() => {
     const handleShowLegal = () => {

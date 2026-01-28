@@ -256,6 +256,23 @@ export function useAuth() {
       // Wait a moment for trigger to complete
       await new Promise(resolve => setTimeout(resolve, 500));
 
+      // Process referral if code exists in localStorage
+      const referralCode = localStorage.getItem('referralCode');
+      if (referralCode) {
+        try {
+          await supabaseClient.rpc('process_referral_signup', {
+            p_user_id: data.user.id,
+            p_referral_code: referralCode
+          });
+          // Clear the referral code after processing
+          localStorage.removeItem('referralCode');
+          logger.info('Referral processed successfully', 'useAuth');
+        } catch (refError) {
+          logger.error('Error processing referral', 'useAuth', refError);
+          // Don't fail signup if referral processing fails
+        }
+      }
+
       // Convert and set user (auto-login)
       const authUser = await convertToAuthUser(data.user);
       setUser(authUser);
