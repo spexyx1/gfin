@@ -5,6 +5,7 @@ import { useMessaging } from '../hooks/useMessaging';
 import { useAuth } from '../hooks/useAuth';
 import { formatDistanceToNow } from 'date-fns';
 import { SponsorshipMarketplace } from './SponsorshipMarketplace';
+import { logger } from '../utils/logger';
 
 interface SocialHubProps {
   isOpen: boolean;
@@ -54,7 +55,7 @@ export function SocialHub({ isOpen, onClose }: SocialHubProps) {
       setShowCreateGroup(false);
       setNewGroupData({ name: '', description: '', category: 'trading', isPrivate: false });
     } catch (error) {
-      console.error('Failed to create group:', error);
+      logger.error('Failed to create group', 'SocialHub', error);
     }
   };
 
@@ -63,7 +64,7 @@ export function SocialHub({ isOpen, onClose }: SocialHubProps) {
     try {
       await joinGroup(groupId);
     } catch (error) {
-      console.error('Failed to join group:', error);
+      logger.error('Failed to join group', 'SocialHub', error);
     }
   };
 
@@ -75,7 +76,7 @@ export function SocialHub({ isOpen, onClose }: SocialHubProps) {
       await createGroupPost(selectedGroup, newPostContent.trim());
       setNewPostContent('');
     } catch (error) {
-      console.error('Failed to create post:', error);
+      logger.error('Failed to create post', 'SocialHub', error);
     }
   };
 
@@ -84,7 +85,7 @@ export function SocialHub({ isOpen, onClose }: SocialHubProps) {
     try {
       await reactToPost(postId, selectedGroup, reactionType);
     } catch (error) {
-      console.error('Failed to react to post:', error);
+      logger.error('Failed to react to post', 'SocialHub', error);
     }
   };
 
@@ -94,9 +95,9 @@ export function SocialHub({ isOpen, onClose }: SocialHubProps) {
       // This would open the existing messaging center
       // For now, we'll just log it - in a full implementation,
       // this would trigger opening the messaging center with this conversation
-      console.log('Opening conversation:', conversation);
+      logger.debug('Opening conversation', 'SocialHub', conversation);
     } catch (error) {
-      console.error('Failed to create conversation:', error);
+      logger.error('Failed to create conversation', 'SocialHub', error);
     }
   };
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { Shield, CheckCircle, XCircle, ExternalLink, Copy, Plus, Trash2 } from 'lucide-react';
+import { logger } from '../utils/logger';
 
 interface ContractDeployment {
   id: string;
@@ -46,7 +47,7 @@ export const ContractDeploymentAdmin: React.FC = () => {
       if (error) throw error;
       setDeployments(data || []);
     } catch (error) {
-      console.error('Error fetching deployments:', error);
+      logger.error('Error fetching deployments', 'ContractDeploymentAdmin', error);
     } finally {
       setLoading(false);
     }
@@ -84,7 +85,7 @@ export const ContractDeploymentAdmin: React.FC = () => {
       });
       fetchDeployments();
     } catch (error) {
-      console.error('Error adding deployment:', error);
+      logger.error('Error adding deployment', 'ContractDeploymentAdmin', error);
       alert('Failed to add deployment. Check console for details.');
     }
   };
@@ -100,7 +101,7 @@ export const ContractDeploymentAdmin: React.FC = () => {
       alert('Deployment activated successfully!');
       fetchDeployments();
     } catch (error) {
-      console.error('Error activating deployment:', error);
+      logger.error('Error activating deployment', 'ContractDeploymentAdmin', error);
       alert('Failed to activate deployment. Check console for details.');
     }
   };
@@ -119,7 +120,7 @@ export const ContractDeploymentAdmin: React.FC = () => {
       alert('Deployment deleted successfully!');
       fetchDeployments();
     } catch (error) {
-      console.error('Error deleting deployment:', error);
+      logger.error('Error deleting deployment', 'ContractDeploymentAdmin', error);
       alert('Failed to delete deployment. Check console for details.');
     }
   };

@@ -3,6 +3,7 @@ import { SellerProduct, ProductImage } from '../types';
 import { useWeb3 } from './useWeb3';
 import { supabase, requireSupabase, handleSupabaseError } from '../lib/supabase';
 import { useAuth } from './useAuth';
+import { logger } from '../utils/logger';
 
 export function useSellerProducts() {
   const [products, setProducts] = useState<SellerProduct[]>([]);
@@ -52,7 +53,7 @@ export function useSellerProducts() {
 
       setProducts(sellerProducts);
     } catch (error) {
-      console.error('Failed to load products:', error);
+      logger.error('Failed to load products', 'useSellerProducts', error);
       handleSupabaseError(error);
     } finally {
       setIsLoading(false);
@@ -236,10 +237,10 @@ export function useSellerProducts() {
       });
 
       if (error) {
-        console.error('Failed to increment view count:', error);
+        logger.error('Failed to increment view count', 'useSellerProducts', error);
       }
     } catch (error) {
-      console.error('Error incrementing view count:', error);
+      logger.error('Error incrementing view count', 'useSellerProducts', error);
     }
   };
 
@@ -254,10 +255,10 @@ export function useSellerProducts() {
       });
 
       if (error) {
-        console.error('Failed to toggle favorite:', error);
+        logger.error('Failed to toggle favorite', 'useSellerProducts', error);
       }
     } catch (error) {
-      console.error('Error toggling favorite:', error);
+      logger.error('Error toggling favorite', 'useSellerProducts', error);
     }
   };
   return {

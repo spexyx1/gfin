@@ -3,6 +3,7 @@ import { UserProfile, TradingGroup, GroupPost, TradeOffer, FundTransfer, GroupIn
 import { useAuth } from './useAuth';
 import { useMessaging } from './useMessaging';
 import { supabase, requireSupabase, handleSupabaseError } from '../lib/supabase';
+import { logger } from '../utils/logger';
 
 export function useSocialSystem() {
   const [userProfiles, setUserProfiles] = useState<Record<string, UserProfile>>({});
@@ -36,7 +37,7 @@ export function useSocialSystem() {
         .select('*');
 
       if (error) {
-        console.error('Error loading profiles:', error);
+        logger.error('Error loading profiles', 'useSocialSystem', error);
         return;
       }
 
@@ -79,7 +80,7 @@ export function useSocialSystem() {
 
       setUserProfiles(profilesMap);
     } catch (error) {
-      console.error('Failed to load user profiles:', error);
+      logger.error('Failed to load user profiles', 'useSocialSystem', error);
     }
   };
 
@@ -102,7 +103,7 @@ export function useSocialSystem() {
         .order('created_at', { ascending: false });
 
       if (error) {
-        console.error('Error loading trading groups:', error);
+        logger.error('Error loading trading groups', 'useSocialSystem', error);
         return;
       }
 
@@ -144,7 +145,7 @@ export function useSocialSystem() {
 
       setTradingGroups(tradingGroupsData);
     } catch (error) {
-      console.error('Failed to load trading groups:', error);
+      logger.error('Failed to load trading groups', 'useSocialSystem', error);
     }
   };
 
@@ -173,7 +174,7 @@ export function useSocialSystem() {
         .order('created_at', { ascending: false });
 
       if (error) {
-        console.error('Error loading group posts:', error);
+        logger.error('Error loading group posts', 'useSocialSystem', error);
         return;
       }
 
@@ -208,7 +209,7 @@ export function useSocialSystem() {
         [groupId]: groupPostsData
       }));
     } catch (error) {
-      console.error('Failed to load group posts:', error);
+      logger.error('Failed to load group posts', 'useSocialSystem', error);
     }
   };
 
@@ -224,7 +225,7 @@ export function useSocialSystem() {
         .order('created_at', { ascending: false });
 
       if (error) {
-        console.error('Error loading trade offers:', error);
+        logger.error('Error loading trade offers', 'useSocialSystem', error);
         return;
       }
 
@@ -254,7 +255,7 @@ export function useSocialSystem() {
         [groupId]: tradeOffersData
       }));
     } catch (error) {
-      console.error('Failed to load trade offers:', error);
+      logger.error('Failed to load trade offers', 'useSocialSystem', error);
     }
   };
 
@@ -270,7 +271,7 @@ export function useSocialSystem() {
         .order('created_at', { ascending: false });
 
       if (error) {
-        console.error('Error loading fund transfers:', error);
+        logger.error('Error loading fund transfers', 'useSocialSystem', error);
         return;
       }
 
@@ -293,7 +294,7 @@ export function useSocialSystem() {
         [groupId]: fundTransfersData
       }));
     } catch (error) {
-      console.error('Failed to load fund transfers:', error);
+      logger.error('Failed to load fund transfers', 'useSocialSystem', error);
     }
   };
 
@@ -314,7 +315,7 @@ export function useSocialSystem() {
         .order('created_at', { ascending: false });
 
       if (error) {
-        console.error('Error loading group invites:', error);
+        logger.error('Error loading group invites', 'useSocialSystem', error);
         return;
       }
 
@@ -331,7 +332,7 @@ export function useSocialSystem() {
 
       setGroupInvites(groupInvitesData);
     } catch (error) {
-      console.error('Failed to load group invites:', error);
+      logger.error('Failed to load group invites', 'useSocialSystem', error);
     }
   };
 
@@ -859,7 +860,7 @@ export function useSocialSystem() {
           'system'
         );
       } catch (error) {
-        console.error('Failed to notify recipient:', error);
+        logger.error('Failed to notify recipient', 'useSocialSystem', error);
       }
 
       return newTransfer.id;
@@ -970,7 +971,7 @@ export function useSocialSystem() {
           'system'
         );
       } catch (error) {
-        console.error('Failed to notify invited user:', error);
+        logger.error('Failed to notify invited user', 'useSocialSystem', error);
       }
 
       return newInvite.id;

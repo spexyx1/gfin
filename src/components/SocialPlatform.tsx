@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Globe, Plus, Search, TrendingUp, Users, MessageCircle, Heart, Share2, Eye, Filter, MapPin, DollarSign, Tag, Clock, Star, Flag, Send, Image, Paperclip, Home } from 'lucide-react';
+import { ArrowLeft, Globe, Plus, Search, TrendingUp, Users, MessageCircle, Heart, Share2, Eye, MapPin, DollarSign, Tag, Clock, Flag, Home } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useSocialSystem } from '../hooks/useSocialSystem';
 import { useAuth } from '../hooks/useAuth';
 import { useMessaging } from '../hooks/useMessaging';
 import { formatDistanceToNow } from 'date-fns';
 import { HousingMarketplace } from './HousingMarketplace';
+import { logger } from '../utils/logger';
 
 interface SocialPlatformProps {
   searchTerm: string;
@@ -190,9 +191,9 @@ export function SocialPlatform({ searchTerm, setSearchTerm }: SocialPlatformProp
     try {
       await createConversation(userId);
       // This would typically open the messaging center
-      console.log('Opening conversation with user:', userId);
+      logger.debug('Opening conversation with user', 'SocialPlatform', userId);
     } catch (error) {
-      console.error('Failed to create conversation:', error);
+      logger.error('Failed to create conversation', 'SocialPlatform', error);
     }
   };
 

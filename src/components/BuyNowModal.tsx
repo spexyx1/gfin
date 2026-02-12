@@ -7,6 +7,7 @@ import { useAuth } from '../hooks/useAuth';
 import { useTerms } from '../hooks/useTerms';
 import { useContractAddresses } from '../hooks/useContractAddresses';
 import { PaymentOption } from '../types';
+import { logger } from '../utils/logger';
 
 interface BuyNowModalProps {
   isOpen: boolean;
@@ -55,7 +56,7 @@ export function BuyNowModal({ isOpen, onClose, product }: BuyNowModalProps) {
           const fee = await calculateTotalFee(product.price, tokenAddress);
           setEstimatedFee(fee);
         } catch (error) {
-          console.error('Failed to calculate fee:', error);
+          logger.error('Failed to calculate fee', 'BuyNowModal', error);
           setEstimatedFee(product.price * (selectedPaymentOption.feePercent / 100));
         }
       };
@@ -117,7 +118,7 @@ export function BuyNowModal({ isOpen, onClose, product }: BuyNowModalProps) {
         setOrderId(null);
       }, 2000);
     } catch (error) {
-      console.error('Buy now failed:', error);
+      logger.error('Buy now failed', 'BuyNowModal', error);
       alert(error instanceof Error ? error.message : 'Purchase failed. Please try again.');
       setCheckoutStep('review');
     }

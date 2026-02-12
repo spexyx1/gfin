@@ -3,6 +3,7 @@ import { WalletBalance, Transaction } from '../types';
 import { useWeb3 } from './useWeb3';
 import { fetchMultipleTokenPrices } from '../services/priceService';
 import { ethers } from 'ethers';
+import { logger } from '../utils/logger';
 
 export function useWallet() {
   const [balances, setBalances] = useState<WalletBalance[]>([]);
@@ -39,7 +40,7 @@ export function useWallet() {
 
         setBalances(newBalances);
       } catch (error) {
-        console.error('Error loading balances:', error);
+        logger.error('Error loading balances', 'useWallet', error);
         setBalances([]);
       }
     };
@@ -99,7 +100,7 @@ export function useWallet() {
 
       return tx.hash;
     } catch (error) {
-      console.error('Send failed:', error);
+      logger.error('Send failed', 'useWallet', error);
       throw error;
     } finally {
       setIsLoading(false);

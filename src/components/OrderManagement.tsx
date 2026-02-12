@@ -3,6 +3,7 @@ import { X, Package, Clock, CheckCircle, AlertTriangle, Truck, DollarSign, Exter
 import { useWeb3 } from '../hooks/useWeb3';
 import { useEscrow } from '../hooks/useEscrow';
 import { formatDistanceToNow } from 'date-fns';
+import { logger } from '../utils/logger';
 
 interface OrderManagementProps {
   isOpen: boolean;
@@ -51,7 +52,7 @@ export function OrderManagement({ isOpen, onClose }: OrderManagementProps) {
       const balance = await getSellerBalance();
       setSellerBalance(balance);
     } catch (error) {
-      console.error('Failed to load seller balance:', error);
+      logger.error('Failed to load seller balance', 'OrderManagement', error);
     }
   };
 
@@ -61,7 +62,7 @@ export function OrderManagement({ isOpen, onClose }: OrderManagementProps) {
       await loadSellerBalance(); // Refresh balance
       alert('Funds withdrawn successfully!');
     } catch (error) {
-      console.error('Failed to withdraw funds:', error);
+      logger.error('Failed to withdraw funds', 'OrderManagement', error);
       alert(error instanceof Error ? error.message : 'Failed to withdraw funds');
     }
   };
@@ -74,7 +75,7 @@ export function OrderManagement({ isOpen, onClose }: OrderManagementProps) {
       await releaseFunds(orderId);
       alert('Funds released successfully!');
     } catch (error) {
-      console.error('Failed to release funds:', error);
+      logger.error('Failed to release funds', 'OrderManagement', error);
       alert(error instanceof Error ? error.message : 'Failed to release funds');
     }
   };
@@ -95,7 +96,7 @@ export function OrderManagement({ isOpen, onClose }: OrderManagementProps) {
       setShowShippingForm(null);
       setShippingData({ trackingNumber: '', carrier: '', estimatedDelivery: '' });
     } catch (error) {
-      console.error('Failed to ship order:', error);
+      logger.error('Failed to ship order', 'OrderManagement', error);
       alert('Failed to ship order. Please try again.');
     }
   };
@@ -116,7 +117,7 @@ export function OrderManagement({ isOpen, onClose }: OrderManagementProps) {
       setShowTrackingForm(null);
       setShippingData({ trackingNumber: '', carrier: '', estimatedDelivery: '' });
     } catch (error) {
-      console.error('Failed to update tracking:', error);
+      logger.error('Failed to update tracking', 'OrderManagement', error);
       alert('Failed to update tracking information. Please try again.');
     }
   };
@@ -133,7 +134,7 @@ export function OrderManagement({ isOpen, onClose }: OrderManagementProps) {
       setDisputeReason('');
       alert('Dispute raised successfully. Our team will review it.');
     } catch (error) {
-      console.error('Failed to dispute order:', error);
+      logger.error('Failed to dispute order', 'OrderManagement', error);
       alert(error instanceof Error ? error.message : 'Failed to raise dispute');
     }
   };

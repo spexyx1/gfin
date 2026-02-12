@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { X, User, Settings, ShoppingBag, Wallet, MessageCircle, Share2, Package, TrendingUp, AlertCircle, Activity, Bell, Shield, Star, Award, Copy, Check, ExternalLink, Calendar, DollarSign, Users, Target, BarChart3, Clock, Wand2, WifiOff } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { X, User, Settings, ShoppingBag, Wallet, MessageCircle, Share2, Package, TrendingUp, AlertCircle, Activity, Shield, Star, Award, Copy, Check, DollarSign, Users, Target, BarChart3, Clock, Wand2 } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { useReferrals } from '../hooks/useReferrals';
 import { useCart } from '../hooks/useCart';
@@ -10,6 +10,7 @@ import { useSiteMaster } from '../hooks/useSiteMaster';
 import { useEnhancedSitemaster } from '../hooks/useEnhancedSitemaster';
 import { useNetworkStatus } from '../hooks/useNetworkStatus';
 import { formatDistanceToNow } from 'date-fns';
+import { logger } from '../utils/logger';
 import { OrderManagement } from './OrderManagement';
 import { WalletDashboard } from './WalletDashboard';
 import { MessagingCenter } from './MessagingCenter';
@@ -84,13 +85,13 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
 
   useEffect(() => {
     if (user) {
-      console.log('[UserDashboard] User loaded:', user.username, 'issitemaster:', issitemaster);
+      logger.debug('[UserDashboard] User loaded', 'UserDashboard', { username: user.username, issitemaster });
       loadUnreadMessages();
       if (issitemaster) {
-        console.log('[UserDashboard] Loading sitemaster data...');
+        logger.debug('[UserDashboard] Loading sitemaster data...', 'UserDashboard');
         loadSitemasterData();
       } else {
-        console.log('[UserDashboard] User is not a sitemaster');
+        logger.debug('[UserDashboard] User is not a sitemaster', 'UserDashboard');
       }
     }
   }, [user, issitemaster]);
@@ -102,7 +103,7 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
       const orders = await getEscrowOrders();
       setSmEscrowOrders(orders);
     } catch (error) {
-      console.error('Failed to load sitemaster data:', error);
+      logger.error('Failed to load sitemaster data', 'UserDashboard', error);
     }
   };
 
@@ -111,7 +112,7 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
       const count = await getUnreadCount();
       setUnreadMessages(count);
     } catch (error) {
-      console.error('Failed to load unread count:', error);
+      logger.error('Failed to load unread count', 'UserDashboard', error);
     }
   };
 

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Product } from '../types';
 import { supabase, requireSupabase, handleSupabaseError, isSupabaseConfigured } from '../lib/supabase';
+import { logger } from '../utils/logger';
 
 export function useProducts() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -38,7 +39,7 @@ export function useProducts() {
         .order('created_at', { ascending: false });
 
       if (error) {
-        console.error('Error loading products:', error);
+        logger.error('Error loading products', 'useProducts', error);
         setProducts([]);
         setError(error.message);
         return;
@@ -67,7 +68,7 @@ export function useProducts() {
 
       setProducts(formattedProducts);
     } catch (error) {
-      console.error('Failed to load products:', error);
+      logger.error('Failed to load products', 'useProducts', error);
       setError(error instanceof Error ? error.message : 'Failed to load products');
       setProducts([]);
     } finally {
@@ -91,10 +92,10 @@ export function useProducts() {
       });
 
       if (error) {
-        console.error('Failed to increment view count:', error);
+        logger.error('Failed to increment view count', 'useProducts', error);
       }
     } catch (error) {
-      console.error('Error incrementing view count:', error);
+      logger.error('Error incrementing view count', 'useProducts', error);
     }
   };
 
@@ -111,10 +112,10 @@ export function useProducts() {
       });
 
       if (error) {
-        console.error('Failed to toggle favorite:', error);
+        logger.error('Failed to toggle favorite', 'useProducts', error);
       }
     } catch (error) {
-      console.error('Error toggling favorite:', error);
+      logger.error('Error toggling favorite', 'useProducts', error);
     }
   };
 
@@ -200,7 +201,7 @@ export function useProducts() {
       setProducts(formattedProducts);
       return formattedProducts;
     } catch (error) {
-      console.error('Failed to search products:', error);
+      logger.error('Failed to search products', 'useProducts', error);
       setError(error instanceof Error ? error.message : 'Failed to search products');
       handleSupabaseError(error);
       setProducts([]);

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { X, Send, Mail, User, MessageSquare, CheckCircle, AlertCircle } from 'lucide-react';
 import { useMessaging } from '../hooks/useMessaging';
+import { logger } from '../utils/logger';
 
 interface ContactFormProps {
   isOpen: boolean;
@@ -58,7 +59,7 @@ Submitted: ${new Date().toLocaleString()}
         setSuccess(false);
       }, 3000);
     } catch (error) {
-      console.error('Failed to send contact form:', error);
+      logger.error('Failed to send contact form', 'ContactForm', error);
       setError('Failed to send message. Please try again or email info@ghetto.finance directly.');
     } finally {
       setIsSubmitting(false);

@@ -4,42 +4,11 @@ import { useMessaging } from './useMessaging';
 import { useWeb3 } from './useWeb3';
 import { supabase, requireSupabase, handleSupabaseError } from '../lib/supabase';
 import { ethers } from 'ethers';
+import { logger } from '../utils/logger';
+import { ESCROW_ABI, GHETTO_TOKEN_ABI } from '../config/contractAbis';
 
 const ESCROW_CONTRACT_ADDRESS = import.meta.env.VITE_ESCROW_CONTRACT_ADDRESS;
 const GHETTO_CONTRACT_ADDRESS = import.meta.env.VITE_GHETTO_TOKEN_ADDRESS;
-
-// Contract ABIs
-const ESCROW_ABI = [
-  'function platformFeePercent() external view returns (uint256)',
-  'function nonGhettoFeeAddition() external view returns (uint256)',
-  'function sellerHoldPercent() external view returns (uint256)',
-  'function setPlatformFee(uint256 _feePercent) external',
-  'function setNonGhettoFeeAddition(uint256 _feeAddition) external',
-  'function setSellerHoldPercent(uint256 _holdPercent) external',
-  'function resolveDispute(string memory _orderId, bool _favorBuyer) external',
-  'function owner() external view returns (address)',
-];
-
-const GHETTO_TOKEN_ABI = [
-  'function name() external view returns (string)',
-  'function symbol() external view returns (string)',
-  'function decimals() external view returns (uint8)',
-  'function totalSupply() external view returns (uint256)',
-  'function externalTransfersAllowed() external view returns (bool)',
-  'function blacklisted(address account) external view returns (bool)',
-  'function marketplaceContracts(address contractAddress) external view returns (bool)',
-  'function setBlacklisted(address account, bool _blacklisted) external',
-  'function setMarketplaceContract(address contractAddress, bool whitelisted) external',
-  'function setExternalTransfersAllowed(bool allowed) external',
-  'function mint(address to, uint256 amount) external',
-  'function burn(uint256 amount) external',
-  'function burnFrom(address account, uint256 amount) external',
-  'function pause() external',
-  'function unpause() external',
-  'function paused() external view returns (bool)',
-  'function owner() external view returns (address)',
-  'function getTokenInfo() external view returns (string, string, uint8, uint256, bool)',
-];
 
 export interface DisputeCase {
   id: string;
@@ -192,7 +161,7 @@ export function useSiteMaster() {
       }
 
       if (!supabase) {
-        console.error('[useSiteMaster] Supabase client not available');
+        logger.error('Supabase client not available', 'useSiteMaster');
         setIssitemaster(false);
         return;
       }
@@ -207,27 +176,20 @@ export function useSiteMaster() {
           .maybeSingle();
 
         if (error) {
-          console.error('[useSiteMaster] Database query error:', error);
+          logger.error('Database query error', 'useSiteMaster', error);
           setIssitemaster(false);
           return;
         }
 
         setIssitemaster(!!data);
       } catch (error) {
-        console.error('[useSiteMaster] Exception during role check:', error);
+        logger.error('Exception during role check', 'useSiteMaster', error);
         setIssitemaster(false);
       }
     };
 
     checkSitemasterRole();
   }, [user]);
-
-  useEffect(() => {
-    if (issitemaster) {
-      loadSiteMasterData();
-      loadContractSettings();
-    }
-  }, [issitemaster, account]);
 
   const getContracts = async () => {
     if (!provider || !account) {
@@ -284,7 +246,7 @@ export function useSiteMaster() {
       setWhitelistedContracts([]);
 
     } catch (error) {
-      console.error('Failed to load contract settings:', error);
+      logger.error('Failed to load contract settings', 'useSiteMaster', error);
     } finally {
       setContractLoading(false);
     }
@@ -322,7 +284,7 @@ export function useSiteMaster() {
       
       return tx.hash;
     } catch (error) {
-      console.error('Failed to update platform fee:', error);
+      logger.error('Failed to update platform fee', 'useSiteMaster', error);
       throw new Error('Failed to update platform fee');
     } finally {
       setIsLoading(false);
@@ -351,7 +313,7 @@ export function useSiteMaster() {
       
       return tx.hash;
     } catch (error) {
-      console.error('Failed to update non-GHETTO fee addition:', error);
+      logger.error('Failed to update non-GHETTO fee addition', 'useSiteMaster', error);
       throw new Error('Failed to update non-GHETTO fee addition');
     } finally {
       setIsLoading(false);
@@ -380,7 +342,7 @@ export function useSiteMaster() {
       
       return tx.hash;
     } catch (error) {
-      console.error('Failed to update seller hold percent:', error);
+      logger.error('Failed to update seller hold percent', 'useSiteMaster', error);
       throw new Error('Failed to update seller hold percent');
     } finally {
       setIsLoading(false);
@@ -401,7 +363,7 @@ export function useSiteMaster() {
       
       return tx.hash;
     } catch (error) {
-      console.error('Failed to resolve escrow dispute:', error);
+      logger.error('Failed to resolve escrow dispute', 'useSiteMaster', error);
       throw new Error('Failed to resolve escrow dispute on blockchain');
     } finally {
       setIsLoading(false);
@@ -436,7 +398,7 @@ export function useSiteMaster() {
       
       return tx.hash;
     } catch (error) {
-      console.error('Failed to update blacklist:', error);
+      logger.error('Failed to update blacklist', 'useSiteMaster', error);
       throw new Error('Failed to update address blacklist');
     } finally {
       setIsLoading(false);
@@ -470,7 +432,7 @@ export function useSiteMaster() {
       
       return tx.hash;
     } catch (error) {
-      console.error('Failed to update marketplace contract whitelist:', error);
+      logger.error('Failed to update marketplace contract whitelist', 'useSiteMaster', error);
       throw new Error('Failed to update marketplace contract whitelist');
     } finally {
       setIsLoading(false);
@@ -498,7 +460,7 @@ export function useSiteMaster() {
       
       return tx.hash;
     } catch (error) {
-      console.error('Failed to update external transfers setting:', error);
+      logger.error('Failed to update external transfers setting', 'useSiteMaster', error);
       throw new Error('Failed to update external transfers setting');
     } finally {
       setIsLoading(false);
@@ -530,7 +492,7 @@ export function useSiteMaster() {
       
       return tx.hash;
     } catch (error) {
-      console.error('Failed to mint GHETTO tokens:', error);
+      logger.error('Failed to mint GHETTO tokens', 'useSiteMaster', error);
       throw new Error('Failed to mint GHETTO tokens');
     } finally {
       setIsLoading(false);
@@ -567,7 +529,7 @@ export function useSiteMaster() {
       
       return tx.hash;
     } catch (error) {
-      console.error('Failed to burn GHETTO tokens:', error);
+      logger.error('Failed to burn GHETTO tokens', 'useSiteMaster', error);
       throw new Error('Failed to burn GHETTO tokens');
     } finally {
       setIsLoading(false);
@@ -595,7 +557,7 @@ export function useSiteMaster() {
       
       return tx.hash;
     } catch (error) {
-      console.error('Failed to pause GHETTO transfers:', error);
+      logger.error('Failed to pause GHETTO transfers', 'useSiteMaster', error);
       throw new Error('Failed to pause GHETTO transfers');
     } finally {
       setIsLoading(false);
@@ -623,7 +585,7 @@ export function useSiteMaster() {
       
       return tx.hash;
     } catch (error) {
-      console.error('Failed to unpause GHETTO transfers:', error);
+      logger.error('Failed to unpause GHETTO transfers', 'useSiteMaster', error);
       throw new Error('Failed to unpause GHETTO transfers');
     } finally {
       setIsLoading(false);
@@ -637,7 +599,7 @@ export function useSiteMaster() {
       const { ghettoContract } = await getContracts();
       return await ghettoContract.blacklisted(address);
     } catch (error) {
-      console.error('Failed to check blacklist status:', error);
+      logger.error('Failed to check blacklist status', 'useSiteMaster', error);
       return false;
     }
   };
@@ -649,7 +611,7 @@ export function useSiteMaster() {
       const { ghettoContract } = await getContracts();
       return await ghettoContract.marketplaceContracts(contractAddress);
     } catch (error) {
-      console.error('Failed to check whitelist status:', error);
+      logger.error('Failed to check whitelist status', 'useSiteMaster', error);
       return false;
     }
   };
@@ -671,7 +633,7 @@ export function useSiteMaster() {
           
           await resolveEscrowDispute(dispute.orderId, favorBuyer);
         } catch (error) {
-          console.error('Blockchain resolution failed:', error);
+          logger.error('Blockchain resolution failed', 'useSiteMaster', error);
           // Continue with database resolution even if blockchain fails
         }
       }
@@ -694,7 +656,7 @@ export function useSiteMaster() {
         await sendMessage(sellerConversation, resolutionMessage, 'system');
       }
     } catch (error) {
-      console.error('Failed to resolve dispute:', error);
+      logger.error('Failed to resolve dispute', 'useSiteMaster', error);
       throw error;
     } finally {
       setIsLoading(false);
@@ -720,7 +682,7 @@ export function useSiteMaster() {
         'system'
       );
     } catch (error) {
-      console.error('Failed to suspend user:', error);
+      logger.error('Failed to suspend user', 'useSiteMaster', error);
       throw error;
     } finally {
       setIsLoading(false);
@@ -732,7 +694,7 @@ export function useSiteMaster() {
       const conversation = await createConversation(userId);
       await sendMessage(conversation, `[Site Master] ${message}`, 'system');
     } catch (error) {
-      console.error('Failed to contact user:', error);
+      logger.error('Failed to contact user', 'useSiteMaster', error);
       throw error;
     }
   };
@@ -861,7 +823,7 @@ export function useSiteMaster() {
       });
 
     } catch (error) {
-      console.error('Failed to load referral system data:', error);
+      logger.error('Failed to load referral system data', 'useSiteMaster', error);
       handleSupabaseError(error);
     } finally {
       setIsLoading(false);
@@ -906,7 +868,7 @@ export function useSiteMaster() {
 
       return true;
     } catch (error) {
-      console.error('Failed to update referral settings:', error);
+      logger.error('Failed to update referral settings', 'useSiteMaster', error);
       handleSupabaseError(error);
       return false;
     } finally {
@@ -933,7 +895,7 @@ export function useSiteMaster() {
       await loadReferralSystemData();
       return true;
     } catch (error) {
-      console.error('Failed to force claim reward:', error);
+      logger.error('Failed to force claim reward', 'useSiteMaster', error);
       handleSupabaseError(error);
       return false;
     } finally {
@@ -988,7 +950,7 @@ export function useSiteMaster() {
       await loadReferralSystemData();
       return true;
     } catch (error) {
-      console.error('Failed to adjust referral balance:', error);
+      logger.error('Failed to adjust referral balance', 'useSiteMaster', error);
       handleSupabaseError(error);
       return false;
     } finally {
@@ -1011,7 +973,7 @@ export function useSiteMaster() {
       if (error) throw error;
       setViolationReports(data || []);
     } catch (error) {
-      console.error('Failed to load violation reports:', error);
+      logger.error('Failed to load violation reports', 'useSiteMaster', error);
       handleSupabaseError(error);
     }
   };
@@ -1053,7 +1015,7 @@ export function useSiteMaster() {
       await loadViolationReports();
       return true;
     } catch (error) {
-      console.error('Failed to review violation report:', error);
+      logger.error('Failed to review violation report', 'useSiteMaster', error);
       handleSupabaseError(error);
       return false;
     } finally {
@@ -1076,7 +1038,7 @@ export function useSiteMaster() {
       if (error) throw error;
       setUserRoles(data || []);
     } catch (error) {
-      console.error('Failed to load user roles:', error);
+      logger.error('Failed to load user roles', 'useSiteMaster', error);
       handleSupabaseError(error);
     }
   };
@@ -1115,7 +1077,7 @@ export function useSiteMaster() {
       await loadUserRoles();
       return true;
     } catch (error) {
-      console.error('Failed to assign user role:', error);
+      logger.error('Failed to assign user role', 'useSiteMaster', error);
       handleSupabaseError(error);
       return false;
     } finally {
@@ -1140,7 +1102,7 @@ export function useSiteMaster() {
       await loadUserRoles();
       return true;
     } catch (error) {
-      console.error('Failed to revoke user role:', error);
+      logger.error('Failed to revoke user role', 'useSiteMaster', error);
       handleSupabaseError(error);
       return false;
     } finally {

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Wallet, Send, CreditCard, ArrowUpDown, TrendingUp, Plus, Minus, Link, Shield, Eye, EyeOff, Repeat } from 'lucide-react';
+import { X, Wallet, Send, CreditCard, ArrowUpDown, TrendingUp, Plus, Minus, Link, Shield, Eye, Repeat } from 'lucide-react';
 import { useWallet } from '../hooks/useWallet';
 import { useWeb3 } from '../hooks/useWeb3';
 import { useExchange } from '../hooks/useExchange';
@@ -7,6 +7,7 @@ import { useHoudiniSwap } from '../hooks/useHoudiniSwap';
 import { SwapInterface } from './SwapInterface';
 import { formatDistanceToNow } from 'date-fns';
 import { useAppKit } from '@reown/appkit/react';
+import { logger } from '../utils/logger';
 
 interface WalletDashboardProps {
   isOpen: boolean;
@@ -34,7 +35,7 @@ export function WalletDashboard({ isOpen, onClose, initialTab }: WalletDashboard
       setSendForm({ to: '', amount: '', asset: 'ETH' });
       alert('Transaction sent successfully!');
     } catch (error) {
-      console.error('Send failed:', error);
+      logger.error('Send failed', 'WalletDashboard', error);
       alert('Transaction failed. Please try again.');
     }
   };
@@ -46,7 +47,7 @@ export function WalletDashboard({ isOpen, onClose, initialTab }: WalletDashboard
       setBuyForm({ asset: 'ETH', amount: '', paymentMethod: 'card' });
       alert('Purchase completed successfully!');
     } catch (error) {
-      console.error('Buy failed:', error);
+      logger.error('Buy failed', 'WalletDashboard', error);
       alert('Purchase failed. Please try again.');
     }
   };
@@ -62,7 +63,7 @@ export function WalletDashboard({ isOpen, onClose, initialTab }: WalletDashboard
         alert('Swap completed successfully!');
       }
     } catch (error) {
-      console.error('Swap failed:', error);
+      logger.error('Swap failed', 'WalletDashboard', error);
       alert('Swap failed. Please try again.');
     }
   };
@@ -79,7 +80,7 @@ export function WalletDashboard({ isOpen, onClose, initialTab }: WalletDashboard
       setTradeForm({ pair: 'ETH/USDC', amount: '', orderType: 'market', price: '' });
       alert('Order placed successfully!');
     } catch (error) {
-      console.error('Trade failed:', error);
+      logger.error('Trade failed', 'WalletDashboard', error);
       alert('Trade failed. Please try again.');
     }
   };

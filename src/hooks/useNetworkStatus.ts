@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { logger } from '../utils/logger';
 
 interface NetworkStatus {
   isOnline: boolean;
@@ -45,7 +46,7 @@ export function useNetworkStatus() {
     };
 
     const handleOnline = () => {
-      console.log('[NetworkStatus] Connection restored');
+      logger.debug('[NetworkStatus] Connection restored', 'useNetworkStatus');
       updateNetworkStatus();
 
       if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
@@ -56,7 +57,7 @@ export function useNetworkStatus() {
     };
 
     const handleOffline = () => {
-      console.log('[NetworkStatus] Connection lost');
+      logger.debug('[NetworkStatus] Connection lost', 'useNetworkStatus');
       updateNetworkStatus();
     };
 

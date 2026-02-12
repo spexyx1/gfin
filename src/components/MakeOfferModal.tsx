@@ -4,6 +4,7 @@ import { Product } from '../types';
 import { useMessaging } from '../hooks/useMessaging';
 import { useAuth } from '../hooks/useAuth';
 import { useTerms } from '../hooks/useTerms';
+import { logger } from '../utils/logger';
 
 interface MakeOfferModalProps {
   isOpen: boolean;
@@ -58,7 +59,7 @@ export function MakeOfferModal({ isOpen, onClose, product }: MakeOfferModalProps
         resetForm();
       }, 2000);
     } catch (error) {
-      console.error('Failed to send offer:', error);
+      logger.error('Failed to send offer', 'MakeOfferModal', error);
       setError('Failed to send offer. Please try again.');
     } finally {
       setIsSubmitting(false);

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Download, Smartphone, X, Apple, Chrome, Zap } from 'lucide-react';
+import { logger } from '../utils/logger';
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -86,11 +87,11 @@ export function PWAInstallButton() {
     const { outcome } = await deferredPrompt.userChoice;
 
     if (outcome === 'accepted') {
-      console.log('User accepted the install prompt');
+      logger.debug('User accepted the install prompt', 'PWAInstallButton');
       setShowInstallButton(false);
       setShowMobileBanner(false);
     } else {
-      console.log('User dismissed the install prompt');
+      logger.debug('User dismissed the install prompt', 'PWAInstallButton');
     }
 
     setDeferredPrompt(null);

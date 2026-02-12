@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
+import { logger } from '../utils/logger';
 import type { HousingProject, HousingNFT, TenantPartnership, ProjectUpdate } from '../types/housing';
 
 export function useHousingMarketplace() {
@@ -43,7 +44,7 @@ export function useHousingMarketplace() {
       if (error) throw error;
       setMyNFTs(data || []);
     } catch (err: any) {
-      console.error('Error fetching NFTs:', err);
+      logger.error('Error fetching NFTs', 'useHousingMarketplace', err);
     }
   };
 
@@ -110,7 +111,7 @@ export function useHousingMarketplace() {
       if (error) throw error;
       return data || [];
     } catch (err: any) {
-      console.error('Error fetching updates:', err);
+      logger.error('Error fetching updates', 'useHousingMarketplace', err);
       return [];
     }
   };
@@ -126,7 +127,7 @@ export function useHousingMarketplace() {
       if (error) throw error;
       return data || [];
     } catch (err: any) {
-      console.error('Error fetching partnerships:', err);
+      logger.error('Error fetching partnerships', 'useHousingMarketplace', err);
       return [];
     }
   };

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { X, Flag, AlertTriangle, CheckCircle } from 'lucide-react';
 import { Product } from '../types';
 import { useAuth } from '../hooks/useAuth';
+import { logger } from '../utils/logger';
 
 interface ReportListingModalProps {
   isOpen: boolean;
@@ -50,7 +51,7 @@ export function ReportListingModal({ isOpen, onClose, product }: ReportListingMo
       await new Promise(resolve => setTimeout(resolve, 1500));
       
       // In a real app, this would send the report to moderators
-      console.log('Report submitted:', {
+      logger.debug('Report submitted', 'ReportListingModal', {
         productId: product.id,
         productTitle: product.title,
         sellerId: product.seller.id,
@@ -66,7 +67,7 @@ export function ReportListingModal({ isOpen, onClose, product }: ReportListingMo
         resetForm();
       }, 2000);
     } catch (error) {
-      console.error('Failed to submit report:', error);
+      logger.error('Failed to submit report', 'ReportListingModal', error);
       setError('Failed to submit report. Please try again.');
     } finally {
       setIsSubmitting(false);

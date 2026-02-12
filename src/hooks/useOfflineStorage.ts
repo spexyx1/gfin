@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNetworkStatus } from './useNetworkStatus';
+import { logger } from '../utils/logger';
 
 interface CachedData<T> {
   data: T;
@@ -38,7 +39,7 @@ export function useOfflineStorage<T>(key: string, fetchFn: () => Promise<T>) {
         }
       }
     } catch (err) {
-      console.error('[OfflineStorage] Error loading data:', err);
+      logger.error('[OfflineStorage] Error loading data', 'useOfflineStorage', err);
       setError(err instanceof Error ? err.message : 'Failed to load data');
 
       const cached = await getCachedData<T>(key);
@@ -107,7 +108,7 @@ async function cacheData<T>(key: string, data: T): Promise<void> {
       })
     );
   } catch (err) {
-    console.error('[OfflineStorage] Failed to cache data:', err);
+    logger.error('[OfflineStorage] Failed to cache data', 'useOfflineStorage', err);
   }
 }
 
@@ -119,7 +120,7 @@ async function getCachedData<T>(key: string): Promise<CachedData<T> | null> {
     }
     return null;
   } catch (err) {
-    console.error('[OfflineStorage] Failed to get cached data:', err);
+    logger.error('[OfflineStorage] Failed to get cached data', 'useOfflineStorage', err);
     return null;
   }
 }

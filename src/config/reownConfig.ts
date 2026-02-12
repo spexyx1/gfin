@@ -1,11 +1,12 @@
 import { createAppKit } from '@reown/appkit/react';
 import { EthersAdapter } from '@reown/appkit-adapter-ethers';
 import { polygon, polygonAmoy } from '@reown/appkit/networks';
+import { logger } from '../utils/logger';
 
 const projectId = import.meta.env.VITE_REOWN_PROJECT_ID || '';
 
 if (!projectId) {
-  console.warn('VITE_REOWN_PROJECT_ID is not set. Wallet connection features will be limited.');
+  logger.warn('VITE_REOWN_PROJECT_ID is not set. Wallet connection features will be limited.', 'reownConfig');
 }
 
 const metadata = {

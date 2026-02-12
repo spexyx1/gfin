@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, Trash2, Edit2, Save, X, CheckCircle, AlertCircle } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import { logger } from '../utils/logger';
 
 interface Token {
   id: string;
@@ -51,7 +52,7 @@ export function SitemasterSwapControls() {
       if (error) throw error;
       setTokens(data || []);
     } catch (error) {
-      console.error('Error loading tokens:', error);
+      logger.error('Error loading tokens', 'SitemasterSwapControls', error);
     } finally {
       setLoading(false);
     }
@@ -83,7 +84,7 @@ export function SitemasterSwapControls() {
       resetForm();
       loadTokens();
     } catch (error) {
-      console.error('Error adding token:', error);
+      logger.error('Error adding token', 'SitemasterSwapControls', error);
       alert('Failed to add token');
     }
   };
@@ -106,7 +107,7 @@ export function SitemasterSwapControls() {
       setEditingToken(null);
       loadTokens();
     } catch (error) {
-      console.error('Error updating token:', error);
+      logger.error('Error updating token', 'SitemasterSwapControls', error);
       alert('Failed to update token');
     }
   };
@@ -123,7 +124,7 @@ export function SitemasterSwapControls() {
       if (error) throw error;
       loadTokens();
     } catch (error) {
-      console.error('Error deleting token:', error);
+      logger.error('Error deleting token', 'SitemasterSwapControls', error);
       alert('Failed to delete token');
     }
   };

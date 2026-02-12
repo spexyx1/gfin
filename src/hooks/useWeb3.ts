@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { ethers, BrowserProvider } from 'ethers';
 import { useAppKit, useAppKitAccount, useAppKitProvider } from '@reown/appkit/react';
 import { DEFAULT_CHAIN_ID, SUPPORTED_CHAIN_IDS } from '../config/reownConfig';
+import { logger } from '../utils/logger';
 
 const SUPPORTED_NETWORKS = {
   polygon: {
@@ -83,7 +84,7 @@ export const useWeb3 = () => {
         const balance = await provider.getBalance(address);
         return ethers.formatEther(balance);
       } catch (error) {
-        console.error('Failed to get balance:', error);
+        logger.error('Failed to get balance', 'useWeb3', error);
         return '0';
       }
     }
@@ -100,7 +101,7 @@ export const useWeb3 = () => {
         });
         return tx;
       } catch (error) {
-        console.error('Failed to send transaction:', error);
+        logger.error('Failed to send transaction', 'useWeb3', error);
         throw error;
       }
     }

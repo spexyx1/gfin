@@ -1,4 +1,3 @@
-import React from 'react';
 import { X, User, Package, ShoppingCart, Flag, Ban, Mail } from 'lucide-react';
 
 interface UserDetailsProps {

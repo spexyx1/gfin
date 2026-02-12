@@ -1,4 +1,3 @@
-import React from 'react';
 import { X, Minus, Plus, ShoppingCart, CreditCard, Shield, CheckCircle } from 'lucide-react';
 import { useCart } from '../hooks/useCart';
 import { useWeb3 } from '../hooks/useWeb3';
@@ -7,6 +6,7 @@ import { useContractAddresses } from '../hooks/useContractAddresses';
 import { useState, useMemo } from 'react';
 import { PaymentOption } from '../types';
 import { supabase } from '../lib/supabase';
+import { logger } from '../utils/logger';
 
 interface CartProps {
   isOpen: boolean;
@@ -119,7 +119,7 @@ export function Cart({ isOpen, onClose }: CartProps) {
         setOrderIds([]);
       }, 3000);
     } catch (error) {
-      console.error('Checkout failed:', error);
+      logger.error('Checkout failed', 'Cart', error);
       alert(error instanceof Error ? error.message : 'Checkout failed. Please try again.');
       setCheckoutStep('review');
     }

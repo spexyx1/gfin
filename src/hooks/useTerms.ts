@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase, requireSupabase, handleSupabaseError } from '../lib/supabase';
+import { logger } from '../utils/logger';
 
 interface TermsOfService {
   id: string;
@@ -46,7 +47,7 @@ export function useTerms() {
       setCurrentTerms(data);
       setError(null);
     } catch (err) {
-      console.error('Error loading terms:', err);
+      logger.error('Error loading terms', 'useTerms', err);
       setError('Failed to load terms of service');
     } finally {
       setIsLoading(false);
@@ -73,7 +74,7 @@ export function useTerms() {
       return profile?.terms_accepted === true &&
              profile?.current_terms_version === currentTerms.version;
     } catch (err) {
-      console.error('Error checking user acceptance:', err);
+      logger.error('Error checking user acceptance', 'useTerms', err);
       return false;
     }
   };
@@ -97,7 +98,7 @@ export function useTerms() {
         const ipData = await ipResponse.json();
         ipAddress = ipData.ip;
       } catch (ipError) {
-        console.warn('Could not fetch IP address:', ipError);
+        logger.warn('Could not fetch IP address', 'useTerms');
       }
 
       const { error: acceptanceError } = await supabaseClient
@@ -144,7 +145,7 @@ export function useTerms() {
 
       return data || [];
     } catch (err) {
-      console.error('Error loading acceptance history:', err);
+      logger.error('Error loading acceptance history', 'useTerms', err);
       return [];
     }
   };
@@ -162,7 +163,7 @@ export function useTerms() {
 
       return data || [];
     } catch (err) {
-      console.error('Error loading terms versions:', err);
+      logger.error('Error loading terms versions', 'useTerms', err);
       return [];
     }
   };
@@ -212,7 +213,7 @@ export function useTerms() {
 
       return count || 0;
     } catch (err) {
-      console.error('Error counting users requiring acceptance:', err);
+      logger.error('Error counting users requiring acceptance', 'useTerms', err);
       return 0;
     }
   };

@@ -1,3 +1,5 @@
+import { logger } from '../utils/logger';
+
 interface TokenPrice {
   usd: number;
   usd_24h_change: number;
@@ -43,7 +45,7 @@ const TOKEN_ID_MAP: { [key: string]: string } = {
 export async function fetchTokenPrice(symbol: string): Promise<TokenPrice | null> {
   const coinId = TOKEN_ID_MAP[symbol.toUpperCase()];
   if (!coinId) {
-    console.warn(`Token ${symbol} not found in price mapping`);
+    logger.warn(`Token ${symbol} not found in price mapping`, 'priceService');
     return null;
   }
 
@@ -72,7 +74,7 @@ export async function fetchTokenPrice(symbol: string): Promise<TokenPrice | null
 
     return price;
   } catch (error) {
-    console.error(`Error fetching price for ${symbol}:`, error);
+    logger.error(`Error fetching price for ${symbol}`, 'priceService', error);
     return null;
   }
 }
@@ -125,7 +127,7 @@ export async function fetchMultipleTokenPrices(symbols: string[]): Promise<Map<s
         }
       }
     } catch (error) {
-      console.error('Error fetching multiple token prices:', error);
+      logger.error('Error fetching multiple token prices', 'priceService', error);
     }
   }
 

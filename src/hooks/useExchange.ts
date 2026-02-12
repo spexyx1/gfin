@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { TradeOrder, ExchangeRate } from '../types';
 import { fetchTokenPrice, getExchangeRate } from '../services/priceService';
+import { logger } from '../utils/logger';
 
 export function useExchange() {
   const [orders, setOrders] = useState<TradeOrder[]>([]);
@@ -63,7 +64,7 @@ export function useExchange() {
       setOrders(prev => [newOrder, ...prev]);
       return newOrder.id;
     } catch (error) {
-      console.error('Buy order failed:', error);
+      logger.error('Buy order failed', 'useExchange', error);
       throw error;
     } finally {
       setIsLoading(false);
@@ -94,7 +95,7 @@ export function useExchange() {
       setOrders(prev => [newOrder, ...prev]);
       return newOrder.id;
     } catch (error) {
-      console.error('Sell order failed:', error);
+      logger.error('Sell order failed', 'useExchange', error);
       throw error;
     } finally {
       setIsLoading(false);
@@ -110,7 +111,7 @@ export function useExchange() {
           : order
       ));
     } catch (error) {
-      console.error('Cancel order failed:', error);
+      logger.error('Cancel order failed', 'useExchange', error);
       throw error;
     } finally {
       setIsLoading(false);

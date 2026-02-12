@@ -1,5 +1,4 @@
-import React from 'react';
-import { TrendingUp, Users, Package, DollarSign, ShoppingCart, BarChart3 } from 'lucide-react';
+import { TrendingUp, Users, Package, DollarSign, ShoppingCart } from 'lucide-react';
 
 interface AnalyticsProps {
   analytics: any;

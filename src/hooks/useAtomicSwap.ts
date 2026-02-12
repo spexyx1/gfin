@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { ethers } from 'ethers';
+import { logger } from '../utils/logger';
 
 interface SupportedToken {
   id: string;
@@ -55,7 +56,7 @@ export function useAtomicSwap() {
       if (error) throw error;
       setSupportedTokens(data || []);
     } catch (error) {
-      console.error('Error loading supported tokens:', error);
+      logger.error('Error loading supported tokens', 'useAtomicSwap', error);
     }
   };
 
@@ -87,7 +88,7 @@ export function useAtomicSwap() {
       if (error) throw error;
       setUserSwaps(data || []);
     } catch (error) {
-      console.error('Error loading user swaps:', error);
+      logger.error('Error loading user swaps', 'useAtomicSwap', error);
     }
   };
 
@@ -143,7 +144,7 @@ export function useAtomicSwap() {
 
       return true;
     } catch (error) {
-      console.error('Error creating swap:', error);
+      logger.error('Error creating swap', 'useAtomicSwap', error);
       return false;
     } finally {
       setLoading(false);
@@ -206,7 +207,7 @@ export function useAtomicSwap() {
 
       return true;
     } catch (error) {
-      console.error('Error depositing tokens:', error);
+      logger.error('Error depositing tokens', 'useAtomicSwap', error);
       alert('Failed to deposit tokens');
       return false;
     } finally {
@@ -226,7 +227,7 @@ export function useAtomicSwap() {
 
       return true;
     } catch (error) {
-      console.error('Error cancelling swap:', error);
+      logger.error('Error cancelling swap', 'useAtomicSwap', error);
       return false;
     } finally {
       setLoading(false);
@@ -237,7 +238,7 @@ export function useAtomicSwap() {
     try {
       await supabase.rpc('expire_old_swaps');
     } catch (error) {
-      console.error('Error expiring swaps:', error);
+      logger.error('Error expiring swaps', 'useAtomicSwap', error);
     }
   };
 

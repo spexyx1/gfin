@@ -1,4 +1,3 @@
-import React from 'react';
 import { X, Shield, AlertTriangle, Scale, Globe, FileText, Users, Lock } from 'lucide-react';
 
 interface LegalPageProps {

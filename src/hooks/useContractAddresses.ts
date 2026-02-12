@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
+import { logger } from '../utils/logger';
 
 interface ContractAddresses {
   ghettoToken: string | null;
@@ -50,7 +51,7 @@ export const useContractAddresses = (network: string) => {
 
         setAddresses(addressMap);
       } catch (err) {
-        console.error('Error fetching contract addresses:', err);
+        logger.error('Error fetching contract addresses', 'useContractAddresses', err);
         setError(err instanceof Error ? err.message : 'Failed to fetch contract addresses');
 
         setAddresses({

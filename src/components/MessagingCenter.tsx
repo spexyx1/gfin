@@ -3,6 +3,7 @@ import { X, Send, MessageCircle, User, Clock, Check, CheckCheck, Trash2, Package
 import { useMessaging } from '../hooks/useMessaging';
 import { useWeb3 } from '../hooks/useWeb3';
 import { formatDistanceToNow } from 'date-fns';
+import { logger } from '../utils/logger';
 
 interface MessagingCenterProps {
   isOpen: boolean;
@@ -44,7 +45,7 @@ export function MessagingCenter({ isOpen, onClose, initialConversationId }: Mess
       await sendMessage(selectedConversationId, newMessage.trim());
       setNewMessage('');
     } catch (error) {
-      console.error('Failed to send message:', error);
+      logger.error('Failed to send message', 'MessagingCenter', error);
     }
   };
 

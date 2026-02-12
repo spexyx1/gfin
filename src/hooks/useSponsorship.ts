@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from './useAuth';
+import { logger } from '../utils/logger';
 
 interface SponsorshipRequest {
   id: string;
@@ -117,7 +118,7 @@ export function useSponsorship() {
 
       setRequests(mappedData as SponsorshipRequest[]);
     } catch (error) {
-      console.error('Error loading requests:', error);
+      logger.error('Error loading requests', 'useSponsorship', error);
       setRequests([]);
     }
   };
@@ -168,7 +169,7 @@ export function useSponsorship() {
 
       setMyInvestments(mappedData as SponsorshipInvestment[]);
     } catch (error) {
-      console.error('Error loading investments:', error);
+      logger.error('Error loading investments', 'useSponsorship', error);
       setMyInvestments([]);
     }
   };
@@ -187,7 +188,7 @@ export function useSponsorship() {
       if (error) throw error;
       setMyRequests(data || []);
     } catch (error) {
-      console.error('Error loading my requests:', error);
+      logger.error('Error loading my requests', 'useSponsorship', error);
       setMyRequests([]);
     }
   };
@@ -206,7 +207,7 @@ export function useSponsorship() {
       if (error) throw error;
       setMyTransactions(data || []);
     } catch (error) {
-      console.error('Error loading transactions:', error);
+      logger.error('Error loading transactions', 'useSponsorship', error);
       setMyTransactions([]);
     }
   };
@@ -241,7 +242,7 @@ export function useSponsorship() {
 
       return data;
     } catch (error) {
-      console.error('Error creating request:', error);
+      logger.error('Error creating request', 'useSponsorship', error);
       throw error;
     } finally {
       setIsLoading(false);
@@ -291,7 +292,7 @@ export function useSponsorship() {
 
       return investment;
     } catch (error) {
-      console.error('Error investing:', error);
+      logger.error('Error investing', 'useSponsorship', error);
       throw error;
     } finally {
       setIsLoading(false);
@@ -315,7 +316,7 @@ export function useSponsorship() {
 
       await loadMyRequests();
     } catch (error) {
-      console.error('Error cancelling request:', error);
+      logger.error('Error cancelling request', 'useSponsorship', error);
       throw error;
     } finally {
       setIsLoading(false);
@@ -354,7 +355,7 @@ export function useSponsorship() {
         roi: totalInvested > 0 ? ((totalRevenue / totalInvested - 1) * 100) : 0
       };
     } catch (error) {
-      console.error('Error getting analytics:', error);
+      logger.error('Error getting analytics', 'useSponsorship', error);
       return {
         totalInvested: 0,
         totalRevenue: 0,
@@ -421,7 +422,7 @@ export function useSponsorship() {
 
       return payouts;
     } catch (error) {
-      console.error('Error calculating payouts:', error);
+      logger.error('Error calculating payouts', 'useSponsorship', error);
       return [];
     }
   };
@@ -437,7 +438,7 @@ export function useSponsorship() {
 
       if (error) throw error;
     } catch (error) {
-      console.error('Error recording transactions:', error);
+      logger.error('Error recording transactions', 'useSponsorship', error);
       throw error;
     }
   };
@@ -457,7 +458,7 @@ export function useSponsorship() {
       const totalFunding = requests?.reduce((sum, req) => sum + req.amount_funded, 0) || 0;
       return totalFunding * 2; // 2:1 selling limit
     } catch (error) {
-      console.error('Error getting sponsorship limit:', error);
+      logger.error('Error getting sponsorship limit', 'useSponsorship', error);
       return 0;
     }
   };

@@ -196,7 +196,7 @@ export function CreateAuctionModal({ isOpen, onClose, product, onCreateAuction }
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block text-gray-200 font-black mb-2 uppercase">
-                      {auctionType === 'english' ? 'STARTING PRICE' : 'STARTING PRICE'}
+                      STARTING PRICE
                     </label>
                     <div className="relative">
                       <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />

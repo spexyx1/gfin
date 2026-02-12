@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { X, Shield, Lock, Smartphone, Mail, Key, AlertTriangle, CheckCircle, Eye, EyeOff, Copy, RefreshCw } from 'lucide-react';
 import { useSecurity } from '../hooks/useSecurity';
 import { formatDistanceToNow } from 'date-fns';
+import { logger } from '../utils/logger';
 
 interface SecurityDashboardProps {
   isOpen: boolean;
@@ -37,7 +38,7 @@ export function SecurityDashboard({ isOpen, onClose }: SecurityDashboardProps) {
       setBackupCodes(codes);
       setShow2FASetup(true);
     } catch (error) {
-      console.error('Failed to enable 2FA:', error);
+      logger.error('Failed to enable 2FA', 'SecurityDashboard', error);
     }
   };
 

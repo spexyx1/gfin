@@ -1,5 +1,3 @@
-import React from 'react';
-
 interface GraffitiLogoProps {
   size?: 'sm' | 'md' | 'lg' | 'xl';
   className?: string;

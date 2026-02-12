@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Message, Conversation } from '../types';
 import { useAuth } from './useAuth';
 import { supabase, requireSupabase, handleSupabaseError } from '../lib/supabase';
+import { logger } from '../utils/logger';
 
 export function useMessaging() {
   const [conversations, setConversations] = useState<Conversation[]>([]);
@@ -91,7 +92,7 @@ export function useMessaging() {
 
       setConversations(processedConversations);
     } catch (error) {
-      console.error('Failed to load conversations:', error);
+      logger.error('Failed to load conversations', 'useMessaging', error);
       handleSupabaseError(error);
     } finally {
       setIsLoading(false);
@@ -132,7 +133,7 @@ export function useMessaging() {
         [conversationId]: conversationMessages
       }));
     } catch (error) {
-      console.error('Failed to load messages:', error);
+      logger.error('Failed to load messages', 'useMessaging', error);
       handleSupabaseError(error);
     }
   };
@@ -299,7 +300,7 @@ export function useMessaging() {
         conv.id === conversationId ? { ...conv, unreadCount: 0 } : conv
       ));
     } catch (error) {
-      console.error('Failed to mark messages as read:', error);
+      logger.error('Failed to mark messages as read', 'useMessaging', error);
       handleSupabaseError(error);
     }
   };
@@ -323,7 +324,7 @@ export function useMessaging() {
 
       return count || 0;
     } catch (error) {
-      console.error('Failed to get unread count:', error);
+      logger.error('Failed to get unread count', 'useMessaging', error);
       return conversations.reduce((total, conv) => total + conv.unreadCount, 0);
     }
   };
@@ -348,7 +349,7 @@ export function useMessaging() {
         username: profile.username,
       };
     } catch (error) {
-      console.error('Failed to get user info:', error);
+      logger.error('Failed to get user info', 'useMessaging', error);
       return { name: `User ${userId.slice(0, 6)}...${userId.slice(-4)}` };
     }
   };
@@ -378,7 +379,7 @@ export function useMessaging() {
         return newMessages;
       });
     } catch (error) {
-      console.error('Failed to delete conversation:', error);
+      logger.error('Failed to delete conversation', 'useMessaging', error);
       handleSupabaseError(error);
     }
   };

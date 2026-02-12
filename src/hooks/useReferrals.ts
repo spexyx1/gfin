@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { supabase, requireSupabase, handleSupabaseError } from '../lib/supabase';
 import { useAuth } from './useAuth';
 import { ReferralCode, ReferredUser, ReferralBalance, ReferralTransaction, PlatformSetting } from '../types';
+import { logger } from '../utils/logger';
 
 export function useReferrals() {
   const { user } = useAuth();
@@ -94,7 +95,7 @@ export function useReferrals() {
       })));
 
     } catch (err) {
-      console.error('Error loading referral data:', err);
+      logger.error('Error loading referral data', 'useReferrals', err);
       setError(err instanceof Error ? err.message : 'Failed to load referral data');
       handleSupabaseError(err);
     } finally {
@@ -118,7 +119,7 @@ export function useReferrals() {
       });
       setPlatformSettings(settingsMap);
     } catch (err) {
-      console.error('Error loading platform settings:', err);
+      logger.error('Error loading platform settings', 'useReferrals', err);
       setError(err instanceof Error ? err.message : 'Failed to load platform settings');
       handleSupabaseError(err);
     } finally {
@@ -147,7 +148,7 @@ export function useReferrals() {
       await loadReferralData(); // Refresh data
       return true;
     } catch (err) {
-      console.error('Error redeeming balance:', err);
+      logger.error('Error redeeming balance', 'useReferrals', err);
       setError(err instanceof Error ? err.message : 'Failed to redeem balance');
       handleSupabaseError(err);
       return false;

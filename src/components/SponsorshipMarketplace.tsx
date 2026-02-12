@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { X, TrendingUp, DollarSign, Calendar, Package, Users, Award, Search, Filter, Plus, AlertCircle, CheckCircle, Clock } from 'lucide-react';
+import { useState } from 'react';
+import { X, TrendingUp, DollarSign, Package, Users, Award, Search, Filter, Plus, AlertCircle } from 'lucide-react';
 import { useSponsorship } from '../hooks/useSponsorship';
 import { useAuth } from '../hooks/useAuth';
+import { logger } from '../utils/logger';
 
 interface SponsorshipMarketplaceProps {
   isOpen: boolean;
@@ -88,7 +89,7 @@ export function SponsorshipMarketplace({ isOpen, onClose }: SponsorshipMarketpla
         category: 'electronics'
       });
     } catch (error) {
-      console.error('Failed to create request:', error);
+      logger.error('Failed to create request', 'SponsorshipMarketplace', error);
     }
   };
 
@@ -101,7 +102,7 @@ export function SponsorshipMarketplace({ isOpen, onClose }: SponsorshipMarketpla
       setSelectedRequest(null);
       setInvestmentAmount('');
     } catch (error) {
-      console.error('Failed to invest:', error);
+      logger.error('Failed to invest', 'SponsorshipMarketplace', error);
     }
   };
 

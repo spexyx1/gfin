@@ -2,39 +2,9 @@ import { useState, useEffect, useCallback } from 'react';
 import { ethers } from 'ethers';
 import { useBlockchainService } from './useBlockchainService';
 import { useContractAddresses } from './useContractAddresses';
-import { supabase, requireSupabase } from '../lib/supabase';
+import { requireSupabase } from '../lib/supabase';
 import { logger } from '../utils/logger';
-
-const GHETTO_TOKEN_ABI = [
-  'function name() external view returns (string)',
-  'function symbol() external view returns (string)',
-  'function decimals() external view returns (uint8)',
-  'function totalSupply() external view returns (uint256)',
-  'function balanceOf(address account) external view returns (uint256)',
-  'function transfer(address to, uint256 amount) external returns (bool)',
-  'function allowance(address owner, address spender) external view returns (uint256)',
-  'function approve(address spender, uint256 amount) external returns (bool)',
-  'function transferFrom(address from, address to, uint256 amount) external returns (bool)',
-  'function externalTransfersAllowed() external view returns (bool)',
-  'function blacklisted(address account) external view returns (bool)',
-  'function marketplaceContracts(address contractAddress) external view returns (bool)',
-  'function setBlacklisted(address account, bool _blacklisted) external',
-  'function setMarketplaceContract(address contractAddress, bool whitelisted) external',
-  'function setExternalTransfersAllowed(bool allowed) external',
-  'function mint(address to, uint256 amount) external',
-  'function burn(uint256 amount) external',
-  'function burnFrom(address account, uint256 amount) external',
-  'function pause() external',
-  'function unpause() external',
-  'function paused() external view returns (bool)',
-  'function owner() external view returns (address)',
-  'function getTokenInfo() external view returns (string, string, uint8, uint256, bool)',
-  'event Transfer(address indexed from, address indexed to, uint256 value)',
-  'event Approval(address indexed owner, address indexed spender, uint256 value)',
-  'event AddressBlacklisted(address indexed account, bool blacklisted)',
-  'event MarketplaceContractUpdated(address indexed contractAddress, bool whitelisted)',
-  'event ExternalTransfersToggled(bool allowed)'
-];
+import { GHETTO_TOKEN_ABI } from '../config/contractAbis';
 
 export interface TokenInfo {
   name: string;

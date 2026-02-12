@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
+import { logger } from '../utils/logger';
 
 export interface UserFlag {
   id: string;
@@ -67,11 +68,11 @@ export function useEnhancedSitemaster() {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        console.log('[useEnhancedSitemaster] No authenticated user');
+        logger.debug('[useEnhancedSitemaster] No authenticated user', 'useEnhancedSitemaster');
         return false;
       }
 
-      console.log('[useEnhancedSitemaster] Checking sitemaster role for user:', user.id);
+      logger.debug('[useEnhancedSitemaster] Checking sitemaster role for user', 'useEnhancedSitemaster', user.id);
       const { data, error } = await supabase
         .from('user_admin_roles')
         .select('*')
@@ -81,20 +82,20 @@ export function useEnhancedSitemaster() {
         .maybeSingle();
 
       if (error) {
-        console.error('[useEnhancedSitemaster] Database error:', error);
+        logger.error('[useEnhancedSitemaster] Database error', 'useEnhancedSitemaster', error);
         return false;
       }
 
       const hasSitemasterRole = !!data;
-      console.log('[useEnhancedSitemaster] Role check result:', hasSitemasterRole, 'data:', data);
+      logger.debug('[useEnhancedSitemaster] Role check result', 'useEnhancedSitemaster', { hasSitemasterRole, data });
 
       if (hasSitemasterRole) {
-        console.log('[useEnhancedSitemaster] ✓ SITEMASTER ACCESS GRANTED');
+        logger.debug('[useEnhancedSitemaster] SITEMASTER ACCESS GRANTED', 'useEnhancedSitemaster');
       }
 
       return hasSitemasterRole;
     } catch (error) {
-      console.error('[useEnhancedSitemaster] Exception:', error);
+      logger.error('[useEnhancedSitemaster] Exception', 'useEnhancedSitemaster', error);
       return false;
     }
   };

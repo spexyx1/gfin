@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useEnhancedSitemaster } from '../hooks/useEnhancedSitemaster';
 import { SitemasterAnalytics } from './SitemasterAnalytics';
 import { SitemasterUserDetails } from './SitemasterUserDetails';
 import { ReputationManagement } from './ReputationManagement';
 import { SitemasterSwapControls } from './SitemasterSwapControls';
 import {
-  Shield, Search, Ban, Flag, MessageSquare, Activity, Settings,
-  Users, Package, TrendingUp, AlertTriangle, Eye, Lock, Unlock,
-  BarChart3, FileText, XCircle, CheckCircle, Trash2, RefreshCw
+  Shield, Ban, Flag, MessageSquare, Activity,
+  Users, Package, Eye, Lock, Unlock,
+  BarChart3, XCircle, CheckCircle
 } from 'lucide-react';
 
 export function EnhancedSitemasterDashboard() {

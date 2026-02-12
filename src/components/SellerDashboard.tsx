@@ -7,6 +7,7 @@ import { useAuth } from '../hooks/useAuth';
 import { useTerms } from '../hooks/useTerms';
 import { PhotoUpload } from './PhotoUpload';
 import { SellerProduct, ProductImage } from '../types';
+import { logger } from '../utils/logger';
 
 interface SellerDashboardProps {
   isOpen: boolean;
@@ -59,7 +60,7 @@ export function SellerDashboard({ isOpen, onClose }: SellerDashboardProps) {
           const info = await getSellerCollateralInfo();
           setCollateralInfo(info);
         } catch (error) {
-          console.error('Failed to load collateral info:', error);
+          logger.error('Failed to load collateral info', 'SellerDashboard', error);
         }
       }
     };
@@ -113,7 +114,7 @@ export function SellerDashboard({ isOpen, onClose }: SellerDashboardProps) {
       resetForm();
       setActiveTab('products');
     } catch (error) {
-      console.error('Failed to save product:', error);
+      logger.error('Failed to save product', 'SellerDashboard', error);
       alert('Failed to save product. Please try again.');
     }
   };
@@ -138,7 +139,7 @@ export function SellerDashboard({ isOpen, onClose }: SellerDashboardProps) {
       try {
         await deleteProduct(productId);
       } catch (error) {
-        console.error('Failed to delete product:', error);
+        logger.error('Failed to delete product', 'SellerDashboard', error);
         alert('Failed to delete product. Please try again.');
       }
     }
@@ -153,7 +154,7 @@ export function SellerDashboard({ isOpen, onClose }: SellerDashboardProps) {
       const info = await getSellerCollateralInfo();
       setCollateralInfo(info);
     } catch (error) {
-      console.error('Failed to deposit collateral:', error);
+      logger.error('Failed to deposit collateral', 'SellerDashboard', error);
       alert('Failed to deposit collateral. Please try again.');
     }
   };

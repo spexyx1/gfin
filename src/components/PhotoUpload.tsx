@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import { Camera, Upload, X, Star, RotateCcw, Move, Trash2, Image as ImageIcon } from 'lucide-react';
 import { ProductImage } from '../types';
 import { usePhotoUpload } from '../hooks/usePhotoUpload';
+import { logger } from '../utils/logger';
 
 interface PhotoUploadProps {
   images: ProductImage[];
@@ -34,7 +35,7 @@ export function PhotoUpload({ images, onImagesChange, maxImages = 10 }: PhotoUpl
         onImagesChange(updatedImages);
       }
     } catch (error) {
-      console.error('Upload failed:', error);
+      logger.error('Upload failed', 'PhotoUpload', error);
       alert(error instanceof Error ? error.message : 'Upload failed');
     }
   };

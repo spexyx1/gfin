@@ -1,5 +1,4 @@
-import React from 'react';
-import { Truck, Package, CheckCircle, Clock, ExternalLink, MapPin, Calendar } from 'lucide-react';
+import { Truck, Package, CheckCircle, Clock, ExternalLink } from 'lucide-react';
 import { EscrowOrder } from '../hooks/useEscrow';
 import { formatDistanceToNow } from 'date-fns';
 

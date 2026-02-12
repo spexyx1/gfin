@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useReputation } from '../hooks/useReputation';
 import { AlertTriangle, CheckCircle, XCircle, Lock, Unlock, DollarSign } from 'lucide-react';
+import { logger } from '../utils/logger';
 
 export function ReputationManagement() {
   const {
@@ -30,7 +31,7 @@ export function ReputationManagement() {
         setRedemptionRequests(requests || []);
       }
     } catch (error: any) {
-      console.error('Error loading data:', error);
+      logger.error('Error loading data', 'ReputationManagement', error);
     } finally {
       setLoading(false);
     }

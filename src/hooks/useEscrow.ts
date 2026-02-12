@@ -1,46 +1,14 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from './useAuth';
 import { useMessaging } from './useMessaging';
 import { useWeb3 } from './useWeb3';
 import { useContractAddresses } from './useContractAddresses';
 import { supabase, requireSupabase, handleSupabaseError } from '../lib/supabase';
 import { ethers } from 'ethers';
-import React from 'react';
 import { useSponsorship } from './useSponsorship';
 import { TRANSACTION_CONFIG } from '../config/constants';
 import { logger } from '../utils/logger';
-
-// ERC20 ABI for USDC token
-const ERC20_ABI = [
-  'function approve(address spender, uint256 amount) external returns (bool)',
-  'function allowance(address owner, address spender) external view returns (uint256)',
-  'function balanceOf(address account) external view returns (uint256)',
-  'function transfer(address to, uint256 amount) external returns (bool)',
-  'function transferFrom(address from, address to, uint256 amount) external returns (bool)',
-  'function decimals() external view returns (uint8)',
-];
-
-// Escrow contract ABI
-const ESCROW_ABI = [
-  'function createOrder(string memory _orderId, address _seller, uint256 _amount, address _paymentToken) external',
-  'function agreeToOrder(string memory _orderId) external',
-  'function fundOrder(string memory _orderId) external',
-  'function markAsShipped(string memory _orderId) external',
-  'function confirmDelivery(string memory _orderId) external',
-  'function releaseFunds(string memory _orderId) external',
-  'function autoReleaseFunds(string memory _orderId) external',
-  'function raiseDispute(string memory _orderId) external',
-  'function cancelOrder(string memory _orderId) external',
-  'function getOrder(string memory _orderId) external view returns (tuple(string orderId, address buyer, address seller, uint256 amount, uint256 sellerHoldAmount, uint8 status, uint256 createdAt, uint256 deliveryDeadline, bool buyerConfirmed, bool sellerConfirmed, bool sellerAgreed))',
-  'function sellerBalances(address seller, address token) external view returns (uint256)',
-  'function sellerGhettoCollateral(address seller) external view returns (uint256)',
-  'function sellerHeldFunds(address seller) external view returns (uint256)',
-  'function getAvailableCollateral(address seller) external view returns (uint256)',
-  'function depositGhettoCollateral(uint256 amount) external',
-  'function withdrawGhettoCollateral(uint256 amount) external',
-  'function withdrawSellerBalance(address token) external',
-  'function calculateTotalFee(address paymentToken, uint256 amount) external view returns (uint256)',
-];
+import { ERC20_ABI, ESCROW_ABI } from '../config/contractAbis';
 
 export interface EscrowOrder {
   id: string;
@@ -101,7 +69,7 @@ export function useEscrow() {
         return await tokenContract.decimals();
       }
     } catch (error) {
-      console.error('Failed to get token decimals:', error);
+      logger.error('Failed to get token decimals', 'useEscrow', error);
     }
     
     // Default to 18 decimals for unknown tokens
@@ -136,7 +104,7 @@ export function useEscrow() {
       const requiredAmount = ethers.parseUnits(amount.toString(), decimals);
       return balance >= requiredAmount;
     } catch (error) {
-      console.error('Failed to check token balance:', error);
+      logger.error('Failed to check token balance', 'useEscrow', error);
       return false;
     }
   };
@@ -157,7 +125,7 @@ export function useEscrow() {
         await tx.wait();
       }
     } catch (error) {
-      console.error('Failed to approve token:', error);
+      logger.error('Failed to approve token', 'useEscrow', error);
       throw new Error('Failed to approve token spending');
     }
   };
@@ -216,7 +184,7 @@ export function useEscrow() {
 
       setOrders(escrowOrders);
     } catch (error) {
-      console.error('Failed to load orders:', error);
+      logger.error('Failed to load orders', 'useEscrow', error);
       handleSupabaseError(error);
     } finally {
       setIsLoading(false);
@@ -224,7 +192,7 @@ export function useEscrow() {
   };
 
   // Load orders when user changes
-  React.useEffect(() => {
+  useEffect(() => {
     if (user) {
       loadOrders();
     } else {
@@ -291,9 +259,9 @@ export function useEscrow() {
         );
         await createTx.wait();
         
-        console.log('Order created on blockchain:', createTx.hash);
+        logger.debug('Order created on blockchain', 'useEscrow', createTx.hash);
       } catch (contractError) {
-        console.error('Smart contract error:', contractError);
+        logger.error('Smart contract error', 'useEscrow', contractError);
         // If contract fails, we should clean up the database entry
         await supabaseClient
           .from('orders')
@@ -315,7 +283,6 @@ export function useEscrow() {
         status: newOrder.status as EscrowOrder['status'],
         sellerAgreed: newOrder.seller_agreed,
         createdAt: new Date(newOrder.created_at),
-        payment_token: paymentTokenAddress,
         currency: paymentCurrency,
         updatedAt: new Date(newOrder.updated_at),
         paymentToken: paymentTokenAddress,
@@ -334,7 +301,7 @@ export function useEscrow() {
           escrowOrder.id
         );
       } catch (error) {
-        console.error('Failed to send order notification:', error);
+        logger.error('Failed to send order notification', 'useEscrow', error);
       }
 
       return escrowOrder.id;
@@ -403,7 +370,7 @@ export function useEscrow() {
         maxOrderValue: parseFloat(ethers.formatUnits(availableCollateral, await getTokenDecimals(GHETTO_CONTRACT_ADDRESS))),
       };
     } catch (error) {
-      console.error('Failed to get seller collateral info:', error);
+      logger.error('Failed to get seller collateral info', 'useEscrow', error);
       return { totalCollateral: 0, availableCollateral: 0, heldCollateral: 0, maxOrderValue: 0 };
     }
   };
@@ -484,7 +451,7 @@ export function useEscrow() {
             orderId
           );
         } catch (error) {
-          console.error('Failed to send agreement notification:', error);
+          logger.error('Failed to send agreement notification', 'useEscrow', error);
         }
       }
     } catch (error) {
@@ -582,7 +549,7 @@ export function useEscrow() {
           
           await sendMessage(conversationId, shippingMessage, 'order', orderId);
         } catch (error) {
-          console.error('Failed to send shipping notification:', error);
+          logger.error('Failed to send shipping notification', 'useEscrow', error);
         }
       }
     } catch (error) {
@@ -651,7 +618,7 @@ export function useEscrow() {
             orderId
           );
         } catch (error) {
-          console.error('Failed to send delivery confirmation notification:', error);
+          logger.error('Failed to send delivery confirmation notification', 'useEscrow', error);
         }
       }
     } catch (error) {
@@ -713,7 +680,7 @@ export function useEscrow() {
           await recordSponsorTransactions(sponsorPayouts);
         }
       } catch (sponsorError) {
-        console.error('Error processing sponsor payouts:', sponsorError);
+        logger.error('Error processing sponsor payouts', 'useEscrow', sponsorError);
         // Continue with fund release even if sponsor payout recording fails
       }
 
@@ -774,7 +741,7 @@ export function useEscrow() {
             ));
           }
         } catch (error) {
-          console.error('Failed to auto-complete order:', error);
+          logger.error('Failed to auto-complete order', 'useEscrow', error);
         }
       }, 1000);
 
@@ -788,7 +755,7 @@ export function useEscrow() {
           orderId
         );
       } catch (error) {
-        console.error('Failed to send fund release notification:', error);
+        logger.error('Failed to send fund release notification', 'useEscrow', error);
       }
     } catch (error) {
       handleSupabaseError(error);
@@ -849,7 +816,7 @@ export function useEscrow() {
           await recordSponsorTransactions(sponsorPayouts);
         }
       } catch (sponsorError) {
-        console.error('Error processing sponsor payouts:', sponsorError);
+        logger.error('Error processing sponsor payouts', 'useEscrow', sponsorError);
         // Continue with fund release even if sponsor payout recording fails
       }
 
@@ -890,7 +857,7 @@ export function useEscrow() {
           orderId
         );
       } catch (error) {
-        console.error('Failed to send auto-release notifications:', error);
+        logger.error('Failed to send auto-release notifications', 'useEscrow', error);
       }
     } catch (error) {
       handleSupabaseError(error);
@@ -956,7 +923,7 @@ export function useEscrow() {
             orderId
           );
         } catch (error) {
-          console.error('Failed to send dispute notification:', error);
+          logger.error('Failed to send dispute notification', 'useEscrow', error);
         }
       }
     } catch (error) {
@@ -1039,7 +1006,7 @@ export function useEscrow() {
           
           await sendMessage(conversationId, trackingMessage, 'order', orderId);
         } catch (error) {
-          console.error('Failed to send tracking update notification:', error);
+          logger.error('Failed to send tracking update notification', 'useEscrow', error);
         }
       }
     } catch (error) {
@@ -1185,7 +1152,7 @@ export function useEscrow() {
         held: parseFloat(ethers.formatUnits(heldFunds, ghettoDecimals)) // Held funds are always in GHETTO
       };
     } catch (error) {
-      console.error('Failed to get seller balance:', error);
+      logger.error('Failed to get seller balance', 'useEscrow', error);
       return { available: 0, held: 0 };
     }
   };

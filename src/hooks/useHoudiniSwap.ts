@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useWeb3 } from './useWeb3';
+import { logger } from '../utils/logger';
 
 export interface HoudiniSwapQuote {
   inputToken: string;
@@ -109,7 +110,7 @@ export function useHoudiniSwap() {
       setQuote(houdiniQuote);
       return houdiniQuote;
     } catch (error) {
-      console.error('HoudiniSwap quote failed:', error);
+      logger.error('HoudiniSwap quote failed', 'useHoudiniSwap', error);
       
       // Fallback to mock quote
       const mockQuote: HoudiniSwapQuote = {
@@ -175,7 +176,7 @@ export function useHoudiniSwap() {
       await tx.wait();
       return tx.hash;
     } catch (error) {
-      console.error('HoudiniSwap execution failed:', error);
+      logger.error('HoudiniSwap execution failed', 'useHoudiniSwap', error);
       throw error;
     } finally {
       setIsLoading(false);

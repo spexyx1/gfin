@@ -4,33 +4,7 @@ import { useBlockchainService } from './useBlockchainService';
 import { useContractAddresses } from './useContractAddresses';
 import { supabase, requireSupabase } from '../lib/supabase';
 import { logger } from '../utils/logger';
-
-const ESCROW_ABI = [
-  'function platformFeePercent() external view returns (uint256)',
-  'function nonGhettoFeeAddition() external view returns (uint256)',
-  'function sellerHoldPercent() external view returns (uint256)',
-  'function REQUIRED_GHETTO_COLLATERAL() external view returns (uint256)',
-  'function setPlatformFee(uint256 _feePercent) external',
-  'function setNonGhettoFeeAddition(uint256 _feeAddition) external',
-  'function setSellerHoldPercent(uint256 _holdPercent) external',
-  'function resolveDispute(string memory _orderId, bool _favorBuyer) external',
-  'function getOrder(string memory _orderId) external view returns (tuple(string orderId, address buyer, address seller, uint256 amount, uint256 sellerHoldAmount, address paymentToken, uint8 status, uint256 createdAt, uint256 deliveryDeadline, bool buyerConfirmed, bool sellerConfirmed, bool sellerAgreed))',
-  'function sellerBalances(address seller, address token) external view returns (uint256)',
-  'function sellerGhettoCollateral(address seller) external view returns (uint256)',
-  'function sellerHeldFunds(address seller) external view returns (uint256)',
-  'function getAvailableCollateral(address seller) external view returns (uint256)',
-  'function owner() external view returns (address)',
-  'function cancelOrder(string memory _orderId) external',
-  'function releaseFunds(string memory _orderId) external',
-  'event OrderCreated(string indexed orderId, address indexed buyer, address indexed seller, uint256 amount, address paymentToken)',
-  'event OrderFunded(string indexed orderId, uint256 amount, address paymentToken)',
-  'event OrderShipped(string indexed orderId)',
-  'event OrderDelivered(string indexed orderId)',
-  'event OrderCompleted(string indexed orderId)',
-  'event OrderDisputed(string indexed orderId)',
-  'event OrderCancelled(string indexed orderId)',
-  'event FundsReleased(string indexed orderId, address indexed seller, uint256 amount, address token)'
-];
+import { ESCROW_ABI } from '../config/contractAbis';
 
 export interface EscrowSettings {
   platformFeePercent: number;

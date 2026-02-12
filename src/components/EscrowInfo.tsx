@@ -1,4 +1,3 @@
-import React from 'react';
 import { Shield, Clock, CheckCircle, AlertTriangle, Lock } from 'lucide-react';
 
 export function EscrowInfo() {
