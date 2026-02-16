@@ -9,7 +9,7 @@ export function useWallet() {
   const [balances, setBalances] = useState<WalletBalance[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const { account, provider } = useWeb3();
+  const { account, provider, chainId } = useWeb3();
 
   useEffect(() => {
     if (!account || !provider) {
@@ -20,21 +20,27 @@ export function useWallet() {
 
     const loadBalances = async () => {
       try {
-        const ethBalance = await provider.getBalance(account);
-        const ethAmount = parseFloat(ethers.formatEther(ethBalance));
+        const nativeBalance = await provider.getBalance(account);
+        const nativeAmount = parseFloat(ethers.formatEther(nativeBalance));
 
-        const prices = await fetchMultipleTokenPrices(['ETH', 'USDC', 'BTC', 'SOL']);
+        // Determine native token based on chain
+        const isPolygon = chainId === 137 || chainId === 80002;
+        const nativeSymbol = isPolygon ? 'POL' : 'ETH';
+        const nativeName = isPolygon ? 'Polygon' : 'Ethereum';
+        const priceSymbol = isPolygon ? 'MATIC' : 'ETH'; // Use MATIC for price lookup
+
+        const prices = await fetchMultipleTokenPrices([priceSymbol, 'USDC', 'BTC', 'SOL']);
 
         const newBalances: WalletBalance[] = [];
 
-        const ethPrice = prices.get('ETH');
-        if (ethPrice) {
+        const nativePrice = prices.get(priceSymbol);
+        if (nativePrice) {
           newBalances.push({
-            symbol: 'ETH',
-            name: 'Ethereum',
-            balance: ethAmount,
-            usdValue: ethAmount * ethPrice.usd,
-            change24h: ethPrice.usd_24h_change
+            symbol: nativeSymbol,
+            name: nativeName,
+            balance: nativeAmount,
+            usdValue: nativeAmount * nativePrice.usd,
+            change24h: nativePrice.usd_24h_change
           });
         }
 
@@ -48,7 +54,7 @@ export function useWallet() {
     loadBalances();
     const interval = setInterval(loadBalances, 60000);
     return () => clearInterval(interval);
-  }, [account, provider]);
+  }, [account, provider, chainId]);
 
   const getTotalBalance = () => {
     return balances.reduce((total, balance) => total + balance.usdValue, 0);
@@ -65,8 +71,12 @@ export function useWallet() {
 
     setIsLoading(true);
     try {
-      if (asset !== 'ETH') {
-        throw new Error('Only ETH transfers are currently supported');
+      // Determine native token based on chain
+      const isPolygon = chainId === 137 || chainId === 80002;
+      const nativeSymbol = isPolygon ? 'POL' : 'ETH';
+
+      if (asset !== nativeSymbol && asset !== 'ETH' && asset !== 'POL') {
+        throw new Error(`Only ${nativeSymbol} transfers are currently supported`);
       }
 
       const signer = await provider.getSigner(account);

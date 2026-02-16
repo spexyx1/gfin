@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowDownUp, Info, Loader, AlertTriangle, CheckCircle, X } from 'lucide-react';
+import { ArrowDownUp, Info, Loader, AlertTriangle, CheckCircle, X, Zap } from 'lucide-react';
 import { useAtomicSwap } from '../hooks/useAtomicSwap';
+import { EscrowNetworkWarning } from './EscrowNetworkWarning';
 
 interface SwapInterfaceProps {
   userAddress: string;
@@ -88,6 +89,27 @@ export function SwapInterface({ userAddress }: SwapInterfaceProps) {
 
   return (
     <div className="space-y-6">
+      {/* GHETTO Token Info */}
+      <div className="bg-gradient-to-r from-neon-blue/10 to-neon-yellow/10 rounded-2xl p-6 border border-neon-blue/30">
+        <div className="flex items-start space-x-4">
+          <div className="p-3 bg-neon-blue/20 rounded-xl">
+            <Zap className="w-6 h-6 text-neon-blue" />
+          </div>
+          <div className="flex-1">
+            <h3 className="text-lg font-black text-white mb-2 uppercase">GHETTO Token Swaps</h3>
+            <p className="text-gray-300 text-sm mb-3">
+              GHETTO is deployed on <span className="text-neon-blue font-bold">Polygon Network</span> and can be swapped with multiple tokens including USDC, ETH, BTC, BNB, SOL, and XRP across different chains.
+            </p>
+            <div className="flex items-start space-x-2 text-xs text-gray-400">
+              <Info className="w-4 h-4 mt-0.5 flex-shrink-0" />
+              <p>
+                Cross-chain swaps use atomic swap technology to ensure both parties receive their tokens or the swap is cancelled. For marketplace transactions with escrow, you must use Polygon network.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Create Swap Section */}
       <div className="glass-morphism rounded-2xl p-6 border border-white/10">
         <div className="flex items-center justify-between mb-6">

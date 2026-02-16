@@ -6,6 +6,7 @@ import { GraffitiLogo } from './components/GraffitiLogo';
 import { AuthModal } from './components/AuthModal';
 import { PWAInstallButton } from './components/PWAInstallButton';
 import { MobileNetworkIndicator } from './components/MobileNetworkIndicator';
+import { NetworkSwitchModal } from './components/NetworkSwitchModal';
 
 const AdvancedSearch = lazy(() => import('./components/AdvancedSearch').then(m => ({ default: m.AdvancedSearch })));
 const UserDashboard = lazy(() => import('./components/UserDashboard').then(m => ({ default: m.UserDashboard })));
@@ -479,6 +480,7 @@ function App() {
   return (
     <div className="min-h-screen bg-apple-gray-950">
       <MobileNetworkIndicator />
+      <NetworkSwitchModal />
 
       {/* Header */}
       <header className={`glass-morphism border-b border-white/10 sticky top-0 z-50 ${

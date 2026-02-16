@@ -8,6 +8,7 @@ import { useTerms } from '../hooks/useTerms';
 import { useContractAddresses } from '../hooks/useContractAddresses';
 import { PaymentOption } from '../types';
 import { logger } from '../utils/logger';
+import { EscrowNetworkWarning } from './EscrowNetworkWarning';
 
 interface BuyNowModalProps {
   isOpen: boolean;
@@ -154,6 +155,9 @@ export function BuyNowModal({ isOpen, onClose, product }: BuyNowModalProps) {
             </div>
           ) : (
             <>
+              {/* Escrow Network Warning */}
+              <EscrowNetworkWarning feature="marketplace purchases" />
+
               {/* Product Summary */}
               <div className="bg-gray-800 rounded-2xl p-4 mb-6 border border-gray-700">
                 <div className="flex items-start space-x-4">

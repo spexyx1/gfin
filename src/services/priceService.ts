@@ -30,6 +30,7 @@ const TOKEN_ID_MAP: { [key: string]: string } = {
   'DOGE': 'dogecoin',
   'ADA': 'cardano',
   'MATIC': 'matic-network',
+  'POL': 'matic-network', // POL is the rebranded MATIC token
   'DOT': 'polkadot',
   'AVAX': 'avalanche-2',
   'LINK': 'chainlink',
@@ -39,7 +40,8 @@ const TOKEN_ID_MAP: { [key: string]: string } = {
   'BCH': 'bitcoin-cash',
   'NEAR': 'near',
   'APT': 'aptos',
-  'ARB': 'arbitrum'
+  'ARB': 'arbitrum',
+  'GHETTO': 'ghetto-token' // Placeholder - will need actual CoinGecko ID when listed
 };
 
 export async function fetchTokenPrice(symbol: string): Promise<TokenPrice | null> {

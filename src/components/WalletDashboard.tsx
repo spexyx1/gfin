@@ -16,23 +16,28 @@ interface WalletDashboardProps {
 }
 
 export function WalletDashboard({ isOpen, onClose, initialTab }: WalletDashboardProps) {
-  const [activeTab, setActiveTab] = useState<'connect' | 'overview' | 'send' | 'buy' | 'swap' | 'trade' | 'atomic-swap'>(initialTab || 'connect');
-  const [sendForm, setSendForm] = useState({ to: '', amount: '', asset: 'ETH' });
-  const [buyForm, setBuyForm] = useState({ asset: 'ETH', amount: '', paymentMethod: 'card' as 'card' | 'bank' });
-  const [swapForm, setSwapForm] = useState({ fromAsset: 'ETH', toAsset: 'USDC', fromAmount: '' });
-  const [tradeForm, setTradeForm] = useState({ pair: 'ETH/USDC', amount: '', orderType: 'market' as 'market' | 'limit', price: '' });
-
   const { balances, transactions, isLoading, sendCrypto, buyCrypto, swapCrypto, getTotalBalance } = useWallet();
-  const { account, isConnected } = useWeb3();
+  const { account, isConnected, chainId, isCorrectNetwork, networkName } = useWeb3();
   const { placeBuyOrder, placeSellOrder, orders } = useExchange();
   const { getQuote, executeSwap, quote } = useHoudiniSwap();
   const { open } = useAppKit();
+
+  // Determine native token based on chain
+  const isPolygon = chainId === 137 || chainId === 80002;
+  const nativeSymbol = isPolygon ? 'POL' : 'ETH';
+  const defaultPair = isPolygon ? 'POL/USDC' : 'ETH/USDC';
+
+  const [activeTab, setActiveTab] = useState<'connect' | 'overview' | 'send' | 'buy' | 'swap' | 'trade' | 'atomic-swap'>(initialTab || 'connect');
+  const [sendForm, setSendForm] = useState({ to: '', amount: '', asset: nativeSymbol });
+  const [buyForm, setBuyForm] = useState({ asset: nativeSymbol, amount: '', paymentMethod: 'card' as 'card' | 'bank' });
+  const [swapForm, setSwapForm] = useState({ fromAsset: nativeSymbol, toAsset: 'USDC', fromAmount: '' });
+  const [tradeForm, setTradeForm] = useState({ pair: defaultPair, amount: '', orderType: 'market' as 'market' | 'limit', price: '' });
 
   const handleSend = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       await sendCrypto(sendForm.to, parseFloat(sendForm.amount), sendForm.asset);
-      setSendForm({ to: '', amount: '', asset: 'ETH' });
+      setSendForm({ to: '', amount: '', asset: nativeSymbol });
       alert('Transaction sent successfully!');
     } catch (error) {
       logger.error('Send failed', 'WalletDashboard', error);
@@ -44,7 +49,7 @@ export function WalletDashboard({ isOpen, onClose, initialTab }: WalletDashboard
     e.preventDefault();
     try {
       await buyCrypto(buyForm.asset, parseFloat(buyForm.amount), buyForm.paymentMethod);
-      setBuyForm({ asset: 'ETH', amount: '', paymentMethod: 'card' });
+      setBuyForm({ asset: nativeSymbol, amount: '', paymentMethod: 'card' });
       alert('Purchase completed successfully!');
     } catch (error) {
       logger.error('Buy failed', 'WalletDashboard', error);
@@ -293,8 +298,21 @@ export function WalletDashboard({ isOpen, onClose, initialTab }: WalletDashboard
           {/* Send Tab */}
           {activeTab === 'send' && (
             <div className="flex-1 overflow-y-auto p-8">
-              <h3 className="text-2xl font-black text-white mb-8 uppercase">Send Crypto</h3>
-              
+              <h3 className="text-2xl font-black text-white mb-4 uppercase">Send Crypto</h3>
+
+              {/* Network Indicator */}
+              <div className={`mb-6 p-4 rounded-xl border ${
+                isCorrectNetwork
+                  ? 'bg-green-500/10 border-green-500/30'
+                  : 'bg-yellow-500/10 border-yellow-500/30'
+              }`}>
+                <p className={`text-sm font-medium ${
+                  isCorrectNetwork ? 'text-green-400' : 'text-yellow-400'
+                }`}>
+                  Connected to {networkName} - Native token: {nativeSymbol}
+                </p>
+              </div>
+
               <form onSubmit={handleSend} className="max-w-md mx-auto space-y-6">
                 <div>
                   <label className="block text-white font-medium mb-2">To Address</label>
@@ -350,8 +368,21 @@ export function WalletDashboard({ isOpen, onClose, initialTab }: WalletDashboard
           {/* Buy Tab */}
           {activeTab === 'buy' && (
             <div className="flex-1 overflow-y-auto p-8">
-              <h3 className="text-2xl font-black text-white mb-8 uppercase">Buy Crypto</h3>
-              
+              <h3 className="text-2xl font-black text-white mb-4 uppercase">Buy Crypto</h3>
+
+              {/* Network Indicator */}
+              <div className={`mb-6 p-4 rounded-xl border ${
+                isCorrectNetwork
+                  ? 'bg-green-500/10 border-green-500/30'
+                  : 'bg-yellow-500/10 border-yellow-500/30'
+              }`}>
+                <p className={`text-sm font-medium ${
+                  isCorrectNetwork ? 'text-green-400' : 'text-yellow-400'
+                }`}>
+                  Connected to {networkName}
+                </p>
+              </div>
+
               <form onSubmit={handleBuy} className="max-w-md mx-auto space-y-6">
                 <div>
                   <label className="block text-white font-medium mb-2">Asset</label>
@@ -360,10 +391,21 @@ export function WalletDashboard({ isOpen, onClose, initialTab }: WalletDashboard
                     onChange={(e) => setBuyForm({ ...buyForm, asset: e.target.value })}
                     className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-neon-blue text-white"
                   >
-                    <option value="ETH">Ethereum (ETH)</option>
-                    <option value="BTC">Bitcoin (BTC)</option>
-                    <option value="USDC">USD Coin (USDC)</option>
-                    <option value="SOL">Solana (SOL)</option>
+                    {isPolygon ? (
+                      <>
+                        <option value="POL">Polygon (POL)</option>
+                        <option value="USDC">USD Coin (USDC)</option>
+                        <option value="WETH">Wrapped Ethereum (WETH)</option>
+                        <option value="WBTC">Wrapped Bitcoin (WBTC)</option>
+                      </>
+                    ) : (
+                      <>
+                        <option value="ETH">Ethereum (ETH)</option>
+                        <option value="BTC">Bitcoin (BTC)</option>
+                        <option value="USDC">USD Coin (USDC)</option>
+                        <option value="SOL">Solana (SOL)</option>
+                      </>
+                    )}
                   </select>
                 </div>
 
