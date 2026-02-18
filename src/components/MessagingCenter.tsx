@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { X, Send, MessageCircle, User, Clock, Check, CheckCheck, Trash2, Package } from 'lucide-react';
+import { X, Send, MessageCircle, User, Clock, Check, CheckCheck, Trash2, Package, Video, PhoneCall } from 'lucide-react';
 import { useMessaging } from '../hooks/useMessaging';
 import { useWeb3 } from '../hooks/useWeb3';
 import { formatDistanceToNow } from 'date-fns';
@@ -9,9 +9,11 @@ interface MessagingCenterProps {
   isOpen: boolean;
   onClose: () => void;
   initialConversationId?: string;
+  onStartCall?: (conversationId: string) => void;
+  activeCallConversationId?: string | null;
 }
 
-export function MessagingCenter({ isOpen, onClose, initialConversationId }: MessagingCenterProps) {
+export function MessagingCenter({ isOpen, onClose, initialConversationId, onStartCall, activeCallConversationId }: MessagingCenterProps) {
   const [selectedConversationId, setSelectedConversationId] = useState<string | null>(initialConversationId || null);
   const [newMessage, setNewMessage] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -169,13 +171,39 @@ export function MessagingCenter({ isOpen, onClose, initialConversationId }: Mess
                       </p>
                     </div>
                   </div>
-                  <button
-                    onClick={() => deleteConversation(selectedConversationId)}
-                    className="p-2 text-gray-400 hover:text-black hover:bg-gray-100 rounded-lg transition-colors"
-                    title="Delete conversation"
-                  >
-                    <Trash2 className="w-5 h-5" />
-                  </button>
+                  <div className="flex items-center gap-2">
+                    {onStartCall && (
+                      <button
+                        onClick={() => selectedConversationId && onStartCall(selectedConversationId)}
+                        disabled={activeCallConversationId === selectedConversationId}
+                        className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
+                          activeCallConversationId === selectedConversationId
+                            ? 'bg-green-100 text-green-700 cursor-default'
+                            : 'bg-black text-white hover:bg-gray-800'
+                        }`}
+                        title="Start video call"
+                      >
+                        {activeCallConversationId === selectedConversationId ? (
+                          <>
+                            <PhoneCall className="w-4 h-4" />
+                            <span>In Call</span>
+                          </>
+                        ) : (
+                          <>
+                            <Video className="w-4 h-4" />
+                            <span>Video Call</span>
+                          </>
+                        )}
+                      </button>
+                    )}
+                    <button
+                      onClick={() => deleteConversation(selectedConversationId)}
+                      className="p-2 text-gray-400 hover:text-black hover:bg-gray-100 rounded-lg transition-colors"
+                      title="Delete conversation"
+                    >
+                      <Trash2 className="w-5 h-5" />
+                    </button>
+                  </div>
                 </div>
               </div>
 

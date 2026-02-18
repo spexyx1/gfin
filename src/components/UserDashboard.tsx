@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { X, User, Settings, ShoppingBag, Wallet, MessageCircle, Share2, Package, TrendingUp, AlertCircle, Activity, Shield, Star, Award, Copy, Check, DollarSign, Users, Target, BarChart3, Clock, Wand2 } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { useReferrals } from '../hooks/useReferrals';
@@ -9,6 +9,7 @@ import { useSponsorship } from '../hooks/useSponsorship';
 import { useSiteMaster } from '../hooks/useSiteMaster';
 import { useEnhancedSitemaster } from '../hooks/useEnhancedSitemaster';
 import { useNetworkStatus } from '../hooks/useNetworkStatus';
+import { useVideoCall } from '../hooks/useVideoCall';
 import { formatDistanceToNow } from 'date-fns';
 import { logger } from '../utils/logger';
 import { OrderManagement } from './OrderManagement';
@@ -16,6 +17,8 @@ import { WalletDashboard } from './WalletDashboard';
 import { MessagingCenter } from './MessagingCenter';
 import { SellerDashboard } from './SellerDashboard';
 import { OfflineBanner } from './OfflineBanner';
+import { VideoCallModal } from './VideoCallModal';
+import { IncomingCallNotification } from './IncomingCallNotification';
 
 interface UserDashboardProps {
   isOpen: boolean;
@@ -67,6 +70,31 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
     getAllMessages,
     getAllPosts
   } = useEnhancedSitemaster();
+
+  const {
+    activeCall,
+    incomingCall,
+    isInitiating,
+    initiateCall,
+    acceptCall,
+    declineCall,
+    endCall,
+  } = useVideoCall();
+
+  const [callParticipantName, setCallParticipantName] = useState('');
+
+  const handleStartCall = useCallback(async (conversationId: string) => {
+    const session = await initiateCall(conversationId);
+    if (session) {
+      setCallParticipantName('Connecting...');
+    }
+  }, [initiateCall]);
+
+  const handleAcceptCall = useCallback(async () => {
+    if (!incomingCall) return;
+    setCallParticipantName(incomingCall.callerName);
+    await acceptCall(incomingCall.session);
+  }, [incomingCall, acceptCall]);
 
   const [unreadMessages, setUnreadMessages] = useState(0);
   const [redeemAmount, setRedeemAmount] = useState('');
@@ -1183,8 +1211,31 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
       {/* Modals */}
       <OrderManagement isOpen={showOrdersModal} onClose={() => setShowOrdersModal(false)} />
       <WalletDashboard isOpen={showWalletModal} onClose={() => setShowWalletModal(false)} />
-      <MessagingCenter isOpen={showMessagesModal} onClose={() => setShowMessagesModal(false)} />
+      <MessagingCenter
+        isOpen={showMessagesModal}
+        onClose={() => setShowMessagesModal(false)}
+        onStartCall={handleStartCall}
+        activeCallConversationId={activeCall?.conversationId}
+      />
       <SellerDashboard isOpen={showSellerModal} onClose={() => setShowSellerModal(false)} />
+
+      {/* Video Call */}
+      {activeCall && (
+        <VideoCallModal
+          session={activeCall}
+          participantName={callParticipantName || 'User'}
+          onEnd={endCall}
+        />
+      )}
+
+      {/* Incoming Call Notification */}
+      {incomingCall && !activeCall && (
+        <IncomingCallNotification
+          incomingCall={incomingCall}
+          onAccept={handleAcceptCall}
+          onDecline={(session) => declineCall(session)}
+        />
+      )}
     </>
   );
 }
