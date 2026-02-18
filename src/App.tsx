@@ -8,6 +8,8 @@ import { PWAInstallButton } from './components/PWAInstallButton';
 import { MobileNetworkIndicator } from './components/MobileNetworkIndicator';
 import { NetworkSwitchModal } from './components/NetworkSwitchModal';
 import { ErrorBoundary } from './components/ErrorBoundary';
+const SecurityAuditModal = lazy(() => import('./components/SecurityAuditModal').then(m => ({ default: m.SecurityAuditModal })));
+const DocumentationModal = lazy(() => import('./components/DocumentationModal').then(m => ({ default: m.DocumentationModal })));
 
 const AdvancedSearch = lazy(() => import('./components/AdvancedSearch').then(m => ({ default: m.AdvancedSearch })));
 const UserDashboard = lazy(() => import('./components/UserDashboard').then(m => ({ default: m.UserDashboard })));
@@ -718,9 +720,16 @@ function App() {
             <div className="text-center md:text-left">
               <h4 className="font-black mb-6 text-sm uppercase tracking-wider bg-gradient-to-br from-gray-200 via-gray-300 to-gray-400 bg-clip-text text-transparent" style={{textShadow: '0 0 30px rgba(255,255,255,0.5)'}}>Resources</h4>
               <ul className="space-y-3">
-                <li className="text-sm font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent">Smart Contracts</li>
-                <li className="text-sm font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent">Security Audits</li>
-                <li className="text-sm font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent">Documentation</li>
+                <li>
+                  <button onClick={() => openModal('securityAudit')} className="text-sm font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent hover:from-white hover:to-gray-200 transition-all">
+                    Smart Contracts &amp; Security Audits
+                  </button>
+                </li>
+                <li>
+                  <button onClick={() => openModal('documentation')} className="text-sm font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent hover:from-white hover:to-gray-200 transition-all">
+                    Documentation
+                  </button>
+                </li>
                 <li>
                   <a href="mailto:info@ghetto.finance" className="text-sm font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent hover:from-white hover:to-gray-200 transition-all">
                     Business Inquiries
@@ -838,6 +847,14 @@ function App() {
         <SecurityDashboard
           isOpen={isOpen('security')}
           onClose={() => closeModal('security')}
+        />
+        <SecurityAuditModal
+          isOpen={isOpen('securityAudit')}
+          onClose={() => closeModal('securityAudit')}
+        />
+        <DocumentationModal
+          isOpen={isOpen('documentation')}
+          onClose={() => closeModal('documentation')}
         />
         </Suspense>
       </ErrorBoundary>

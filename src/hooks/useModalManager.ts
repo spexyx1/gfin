@@ -18,7 +18,9 @@ export type ModalName =
   | 'contact'
   | 'security'
   | 'advancedSearch'
-  | 'reportListing';
+  | 'reportListing'
+  | 'securityAudit'
+  | 'documentation';
 
 interface ModalState {
   [key: string]: boolean;
