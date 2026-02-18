@@ -5,6 +5,7 @@ import { useWeb3 } from '../hooks/useWeb3';
 import { useExchange } from '../hooks/useExchange';
 import { useHoudiniSwap } from '../hooks/useHoudiniSwap';
 import { SwapInterface } from './SwapInterface';
+import { CardProgramTab } from './CardProgramTab';
 import { formatDistanceToNow } from 'date-fns';
 import { useAppKit } from '@reown/appkit/react';
 import { logger } from '../utils/logger';
@@ -12,7 +13,7 @@ import { logger } from '../utils/logger';
 interface WalletDashboardProps {
   isOpen: boolean;
   onClose: () => void;
-  initialTab?: 'connect' | 'overview' | 'send' | 'buy' | 'swap' | 'trade' | 'atomic-swap';
+  initialTab?: 'connect' | 'overview' | 'send' | 'buy' | 'swap' | 'trade' | 'atomic-swap' | 'cards';
 }
 
 export function WalletDashboard({ isOpen, onClose, initialTab }: WalletDashboardProps) {
@@ -27,7 +28,7 @@ export function WalletDashboard({ isOpen, onClose, initialTab }: WalletDashboard
   const nativeSymbol = isPolygon ? 'POL' : 'ETH';
   const defaultPair = isPolygon ? 'POL/USDC' : 'ETH/USDC';
 
-  const [activeTab, setActiveTab] = useState<'connect' | 'overview' | 'send' | 'buy' | 'swap' | 'trade' | 'atomic-swap'>(initialTab || 'connect');
+  const [activeTab, setActiveTab] = useState<'connect' | 'overview' | 'send' | 'buy' | 'swap' | 'trade' | 'atomic-swap' | 'cards'>(initialTab || 'connect');
   const [sendForm, setSendForm] = useState({ to: '', amount: '', asset: nativeSymbol });
   const [buyForm, setBuyForm] = useState({ asset: nativeSymbol, amount: '', paymentMethod: 'card' as 'card' | 'bank' });
   const [swapForm, setSwapForm] = useState({ fromAsset: nativeSymbol, toAsset: 'USDC', fromAmount: '' });
@@ -122,6 +123,7 @@ export function WalletDashboard({ isOpen, onClose, initialTab }: WalletDashboard
                 { id: 'swap', label: 'SWAP', icon: ArrowUpDown },
                 { id: 'atomic-swap', label: 'ATOMIC SWAP', icon: Repeat },
                 { id: 'trade', label: 'TRADE', icon: TrendingUp },
+                { id: 'cards', label: 'CARDS', icon: CreditCard },
               ].map(({ id, label, icon: Icon }) => (
                 <button
                   key={id}
@@ -588,6 +590,13 @@ export function WalletDashboard({ isOpen, onClose, initialTab }: WalletDashboard
                   <SwapInterface userAddress={account} />
                 </>
               )}
+            </div>
+          )}
+
+          {activeTab === 'cards' && (
+            <div className="flex-1 overflow-y-auto p-8">
+              <h3 className="text-2xl font-black text-white mb-8 uppercase">GHETTO Finance Card</h3>
+              <CardProgramTab />
             </div>
           )}
 

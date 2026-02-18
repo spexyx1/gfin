@@ -1,6 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import { useMediator, DisputeCase } from '../hooks/useMediator';
-import { Scale, FileText, MessageSquare, Award, AlertCircle, UserPlus, TrendingUp, TrendingDown, Eye, EyeOff } from 'lucide-react';
+import { Scale, FileText, MessageSquare, Award, AlertCircle, UserPlus, TrendingUp, TrendingDown, Eye, EyeOff, CreditCard, Clock, CheckCircle, XCircle, ChevronDown, ChevronUp } from 'lucide-react';
+import { supabase } from '../lib/supabase';
+
+interface CardDisputeRow {
+  id: string;
+  user_id: string;
+  dispute_reason: string;
+  cardholder_description: string;
+  status: string;
+  resolution_amount: number | null;
+  resolution_notes: string;
+  opened_at: string;
+  resolved_at: string | null;
+  card_id: string;
+  transaction_id: string | null;
+  card_transactions: {
+    merchant_name: string;
+    authorization_amount: number;
+    merchant_mcc: string;
+    authorized_at: string;
+    authorization_code: string;
+  } | null;
+  profiles?: { username?: string; email?: string } | null;
+}
 
 export function MediatorDashboard() {
   const {
@@ -24,13 +47,63 @@ export function MediatorDashboard() {
   } = useMediator();
 
   const [hasAccess, setHasAccess] = useState(false);
-  const [activeTab, setActiveTab] = useState<'cases' | 'appeals'>('cases');
+  const [activeTab, setActiveTab] = useState<'cases' | 'appeals' | 'card_disputes'>('cases');
   const [selectedCase, setSelectedCase] = useState<DisputeCase | null>(null);
   const [filterStatus, setFilterStatus] = useState<string>('all');
+
+  const [cardDisputes, setCardDisputes] = useState<CardDisputeRow[]>([]);
+  const [cardDisputeFilter, setCardDisputeFilter] = useState<string>('all');
+  const [cardDisputeLoading, setCardDisputeLoading] = useState(false);
+  const [expandedDisputeId, setExpandedDisputeId] = useState<string | null>(null);
+  const [chargebackRatio, setChargebackRatio] = useState<number>(0);
+  const [resolutionForm, setResolutionForm] = useState<{ id: string; notes: string; amount: string } | null>(null);
 
   useEffect(() => {
     isMediator().then(setHasAccess);
   }, []);
+
+  const fetchCardDisputes = async () => {
+    setCardDisputeLoading(true);
+    const { data } = await supabase
+      .from('card_disputes')
+      .select('*, card_transactions(merchant_name, authorization_amount, merchant_mcc, authorized_at, authorization_code)')
+      .order('opened_at', { ascending: false });
+    setCardDisputes((data ?? []) as CardDisputeRow[]);
+
+    const sixtyDaysAgo = new Date(Date.now() - 60 * 24 * 60 * 60 * 1000).toISOString();
+    const { count: totalTx } = await supabase
+      .from('card_transactions')
+      .select('*', { count: 'exact', head: true })
+      .eq('transaction_status', 'settled')
+      .gte('settled_at', sixtyDaysAgo);
+    const { count: disputedTx } = await supabase
+      .from('card_disputes')
+      .select('*', { count: 'exact', head: true })
+      .gte('opened_at', sixtyDaysAgo);
+    if (totalTx && totalTx > 0) {
+      setChargebackRatio((disputedTx ?? 0) / totalTx);
+    }
+    setCardDisputeLoading(false);
+  };
+
+  useEffect(() => {
+    if (activeTab === 'card_disputes') fetchCardDisputes();
+  }, [activeTab]);
+
+  const handleUpdateCardDispute = async (id: string, status: string, notes: string, amount?: string) => {
+    const updates: Record<string, unknown> = {
+      status,
+      resolution_notes: notes,
+      updated_at: new Date().toISOString(),
+    };
+    if (status.startsWith('resolved')) {
+      updates.resolved_at = new Date().toISOString();
+      if (amount) updates.resolution_amount = parseFloat(amount);
+    }
+    await supabase.from('card_disputes').update(updates).eq('id', id);
+    setResolutionForm(null);
+    fetchCardDisputes();
+  };
 
   if (loading) {
     return (
@@ -435,6 +508,17 @@ export function MediatorDashboard() {
           >
             Appeals ({appeals.length})
           </button>
+          <button
+            onClick={() => setActiveTab('card_disputes')}
+            className={`px-4 py-2 font-medium flex items-center gap-2 ${
+              activeTab === 'card_disputes'
+                ? 'border-b-2 border-blue-500 text-blue-600'
+                : 'text-gray-500 hover:text-gray-700'
+            }`}
+          >
+            <CreditCard className="h-4 w-4" />
+            Card Disputes {cardDisputes.length > 0 && `(${cardDisputes.length})`}
+          </button>
         </div>
 
         {activeTab === 'cases' && (
@@ -522,6 +606,210 @@ export function MediatorDashboard() {
       </div>
 
       {selectedCase && <CaseDetailModal />}
+
+      {activeTab === 'card_disputes' && (
+        <div>
+          {/* Chargeback ratio monitor */}
+          <div className={`mb-4 p-4 rounded-lg flex items-center gap-3 ${
+            chargebackRatio >= 0.009
+              ? 'bg-red-50 border border-red-200'
+              : 'bg-green-50 border border-green-200'
+          }`}>
+            <CreditCard className={`h-5 w-5 ${chargebackRatio >= 0.009 ? 'text-red-500' : 'text-green-500'}`} />
+            <div>
+              <span className="font-semibold text-gray-800 text-sm">60-Day Chargeback Ratio: </span>
+              <span className={`font-bold text-sm ${chargebackRatio >= 0.009 ? 'text-red-600' : 'text-green-600'}`}>
+                {(chargebackRatio * 100).toFixed(3)}%
+              </span>
+              {chargebackRatio >= 0.009 && (
+                <span className="ml-2 text-red-600 text-xs font-medium">Approaching Visa warning threshold (1.0%)</span>
+              )}
+            </div>
+          </div>
+
+          {/* Status filters */}
+          <div className="mb-4 flex flex-wrap gap-2">
+            {['all', 'open', 'investigating', 'evidence_requested', 'resolved_approved', 'resolved_denied', 'escalated'].map(s => (
+              <button
+                key={s}
+                onClick={() => setCardDisputeFilter(s)}
+                className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
+                  cardDisputeFilter === s
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                }`}
+              >
+                {s === 'all' ? 'All' : s.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+              </button>
+            ))}
+          </div>
+
+          {cardDisputeLoading ? (
+            <div className="text-center py-12 text-gray-400">Loading card disputes...</div>
+          ) : (
+            <div className="space-y-3">
+              {cardDisputes
+                .filter(d => cardDisputeFilter === 'all' || d.status === cardDisputeFilter)
+                .map((dispute) => {
+                  const isExpanded = expandedDisputeId === dispute.id;
+                  const tx = dispute.card_transactions;
+                  const statusColors: Record<string, string> = {
+                    open: 'bg-blue-100 text-blue-800',
+                    investigating: 'bg-yellow-100 text-yellow-800',
+                    evidence_requested: 'bg-orange-100 text-orange-800',
+                    resolved_approved: 'bg-green-100 text-green-800',
+                    resolved_denied: 'bg-gray-100 text-gray-800',
+                    escalated: 'bg-red-100 text-red-800',
+                  };
+                  const daysOpen = Math.floor((Date.now() - new Date(dispute.opened_at).getTime()) / (1000 * 60 * 60 * 24));
+
+                  return (
+                    <div key={dispute.id} className="bg-white shadow-sm rounded-lg border border-gray-200 overflow-hidden">
+                      <div
+                        className="p-4 cursor-pointer hover:bg-gray-50 transition-colors"
+                        onClick={() => setExpandedDisputeId(isExpanded ? null : dispute.id)}
+                      >
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1 min-w-0 mr-3">
+                            <div className="flex items-center gap-2 mb-1">
+                              <span className={`px-2 py-0.5 text-xs font-semibold rounded-full ${statusColors[dispute.status] ?? 'bg-gray-100 text-gray-600'}`}>
+                                {dispute.status.replace(/_/g, ' ').toUpperCase()}
+                              </span>
+                              <span className="text-xs text-gray-400">{daysOpen} day{daysOpen !== 1 ? 's' : ''} open</span>
+                            </div>
+                            <div className="flex items-center gap-3">
+                              <p className="font-medium text-gray-900 text-sm">{tx?.merchant_name || 'Unknown Merchant'}</p>
+                              {tx && (
+                                <span className="text-green-700 font-semibold text-sm">${Number(tx.authorization_amount).toFixed(2)}</span>
+                              )}
+                            </div>
+                            <p className="text-gray-500 text-xs mt-0.5">
+                              Reason: {dispute.dispute_reason.replace(/_/g, ' ')}
+                              {tx && ` · ${new Date(tx.authorized_at).toLocaleDateString()}`}
+                            </p>
+                          </div>
+                          {isExpanded ? <ChevronUp className="h-4 w-4 text-gray-400 shrink-0" /> : <ChevronDown className="h-4 w-4 text-gray-400 shrink-0" />}
+                        </div>
+                      </div>
+
+                      {isExpanded && (
+                        <div className="border-t border-gray-100 p-4 bg-gray-50 space-y-4">
+                          {/* Transaction details */}
+                          {tx && (
+                            <div>
+                              <h4 className="text-xs font-semibold text-gray-500 uppercase mb-2">Transaction Details</h4>
+                              <div className="grid grid-cols-2 gap-2 text-sm">
+                                <div><span className="text-gray-500">Merchant:</span> <span className="text-gray-800">{tx.merchant_name}</span></div>
+                                <div><span className="text-gray-500">Amount:</span> <span className="text-gray-800">${Number(tx.authorization_amount).toFixed(2)}</span></div>
+                                <div><span className="text-gray-500">MCC:</span> <span className="text-gray-800">{tx.merchant_mcc}</span></div>
+                                <div><span className="text-gray-500">Auth Code:</span> <span className="text-gray-800 font-mono">{tx.authorization_code || '—'}</span></div>
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Cardholder description */}
+                          <div>
+                            <h4 className="text-xs font-semibold text-gray-500 uppercase mb-1">Cardholder Statement</h4>
+                            <p className="text-sm text-gray-700 bg-white rounded p-3 border border-gray-200">
+                              {dispute.cardholder_description || 'No description provided.'}
+                            </p>
+                          </div>
+
+                          {/* Resolution notes (if resolved) */}
+                          {dispute.resolution_notes && (
+                            <div>
+                              <h4 className="text-xs font-semibold text-gray-500 uppercase mb-1">Resolution Notes</h4>
+                              <p className="text-sm text-gray-700 bg-white rounded p-3 border border-gray-200">{dispute.resolution_notes}</p>
+                            </div>
+                          )}
+
+                          {/* Action buttons */}
+                          {!dispute.status.startsWith('resolved') && dispute.status !== 'escalated' && (
+                            resolutionForm?.id === dispute.id ? (
+                              <div className="space-y-3">
+                                <textarea
+                                  value={resolutionForm.notes}
+                                  onChange={(e) => setResolutionForm({ ...resolutionForm, notes: e.target.value })}
+                                  placeholder="Resolution notes..."
+                                  rows={3}
+                                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500"
+                                />
+                                <input
+                                  type="number"
+                                  value={resolutionForm.amount}
+                                  onChange={(e) => setResolutionForm({ ...resolutionForm, amount: e.target.value })}
+                                  placeholder="Refund amount (leave blank for full amount)"
+                                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500"
+                                />
+                                <div className="flex gap-2">
+                                  <button
+                                    onClick={() => handleUpdateCardDispute(dispute.id, 'resolved_approved', resolutionForm.notes, resolutionForm.amount || String(tx?.authorization_amount ?? 0))}
+                                    className="flex items-center gap-1.5 px-4 py-2 bg-green-600 text-white text-sm rounded-lg hover:bg-green-700"
+                                  >
+                                    <CheckCircle className="h-4 w-4" /> Approve Refund
+                                  </button>
+                                  <button
+                                    onClick={() => handleUpdateCardDispute(dispute.id, 'resolved_denied', resolutionForm.notes)}
+                                    className="flex items-center gap-1.5 px-4 py-2 bg-red-600 text-white text-sm rounded-lg hover:bg-red-700"
+                                  >
+                                    <XCircle className="h-4 w-4" /> Deny Claim
+                                  </button>
+                                  <button
+                                    onClick={() => handleUpdateCardDispute(dispute.id, 'escalated', resolutionForm.notes)}
+                                    className="flex items-center gap-1.5 px-4 py-2 bg-orange-500 text-white text-sm rounded-lg hover:bg-orange-600"
+                                  >
+                                    Escalate to Bank
+                                  </button>
+                                  <button
+                                    onClick={() => setResolutionForm(null)}
+                                    className="px-4 py-2 bg-gray-200 text-gray-700 text-sm rounded-lg hover:bg-gray-300"
+                                  >
+                                    Cancel
+                                  </button>
+                                </div>
+                              </div>
+                            ) : (
+                              <div className="flex flex-wrap gap-2">
+                                {dispute.status === 'open' && (
+                                  <button
+                                    onClick={() => handleUpdateCardDispute(dispute.id, 'investigating', '')}
+                                    className="flex items-center gap-1.5 px-3 py-2 bg-yellow-500 text-white text-xs rounded-lg hover:bg-yellow-600"
+                                  >
+                                    <Clock className="h-3.5 w-3.5" /> Begin Investigation
+                                  </button>
+                                )}
+                                {dispute.status !== 'evidence_requested' && (
+                                  <button
+                                    onClick={() => handleUpdateCardDispute(dispute.id, 'evidence_requested', '')}
+                                    className="px-3 py-2 bg-orange-500 text-white text-xs rounded-lg hover:bg-orange-600"
+                                  >
+                                    Request Evidence
+                                  </button>
+                                )}
+                                <button
+                                  onClick={() => setResolutionForm({ id: dispute.id, notes: '', amount: '' })}
+                                  className="flex items-center gap-1.5 px-3 py-2 bg-blue-600 text-white text-xs rounded-lg hover:bg-blue-700"
+                                >
+                                  <CheckCircle className="h-3.5 w-3.5" /> Resolve
+                                </button>
+                              </div>
+                            )
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              {cardDisputes.filter(d => cardDisputeFilter === 'all' || d.status === cardDisputeFilter).length === 0 && (
+                <div className="bg-white shadow-sm rounded-lg p-12 text-center text-gray-400">
+                  <CreditCard className="h-10 w-10 mx-auto mb-3 opacity-50" />
+                  No card disputes found
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

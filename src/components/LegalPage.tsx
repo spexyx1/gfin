@@ -1,4 +1,4 @@
-import { X, Shield, AlertTriangle, Scale, Globe, FileText, Users, Lock } from 'lucide-react';
+import { X, Shield, AlertTriangle, Scale, Globe, FileText, Users, Lock, CreditCard } from 'lucide-react';
 
 interface LegalPageProps {
   isOpen: boolean;
@@ -326,6 +326,67 @@ export function LegalPage({ isOpen, onClose }: LegalPageProps) {
                 <p className="leading-relaxed">
                   Any legal disputes shall be resolved through binding arbitration in accordance with the rules of the American Arbitration Association. Users waive the right to class action lawsuits.
                 </p>
+              </div>
+            </div>
+          </section>
+
+          {/* Card Program */}
+          <section className="mb-12">
+            <div className="flex items-center space-x-3 mb-6">
+              <CreditCard className="h-6 w-6 text-neon-blue" />
+              <h3 className="text-2xl font-black text-white uppercase">Card Program</h3>
+            </div>
+
+            <div className="space-y-6">
+              <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+                <h4 className="text-lg font-black text-white mb-3 uppercase">Cardholder Agreement</h4>
+                <div className="space-y-3 text-gray-300 text-sm leading-relaxed">
+                  <p>The GHETTO Finance Debit Card is issued by the BIN sponsor bank disclosed in your cardholder welcome materials. By activating and using your card you agree to these terms and the full cardholder agreement provided at account opening.</p>
+                  <p><strong className="text-white">Account Type:</strong> The GHETTO Finance card is a debit card linked to a prepaid spend account funded by you. It is not a credit product. No credit is extended. You may only spend funds you have loaded onto your account.</p>
+                  <p><strong className="text-white">Fee Schedule:</strong> Merchants pay a processing fee of no more than 1.5% of the transaction amount. There are no foreign transaction fees assessed by GHETTO Finance, however your BIN sponsor bank's fee schedule applies. See your cardholder agreement for a complete fee schedule.</p>
+                  <p><strong className="text-white">Load Limits:</strong> Your account is subject to daily, per-transaction, and monthly load limits as disclosed in your account settings. GHETTO Finance may adjust limits based on account history and compliance requirements.</p>
+                  <p><strong className="text-white">Card Freezing:</strong> You may freeze and unfreeze your card at any time through the app at no charge. Frozen cards will have all authorizations declined.</p>
+                </div>
+              </div>
+
+              <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+                <h4 className="text-lg font-black text-white mb-3 uppercase">Dispute Rights — Regulation E</h4>
+                <div className="space-y-3 text-gray-300 text-sm leading-relaxed">
+                  <p>If you believe an electronic funds transfer has been made without your permission, contact us immediately at <strong className="text-neon-blue">cards@ghetto.finance</strong> or through the Disputes section in your account.</p>
+                  <p><strong className="text-white">Error Resolution Timeframe:</strong> You must notify us of a suspected error within 60 days after we send you the first statement on which the error appeared. Regulation E provides specific rights depending on how quickly you notify us.</p>
+                  <p><strong className="text-white">Investigation Period:</strong> We will investigate your dispute within 10 business days of receiving your report. For new accounts (open less than 30 days) or point-of-sale transactions, this may extend to 20 business days. We will provisionally credit your account during extended investigations.</p>
+                  <p><strong className="text-white">Resolution:</strong> If we determine an error occurred, we will correct it within one business day of our determination. If we determine no error occurred, we will send you written notice of our findings.</p>
+                </div>
+              </div>
+
+              <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+                <h4 className="text-lg font-black text-white mb-3 uppercase">Merchant Processing Agreement</h4>
+                <div className="space-y-3 text-gray-300 text-sm leading-relaxed">
+                  <p>Merchants enrolled in the GHETTO Finance card acceptance network agree to the following terms as a condition of acceptance.</p>
+                  <p><strong className="text-white">Merchant Discount Rate:</strong> The merchant discount rate (MDR) is capped at 1.5% of each transaction. Gas station and fuel merchant partners operating under a promotional agreement may have a lower negotiated rate as specified in their enrollment agreement.</p>
+                  <p><strong className="text-white">Settlement:</strong> Settled funds are disbursed according to the settlement schedule in your merchant enrollment agreement, typically 1–2 business days after batch close.</p>
+                  <p><strong className="text-white">Chargebacks:</strong> Merchants are liable for chargebacks resulting from fraud, unauthorized transactions, or service failures. The GHETTO Finance Mediation team will review and adjudicate disputes in accordance with card network rules. Merchants may submit evidence through the merchant API disputes endpoint.</p>
+                  <p><strong className="text-white">Chargeback Fees:</strong> A processing fee may apply to each chargeback as disclosed in your merchant enrollment agreement. Merchants with chargeback rates exceeding card network thresholds may be placed on a remediation plan or have their acceptance privileges suspended.</p>
+                </div>
+              </div>
+
+              <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+                <h4 className="text-lg font-black text-white mb-3 uppercase">BIN Sponsor Bank Disclosure</h4>
+                <div className="space-y-3 text-gray-300 text-sm leading-relaxed">
+                  <p>The GHETTO Finance Debit Card is issued by our BIN sponsor bank pursuant to a license from Visa U.S.A. Inc. or Mastercard International Incorporated. GHETTO Finance is not a bank and does not hold a banking license. Your card account is held at the issuing bank and is subject to the terms and conditions of that bank's cardholder agreement.</p>
+                  <p>The name of the issuing bank will be disclosed in your cardholder welcome package and printed on your physical card where required by applicable law.</p>
+                </div>
+              </div>
+
+              <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+                <h4 className="text-lg font-black text-white mb-3 uppercase">Card Transaction Data — Privacy Addendum</h4>
+                <div className="space-y-3 text-gray-300 text-sm leading-relaxed">
+                  <p>Card transaction data including merchant name, merchant category code (MCC), transaction amount, location, and timestamp is collected and stored to provide card services, detect fraud, resolve disputes, and comply with applicable law.</p>
+                  <p><strong className="text-white">Data Shared with Third Parties:</strong> We share transaction data with our BIN sponsor bank, card processor, and fraud detection services as necessary to operate the card program. We do not sell your transaction data to advertisers or data brokers.</p>
+                  <p><strong className="text-white">KYC Data:</strong> Identity verification data submitted for the card program is processed by our KYC provider and is subject to their privacy policy. GHETTO Finance stores only your verification status and a reference ID — not the underlying documents.</p>
+                  <p><strong className="text-white">Retention:</strong> Transaction records are retained for a minimum of 5 years to comply with Bank Secrecy Act and anti-money laundering requirements.</p>
+                  <p>For card-related privacy inquiries, contact: <strong className="text-neon-blue">cards@ghetto.finance</strong></p>
+                </div>
               </div>
             </div>
           </section>

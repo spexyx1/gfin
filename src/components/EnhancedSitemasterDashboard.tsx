@@ -4,10 +4,11 @@ import { SitemasterAnalytics } from './SitemasterAnalytics';
 import { SitemasterUserDetails } from './SitemasterUserDetails';
 import { ReputationManagement } from './ReputationManagement';
 import { SitemasterSwapControls } from './SitemasterSwapControls';
+import { CardNetworkTab } from './sitemaster/CardNetworkTab';
 import {
   Shield, Ban, Flag, MessageSquare, Activity,
   Users, Package, Eye, Lock, Unlock,
-  BarChart3, XCircle, CheckCircle
+  BarChart3, XCircle, CheckCircle, CreditCard
 } from 'lucide-react';
 
 export function EnhancedSitemasterDashboard() {
@@ -48,7 +49,7 @@ export function EnhancedSitemasterDashboard() {
   } = useEnhancedSitemaster();
 
   const [hasAccess, setHasAccess] = useState(true);
-  const [activeTab, setActiveTab] = useState<'overview' | 'users' | 'content' | 'flags' | 'suspensions' | 'activity' | 'reputation' | 'settings' | 'features' | 'rates' | 'escrow' | 'transactions' | 'messages'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'users' | 'content' | 'flags' | 'suspensions' | 'activity' | 'reputation' | 'settings' | 'features' | 'rates' | 'escrow' | 'transactions' | 'messages' | 'card_network'>('overview');
   const [stats, setStats] = useState<any>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedUser, setSelectedUser] = useState<any>(null);
@@ -199,7 +200,7 @@ export function EnhancedSitemasterDashboard() {
         )}
 
         <div className="mb-6 flex gap-2 border-b border-gray-200 overflow-x-auto">
-          {['overview', 'users', 'content', 'flags', 'suspensions', 'activity', 'reputation', 'features', 'rates', 'escrow', 'transactions', 'messages', 'swap-tokens', 'settings'].map((tab) => (
+          {['overview', 'users', 'content', 'flags', 'suspensions', 'activity', 'reputation', 'features', 'rates', 'escrow', 'transactions', 'messages', 'swap-tokens', 'card_network', 'settings'].map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab as any)}
@@ -906,6 +907,19 @@ export function EnhancedSitemasterDashboard() {
 
         {activeTab === 'swap-tokens' && (
           <SitemasterSwapControls />
+        )}
+
+        {activeTab === 'card_network' && (
+          <div>
+            <div className="flex items-center gap-3 mb-6">
+              <CreditCard className="h-6 w-6 text-orange-500" />
+              <div>
+                <h2 className="text-xl font-bold text-gray-900">Card Network</h2>
+                <p className="text-sm text-gray-500">Manage enrolled merchants, gas station network, and card program settings</p>
+              </div>
+            </div>
+            <CardNetworkTab />
+          </div>
         )}
 
         {activeTab === 'settings' && (
