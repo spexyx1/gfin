@@ -79,7 +79,7 @@ export function useWallet() {
         throw new Error(`Only ${nativeSymbol} transfers are currently supported`);
       }
 
-      const signer = await provider.getSigner(account);
+      const signer = await provider.getSigner();
       const tx = await signer.sendTransaction({
         to,
         value: ethers.parseEther(amount.toString())
@@ -117,16 +117,18 @@ export function useWallet() {
     }
   };
 
+  // Note: These functions are placeholders for future implementation
+  // Users should use external exchanges or the built-in Swap Interface
   const buyCrypto = async (asset: string, amount: number, paymentMethod: 'card' | 'bank') => {
-    throw new Error('Buy crypto is not yet implemented. Please use an exchange.');
+    throw new Error('Direct fiat-to-crypto purchases are not yet implemented. Please use an exchange like Coinbase or Binance.');
   };
 
   const sellCrypto = async (asset: string, amount: number) => {
-    throw new Error('Sell crypto is not yet implemented. Please use an exchange.');
+    throw new Error('Direct crypto-to-fiat sales are not yet implemented. Please use an exchange like Coinbase or Binance.');
   };
 
   const swapCrypto = async (fromAsset: string, toAsset: string, fromAmount: number) => {
-    throw new Error('Swap crypto is not yet implemented. Please use the Swap Interface.');
+    throw new Error('This function is deprecated. Please use the Atomic Swap Interface instead.');
   };
 
   return {

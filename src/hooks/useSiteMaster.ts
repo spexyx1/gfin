@@ -260,6 +260,13 @@ export function useSiteMaster() {
 
   // Escrow Contract Management Functions
   const updatePlatformFee = async (feePercent: number) => {
+    // Input validation
+    if (typeof feePercent !== 'number' || !isFinite(feePercent)) {
+      throw new Error('Fee percent must be a valid number');
+    }
+    if (feePercent < 0 || feePercent > 100) {
+      throw new Error('Fee percent must be between 0 and 100');
+    }
     if (!provider || !account) {
       throw new Error('Web3 wallet not connected');
     }
@@ -267,7 +274,7 @@ export function useSiteMaster() {
     setIsLoading(true);
     try {
       const { escrowContract } = await getContracts();
-      
+
       // Convert percentage to basis points (e.g., 2.5% = 250)
       const basisPoints = Math.round(feePercent * 100);
       

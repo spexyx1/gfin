@@ -14,7 +14,8 @@ export function useMessaging() {
   useEffect(() => {
     if (user) {
       loadConversations();
-      setupRealtimeSubscription();
+      const cleanup = setupRealtimeSubscription();
+      return cleanup;
     } else {
       setConversations([]);
       setMessages({});
@@ -50,18 +51,55 @@ export function useMessaging() {
         throw error;
       }
 
-      // Process conversations and their messages
+      // Get all conversation IDs for batch loading
+      const conversationIds = (conversationsData || []).map(conv => conv.id);
+
+      // Load all messages in a single query instead of N+1 queries
+      let allMessagesData: any[] = [];
+      if (conversationIds.length > 0) {
+        const { data: messagesData, error: messagesError } = await supabaseClient
+          .from('messages')
+          .select('*')
+          .in('conversation_id', conversationIds)
+          .order('created_at', { ascending: true });
+
+        if (messagesError) {
+          logger.error('Failed to load messages', 'useMessaging', messagesError);
+        } else {
+          allMessagesData = messagesData || [];
+        }
+      }
+
+      // Group messages by conversation
+      const messagesByConversation: Record<string, Message[]> = {};
+      for (const msg of allMessagesData) {
+        if (!messagesByConversation[msg.conversation_id]) {
+          messagesByConversation[msg.conversation_id] = [];
+        }
+        messagesByConversation[msg.conversation_id].push({
+          id: msg.id,
+          conversationId: msg.conversation_id,
+          senderId: msg.sender_id,
+          receiverId: '',
+          content: msg.content,
+          timestamp: new Date(msg.created_at),
+          read: msg.read,
+          messageType: msg.message_type as Message['messageType'],
+          orderId: msg.order_id,
+        });
+      }
+
+      // Process conversations
       const processedConversations: Conversation[] = [];
-      const allMessages: Record<string, Message[]> = {};
 
       for (const conv of conversationsData || []) {
         // Get the last message
-        const lastMessage = conv.messages && conv.messages.length > 0 
-          ? conv.messages[conv.messages.length - 1] 
+        const lastMessage = conv.messages && conv.messages.length > 0
+          ? conv.messages[conv.messages.length - 1]
           : undefined;
 
         // Count unread messages
-        const unreadCount = conv.messages?.filter((msg: any) => 
+        const unreadCount = conv.messages?.filter((msg: any) =>
           msg.sender_id !== user.id && !msg.read
         ).length || 0;
 
@@ -85,12 +123,11 @@ export function useMessaging() {
         };
 
         processedConversations.push(conversation);
-
-        // Load all messages for this conversation
-        await loadConversationMessages(conv.id);
       }
 
+      // Update state with conversations and all messages at once
       setConversations(processedConversations);
+      setMessages(messagesByConversation);
     } catch (error) {
       logger.error('Failed to load conversations', 'useMessaging', error);
       handleSupabaseError(error);

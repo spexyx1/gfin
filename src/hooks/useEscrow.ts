@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from './useAuth';
 import { useMessaging } from './useMessaging';
 import { useWeb3 } from './useWeb3';
@@ -131,13 +131,13 @@ export function useEscrow() {
   };
 
   // Load user's orders from Supabase
-  const loadOrders = async () => {
+  const loadOrders = useCallback(async () => {
     if (!user) return;
 
     setIsLoading(true);
     try {
       const supabaseClient = requireSupabase();
-      
+
       const { data: ordersData, error } = await supabaseClient
         .from('orders')
         .select(`
@@ -189,7 +189,7 @@ export function useEscrow() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [user]);
 
   // Load orders when user changes
   useEffect(() => {
@@ -198,20 +198,32 @@ export function useEscrow() {
     } else {
       setOrders([]);
     }
-  }, [user]);
+  }, [user, loadOrders]);
 
   const createEscrow = async (
-    sellerId: string, 
-    amount: number, 
-    description: string, 
+    sellerId: string,
+    amount: number,
+    description: string,
     paymentTokenAddress: string = GHETTO_CONTRACT_ADDRESS,
     paymentCurrency: string = 'GHETTO',
     productId?: string
   ) => {
-    if (!user) {
-      throw new Error('Wallet not connected');
+    // Input validation
+    if (!sellerId || typeof sellerId !== 'string') {
+      throw new Error('Valid seller ID is required');
     }
-
+    if (!amount || amount <= 0 || !isFinite(amount)) {
+      throw new Error('Amount must be a positive number');
+    }
+    if (!description || typeof description !== 'string' || description.trim().length === 0) {
+      throw new Error('Description is required');
+    }
+    if (!user) {
+      throw new Error('User not authenticated');
+    }
+    if (user.id === sellerId) {
+      throw new Error('Cannot create escrow with yourself as seller');
+    }
     if (!provider || !account) {
       throw new Error('Web3 wallet not connected');
     }

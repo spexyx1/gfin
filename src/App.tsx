@@ -7,6 +7,7 @@ import { AuthModal } from './components/AuthModal';
 import { PWAInstallButton } from './components/PWAInstallButton';
 import { MobileNetworkIndicator } from './components/MobileNetworkIndicator';
 import { NetworkSwitchModal } from './components/NetworkSwitchModal';
+import { ErrorBoundary } from './components/ErrorBoundary';
 
 const AdvancedSearch = lazy(() => import('./components/AdvancedSearch').then(m => ({ default: m.AdvancedSearch })));
 const UserDashboard = lazy(() => import('./components/UserDashboard').then(m => ({ default: m.UserDashboard })));
@@ -621,20 +622,22 @@ function App() {
       
       
       {/* Main Content with Routing */}
-      <Suspense fallback={
-        <div className="flex items-center justify-center min-h-screen">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"></div>
-        </div>
-      }>
-        <Routes>
-          <Route path="/" element={<MarketplaceContent />} />
-          <Route path="/social" element={<SocialPlatform searchTerm={searchTerm} setSearchTerm={setSearchTerm} />} />
-          <Route path="/sitemaster" element={<EnhancedSitemasterDashboard />} />
-          <Route path="/blockchain" element={<BlockchainManagement />} />
-          <Route path="/treasurer" element={<TreasurerDashboard />} />
-          <Route path="/mediator" element={<MediatorDashboard />} />
-        </Routes>
-      </Suspense>
+      <ErrorBoundary>
+        <Suspense fallback={
+          <div className="flex items-center justify-center min-h-screen">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"></div>
+          </div>
+        }>
+          <Routes>
+            <Route path="/" element={<MarketplaceContent />} />
+            <Route path="/social" element={<SocialPlatform searchTerm={searchTerm} setSearchTerm={setSearchTerm} />} />
+            <Route path="/sitemaster" element={<EnhancedSitemasterDashboard />} />
+            <Route path="/blockchain" element={<BlockchainManagement />} />
+            <Route path="/treasurer" element={<TreasurerDashboard />} />
+            <Route path="/mediator" element={<MediatorDashboard />} />
+          </Routes>
+        </Suspense>
+      </ErrorBoundary>
 
       {/* Global Footer */}
       <footer className="glass-morphism mt-24 border-t border-white/10 bg-gradient-to-b from-transparent to-gray-900/50">
@@ -761,10 +764,11 @@ function App() {
         onClose={() => closeModal('auth')}
         initialMode={authMode}
       />
-      <Suspense fallback={<div />}>
-        <UserDashboard
-          isOpen={isOpen('userProfile')}
-          onClose={() => closeModal('userProfile')}
+      <ErrorBoundary>
+        <Suspense fallback={<div />}>
+          <UserDashboard
+            isOpen={isOpen('userProfile')}
+            onClose={() => closeModal('userProfile')}
         />
         <BuyNowModal
           isOpen={isOpen('buyNow')}
@@ -835,7 +839,8 @@ function App() {
           isOpen={isOpen('security')}
           onClose={() => closeModal('security')}
         />
-      </Suspense>
+        </Suspense>
+      </ErrorBoundary>
     </div>
   );
 }

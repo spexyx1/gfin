@@ -1,4 +1,4 @@
-import { useState, useEffect, createContext, useContext } from 'react';
+import { useState, useEffect, createContext, useContext, useRef } from 'react';
 import { AuthUser } from '../types';
 import { supabase, requireSupabase, handleSupabaseError } from '../lib/supabase';
 import { logger } from '../utils/logger';
@@ -26,6 +26,7 @@ export function useAuthContext() {
 export function useAuth() {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const authStateProcessingRef = useRef(false);
 
   // Convert Supabase user to AuthUser
   const convertToAuthUser = async (supabaseUser: User): Promise<AuthUser> => {
@@ -138,6 +139,13 @@ export function useAuth() {
       (event, session) => {
         // Use async block to avoid deadlocks
         (async () => {
+          // Prevent concurrent auth state changes from causing race conditions
+          if (authStateProcessingRef.current) {
+            logger.warn('Auth state change already in progress, skipping', 'useAuth');
+            return;
+          }
+
+          authStateProcessingRef.current = true;
           try {
             if (event === 'SIGNED_IN' && session?.user) {
               const authUser = await convertToAuthUser(session.user);
@@ -151,6 +159,8 @@ export function useAuth() {
             logger.error('Error in auth state change', 'useAuth', error);
             setUser(null);
             setIsLoading(false);
+          } finally {
+            authStateProcessingRef.current = false;
           }
         })();
       }
@@ -188,7 +198,6 @@ export function useAuth() {
       }
 
       // User will be set by onAuthStateChange, which will also set isLoading to false
-      // Don't set loading to false here to avoid race condition
     } catch (error) {
       setIsLoading(false);
       handleSupabaseError(error);
