@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { X, Send, Mail, User, MessageSquare, CheckCircle, AlertCircle } from 'lucide-react';
-import { useMessaging } from '../hooks/useMessaging';
+import { useAuth } from '../hooks/useAuth';
+import { supabase } from '../lib/supabase';
 import { logger } from '../utils/logger';
 
 interface ContactFormProps {
@@ -19,7 +20,7 @@ export function ContactForm({ isOpen, onClose }: ContactFormProps) {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
 
-  const { createConversation, sendMessage } = useMessaging();
+  const { user } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,26 +33,23 @@ export function ContactForm({ isOpen, onClose }: ContactFormProps) {
     setError('');
 
     try {
-      // Create conversation with site master (using the master account ID)
-      const siteMasterConversation = await createConversation('master_001');
-      
-      // Format the contact form message
-      const contactMessage = `
-CONTACT FORM SUBMISSION
+      if (!supabase) {
+        throw new Error('Database not configured');
+      }
 
-Name: ${formData.name}
-Email: ${formData.email}
-Subject: ${formData.subject || 'General Inquiry'}
+      const { error: insertError } = await supabase
+        .from('business_inquiries')
+        .insert({
+          name: formData.name.trim(),
+          email: formData.email.trim().toLowerCase(),
+          subject: formData.subject.trim() || 'General Inquiry',
+          message: formData.message.trim(),
+          user_id: user?.id || null,
+          status: 'pending',
+        });
 
-Message:
-${formData.message}
+      if (insertError) throw insertError;
 
----
-Submitted: ${new Date().toLocaleString()}
-      `.trim();
-
-      await sendMessage(siteMasterConversation, contactMessage, 'system');
-      
       setSuccess(true);
       setTimeout(() => {
         onClose();
@@ -59,7 +57,7 @@ Submitted: ${new Date().toLocaleString()}
         setSuccess(false);
       }, 3000);
     } catch (error) {
-      logger.error('Failed to send contact form', 'ContactForm', error);
+      logger.error('Failed to submit business inquiry', 'ContactForm', error);
       setError('Failed to send message. Please try again or email info@ghetto.finance directly.');
     } finally {
       setIsSubmitting(false);

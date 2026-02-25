@@ -1,14 +1,16 @@
 import { useState, useEffect } from 'react';
 import { useEnhancedSitemaster } from '../hooks/useEnhancedSitemaster';
+import { useBusinessInquiries } from '../hooks/useBusinessInquiries';
 import { SitemasterAnalytics } from './SitemasterAnalytics';
 import { SitemasterUserDetails } from './SitemasterUserDetails';
 import { ReputationManagement } from './ReputationManagement';
 import { SitemasterSwapControls } from './SitemasterSwapControls';
 import { CardNetworkTab } from './sitemaster/CardNetworkTab';
+import { formatDistanceToNow } from 'date-fns';
 import {
   Shield, Ban, Flag, MessageSquare, Activity,
   Users, Package, Eye, Lock, Unlock,
-  BarChart3, XCircle, CheckCircle, CreditCard
+  BarChart3, XCircle, CheckCircle, CreditCard, Mail, Send, Clock
 } from 'lucide-react';
 
 export function EnhancedSitemasterDashboard() {
@@ -48,8 +50,19 @@ export function EnhancedSitemasterDashboard() {
     refresh
   } = useEnhancedSitemaster();
 
+  const {
+    inquiries,
+    isLoading: inquiriesLoading,
+    updateInquiryStatus,
+    respondToInquiry,
+    getPendingCount,
+    getInquiriesByStatus,
+  } = useBusinessInquiries();
+
   const [hasAccess, setHasAccess] = useState(true);
-  const [activeTab, setActiveTab] = useState<'overview' | 'users' | 'content' | 'flags' | 'suspensions' | 'activity' | 'reputation' | 'settings' | 'features' | 'rates' | 'escrow' | 'transactions' | 'messages' | 'card_network'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'users' | 'content' | 'flags' | 'suspensions' | 'activity' | 'reputation' | 'settings' | 'features' | 'rates' | 'escrow' | 'transactions' | 'messages' | 'card_network' | 'inquiries'>('overview');
+  const [selectedInquiry, setSelectedInquiry] = useState<any>(null);
+  const [inquiryResponse, setInquiryResponse] = useState('');
   const [stats, setStats] = useState<any>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedUser, setSelectedUser] = useState<any>(null);
@@ -200,7 +213,7 @@ export function EnhancedSitemasterDashboard() {
         )}
 
         <div className="mb-6 flex gap-2 border-b border-gray-200 overflow-x-auto">
-          {['overview', 'users', 'content', 'flags', 'suspensions', 'activity', 'reputation', 'features', 'rates', 'escrow', 'transactions', 'messages', 'swap-tokens', 'card_network', 'settings'].map((tab) => (
+          {['overview', 'inquiries', 'users', 'content', 'flags', 'suspensions', 'activity', 'reputation', 'features', 'rates', 'escrow', 'transactions', 'messages', 'swap-tokens', 'card_network', 'settings'].map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab as any)}
@@ -291,6 +304,179 @@ export function EnhancedSitemasterDashboard() {
                 </div>
               </div>
             </div>
+          </div>
+        )}
+
+        {activeTab === 'inquiries' && (
+          <div>
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-3">
+                <Mail className="h-6 w-6 text-blue-500" />
+                <div>
+                  <h2 className="text-xl font-bold text-gray-900">Business Inquiries</h2>
+                  <p className="text-sm text-gray-600">Manage contact form submissions</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2 text-sm">
+                <div className="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full font-medium">
+                  {getPendingCount()} Pending
+                </div>
+                <div className="px-3 py-1 bg-gray-100 text-gray-800 rounded-full font-medium">
+                  {inquiries.length} Total
+                </div>
+              </div>
+            </div>
+
+            {inquiriesLoading ? (
+              <div className="text-center py-12">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto"></div>
+                <p className="mt-4 text-gray-600">Loading inquiries...</p>
+              </div>
+            ) : inquiries.length === 0 ? (
+              <div className="bg-white shadow-md rounded-lg p-12 text-center">
+                <Mail className="h-16 w-16 text-gray-300 mx-auto mb-4" />
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">No inquiries yet</h3>
+                <p className="text-gray-600">Business inquiries will appear here when users submit the contact form</p>
+              </div>
+            ) : (
+              <div className="grid gap-6">
+                {inquiries.map((inquiry) => (
+                  <div
+                    key={inquiry.id}
+                    className={`bg-white shadow-md rounded-lg overflow-hidden border-l-4 ${
+                      inquiry.status === 'pending'
+                        ? 'border-yellow-500'
+                        : inquiry.status === 'reviewing'
+                        ? 'border-blue-500'
+                        : inquiry.status === 'responded'
+                        ? 'border-green-500'
+                        : 'border-gray-300'
+                    }`}
+                  >
+                    <div className="p-6">
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-3 mb-2">
+                            <h3 className="text-lg font-bold text-gray-900">{inquiry.subject}</h3>
+                            <span
+                              className={`px-2 py-1 text-xs font-medium rounded-full ${
+                                inquiry.status === 'pending'
+                                  ? 'bg-yellow-100 text-yellow-800'
+                                  : inquiry.status === 'reviewing'
+                                  ? 'bg-blue-100 text-blue-800'
+                                  : inquiry.status === 'responded'
+                                  ? 'bg-green-100 text-green-800'
+                                  : 'bg-gray-100 text-gray-800'
+                              }`}
+                            >
+                              {inquiry.status}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-4 text-sm text-gray-600">
+                            <span className="flex items-center gap-1">
+                              <Users className="w-4 h-4" />
+                              {inquiry.name}
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <Mail className="w-4 h-4" />
+                              {inquiry.email}
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <Clock className="w-4 h-4" />
+                              {formatDistanceToNow(inquiry.createdAt, { addSuffix: true })}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="mb-4">
+                        <p className="text-gray-700 whitespace-pre-wrap">{inquiry.message}</p>
+                      </div>
+
+                      {inquiry.response && (
+                        <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-4">
+                          <div className="flex items-center gap-2 mb-2">
+                            <CheckCircle className="w-4 h-4 text-green-600" />
+                            <span className="text-sm font-medium text-green-900">Response Sent</span>
+                            {inquiry.respondedAt && (
+                              <span className="text-xs text-green-700">
+                                {formatDistanceToNow(inquiry.respondedAt, { addSuffix: true })}
+                              </span>
+                            )}
+                          </div>
+                          <p className="text-gray-700 text-sm whitespace-pre-wrap">{inquiry.response}</p>
+                        </div>
+                      )}
+
+                      {selectedInquiry?.id === inquiry.id && !inquiry.response ? (
+                        <div className="space-y-3">
+                          <textarea
+                            value={inquiryResponse}
+                            onChange={(e) => setInquiryResponse(e.target.value)}
+                            placeholder="Type your response..."
+                            rows={4}
+                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                          />
+                          <div className="flex gap-2">
+                            <button
+                              onClick={async () => {
+                                if (inquiryResponse.trim()) {
+                                  const success = await respondToInquiry(inquiry.id, inquiryResponse.trim());
+                                  if (success) {
+                                    setSelectedInquiry(null);
+                                    setInquiryResponse('');
+                                  }
+                                }
+                              }}
+                              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium flex items-center gap-2"
+                            >
+                              <Send className="w-4 h-4" />
+                              Send Response
+                            </button>
+                            <button
+                              onClick={() => {
+                                setSelectedInquiry(null);
+                                setInquiryResponse('');
+                              }}
+                              className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg font-medium"
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        </div>
+                      ) : !inquiry.response ? (
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() => {
+                              setSelectedInquiry(inquiry);
+                              setInquiryResponse('');
+                            }}
+                            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium text-sm flex items-center gap-2"
+                          >
+                            <Send className="w-4 h-4" />
+                            Respond
+                          </button>
+                          {inquiry.status === 'pending' && (
+                            <button
+                              onClick={() => updateInquiryStatus(inquiry.id, 'reviewing')}
+                              className="px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg font-medium text-sm"
+                            >
+                              Mark as Reviewing
+                            </button>
+                          )}
+                          <button
+                            onClick={() => updateInquiryStatus(inquiry.id, 'closed')}
+                            className="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg font-medium text-sm"
+                          >
+                            Close
+                          </button>
+                        </div>
+                      ) : null}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
 
