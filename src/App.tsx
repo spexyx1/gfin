@@ -646,60 +646,49 @@ function App() {
       </ErrorBoundary>
 
       {/* Global Footer */}
-      <footer className="glass-morphism mt-24 border-t border-white/10 bg-gradient-to-b from-transparent to-gray-900/50">
-        <div className="max-w-7xl mx-auto px-6 py-20">
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-10 mb-12">
+      <footer className="glass-morphism mt-16 border-t border-white/10 bg-gradient-to-b from-transparent to-gray-900/50">
+        <div className="max-w-7xl mx-auto px-6 py-10">
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-8 mb-8">
             {/* About Section */}
             <div className="text-center md:text-left md:col-span-1">
-              <div className="flex items-center justify-center md:justify-start mb-6">
+              <div className="flex items-center justify-center md:justify-start mb-3">
                 <GraffitiLogo size="sm" />
               </div>
-              <p className="text-sm font-bold leading-relaxed mb-6 bg-gradient-to-br from-gray-300 via-gray-400 to-gray-500 bg-clip-text text-transparent" style={{textShadow: '0 0 20px rgba(255,255,255,0.3)'}}>
+              <p className="text-xs font-bold leading-relaxed mb-3 bg-gradient-to-br from-gray-300 via-gray-400 to-gray-500 bg-clip-text text-transparent" style={{textShadow: '0 0 20px rgba(255,255,255,0.3)'}}>
                 Decentralized P2P marketplace with blockchain-powered escrow protection and military-grade encryption.
               </p>
-              <div className="flex space-x-4 justify-center md:justify-start mb-6">
-                <a href="#" className="w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center transition-colors">
-                  <Globe className="w-5 h-5 text-gray-400" />
-                </a>
-                <a href="#" className="w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center transition-colors">
-                  <MessageCircle className="w-5 h-5 text-gray-400" />
-                </a>
-                <a href="#" className="w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center transition-colors">
-                  <Mail className="w-5 h-5 text-gray-400" />
-                </a>
-              </div>
               <div className="flex items-center justify-center md:justify-start space-x-2 text-xs">
-                <Shield className="w-4 h-4 text-green-400" style={{filter: 'drop-shadow(0 0 10px rgba(74,222,128,0.5))'}} />
+                <Shield className="w-3 h-3 text-green-400" style={{filter: 'drop-shadow(0 0 10px rgba(74,222,128,0.5))'}} />
                 <span className="font-bold bg-gradient-to-r from-green-300 to-green-400 bg-clip-text text-transparent">End-to-End Encrypted</span>
               </div>
             </div>
 
             {/* Platform Section */}
             <div className="text-center md:text-left">
-              <h4 className="font-black mb-6 text-sm uppercase tracking-wider bg-gradient-to-br from-gray-200 via-gray-300 to-gray-400 bg-clip-text text-transparent" style={{textShadow: '0 0 30px rgba(255,255,255,0.5)'}}>Platform</h4>
-              <ul className="space-y-3">
+              <h4 className="font-black mb-3 text-xs uppercase tracking-wider bg-gradient-to-br from-gray-200 via-gray-300 to-gray-400 bg-clip-text text-transparent" style={{textShadow: '0 0 30px rgba(255,255,255,0.5)'}}>Platform</h4>
+              <ul className="space-y-2">
                 <li>
-                  <Link to="/" className="text-sm font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent hover:from-white hover:to-gray-200 transition-all">
+                  <Link to="/" className="text-xs font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent hover:from-white hover:to-gray-200 transition-all">
                     Marketplace
                   </Link>
                 </li>
                 <li>
-                  <Link to="/social" className="text-sm font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent hover:from-white hover:to-gray-200 transition-all">
+                  <Link to="/social" className="text-xs font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent hover:from-white hover:to-gray-200 transition-all">
                     Social Network
                   </Link>
                 </li>
                 <li>
-                  <button onClick={() => openModal('sellerDashboard')} className="text-sm font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent hover:from-white hover:to-gray-200 transition-all">
+                  <button onClick={() => openModal('sellerDashboard')} className="text-xs font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent hover:from-white hover:to-gray-200 transition-all">
                     Seller Dashboard
                   </button>
                 </li>
                 <li>
-                  <button onClick={() => openModal('wallet')} className="text-sm font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent hover:from-white hover:to-gray-200 transition-all">
+                  <button onClick={() => openModal('wallet')} className="text-xs font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent hover:from-white hover:to-gray-200 transition-all">
                     Wallet
                   </button>
                 </li>
                 <li>
-                  <button onClick={() => openModal('orders')} className="text-sm font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent hover:from-white hover:to-gray-200 transition-all">
+                  <button onClick={() => openModal('orders')} className="text-xs font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent hover:from-white hover:to-gray-200 transition-all">
                     My Orders
                   </button>
                 </li>
@@ -708,25 +697,25 @@ function App() {
 
             {/* Support Section */}
             <div className="text-center md:text-left">
-              <h4 className="font-black mb-6 text-sm uppercase tracking-wider bg-gradient-to-br from-gray-200 via-gray-300 to-gray-400 bg-clip-text text-transparent" style={{textShadow: '0 0 30px rgba(255,255,255,0.5)'}}>Support</h4>
-              <ul className="space-y-3">
+              <h4 className="font-black mb-3 text-xs uppercase tracking-wider bg-gradient-to-br from-gray-200 via-gray-300 to-gray-400 bg-clip-text text-transparent" style={{textShadow: '0 0 30px rgba(255,255,255,0.5)'}}>Support</h4>
+              <ul className="space-y-2">
                 <li>
-                  <button onClick={() => openModal('faq')} className="text-sm font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent hover:from-white hover:to-gray-200 transition-all">
+                  <button onClick={() => openModal('faq')} className="text-xs font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent hover:from-white hover:to-gray-200 transition-all">
                     FAQ
                   </button>
                 </li>
                 <li>
-                  <button onClick={() => openModal('contact')} className="text-sm font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent hover:from-white hover:to-gray-200 transition-all">
+                  <button onClick={() => openModal('contact')} className="text-xs font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent hover:from-white hover:to-gray-200 transition-all">
                     Contact Us
                   </button>
                 </li>
                 <li>
-                  <button onClick={() => openModal('legal')} className="text-sm font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent hover:from-white hover:to-gray-200 transition-all">
+                  <button onClick={() => openModal('legal')} className="text-xs font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent hover:from-white hover:to-gray-200 transition-all">
                     Privacy Policy
                   </button>
                 </li>
                 <li>
-                  <button onClick={() => openModal('legal')} className="text-sm font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent hover:from-white hover:to-gray-200 transition-all">
+                  <button onClick={() => openModal('legal')} className="text-xs font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent hover:from-white hover:to-gray-200 transition-all">
                     Terms of Service
                   </button>
                 </li>
@@ -735,20 +724,20 @@ function App() {
 
             {/* Resources Section */}
             <div className="text-center md:text-left">
-              <h4 className="font-black mb-6 text-sm uppercase tracking-wider bg-gradient-to-br from-gray-200 via-gray-300 to-gray-400 bg-clip-text text-transparent" style={{textShadow: '0 0 30px rgba(255,255,255,0.5)'}}>Resources</h4>
-              <ul className="space-y-3">
+              <h4 className="font-black mb-3 text-xs uppercase tracking-wider bg-gradient-to-br from-gray-200 via-gray-300 to-gray-400 bg-clip-text text-transparent" style={{textShadow: '0 0 30px rgba(255,255,255,0.5)'}}>Resources</h4>
+              <ul className="space-y-2">
                 <li>
-                  <button onClick={() => openModal('securityAudit')} className="text-sm font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent hover:from-white hover:to-gray-200 transition-all">
+                  <button onClick={() => openModal('securityAudit')} className="text-xs font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent hover:from-white hover:to-gray-200 transition-all">
                     Security Audits
                   </button>
                 </li>
                 <li>
-                  <button onClick={() => openModal('documentation')} className="text-sm font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent hover:from-white hover:to-gray-200 transition-all">
+                  <button onClick={() => openModal('documentation')} className="text-xs font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent hover:from-white hover:to-gray-200 transition-all">
                     Documentation
                   </button>
                 </li>
                 <li>
-                  <a href="mailto:info@ghetto.finance" className="text-sm font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent hover:from-white hover:to-gray-200 transition-all">
+                  <a href="mailto:info@ghetto.finance" className="text-xs font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent hover:from-white hover:to-gray-200 transition-all">
                     Business Inquiries
                   </a>
                 </li>
@@ -757,30 +746,30 @@ function App() {
 
             {/* Security & Trust Section */}
             <div className="text-center md:text-left">
-              <h4 className="font-black mb-6 text-sm uppercase tracking-wider bg-gradient-to-br from-green-200 via-green-300 to-green-400 bg-clip-text text-transparent" style={{textShadow: '0 0 30px rgba(74,222,128,0.5)'}}>Security & Trust</h4>
-              <div className="space-y-4">
+              <h4 className="font-black mb-3 text-xs uppercase tracking-wider bg-gradient-to-br from-green-200 via-green-300 to-green-400 bg-clip-text text-transparent" style={{textShadow: '0 0 30px rgba(74,222,128,0.5)'}}>Security & Trust</h4>
+              <div className="space-y-2">
                 <div className="flex items-start justify-center md:justify-start space-x-2">
-                  <Shield className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" style={{filter: 'drop-shadow(0 0 8px rgba(74,222,128,0.5))'}} />
+                  <Shield className="w-3 h-3 text-green-400 mt-0.5 flex-shrink-0" style={{filter: 'drop-shadow(0 0 8px rgba(74,222,128,0.5))'}} />
                   <span className="text-xs font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent leading-tight">
-                    Military-Grade AES-256 Encryption
+                    AES-256 Encryption
                   </span>
                 </div>
                 <div className="flex items-start justify-center md:justify-start space-x-2">
-                  <Shield className="w-4 h-4 text-blue-400 mt-0.5 flex-shrink-0" style={{filter: 'drop-shadow(0 0 8px rgba(96,165,250,0.5))'}} />
+                  <Shield className="w-3 h-3 text-blue-400 mt-0.5 flex-shrink-0" style={{filter: 'drop-shadow(0 0 8px rgba(96,165,250,0.5))'}} />
                   <span className="text-xs font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent leading-tight">
-                    Smart Contract Audited
+                    Contract Audited
                   </span>
                 </div>
                 <div className="flex items-start justify-center md:justify-start space-x-2">
-                  <Shield className="w-4 h-4 text-yellow-400 mt-0.5 flex-shrink-0" style={{filter: 'drop-shadow(0 0 8px rgba(250,204,21,0.5))'}} />
+                  <Shield className="w-3 h-3 text-yellow-400 mt-0.5 flex-shrink-0" style={{filter: 'drop-shadow(0 0 8px rgba(250,204,21,0.5))'}} />
                   <span className="text-xs font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent leading-tight">
                     Zero-Knowledge Privacy
                   </span>
                 </div>
                 <div className="flex items-start justify-center md:justify-start space-x-2">
-                  <Shield className="w-4 h-4 text-cyan-400 mt-0.5 flex-shrink-0" style={{filter: 'drop-shadow(0 0 8px rgba(34,211,238,0.5))'}} />
+                  <Shield className="w-3 h-3 text-cyan-400 mt-0.5 flex-shrink-0" style={{filter: 'drop-shadow(0 0 8px rgba(34,211,238,0.5))'}} />
                   <span className="text-xs font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent leading-tight">
-                    Decentralized Infrastructure
+                    Decentralized
                   </span>
                 </div>
               </div>
@@ -788,30 +777,30 @@ function App() {
           </div>
 
           {/* Bottom Section */}
-          <div className="border-t border-white/10 pt-8">
-            <div className="max-w-md mx-auto mb-8">
+          <div className="border-t border-white/10 pt-6">
+            <div className="max-w-md mx-auto mb-6">
               <PWAInstallButton />
             </div>
 
-            <div className="flex flex-col md:flex-row justify-center md:justify-between items-center space-y-4 md:space-y-0">
-              <div className="flex items-center space-x-4">
-                <p className="text-sm font-bold bg-gradient-to-r from-gray-300 via-gray-400 to-gray-500 bg-clip-text text-transparent" style={{textShadow: '0 0 20px rgba(255,255,255,0.3)'}}>
+            <div className="flex flex-col md:flex-row justify-center md:justify-between items-center space-y-3 md:space-y-0">
+              <div className="flex items-center space-x-3">
+                <p className="text-xs font-bold bg-gradient-to-r from-gray-300 via-gray-400 to-gray-500 bg-clip-text text-transparent" style={{textShadow: '0 0 20px rgba(255,255,255,0.3)'}}>
                   {getCopyrightNotice()}
                 </p>
                 <RealtimeStatusIndicator position="bottom-right" showLabel={false} compact={true} />
               </div>
-              <div className="flex items-center space-x-6 text-xs">
-                <span className="flex items-center space-x-2">
+              <div className="flex items-center space-x-4 text-xs">
+                <span className="flex items-center space-x-1.5">
                   <Shield className="w-3 h-3 text-gray-300" style={{filter: 'drop-shadow(0 0 8px rgba(255,255,255,0.4))'}} />
-                  <span className="font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent">Secured by Blockchain</span>
+                  <span className="font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent">Blockchain Secured</span>
                 </span>
-                <span className="flex items-center space-x-2">
+                <span className="flex items-center space-x-1.5">
                   <DollarSign className="w-3 h-3 text-gray-300" style={{filter: 'drop-shadow(0 0 8px rgba(255,255,255,0.4))'}} />
-                  <span className="font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent">Multi-Crypto Payments</span>
+                  <span className="font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent">Multi-Crypto</span>
                 </span>
-                <span className="flex items-center space-x-2">
+                <span className="flex items-center space-x-1.5">
                   <Globe className="w-3 h-3 text-gray-300" style={{filter: 'drop-shadow(0 0 8px rgba(255,255,255,0.4))'}} />
-                  <span className="font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent">Global Marketplace</span>
+                  <span className="font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent">Global</span>
                 </span>
               </div>
             </div>
