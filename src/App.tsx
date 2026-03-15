@@ -1,6 +1,6 @@
 import React, { useState, useMemo, lazy, Suspense } from 'react';
 import { Routes, Route, Link, useLocation } from 'react-router-dom';
-import { Shield, Search, ShoppingCart, User, Wallet, TrendingUp, Package, MessageCircle, Store, CreditCard, Users, AtSign, Filter, Globe, Mail, DollarSign, ShoppingBag, Briefcase, UserCircle, Smartphone } from 'lucide-react';
+import { Shield, Search, ShoppingCart, User, Wallet, TrendingUp, Package, MessageCircle, Store, CreditCard, Users, AtSign, Filter, Globe, Mail, DollarSign, ShoppingBag, Briefcase, CircleUser as UserCircle, Smartphone } from 'lucide-react';
 import { SearchFilters } from './components/AdvancedSearch';
 import { GraffitiLogo } from './components/GraffitiLogo';
 import { AuthModal } from './components/AuthModal';
