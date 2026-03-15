@@ -19,6 +19,7 @@ import { SellerDashboard } from './SellerDashboard';
 import { OfflineBanner } from './OfflineBanner';
 import { VideoCallModal } from './VideoCallModal';
 import { IncomingCallNotification } from './IncomingCallNotification';
+import { CacheManagement } from './CacheManagement';
 
 interface UserDashboardProps {
   isOpen: boolean;
@@ -703,6 +704,8 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
           </div>
         </div>
       </div>
+
+      <CacheManagement />
     </div>
   );
 

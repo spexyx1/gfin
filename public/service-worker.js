@@ -1,7 +1,12 @@
-const CACHE_NAME = 'ghetto-finance-v2';
-const RUNTIME_CACHE = 'ghetto-finance-runtime-v2';
-const PROFILE_CACHE = 'ghetto-finance-profile-v2';
-const IMAGE_CACHE = 'ghetto-finance-images-v2';
+const CACHE_NAME = 'ghetto-finance-v3';
+const RUNTIME_CACHE = 'ghetto-finance-runtime-v3';
+const PROFILE_CACHE = 'ghetto-finance-profile-v3';
+const IMAGE_CACHE = 'ghetto-finance-images-v3';
+
+const MAX_RUNTIME_CACHE_SIZE = 50;
+const MAX_PROFILE_CACHE_SIZE = 30;
+const MAX_IMAGE_CACHE_SIZE = 100;
+const CACHE_EXPIRATION_TIME = 24 * 60 * 60 * 1000;
 
 const STATIC_ASSETS = [
   '/',
@@ -96,13 +101,52 @@ async function cacheFirst(request) {
   }
 }
 
+async function trimCache(cacheName, maxItems) {
+  const cache = await caches.open(cacheName);
+  const keys = await cache.keys();
+
+  if (keys.length > maxItems) {
+    const itemsToDelete = keys.length - maxItems;
+    for (let i = 0; i < itemsToDelete; i++) {
+      await cache.delete(keys[i]);
+    }
+    console.log(`[Service Worker] Trimmed ${itemsToDelete} items from ${cacheName}`);
+  }
+}
+
+async function isExpired(response) {
+  if (!response) return true;
+
+  const dateHeader = response.headers.get('date');
+  const cachedAtHeader = response.headers.get('X-Cached-At');
+
+  const timestamp = cachedAtHeader || dateHeader;
+  if (!timestamp) return false;
+
+  const cachedTime = new Date(timestamp).getTime();
+  const now = Date.now();
+
+  return (now - cachedTime) > CACHE_EXPIRATION_TIME;
+}
+
 async function networkFirst(request) {
   const cache = await caches.open(RUNTIME_CACHE);
 
   try {
     const networkResponse = await fetch(request);
     if (networkResponse.ok) {
-      cache.put(request, networkResponse.clone());
+      const responseToCache = networkResponse.clone();
+      const headers = new Headers(responseToCache.headers);
+      headers.set('X-Cached-At', new Date().toISOString());
+
+      const newResponse = new Response(responseToCache.body, {
+        status: responseToCache.status,
+        statusText: responseToCache.statusText,
+        headers: headers
+      });
+
+      await cache.put(request, newResponse);
+      await trimCache(RUNTIME_CACHE, MAX_RUNTIME_CACHE_SIZE);
     }
     return networkResponse;
   } catch (error) {
@@ -110,7 +154,11 @@ async function networkFirst(request) {
     const cachedResponse = await cache.match(request);
 
     if (cachedResponse) {
-      return cachedResponse;
+      const expired = await isExpired(cachedResponse);
+      if (!expired) {
+        return cachedResponse;
+      }
+      console.log('[Service Worker] Cached response expired');
     }
 
     if (request.destination === 'document') {
@@ -144,11 +192,13 @@ async function profileDataStrategy(request) {
       }), {
         headers: {
           'Content-Type': 'application/json',
-          'X-Cached': 'true'
+          'X-Cached': 'true',
+          'X-Cached-At': new Date().toISOString()
         }
       });
 
-      cache.put(request, responseToCache);
+      await cache.put(request, responseToCache);
+      await trimCache(PROFILE_CACHE, MAX_PROFILE_CACHE_SIZE);
     }
     return networkResponse;
   } catch (error) {
@@ -156,15 +206,19 @@ async function profileDataStrategy(request) {
     const cachedResponse = await cache.match(request);
 
     if (cachedResponse) {
-      const cached = await cachedResponse.clone();
-      const headers = new Headers(cached.headers);
-      headers.set('X-Offline', 'true');
+      const expired = await isExpired(cachedResponse);
+      if (!expired) {
+        const cached = await cachedResponse.clone();
+        const headers = new Headers(cached.headers);
+        headers.set('X-Offline', 'true');
 
-      return new Response(cached.body, {
-        status: cached.status,
-        statusText: cached.statusText,
-        headers: headers
-      });
+        return new Response(cached.body, {
+          status: cached.status,
+          statusText: cached.statusText,
+          headers: headers
+        });
+      }
+      console.log('[Service Worker] Cached profile data expired');
     }
 
     return new Response(JSON.stringify({ error: 'Offline - No cached data available' }), {
@@ -180,17 +234,35 @@ async function imageCacheStrategy(request) {
   const cachedResponse = await cache.match(request);
 
   if (cachedResponse) {
-    return cachedResponse;
+    const expired = await isExpired(cachedResponse);
+    if (!expired) {
+      return cachedResponse;
+    }
+    console.log('[Service Worker] Cached image expired');
   }
 
   try {
     const networkResponse = await fetch(request);
     if (networkResponse.ok) {
-      cache.put(request, networkResponse.clone());
+      const responseToCache = networkResponse.clone();
+      const headers = new Headers(responseToCache.headers);
+      headers.set('X-Cached-At', new Date().toISOString());
+
+      const newResponse = new Response(responseToCache.body, {
+        status: responseToCache.status,
+        statusText: responseToCache.statusText,
+        headers: headers
+      });
+
+      await cache.put(request, newResponse);
+      await trimCache(IMAGE_CACHE, MAX_IMAGE_CACHE_SIZE);
     }
     return networkResponse;
   } catch (error) {
     console.log('[Service Worker] Image fetch failed:', error);
+    if (cachedResponse) {
+      return cachedResponse;
+    }
     return new Response('', {
       status: 503,
       statusText: 'Service Unavailable',
@@ -209,14 +281,48 @@ self.addEventListener('message', (event) => {
 
   if (event.data && event.data.type === 'CLEAR_CACHE') {
     event.waitUntil(
-      caches.keys().then(cacheNames => {
-        return Promise.all(
-          cacheNames.map(cacheName => caches.delete(cacheName))
-        );
+      clearAllCaches().then(() => {
+        if (event.ports && event.ports[0]) {
+          event.ports[0].postMessage({ success: true });
+        }
+      }).catch(error => {
+        console.error('[Service Worker] Error clearing caches:', error);
+        if (event.ports && event.ports[0]) {
+          event.ports[0].postMessage({ success: false, error: error.message });
+        }
+      })
+    );
+  }
+
+  if (event.data && event.data.type === 'GET_CACHE_SIZE') {
+    event.waitUntil(
+      getCacheSize().then(size => {
+        if (event.ports && event.ports[0]) {
+          event.ports[0].postMessage({ size });
+        }
       })
     );
   }
 });
+
+async function clearAllCaches() {
+  const cacheNames = await caches.keys();
+  await Promise.all(cacheNames.map(cacheName => caches.delete(cacheName)));
+  console.log('[Service Worker] All caches cleared');
+}
+
+async function getCacheSize() {
+  const cacheNames = await caches.keys();
+  let totalSize = 0;
+
+  for (const cacheName of cacheNames) {
+    const cache = await caches.open(cacheName);
+    const keys = await cache.keys();
+    totalSize += keys.length;
+  }
+
+  return totalSize;
+}
 
 async function cacheProfileData(data) {
   const cache = await caches.open(PROFILE_CACHE);
