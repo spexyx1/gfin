@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { X, Book, ChevronDown, ChevronUp, ShoppingCart, Shield, Wallet, Users, Code, Zap, ArrowRight, AlertTriangle, CheckCircle, DollarSign, Package, MessageCircle, Store, Globe, Lock, RefreshCw, FileText, HelpCircle } from 'lucide-react';
+import { LEGAL_CONSTANTS } from '../config/legalConstants';
 
 interface DocumentationModalProps {
   isOpen: boolean;
@@ -651,9 +652,9 @@ export function DocumentationModal({ isOpen, onClose }: DocumentationModalProps)
 
         {/* Footer */}
         <div className="p-4 border-t border-white/10 shrink-0 flex items-center justify-between">
-          <span className="text-xs text-gray-500 font-bold">GHETTO Finance Documentation v1.0 — February 2026</span>
-          <a href="mailto:support@ghetto.finance" className="text-xs text-orange-400 hover:text-orange-300 font-black transition-colors">
-            support@ghetto.finance
+          <span className="text-xs text-gray-500 font-bold">GHETTO Finance Documentation v{LEGAL_CONSTANTS.DOCUMENTATION.VERSION} — {LEGAL_CONSTANTS.DOCUMENTATION.LAST_UPDATED}</span>
+          <a href={`mailto:${LEGAL_CONSTANTS.SUPPORT_EMAIL}`} className="text-xs text-orange-400 hover:text-orange-300 font-black transition-colors">
+            {LEGAL_CONSTANTS.SUPPORT_EMAIL}
           </a>
         </div>
       </div>

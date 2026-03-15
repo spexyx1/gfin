@@ -8,11 +8,13 @@ type ConnectionStatus = 'connected' | 'connecting' | 'disconnected' | 'error';
 interface RealtimeStatusIndicatorProps {
   showLabel?: boolean;
   position?: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left';
+  compact?: boolean;
 }
 
 export function RealtimeStatusIndicator({
   showLabel = false,
   position = 'bottom-right',
+  compact = false,
 }: RealtimeStatusIndicatorProps) {
   const [status, setStatus] = useState<ConnectionStatus>('connecting');
   const [lastConnected, setLastConnected] = useState<Date | null>(null);
@@ -109,6 +111,92 @@ export function RealtimeStatusIndicator({
     'bottom-right': 'bottom-4 right-4',
     'bottom-left': 'bottom-4 left-4',
   };
+
+  if (compact) {
+    return (
+      <div className="relative inline-flex">
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => setShowDetails(!showDetails)}
+          className="flex items-center gap-1.5 px-2 py-1 rounded-full transition-all bg-white/5 border border-white/10 hover:bg-white/10"
+        >
+          <div className="relative">
+            <div className={`w-2 h-2 rounded-full ${getStatusColor()} ${
+              status === 'connecting' ? 'animate-pulse' : ''
+            }`} />
+          </div>
+          {showLabel && (
+            <span className="text-xs font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent">{getStatusText()}</span>
+          )}
+        </motion.button>
+
+        <AnimatePresence>
+          {showDetails && (
+            <motion.div
+              initial={{ opacity: 0, y: 10, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 10, scale: 0.95 }}
+              className="absolute bottom-full left-0 mb-2 w-64 bg-gray-900/95 backdrop-blur-lg rounded-lg shadow-xl border border-white/10 p-4"
+            >
+              <h3 className="font-bold text-white mb-3">
+                Real-Time Connection
+              </h3>
+
+              <div className="space-y-2 text-sm">
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-400">Status:</span>
+                  <span className={`font-bold ${
+                    status === 'connected' ? 'text-green-400' :
+                    status === 'error' ? 'text-red-400' :
+                    status === 'disconnected' ? 'text-gray-400' :
+                    'text-yellow-400'
+                  }`}>
+                    {getStatusText()}
+                  </span>
+                </div>
+
+                {lastConnected && (
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-400">Last Connected:</span>
+                    <span className="text-white font-bold">
+                      {lastConnected.toLocaleTimeString()}
+                    </span>
+                  </div>
+                )}
+
+                <div className="pt-2 mt-2 border-t border-white/10">
+                  <p className="text-xs text-gray-400">
+                    {status === 'connected' && (
+                      <>Real-time updates are active. Changes sync instantly.</>
+                    )}
+                    {status === 'connecting' && (
+                      <>Establishing connection...</>
+                    )}
+                    {status === 'disconnected' && (
+                      <>Connection lost. Trying to reconnect...</>
+                    )}
+                    {status === 'error' && (
+                      <>Connection error. Check your internet.</>
+                    )}
+                  </p>
+                </div>
+
+                {(status === 'error' || status === 'disconnected') && (
+                  <button
+                    onClick={() => window.location.reload()}
+                    className="w-full mt-3 px-3 py-2 text-sm font-bold text-white bg-orange-600 rounded-lg hover:bg-orange-700 transition-colors"
+                  >
+                    Reconnect
+                  </button>
+                )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    );
+  }
 
   return (
     <div className={`fixed ${positionClasses[position]} z-50`}>

@@ -1,4 +1,5 @@
 import { X, Shield, AlertTriangle, Scale, Globe, FileText, Users, Lock, CreditCard } from 'lucide-react';
+import { LEGAL_CONSTANTS } from '../config/legalConstants';
 
 interface LegalPageProps {
   isOpen: boolean;
@@ -135,14 +136,14 @@ export function LegalPage({ isOpen, onClose }: LegalPageProps) {
                   </p>
                 </div>
                 <ul className="space-y-2 list-disc list-inside">
-                  <li>Transaction disputes shall be submitted to platform moderators within 90 days</li>
+                  <li>Transaction disputes shall be submitted to platform moderators within {LEGAL_CONSTANTS.DISPUTE_RESOLUTION.ARBITRATION_TIMEFRAME_DAYS} days</li>
                   <li>Platform moderators shall serve as binding arbitrators for all disputes</li>
                   <li>Moderator decisions are final and binding on all parties</li>
                   <li>You agree to abide by all moderator decisions and judgments</li>
                   <li>You waive any right to court litigation for disputes covered by this arbitration clause</li>
                   <li>You waive any right to participate in class action lawsuits</li>
                   <li>Arbitration shall be conducted according to platform procedures</li>
-                  <li>The 90-day resolution timeframe begins upon dispute filing</li>
+                  <li>The {LEGAL_CONSTANTS.DISPUTE_RESOLUTION.ARBITRATION_TIMEFRAME_DAYS}-day resolution timeframe begins upon dispute filing</li>
                   <li>Funds may be held in escrow during the dispute resolution process</li>
                   <li>Failure to comply with moderator decisions may result in account suspension or termination</li>
                 </ul>
@@ -317,7 +318,7 @@ export function LegalPage({ isOpen, onClose }: LegalPageProps) {
               <div>
                 <h4 className="text-lg font-black text-white mb-3 uppercase">Platform Disputes</h4>
                 <p className="leading-relaxed">
-                  Transaction disputes are resolved through our escrow system within 90 days. Decisions are made based on evidence provided by both parties and platform terms.
+                  Transaction disputes are resolved through our escrow system within {LEGAL_CONSTANTS.DISPUTE_RESOLUTION.ARBITRATION_TIMEFRAME_DAYS} days. Decisions are made based on evidence provided by both parties and platform terms.
                 </p>
               </div>
 
@@ -403,7 +404,7 @@ export function LegalPage({ isOpen, onClose }: LegalPageProps) {
                 For legal inquiries, compliance questions, or to exercise your privacy rights, contact:
               </p>
               <div className="space-y-2 text-gray-300">
-                <p><strong>Legal Department:</strong> legal@ghetto.finance</p>
+                <p><strong>Legal Department:</strong> {LEGAL_CONSTANTS.LEGAL_EMAIL}</p>
                 <p><strong>Privacy Officer:</strong> privacy@ghetto.finance</p>
                 <p><strong>Compliance Team:</strong> compliance@ghetto.finance</p>
                 <p><strong>Security Team:</strong> security@ghetto.finance</p>
@@ -413,8 +414,9 @@ export function LegalPage({ isOpen, onClose }: LegalPageProps) {
 
           {/* Last Updated */}
           <div className="text-center text-gray-500 text-sm border-t border-gray-700 pt-6">
-            <p>Last Updated: January 2025</p>
-            <p>These terms are subject to change. Users will be notified of material changes.</p>
+            <p>Last Updated: {LEGAL_CONSTANTS.TERMS_OF_SERVICE.LAST_UPDATED}</p>
+            <p>Version {LEGAL_CONSTANTS.TERMS_OF_SERVICE.VERSION} • Effective: {LEGAL_CONSTANTS.TERMS_OF_SERVICE.EFFECTIVE_DATE}</p>
+            <p className="mt-2">These terms are subject to change. Users will be notified of material changes.</p>
           </div>
         </div>
       </div>

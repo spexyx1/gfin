@@ -10,6 +10,7 @@ import { NetworkSwitchModal } from './components/NetworkSwitchModal';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { RealtimeNotificationSystem } from './components/RealtimeNotificationSystem';
 import { RealtimeStatusIndicator } from './components/RealtimeStatusIndicator';
+import { getCopyrightNotice } from './config/legalConstants';
 const SecurityAuditModal = lazy(() => import('./components/SecurityAuditModal').then(m => ({ default: m.SecurityAuditModal })));
 const DocumentationModal = lazy(() => import('./components/DocumentationModal').then(m => ({ default: m.DocumentationModal })));
 
@@ -486,7 +487,6 @@ function App() {
     <div className="min-h-screen bg-apple-gray-950">
       <MobileNetworkIndicator />
       <NetworkSwitchModal />
-      <RealtimeStatusIndicator position="bottom-right" showLabel={false} />
 
       {/* Header */}
       <header className={`glass-morphism border-b border-white/10 sticky top-0 z-50 ${
@@ -749,9 +749,12 @@ function App() {
             </div>
 
             <div className="flex flex-col md:flex-row justify-center md:justify-between items-center space-y-4 md:space-y-0">
-              <p className="text-sm font-bold bg-gradient-to-r from-gray-300 via-gray-400 to-gray-500 bg-clip-text text-transparent" style={{textShadow: '0 0 20px rgba(255,255,255,0.3)'}}>
-                &copy; 2025 GHETTO FINANCE. All rights reserved.
-              </p>
+              <div className="flex items-center space-x-4">
+                <p className="text-sm font-bold bg-gradient-to-r from-gray-300 via-gray-400 to-gray-500 bg-clip-text text-transparent" style={{textShadow: '0 0 20px rgba(255,255,255,0.3)'}}>
+                  {getCopyrightNotice()}
+                </p>
+                <RealtimeStatusIndicator position="bottom-right" showLabel={false} compact={true} />
+              </div>
               <div className="flex items-center space-x-6 text-xs">
                 <span className="flex items-center space-x-2">
                   <Shield className="w-3 h-3 text-gray-300" style={{filter: 'drop-shadow(0 0 8px rgba(255,255,255,0.4))'}} />

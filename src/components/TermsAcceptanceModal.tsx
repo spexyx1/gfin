@@ -1,20 +1,21 @@
 import React, { useState } from 'react';
 import { Shield, CheckSquare, Square, AlertTriangle, FileText, Scale } from 'lucide-react';
+import { LEGAL_CONSTANTS } from '../config/legalConstants';
 
 interface TermsAcceptanceModalProps {
   isOpen: boolean;
   onAccept: () => void;
   onDecline: () => void;
-  termsVersion: string;
-  effectiveDate: string;
+  termsVersion?: string;
+  effectiveDate?: string;
 }
 
 export function TermsAcceptanceModal({
   isOpen,
   onAccept,
   onDecline,
-  termsVersion,
-  effectiveDate
+  termsVersion = LEGAL_CONSTANTS.TERMS_OF_SERVICE.VERSION,
+  effectiveDate = LEGAL_CONSTANTS.TERMS_OF_SERVICE.EFFECTIVE_DATE
 }: TermsAcceptanceModalProps) {
   const [accepted, setAccepted] = useState(false);
 
@@ -76,7 +77,7 @@ export function TermsAcceptanceModal({
                   <div>
                     <h4 className="text-white font-black uppercase mb-2 text-sm">Binding Arbitration</h4>
                     <p className="text-gray-400 text-sm leading-relaxed">
-                      All disputes will be resolved through binding arbitration by platform moderators within 90 days.
+                      All disputes will be resolved through binding arbitration by platform moderators within {LEGAL_CONSTANTS.DISPUTE_RESOLUTION.ARBITRATION_TIMEFRAME_DAYS} days.
                       You waive the right to court litigation and class action lawsuits. Moderator decisions are final
                       and binding on all parties.
                     </p>

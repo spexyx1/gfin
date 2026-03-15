@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { X, Shield, AlertTriangle, CheckCircle, Info, Code, FileText, ExternalLink, ChevronDown, ChevronUp, Lock, Zap, GitBranch } from 'lucide-react';
+import { LEGAL_CONSTANTS } from '../config/legalConstants';
 
 interface SecurityAuditModalProps {
   isOpen: boolean;
@@ -417,7 +418,7 @@ export function SecurityAuditModal({ isOpen, onClose }: SecurityAuditModalProps)
                     <p className="text-gray-300 text-sm leading-relaxed">
                       All three smart contracts — <strong className="text-white">CryptoMarketplaceEscrow</strong>, <strong className="text-white">GhettoToken</strong>, and <strong className="text-white">AtomicSwap</strong> — have been reviewed against OWASP Smart Contract Security standards, Solidity best practices, and the SWC Registry of known vulnerabilities. No critical issues were identified. Medium and low findings are acknowledged and tracked below.
                     </p>
-                    <p className="text-gray-400 text-xs mt-2 font-bold">Review Date: February 2026 · Solidity 0.8.19–0.8.20 · OpenZeppelin 5.x</p>
+                    <p className="text-gray-400 text-xs mt-2 font-bold">Review Date: {LEGAL_CONSTANTS.SECURITY_AUDIT.REVIEW_DATE} · Solidity {LEGAL_CONSTANTS.SECURITY_AUDIT.SOLIDITY_VERSION} · OpenZeppelin {LEGAL_CONSTANTS.SECURITY_AUDIT.OPENZEPPELIN_VERSION}</p>
                   </div>
                 </div>
               </div>
