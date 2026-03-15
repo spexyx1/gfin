@@ -648,15 +648,16 @@ function App() {
       {/* Global Footer */}
       <footer className="glass-morphism mt-24 border-t border-white/10 bg-gradient-to-b from-transparent to-gray-900/50">
         <div className="max-w-7xl mx-auto px-6 py-20">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-            <div className="text-center md:text-left">
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-10 mb-12">
+            {/* About Section */}
+            <div className="text-center md:text-left md:col-span-1">
               <div className="flex items-center justify-center md:justify-start mb-6">
                 <GraffitiLogo size="sm" />
               </div>
               <p className="text-sm font-bold leading-relaxed mb-6 bg-gradient-to-br from-gray-300 via-gray-400 to-gray-500 bg-clip-text text-transparent" style={{textShadow: '0 0 20px rgba(255,255,255,0.3)'}}>
-                Decentralized P2P marketplace with blockchain-powered escrow protection. Trade anything legal, anywhere.
+                Decentralized P2P marketplace with blockchain-powered escrow protection and military-grade encryption.
               </p>
-              <div className="flex space-x-4 justify-center md:justify-start">
+              <div className="flex space-x-4 justify-center md:justify-start mb-6">
                 <a href="#" className="w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center transition-colors">
                   <Globe className="w-5 h-5 text-gray-400" />
                 </a>
@@ -667,8 +668,13 @@ function App() {
                   <Mail className="w-5 h-5 text-gray-400" />
                 </a>
               </div>
+              <div className="flex items-center justify-center md:justify-start space-x-2 text-xs">
+                <Shield className="w-4 h-4 text-green-400" style={{filter: 'drop-shadow(0 0 10px rgba(74,222,128,0.5))'}} />
+                <span className="font-bold bg-gradient-to-r from-green-300 to-green-400 bg-clip-text text-transparent">End-to-End Encrypted</span>
+              </div>
             </div>
 
+            {/* Platform Section */}
             <div className="text-center md:text-left">
               <h4 className="font-black mb-6 text-sm uppercase tracking-wider bg-gradient-to-br from-gray-200 via-gray-300 to-gray-400 bg-clip-text text-transparent" style={{textShadow: '0 0 30px rgba(255,255,255,0.5)'}}>Platform</h4>
               <ul className="space-y-3">
@@ -684,7 +690,7 @@ function App() {
                 </li>
                 <li>
                   <button onClick={() => openModal('sellerDashboard')} className="text-sm font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent hover:from-white hover:to-gray-200 transition-all">
-                    Sell Products
+                    Seller Dashboard
                   </button>
                 </li>
                 <li>
@@ -692,9 +698,15 @@ function App() {
                     Wallet
                   </button>
                 </li>
+                <li>
+                  <button onClick={() => openModal('orders')} className="text-sm font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent hover:from-white hover:to-gray-200 transition-all">
+                    My Orders
+                  </button>
+                </li>
               </ul>
             </div>
 
+            {/* Support Section */}
             <div className="text-center md:text-left">
               <h4 className="font-black mb-6 text-sm uppercase tracking-wider bg-gradient-to-br from-gray-200 via-gray-300 to-gray-400 bg-clip-text text-transparent" style={{textShadow: '0 0 30px rgba(255,255,255,0.5)'}}>Support</h4>
               <ul className="space-y-3">
@@ -721,12 +733,13 @@ function App() {
               </ul>
             </div>
 
+            {/* Resources Section */}
             <div className="text-center md:text-left">
               <h4 className="font-black mb-6 text-sm uppercase tracking-wider bg-gradient-to-br from-gray-200 via-gray-300 to-gray-400 bg-clip-text text-transparent" style={{textShadow: '0 0 30px rgba(255,255,255,0.5)'}}>Resources</h4>
               <ul className="space-y-3">
                 <li>
                   <button onClick={() => openModal('securityAudit')} className="text-sm font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent hover:from-white hover:to-gray-200 transition-all">
-                    Smart Contracts &amp; Security Audits
+                    Security Audits
                   </button>
                 </li>
                 <li>
@@ -741,8 +754,40 @@ function App() {
                 </li>
               </ul>
             </div>
+
+            {/* Security & Trust Section */}
+            <div className="text-center md:text-left">
+              <h4 className="font-black mb-6 text-sm uppercase tracking-wider bg-gradient-to-br from-green-200 via-green-300 to-green-400 bg-clip-text text-transparent" style={{textShadow: '0 0 30px rgba(74,222,128,0.5)'}}>Security & Trust</h4>
+              <div className="space-y-4">
+                <div className="flex items-start justify-center md:justify-start space-x-2">
+                  <Shield className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" style={{filter: 'drop-shadow(0 0 8px rgba(74,222,128,0.5))'}} />
+                  <span className="text-xs font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent leading-tight">
+                    Military-Grade AES-256 Encryption
+                  </span>
+                </div>
+                <div className="flex items-start justify-center md:justify-start space-x-2">
+                  <Shield className="w-4 h-4 text-blue-400 mt-0.5 flex-shrink-0" style={{filter: 'drop-shadow(0 0 8px rgba(96,165,250,0.5))'}} />
+                  <span className="text-xs font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent leading-tight">
+                    Smart Contract Audited
+                  </span>
+                </div>
+                <div className="flex items-start justify-center md:justify-start space-x-2">
+                  <Shield className="w-4 h-4 text-yellow-400 mt-0.5 flex-shrink-0" style={{filter: 'drop-shadow(0 0 8px rgba(250,204,21,0.5))'}} />
+                  <span className="text-xs font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent leading-tight">
+                    Zero-Knowledge Privacy
+                  </span>
+                </div>
+                <div className="flex items-start justify-center md:justify-start space-x-2">
+                  <Shield className="w-4 h-4 text-cyan-400 mt-0.5 flex-shrink-0" style={{filter: 'drop-shadow(0 0 8px rgba(34,211,238,0.5))'}} />
+                  <span className="text-xs font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent leading-tight">
+                    Decentralized Infrastructure
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
 
+          {/* Bottom Section */}
           <div className="border-t border-white/10 pt-8">
             <div className="max-w-md mx-auto mb-8">
               <PWAInstallButton />
