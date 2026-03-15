@@ -8,6 +8,8 @@ import { PWAInstallButton } from './components/PWAInstallButton';
 import { MobileNetworkIndicator } from './components/MobileNetworkIndicator';
 import { NetworkSwitchModal } from './components/NetworkSwitchModal';
 import { ErrorBoundary } from './components/ErrorBoundary';
+import { RealtimeNotificationSystem } from './components/RealtimeNotificationSystem';
+import { RealtimeStatusIndicator } from './components/RealtimeStatusIndicator';
 const SecurityAuditModal = lazy(() => import('./components/SecurityAuditModal').then(m => ({ default: m.SecurityAuditModal })));
 const DocumentationModal = lazy(() => import('./components/DocumentationModal').then(m => ({ default: m.DocumentationModal })));
 
@@ -484,6 +486,7 @@ function App() {
     <div className="min-h-screen bg-apple-gray-950">
       <MobileNetworkIndicator />
       <NetworkSwitchModal />
+      <RealtimeStatusIndicator position="bottom-right" showLabel={false} />
 
       {/* Header */}
       <header className={`glass-morphism border-b border-white/10 sticky top-0 z-50 ${
@@ -533,6 +536,7 @@ function App() {
                   <Shield className="w-5 h-5" />
                 </Link>
               )}
+              <RealtimeNotificationSystem />
               <button
                 onClick={() => openModal('messages')}
                 className="relative p-2 text-apple-gray-500 hover:text-white apple-hover"
