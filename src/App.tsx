@@ -187,169 +187,119 @@ function App() {
       <main className={`max-w-7xl mx-auto px-6 transition-all duration-500 ease-in-out ${
         isSearchFocused ? 'pt-4 pb-16' : 'py-16'
       }`}>
-        {/* Comprehensive Features Section */}
+        {/* Hero Section */}
         <div className={`transition-all duration-500 ease-in-out ${
-          isSearchFocused ? 'h-0 mb-0 opacity-0 overflow-hidden pointer-events-none' : 'mb-16 opacity-100'
+          isSearchFocused ? 'h-0 mb-0 opacity-0 overflow-hidden pointer-events-none' : 'mb-12 opacity-100'
         }`}>
+          {/* Headline */}
           <div className="text-center mb-8">
-            <h1 className="text-5xl apple-title text-neon-yellow mb-4">SECURE P2P MARKETPLACE</h1>
-            <p className="text-xl text-neon-orange apple-font max-w-4xl mx-auto leading-relaxed">
-              TRADE ANYTHING LEGAL WITH CRYPTO. MODERATED ESCROW PROTECTION. STEALTH OPTIONS. BUILT-IN SOCIAL NETWORK.
+            <h1 className="text-4xl md:text-5xl apple-title text-neon-yellow mb-3">
+              Buy and Sell Anything With Crypto
+            </h1>
+            <p className="text-lg md:text-xl text-neon-orange apple-font max-w-3xl mx-auto leading-relaxed">
+              Escrow-protected trades. Moderated disputes. Built-in privacy. No middleman.
             </p>
           </div>
 
-          {/* Trust Indicators */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto mb-12">
-            <div className="glass-morphism rounded-apple p-4 text-center">
-              <div className="text-3xl apple-title text-neon-blue mb-1">$2.5M+</div>
-              <div className="text-xs text-apple-gray-400 apple-font uppercase">Total Volume Secured</div>
+          {/* Why Trade Here */}
+          <div className="mb-8">
+            <div className="text-center mb-4">
+              <p className="text-sm apple-font text-apple-gray-400 uppercase tracking-wider">Why Trade Here</p>
             </div>
-            <div className="glass-morphism rounded-apple p-4 text-center">
-              <div className="text-3xl apple-title text-green-400 mb-1">15,000+</div>
-              <div className="text-xs text-apple-gray-400 apple-font uppercase">Successful Trades</div>
-            </div>
-            <div className="glass-morphism rounded-apple p-4 text-center">
-              <div className="text-3xl apple-title text-neon-yellow mb-1">48hrs</div>
-              <div className="text-xs text-apple-gray-400 apple-font uppercase">Avg Dispute Resolution</div>
-            </div>
-            <div className="glass-morphism rounded-apple p-4 text-center">
-              <div className="text-3xl apple-title text-orange-400 mb-1">500K+</div>
-              <div className="text-xs text-apple-gray-400 apple-font uppercase">GHETTO Collateral Locked</div>
-            </div>
-          </div>
-
-          {/* Main Feature Cards - Simplified */}
-          <div className="mb-12">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto">
-              <div className="glass-morphism rounded-apple p-4 text-center">
-                <div className="w-10 h-10 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-2">
-                  <Shield className="w-5 h-5 text-green-400" />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+              <div className="glass-morphism rounded-apple p-6">
+                <div className="w-12 h-12 bg-green-500/20 rounded-full flex items-center justify-center mb-4">
+                  <Shield className="w-6 h-6 text-green-400" />
                 </div>
-                <div className="text-xs apple-title text-neon-yellow leading-tight">Advanced Smart Escrow Function Facilitates Safe Transactions</div>
+                <h3 className="text-lg apple-title text-neon-yellow mb-2">Escrow Protection</h3>
+                <p className="text-sm text-apple-gray-400 apple-font leading-relaxed">
+                  Your crypto is locked in a smart contract until you confirm delivery. Sellers also stake collateral, so both sides have skin in the game.
+                </p>
               </div>
 
-              <div className="glass-morphism rounded-apple p-4 text-center">
-                <div className="w-10 h-10 bg-yellow-500/20 rounded-full flex items-center justify-center mx-auto mb-2">
-                  <TrendingUp className="w-5 h-5 text-yellow-400" />
+              <div className="glass-morphism rounded-apple p-6">
+                <div className="w-12 h-12 bg-orange-500/20 rounded-full flex items-center justify-center mb-4">
+                  <Wallet className="w-6 h-6 text-orange-400" />
                 </div>
-                <div className="text-xs apple-title text-neon-yellow leading-tight">Gasless Transfers and Lower Fees With GHETTO</div>
+                <h3 className="text-lg apple-title text-neon-yellow mb-2">Pay With Any Crypto</h3>
+                <p className="text-sm text-apple-gray-400 apple-font leading-relaxed">
+                  Sellers choose their preferred token. If you hold something different, swap instantly through the built-in DEX. Paying with GHETTO is gas-free.
+                </p>
               </div>
 
-              <div className="glass-morphism rounded-apple p-4 text-center">
-                <div className="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-2">
-                  <User className="w-5 h-5 text-blue-400" />
+              <div className="glass-morphism rounded-apple p-6">
+                <div className="w-12 h-12 bg-gray-500/20 rounded-full flex items-center justify-center mb-4">
+                  <AtSign className="w-6 h-6 text-gray-400" />
                 </div>
-                <div className="text-xs apple-title text-neon-yellow leading-tight">Moderated Dispute Resolution By Trained Specialists</div>
+                <h3 className="text-lg apple-title text-neon-yellow mb-2">Private by Default</h3>
+                <p className="text-sm text-apple-gray-400 apple-font leading-relaxed">
+                  End-to-end encrypted messaging, stealth profile options, and no personal data required to trade.
+                </p>
               </div>
 
-              <div className="glass-morphism rounded-apple p-4 text-center">
-                <div className="w-10 h-10 bg-gray-500/20 rounded-full flex items-center justify-center mx-auto mb-2">
-                  <AtSign className="w-5 h-5 text-gray-400" />
+              <div className="glass-morphism rounded-apple p-6">
+                <div className="w-12 h-12 bg-cyan-500/20 rounded-full flex items-center justify-center mb-4">
+                  <Users className="w-6 h-6 text-cyan-400" />
                 </div>
-                <div className="text-xs apple-title text-neon-yellow leading-tight">Stealth Options For Users and Full Privacy</div>
-              </div>
-
-              <div className="glass-morphism rounded-apple p-4 text-center">
-                <div className="w-10 h-10 bg-cyan-500/20 rounded-full flex items-center justify-center mx-auto mb-2">
-                  <Users className="w-5 h-5 text-cyan-400" />
-                </div>
-                <div className="text-xs apple-title text-neon-yellow leading-tight">Dedicated Community Hub</div>
-              </div>
-
-              <div className="glass-morphism rounded-apple p-4 text-center">
-                <div className="w-10 h-10 bg-orange-500/20 rounded-full flex items-center justify-center mx-auto mb-2">
-                  <CreditCard className="w-5 h-5 text-orange-400" />
-                </div>
-                <div className="text-xs apple-title text-neon-yellow leading-tight">Crypto Native with DEX's and Ease of Use</div>
-              </div>
-
-              <div className="glass-morphism rounded-apple p-4 text-center">
-                <div className="w-10 h-10 bg-teal-500/20 rounded-full flex items-center justify-center mx-auto mb-2">
-                  <Package className="w-5 h-5 text-teal-400" />
-                </div>
-                <div className="text-xs apple-title text-neon-yellow leading-tight">Seller Protection and Best-in-Class Fees</div>
-              </div>
-
-              <div className="glass-morphism rounded-apple p-4 text-center">
-                <div className="w-10 h-10 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-2">
-                  <MessageCircle className="w-5 h-5 text-red-400" />
-                </div>
-                <div className="text-xs apple-title text-neon-yellow leading-tight">Military Grade Encryption and Security Across All Features, including Messaging</div>
+                <h3 className="text-lg apple-title text-neon-yellow mb-2">Moderated Disputes</h3>
+                <p className="text-sm text-apple-gray-400 apple-font leading-relaxed">
+                  If something goes wrong, trained moderators review the evidence and release funds to the right party.
+                </p>
               </div>
             </div>
           </div>
 
-          {/* How It Works Section */}
-          <div className="glass-morphism rounded-apple p-8 max-w-6xl mx-auto">
-            <h2 className="text-3xl apple-title text-neon-blue text-center mb-8">HOW IT WORKS</h2>
+          {/* How It Works */}
+          <div className="glass-morphism rounded-apple p-6 max-w-4xl mx-auto">
+            <div className="text-center mb-6">
+              <p className="text-sm apple-font text-apple-gray-400 uppercase tracking-wider mb-2">How It Works</p>
+            </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-              <div className="glass-morphism rounded-apple p-6">
-                <div className="w-16 h-16 bg-yellow-500/20 rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-yellow-500/50">
-                  <ShoppingCart className="w-8 h-8 text-yellow-400" />
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+              <div className="text-center">
+                <div className="w-10 h-10 bg-yellow-500/20 rounded-full flex items-center justify-center mx-auto mb-3 border-2 border-yellow-500/50">
+                  <span className="text-lg apple-title text-yellow-400">1</span>
                 </div>
-                <div className="text-sm apple-title text-neon-yellow mb-3 text-center">STEP 1</div>
-                <p className="text-sm text-neon-orange apple-font leading-relaxed text-center">
-                  Buyer selects items they want to buy
+                <h4 className="text-sm apple-title text-neon-yellow mb-1">Browse</h4>
+                <p className="text-xs text-apple-gray-400 apple-font leading-relaxed">
+                  Find what you want and place an order
                 </p>
               </div>
 
-              <div className="glass-morphism rounded-apple p-6">
-                <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-green-500/50">
-                  <Wallet className="w-8 h-8 text-green-400" />
+              <div className="text-center">
+                <div className="w-10 h-10 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-3 border-2 border-green-500/50">
+                  <span className="text-lg apple-title text-green-400">2</span>
                 </div>
-                <div className="text-sm apple-title text-neon-yellow mb-3 text-center">STEP 2</div>
-                <p className="text-sm text-neon-orange apple-font leading-relaxed text-center">
-                  Buyer pays with crypto of seller's choice as listed, or buyer can use connected DEX to swap their tokens for that of seller's preference. <span className="text-neon-yellow font-semibold">GHETTO is gas-free and cheaper!</span>
+                <h4 className="text-sm apple-title text-neon-yellow mb-1">Pay</h4>
+                <p className="text-xs text-apple-gray-400 apple-font leading-relaxed">
+                  Send crypto — funds go straight into escrow
                 </p>
               </div>
 
-              <div className="glass-morphism rounded-apple p-6">
-                <div className="w-16 h-16 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-blue-500/50">
-                  <Shield className="w-8 h-8 text-blue-400" />
+              <div className="text-center">
+                <div className="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-3 border-2 border-blue-500/50">
+                  <span className="text-lg apple-title text-blue-400">3</span>
                 </div>
-                <div className="text-sm apple-title text-neon-yellow mb-3 text-center">STEP 3</div>
-                <p className="text-sm text-neon-orange apple-font leading-relaxed text-center">
-                  Buyer's funds get held in escrow smart contract, and holds seller collateral for the same amount as required prior to listing item
+                <h4 className="text-sm apple-title text-neon-yellow mb-1">Receive</h4>
+                <p className="text-xs text-apple-gray-400 apple-font leading-relaxed">
+                  Seller ships the item with tracking
+                </p>
+              </div>
+
+              <div className="text-center">
+                <div className="w-10 h-10 bg-orange-500/20 rounded-full flex items-center justify-center mx-auto mb-3 border-2 border-orange-500/50">
+                  <span className="text-lg apple-title text-orange-400">4</span>
+                </div>
+                <h4 className="text-sm apple-title text-neon-yellow mb-1">Confirm</h4>
+                <p className="text-xs text-apple-gray-400 apple-font leading-relaxed">
+                  Approve delivery and funds release to seller
                 </p>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="glass-morphism rounded-apple p-6">
-                <div className="w-16 h-16 bg-orange-500/20 rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-orange-500/50">
-                  <Package className="w-8 h-8 text-orange-400" />
-                </div>
-                <div className="text-sm apple-title text-neon-yellow mb-3 text-center">STEP 4</div>
-                <p className="text-sm text-neon-orange apple-font leading-relaxed text-center">
-                  Seller ships or delivers item with tracking, if available
-                </p>
-              </div>
-
-              <div className="glass-morphism rounded-apple p-6">
-                <div className="w-16 h-16 bg-cyan-500/20 rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-cyan-500/50">
-                  <User className="w-8 h-8 text-cyan-400" />
-                </div>
-                <div className="text-sm apple-title text-neon-yellow mb-3 text-center">STEP 5</div>
-                <p className="text-sm text-neon-orange apple-font leading-relaxed text-center">
-                  Buyer confirms delivery or disputes for moderation. An official member of the moderation team will review the case and release the funds held in escrow in full or in part to the correct side
-                </p>
-              </div>
-
-              <div className="glass-morphism rounded-apple p-6">
-                <div className="w-16 h-16 bg-teal-500/20 rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-teal-500/50">
-                  <TrendingUp className="w-8 h-8 text-teal-400" />
-                </div>
-                <div className="text-sm apple-title text-neon-yellow mb-3 text-center">STEP 6</div>
-                <p className="text-sm text-neon-orange apple-font leading-relaxed text-center">
-                  If all's good, funds are released to the seller, and everyone can continue on their merry way!
-                </p>
-              </div>
-            </div>
-
-            <div className="mt-8 pt-6 border-t border-white/10 text-center">
-              <p className="text-sm text-apple-gray-400 apple-font max-w-3xl mx-auto leading-relaxed">
-                <span className="text-neon-yellow font-semibold">All transactions are 100% secured, and moderated by trained specialists for integrity.</span>
+            <div className="pt-4 border-t border-white/10 text-center">
+              <p className="text-xs text-apple-gray-400 apple-font">
+                All transactions are secured and moderated by trained specialists
               </p>
             </div>
           </div>
