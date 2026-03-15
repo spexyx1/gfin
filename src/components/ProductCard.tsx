@@ -142,9 +142,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           {/* Report Listing Button */}
           <button
             onClick={() => onReportListing(product)}
-            className="w-full py-2 bg-gray-800/50 hover:bg-red-900/30 text-gray-500 hover:text-red-400 rounded-xl transition-all duration-200 flex items-center justify-center space-x-2 text-xs font-medium uppercase border border-gray-700 hover:border-red-500/30"
+            className="w-full py-2 bg-gray-800/50 hover:bg-red-900/30 text-gray-500 hover:text-red-400 rounded-xl transition-all duration-200 flex items-center justify-center space-x-2 text-xs font-black uppercase border border-gray-700 hover:border-red-500/50 hover:shadow-lg hover:shadow-red-500/20"
           >
-            <Flag className="w-3 h-3" />
+            <Flag className="w-4 h-4" />
             <span>REPORT LISTING</span>
           </button>
         </div>

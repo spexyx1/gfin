@@ -1,5 +1,6 @@
-import { X, Shield, AlertTriangle, Scale, Globe, FileText, Users, Lock, CreditCard } from 'lucide-react';
+import { X, Shield, AlertTriangle, Scale, Globe, FileText, Users, Lock, CreditCard, Ban, XCircle } from 'lucide-react';
 import { LEGAL_CONSTANTS } from '../config/legalConstants';
+import { PROHIBITED_CONTENT } from '../config/prohibitedContent';
 
 interface LegalPageProps {
   isOpen: boolean;
@@ -27,11 +28,38 @@ export function LegalPage({ isOpen, onClose }: LegalPageProps) {
         </div>
 
         <div className="p-8 overflow-y-auto h-[calc(90vh-120px)]">
-          {/* Important Notice */}
-          <div className="bg-red-500/10 border border-red-500/20 rounded-2xl p-6 mb-8">
+          {/* Prohibited Items - Top Priority */}
+          <div className="bg-red-500/10 border-2 border-red-500/30 rounded-2xl p-6 mb-8">
             <div className="flex items-center space-x-3 mb-4">
-              <AlertTriangle className="h-6 w-6 text-red-400" />
-              <h3 className="text-xl font-black text-red-400 uppercase">Important Legal Notice</h3>
+              <Ban className="h-8 w-8 text-red-400" />
+              <h3 className="text-2xl font-black text-red-400 uppercase">Prohibited Items Policy</h3>
+            </div>
+            <div className="space-y-4">
+              <p className="text-gray-300 leading-relaxed font-bold">
+                {PROHIBITED_CONTENT.POLICY_STATEMENTS.ZERO_TOLERANCE}
+              </p>
+              <div className="bg-gray-800 rounded-xl p-4">
+                <h4 className="text-white font-black mb-3 uppercase text-sm">Strictly Prohibited:</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                  {Object.values(PROHIBITED_CONTENT.CATEGORIES).slice(0, 6).map((cat) => (
+                    <div key={cat.id} className="flex items-center space-x-2">
+                      <XCircle className="h-4 w-4 text-red-400 flex-shrink-0" />
+                      <span className="text-gray-300 text-sm">{cat.name}</span>
+                    </div>
+                  ))}
+                </div>
+                <p className="text-gray-400 text-xs mt-3">
+                  View complete policy and examples in the Prohibited Items page
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Important Notice */}
+          <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-2xl p-6 mb-8">
+            <div className="flex items-center space-x-3 mb-4">
+              <AlertTriangle className="h-6 w-6 text-yellow-400" />
+              <h3 className="text-xl font-black text-yellow-400 uppercase">Important Legal Notice</h3>
             </div>
             <p className="text-gray-300 leading-relaxed">
               By using GHETTO FINANCE, you acknowledge that you are solely responsible for ensuring compliance with all applicable laws, regulations, and licensing requirements in your jurisdiction. This platform facilitates peer-to-peer transactions and does not provide legal, financial, or regulatory advice. All data is encrypted end-to-end and stored securely.

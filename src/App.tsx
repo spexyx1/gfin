@@ -33,6 +33,7 @@ const SocialPlatform = lazy(() => import('./components/SocialPlatform').then(m =
 const SecurityDashboard = lazy(() => import('./components/SecurityDashboard').then(m => ({ default: m.SecurityDashboard })));
 const FAQ = lazy(() => import('./components/FAQ').then(m => ({ default: m.FAQ })));
 const LegalPage = lazy(() => import('./components/LegalPage').then(m => ({ default: m.LegalPage })));
+const ProhibitedItemsPage = lazy(() => import('./components/ProhibitedItemsPage').then(m => ({ default: m.ProhibitedItemsPage })));
 const ContactForm = lazy(() => import('./components/ContactForm').then(m => ({ default: m.ContactForm })));
 const BlockchainManagement = lazy(() => import('./components/BlockchainManagement').then(m => ({ default: m.BlockchainManagement })));
 import { useAuth } from './hooks/useAuth';
@@ -192,13 +193,38 @@ function App() {
           isSearchFocused ? 'h-0 mb-0 opacity-0 overflow-hidden pointer-events-none' : 'mb-12 opacity-100'
         }`}>
           {/* Headline */}
-          <div className="text-center mb-8">
+          <div className="text-center mb-6">
             <h1 className="text-4xl md:text-5xl apple-title text-neon-yellow mb-3">
               Buy and Sell Anything With Crypto
             </h1>
             <p className="text-lg md:text-xl text-neon-orange apple-font max-w-3xl mx-auto leading-relaxed">
               Escrow-protected trades. Moderated disputes. Built-in privacy. No middleman.
             </p>
+          </div>
+
+          {/* Legal Items Warning Banner */}
+          <div className="max-w-4xl mx-auto mb-8">
+            <div className="bg-gradient-to-r from-green-500/10 to-blue-500/10 border border-green-500/20 rounded-apple p-4">
+              <div className="flex items-center justify-between flex-wrap gap-4">
+                <div className="flex items-center space-x-3">
+                  <div className="w-10 h-10 bg-green-500/20 rounded-full flex items-center justify-center flex-shrink-0">
+                    <Shield className="w-5 h-5 text-green-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-sm apple-title text-green-400 mb-1">Legal Items Only</h3>
+                    <p className="text-xs text-apple-gray-400 apple-font">
+                      All illegal goods are strictly prohibited. Community moderation rewards users who help keep the marketplace safe.
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => openModal('prohibitedItems')}
+                  className="px-4 py-2 bg-green-500/20 hover:bg-green-500/30 text-green-400 rounded-lg text-sm font-bold uppercase transition-all flex-shrink-0"
+                >
+                  View Policy
+                </button>
+              </div>
+            </div>
           </div>
 
           {/* Why Trade Here */}
@@ -825,6 +851,10 @@ function App() {
         <LegalPage
           isOpen={isOpen('legal')}
           onClose={() => closeModal('legal')}
+        />
+        <ProhibitedItemsPage
+          isOpen={isOpen('prohibitedItems')}
+          onClose={() => closeModal('prohibitedItems')}
         />
         <ContactForm
           isOpen={isOpen('contact')}

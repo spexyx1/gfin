@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { X, Flag, AlertTriangle, CheckCircle } from 'lucide-react';
+import { X, Flag, AlertTriangle, CheckCircle, Coins, Award, TrendingUp } from 'lucide-react';
 import { Product } from '../types';
 import { useAuth } from '../hooks/useAuth';
+import { useCommunityModeration } from '../hooks/useCommunityModeration';
+import { PROHIBITED_CONTENT } from '../config/prohibitedContent';
 import { logger } from '../utils/logger';
 
 interface ReportListingModalProps {
@@ -11,35 +13,29 @@ interface ReportListingModalProps {
 }
 
 export function ReportListingModal({ isOpen, onClose, product }: ReportListingModalProps) {
-  const [reportReason, setReportReason] = useState('');
-  const [customReason, setCustomReason] = useState('');
+  const [prohibitedCategoryId, setProhibitedCategoryId] = useState('');
+  const [severity, setSeverity] = useState<'low' | 'medium' | 'high' | 'critical'>('medium');
+  const [reason, setReason] = useState('');
+  const [evidenceUrls, setEvidenceUrls] = useState('');
+  const [isAnonymous, setIsAnonymous] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
 
   const { user } = useAuth();
-
-  const reportReasons = [
-    'Illegal or prohibited items',
-    'Fraudulent or fake products',
-    'Inappropriate content',
-    'Copyright infringement',
-    'Spam or misleading information',
-    'Violates terms of service',
-    'Other (specify below)'
-  ];
+  const {
+    prohibitedCategories,
+    reputation,
+    submitReport,
+    estimateReward
+  } = useCommunityModeration();
 
   const handleSubmitReport = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!product || !user) return;
 
-    if (!reportReason) {
-      setError('Please select a reason for reporting');
-      return;
-    }
-
-    if (reportReason === 'Other (specify below)' && !customReason.trim()) {
-      setError('Please specify the reason for reporting');
+    if (!reason.trim()) {
+      setError('Please provide a reason for reporting');
       return;
     }
 
@@ -47,25 +43,31 @@ export function ReportListingModal({ isOpen, onClose, product }: ReportListingMo
     setError('');
 
     try {
-      // Simulate report submission
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // In a real app, this would send the report to moderators
+      const evidenceArray = evidenceUrls
+        .split('\n')
+        .map(url => url.trim())
+        .filter(url => url.length > 0);
+
+      await submitReport({
+        productId: product.id,
+        prohibitedCategoryId: prohibitedCategoryId || undefined,
+        severity,
+        reason,
+        evidenceUrls: evidenceArray,
+        isAnonymous,
+      });
+
       logger.debug('Report submitted', 'ReportListingModal', {
         productId: product.id,
-        productTitle: product.title,
-        sellerId: product.seller.id,
-        reporterId: user.id,
-        reason: reportReason,
-        customReason: reportReason === 'Other (specify below)' ? customReason : '',
-        timestamp: new Date()
+        severity,
+        prohibitedCategoryId,
       });
-      
+
       setSuccess(true);
       setTimeout(() => {
         onClose();
         resetForm();
-      }, 2000);
+      }, 2500);
     } catch (error) {
       logger.error('Failed to submit report', 'ReportListingModal', error);
       setError('Failed to submit report. Please try again.');
@@ -75,11 +77,16 @@ export function ReportListingModal({ isOpen, onClose, product }: ReportListingMo
   };
 
   const resetForm = () => {
-    setReportReason('');
-    setCustomReason('');
+    setProhibitedCategoryId('');
+    setSeverity('medium');
+    setReason('');
+    setEvidenceUrls('');
+    setIsAnonymous(false);
     setError('');
     setSuccess(false);
   };
+
+  const rewardEstimate = estimateReward(severity);
 
   const handleClose = () => {
     onClose();
@@ -149,40 +156,116 @@ export function ReportListingModal({ isOpen, onClose, product }: ReportListingMo
                 </p>
               </div>
 
+              {/* Reputation Display */}
+              {reputation && (
+                <div className="bg-gradient-to-r from-green-500/10 to-blue-500/10 border border-green-500/20 rounded-2xl p-4 mb-6">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center space-x-2">
+                      <Award className="h-4 w-4 text-green-400" />
+                      <span className="text-green-400 font-black uppercase text-sm">
+                        {reputation.reputation_tier}
+                      </span>
+                    </div>
+                    <span className="text-gray-400 text-sm font-bold">
+                      {reputation.accuracy_rate.toFixed(1)}% Accuracy
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between text-xs text-gray-400">
+                    <span>{reputation.reports_validated} Validated</span>
+                    <span className="flex items-center space-x-1">
+                      <Coins className="h-3 w-3" />
+                      <span>{reputation.total_rewards_earned} GHETTO Earned</span>
+                    </span>
+                  </div>
+                </div>
+              )}
+
               {/* Report Form */}
               <form onSubmit={handleSubmitReport} className="space-y-4">
+                {/* Severity Selection */}
                 <div>
-                  <label className="block text-gray-200 font-black mb-3 uppercase">Reason for Report</label>
-                  <div className="space-y-2">
-                    {reportReasons.map((reason) => (
-                      <label key={reason} className="flex items-center space-x-3 cursor-pointer">
-                        <input
-                          type="radio"
-                          name="reportReason"
-                          value={reason}
-                          checked={reportReason === reason}
-                          onChange={(e) => setReportReason(e.target.value)}
-                          className="w-4 h-4 text-red-400 bg-gray-800 border-gray-600 focus:ring-red-400"
-                        />
-                        <span className="text-gray-300 text-sm font-medium">{reason}</span>
-                      </label>
-                    ))}
+                  <label className="block text-gray-200 font-black mb-3 uppercase text-sm">Severity Level</label>
+                  <div className="grid grid-cols-2 gap-2">
+                    {Object.entries(PROHIBITED_CONTENT.SEVERITY_LEVELS).map(([key, { label, color }]) => {
+                      const severityKey = key.toLowerCase() as 'low' | 'medium' | 'high' | 'critical';
+                      return (
+                        <button
+                          key={key}
+                          type="button"
+                          onClick={() => setSeverity(severityKey)}
+                          className={`p-3 rounded-xl font-black text-sm uppercase transition-all ${
+                            severity === severityKey
+                              ? `bg-${color}-500/20 border-2 border-${color}-500 text-${color}-400`
+                              : 'bg-gray-800 border border-gray-700 text-gray-400 hover:border-gray-600'
+                          }`}
+                        >
+                          {label}
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
 
-                {reportReason === 'Other (specify below)' && (
+                {/* Prohibited Category Selection */}
+                {prohibitedCategories.length > 0 && (
                   <div>
-                    <label className="block text-gray-200 font-black mb-2 uppercase">Specify Reason</label>
-                    <textarea
-                      value={customReason}
-                      onChange={(e) => setCustomReason(e.target.value)}
-                      rows={3}
-                      className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-transparent text-gray-200 placeholder-gray-500 resize-none font-medium"
-                      placeholder="Please describe the issue..."
-                      required
-                    />
+                    <label className="block text-gray-200 font-black mb-3 uppercase text-sm">
+                      Prohibited Category (Optional)
+                    </label>
+                    <select
+                      value={prohibitedCategoryId}
+                      onChange={(e) => setProhibitedCategoryId(e.target.value)}
+                      className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-400 text-gray-200 font-medium"
+                    >
+                      <option value="">Select if applicable...</option>
+                      {prohibitedCategories.map((cat) => (
+                        <option key={cat.id} value={cat.id}>
+                          {cat.name}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                 )}
+
+                {/* Reason Text Area */}
+                <div>
+                  <label className="block text-gray-200 font-black mb-2 uppercase text-sm">
+                    Description *
+                  </label>
+                  <textarea
+                    value={reason}
+                    onChange={(e) => setReason(e.target.value)}
+                    rows={4}
+                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-transparent text-gray-200 placeholder-gray-500 resize-none font-medium"
+                    placeholder="Describe why this listing should be removed..."
+                    required
+                  />
+                </div>
+
+                {/* Evidence URLs */}
+                <div>
+                  <label className="block text-gray-200 font-black mb-2 uppercase text-sm">
+                    Evidence URLs (Optional)
+                  </label>
+                  <textarea
+                    value={evidenceUrls}
+                    onChange={(e) => setEvidenceUrls(e.target.value)}
+                    rows={2}
+                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-transparent text-gray-200 placeholder-gray-500 resize-none font-medium text-sm"
+                    placeholder="One URL per line (screenshots, references, etc.)"
+                  />
+                </div>
+
+                {/* Anonymous Checkbox */}
+                <label className="flex items-center space-x-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={isAnonymous}
+                    onChange={(e) => setIsAnonymous(e.target.checked)}
+                    className="w-4 h-4 text-red-400 bg-gray-800 border-gray-600 rounded focus:ring-red-400"
+                  />
+                  <span className="text-gray-300 text-sm font-medium">Submit anonymously</span>
+                </label>
 
                 {error && (
                   <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-xl flex items-center space-x-2">
@@ -191,13 +274,33 @@ export function ReportListingModal({ isOpen, onClose, product }: ReportListingMo
                   </div>
                 )}
 
+                {/* Reward Estimate */}
+                <div className="bg-gradient-to-r from-yellow-500/10 to-green-500/10 border border-yellow-500/20 rounded-2xl p-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center space-x-2">
+                      <TrendingUp className="h-4 w-4 text-yellow-400" />
+                      <h4 className="text-yellow-400 font-black uppercase text-sm">Estimated Reward</h4>
+                    </div>
+                    <div className="flex items-center space-x-1">
+                      <Coins className="h-4 w-4 text-yellow-400" />
+                      <span className="text-yellow-400 font-black text-lg">
+                        {rewardEstimate.min}-{rewardEstimate.max}
+                      </span>
+                    </div>
+                  </div>
+                  <p className="text-gray-400 text-xs font-bold">
+                    If validated, you will earn GHETTO tokens. Higher accuracy = higher rewards!
+                  </p>
+                </div>
+
                 {/* Info Box */}
                 <div className="bg-gray-800/50 rounded-2xl p-4 border border-gray-700">
                   <h4 className="text-gray-200 font-black mb-2 uppercase text-sm">What happens next:</h4>
                   <ul className="space-y-1 text-gray-400 text-xs font-bold uppercase">
-                    <li>• OUR TEAM WILL REVIEW THE REPORT</li>
-                    <li>• APPROPRIATE ACTION WILL BE TAKEN</li>
-                    <li>• YOU MAY BE CONTACTED FOR MORE INFO</li>
+                    <li>• MODERATORS WILL REVIEW WITHIN 24-48 HOURS</li>
+                    <li>• IF VALIDATED, REWARDS WILL BE CREDITED</li>
+                    <li>• LISTING WILL BE REMOVED IF VIOLATION CONFIRMED</li>
+                    <li>• YOUR REPUTATION SCORE WILL BE UPDATED</li>
                   </ul>
                 </div>
 
