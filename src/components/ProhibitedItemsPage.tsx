@@ -26,10 +26,10 @@ export function ProhibitedItemsPage({ isOpen, onClose }: ProhibitedItemsPageProp
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto">
-      <div className="bg-gray-900 rounded-3xl border border-gray-700 w-full max-w-6xl max-h-[90vh] overflow-hidden shadow-2xl my-8">
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+      <div className="bg-gray-900 rounded-3xl border border-gray-700 w-full max-w-6xl max-h-[90vh] overflow-hidden shadow-2xl flex flex-col my-8">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-700 sticky top-0 bg-gray-900 z-10">
+        <div className="flex items-center justify-between p-6 border-b border-gray-700 bg-gray-900 flex-shrink-0">
           <div className="flex items-center space-x-3">
             <Ban className="h-6 w-6 text-red-400" />
             <h2 className="text-2xl font-black text-white uppercase">Prohibited Items Policy</h2>
@@ -42,7 +42,7 @@ export function ProhibitedItemsPage({ isOpen, onClose }: ProhibitedItemsPageProp
           </button>
         </div>
 
-        <div className="p-8 overflow-y-auto">
+        <div className="p-8 overflow-y-auto flex-1">
           {/* Main Policy Statement */}
           <div className="bg-red-500/10 border border-red-500/20 rounded-2xl p-6 mb-8">
             <div className="flex items-center space-x-3 mb-4">

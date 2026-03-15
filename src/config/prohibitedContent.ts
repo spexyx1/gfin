@@ -140,7 +140,7 @@ export const PROHIBITED_CONTENT = {
 
   POLICY_STATEMENTS: {
     MAIN: 'GHETTO Finance is committed to maintaining a legal and ethical marketplace. All listings must comply with applicable laws and regulations.',
-    ZERO_TOLERANCE: 'We have zero tolerance for illegal goods and services. Violators will face immediate removal and potential legal consequences.',
+    ZERO_TOLERANCE: 'We have zero tolerance for illegal goods and services. Users who violate our policies will receive warnings and opportunities to remedy their actions. However, repeated violations within a short period or severe violations will result in account suspension or permanent ban, and potential legal consequences.',
     COMMUNITY_ROLE: 'Community moderation is essential to our platform. We reward users who help keep our marketplace safe and legal.',
     LEGAL_DISCLAIMER: 'Users are responsible for ensuring their listings comply with all local, state, federal, and international laws.',
   },

@@ -249,7 +249,7 @@ export function DocumentationModal({ isOpen, onClose }: DocumentationModalProps)
                 </Accordion>
 
                 <Accordion title="Are there restrictions on what I can sell?">
-                  <p>You can sell anything legal in your jurisdiction. Prohibited items include weapons, controlled substances, counterfeit goods, stolen property, and anything illegal to sell or possess. Violating these rules results in immediate account suspension. See Terms of Service for the full list of prohibited categories.</p>
+                  <p>You can sell anything legal in your jurisdiction. Prohibited items include weapons, controlled substances, counterfeit goods, stolen property, and anything illegal to sell or possess. First-time violations typically result in warnings and listing removal, giving you the opportunity to correct your actions. However, repeated violations within a short period will result in account suspension. See Terms of Service for the full list of prohibited categories and enforcement details.</p>
                 </Accordion>
               </div>
             )}
