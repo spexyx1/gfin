@@ -1,9 +1,12 @@
+import { motion } from 'framer-motion';
+
 interface GraffitiLogoProps {
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   className?: string;
+  animated?: boolean;
 }
 
-export function GraffitiLogo({ size = 'md', className = '' }: GraffitiLogoProps) {
+export function GraffitiLogo({ size = 'md', className = '', animated = true }: GraffitiLogoProps) {
   const sizeConfig = {
     xs: {
       fontSize: 'text-xl',
@@ -34,35 +37,172 @@ export function GraffitiLogo({ size = 'md', className = '' }: GraffitiLogoProps)
 
   const config = sizeConfig[size];
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.08,
+        delayChildren: 0.1,
+      },
+    },
+  };
+
+  const letterVariants = {
+    hidden: {
+      opacity: 0,
+      y: 20,
+      scale: 0.8,
+      rotate: -5,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      rotate: 0,
+      transition: {
+        type: 'spring',
+        damping: 12,
+        stiffness: 200,
+      },
+    },
+  };
+
+  const glowVariants = {
+    initial: {
+      opacity: 0.6,
+    },
+    animate: {
+      opacity: [0.6, 1, 0.6],
+      scale: [1, 1.02, 1],
+      transition: {
+        duration: 2,
+        repeat: Infinity,
+        ease: 'easeInOut',
+      },
+    },
+  };
+
+  const splitText = (text: string) => text.split('').map((char, index) => (
+    <motion.span
+      key={`${char}-${index}`}
+      variants={animated ? letterVariants : {}}
+      className="inline-block"
+      style={{ display: 'inline-block' }}
+    >
+      {char}
+    </motion.span>
+  ));
+
+  const MotionDiv = animated ? motion.div : 'div';
+  const containerProps = animated ? {
+    variants: containerVariants,
+    initial: 'hidden',
+    animate: 'visible',
+  } : {};
+
   return (
     <div className={`${className} relative inline-flex flex-col items-center justify-center ${config.height}`}>
+      <style>{`
+        @keyframes spray-paint {
+          0%, 100% { opacity: 0.05; }
+          50% { opacity: 0.15; }
+        }
+
+        @keyframes drip {
+          0% { transform: translateY(0); opacity: 1; }
+          100% { transform: translateY(10px); opacity: 0; }
+        }
+
+        .graffiti-text {
+          position: relative;
+          background: linear-gradient(135deg, #ff0080 0%, #ff8c00 25%, #40e0d0 50%, #9d4edd 75%, #ff0080 100%);
+          background-size: 200% 200%;
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          animation: gradient-shift 3s ease infinite;
+          filter: drop-shadow(0 0 10px rgba(255, 0, 128, 0.5))
+                  drop-shadow(0 0 20px rgba(64, 224, 208, 0.3))
+                  drop-shadow(2px 2px 0px rgba(0, 0, 0, 0.3));
+        }
+
+        @keyframes gradient-shift {
+          0%, 100% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+        }
+
+        .spray-effect {
+          position: absolute;
+          inset: -20%;
+          background: radial-gradient(circle, rgba(255, 0, 128, 0.1) 0%, transparent 70%);
+          animation: spray-paint 2s ease-in-out infinite;
+          pointer-events: none;
+        }
+
+        .drip-effect {
+          position: absolute;
+          width: 3px;
+          height: 8px;
+          background: linear-gradient(180deg, rgba(255, 0, 128, 0.6) 0%, transparent 100%);
+          animation: drip 3s ease-in-out infinite;
+        }
+      `}</style>
+
+      {/* Spray paint effect background */}
+      <div className="spray-effect" />
+
       {/* GHETTO text */}
-      <div className={`${config.fontSize} font-bold tracking-tight select-none`}
+      <MotionDiv
+        className={`${config.fontSize} font-bold tracking-tight select-none graffiti-text relative`}
         style={{
-          fontFamily: "'Brush Script MT', 'Segoe Script', cursive",
-          color: '#000000',
-          textShadow: '2px 2px 0px rgba(255, 255, 255, 0.9)',
+          fontFamily: "'Brush Script MT', 'Segoe Script', 'Comic Sans MS', cursive",
           letterSpacing: '-0.02em',
           fontWeight: 900,
-          WebkitTextStroke: '0.5px #000',
+          transform: 'rotate(-2deg)',
         }}
+        {...containerProps}
       >
-        GHETTO
-      </div>
+        {animated ? splitText('GHETTO') : 'GHETTO'}
+
+        {/* Drip effects */}
+        <div className="drip-effect" style={{ left: '20%', top: '100%', animationDelay: '0s' }} />
+        <div className="drip-effect" style={{ left: '45%', top: '100%', animationDelay: '0.5s' }} />
+        <div className="drip-effect" style={{ left: '70%', top: '100%', animationDelay: '1s' }} />
+      </MotionDiv>
 
       {/* FINANCE text */}
-      <div className={`${config.fontSize} font-bold tracking-tight select-none -mt-2`}
+      <MotionDiv
+        className={`${config.fontSize} font-bold tracking-tight select-none graffiti-text -mt-2 relative`}
         style={{
-          fontFamily: "'Brush Script MT', 'Segoe Script', cursive",
-          color: '#000000',
-          textShadow: '2px 2px 0px rgba(255, 255, 255, 0.9)',
+          fontFamily: "'Brush Script MT', 'Segoe Script', 'Comic Sans MS', cursive",
           letterSpacing: '-0.02em',
           fontWeight: 900,
-          WebkitTextStroke: '0.5px #000',
+          transform: 'rotate(1deg)',
         }}
+        {...containerProps}
       >
-        FINANCE
-      </div>
+        {animated ? splitText('FINANCE') : 'FINANCE'}
+
+        {/* Drip effects */}
+        <div className="drip-effect" style={{ left: '15%', top: '100%', animationDelay: '0.3s' }} />
+        <div className="drip-effect" style={{ left: '50%', top: '100%', animationDelay: '0.8s' }} />
+        <div className="drip-effect" style={{ left: '85%', top: '100%', animationDelay: '1.3s' }} />
+      </MotionDiv>
+
+      {/* Glow effect overlay */}
+      {animated && (
+        <motion.div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background: 'radial-gradient(circle, rgba(255, 0, 128, 0.1) 0%, transparent 70%)',
+            filter: 'blur(20px)',
+          }}
+          variants={glowVariants}
+          initial="initial"
+          animate="animate"
+        />
+      )}
     </div>
   );
 }
