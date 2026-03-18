@@ -187,6 +187,12 @@ export function SellerDashboard({ isOpen, onClose }: SellerDashboardProps) {
             <p className="text-xs text-gray-500 mt-1">
               Available: {collateralInfo.availableCollateral} | Held: {collateralInfo.heldCollateral}
             </p>
+            <button
+              onClick={() => setShowCollateralDeposit(true)}
+              className="mt-3 w-full px-3 py-2 bg-gradient-to-r from-luxe-gold to-yellow-400 hover:from-yellow-400 hover:to-luxe-gold text-black text-xs font-black rounded-lg transition-all duration-300 transform hover:scale-105 shadow-md shadow-luxe-gold/30"
+            >
+              DEPOSIT
+            </button>
           </div>
 
           <div className="luxe-glass rounded-lg p-4 text-center">
@@ -213,20 +219,23 @@ export function SellerDashboard({ isOpen, onClose }: SellerDashboardProps) {
 
         {/* Collateral Warning */}
         {collateralInfo.totalCollateral < 100 && (
-          <div className="bg-red-500/10 border-b border-red-500/20 p-4">
+          <div className="bg-gradient-to-r from-red-500/20 via-red-500/10 to-red-500/20 border-b border-red-500/30 p-5">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
-                <Shield className="w-5 h-5 text-red-400" />
+                <div className="p-2 bg-red-500/20 rounded-lg">
+                  <Shield className="w-6 h-6 text-red-400" />
+                </div>
                 <div>
-                  <p className="text-red-400 font-black text-sm">COLLATERAL REQUIRED</p>
-                  <p className="text-gray-400 text-xs">Deposit 100 GHETTO to start selling</p>
+                  <p className="text-red-400 font-black text-base">COLLATERAL REQUIRED</p>
+                  <p className="text-gray-300 text-sm">Deposit 100 GHETTO to start selling</p>
                 </div>
               </div>
               <button
                 onClick={() => setShowCollateralDeposit(true)}
-                className="px-4 py-2 bg-luxe-gold hover:bg-luxe-gold/80 text-black rounded-lg font-medium"
+                className="px-6 py-3 bg-gradient-to-r from-luxe-gold via-yellow-400 to-luxe-gold hover:from-yellow-400 hover:via-luxe-gold hover:to-yellow-400 text-black font-black rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg shadow-luxe-gold/50 hover:shadow-luxe-gold/70 flex items-center space-x-2 uppercase tracking-wide"
               >
-                Deposit GHETTO
+                <Shield className="w-5 h-5" />
+                <span>Deposit GHETTO</span>
               </button>
             </div>
           </div>
@@ -267,7 +276,7 @@ export function SellerDashboard({ isOpen, onClose }: SellerDashboardProps) {
           )}
         </div>
 
-        <div className="p-6 overflow-y-auto max-h-[60vh]">
+        <div className="p-6 overflow-y-auto flex-1" style={{ maxHeight: 'calc(90vh - 400px)' }}>
           {/* Products List */}
           {activeTab === 'products' && (
             <div className="space-y-4">
