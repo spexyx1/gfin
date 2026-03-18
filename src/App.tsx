@@ -193,33 +193,37 @@ function App() {
           isSearchFocused ? 'h-0 mb-0 opacity-0 overflow-hidden pointer-events-none' : 'mb-12 opacity-100'
         }`}>
           {/* Headline */}
-          <div className="text-center mb-6">
-            <h1 className="text-4xl md:text-5xl apple-title text-neon-yellow mb-3">
-              Buy and Sell Anything With Crypto
+          <div className="text-center mb-8">
+            <h1 className="text-5xl md:text-7xl luxe-title mb-4 tracking-tight">
+              <span className="bg-gradient-to-r from-[#d4af37] via-[#f4d03f] to-[#d4af37] bg-clip-text text-transparent luxe-text-glow">
+                BUY & SELL
+              </span>
+              <br />
+              <span className="text-white">ANYTHING WITH CRYPTO</span>
             </h1>
-            <p className="text-lg md:text-xl text-neon-orange apple-font max-w-3xl mx-auto leading-relaxed">
+            <p className="text-lg md:text-xl text-gray-300 font-light max-w-3xl mx-auto leading-relaxed">
               Escrow-protected trades. Moderated disputes. Built-in privacy. No middleman.
             </p>
           </div>
 
           {/* Legal Items Warning Banner */}
-          <div className="max-w-4xl mx-auto mb-8">
-            <div className="bg-gradient-to-r from-green-500/10 to-blue-500/10 border border-green-500/20 rounded-apple p-4">
+          <div className="max-w-4xl mx-auto mb-10">
+            <div className="luxe-card border-[#00ff88]/30 p-6">
               <div className="flex items-center justify-between flex-wrap gap-4">
-                <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-green-500/20 rounded-full flex items-center justify-center flex-shrink-0">
-                    <Shield className="w-5 h-5 text-green-400" />
+                <div className="flex items-center space-x-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-[#00ff88] to-[#00cc6f] rounded-lg flex items-center justify-center flex-shrink-0 luxe-glow-neon">
+                    <Shield className="w-6 h-6 text-black" />
                   </div>
                   <div>
-                    <h3 className="text-sm apple-title text-green-400 mb-1">Legal Items Only</h3>
-                    <p className="text-xs text-apple-gray-400 apple-font">
+                    <h3 className="text-base luxe-subtitle luxe-text-neon mb-1">Legal Items Only</h3>
+                    <p className="text-sm text-gray-400 font-light leading-relaxed">
                       All illegal goods are strictly prohibited. Community moderation rewards users who help keep the marketplace safe.
                     </p>
                   </div>
                 </div>
                 <button
                   onClick={() => openModal('prohibitedItems')}
-                  className="px-4 py-2 bg-green-500/20 hover:bg-green-500/30 text-green-400 rounded-lg text-sm font-bold uppercase transition-all flex-shrink-0"
+                  className="luxe-btn-neon px-6 py-2.5 text-sm"
                 >
                   View Policy
                 </button>
@@ -228,47 +232,48 @@ function App() {
           </div>
 
           {/* Why Trade Here */}
-          <div className="mb-8">
-            <div className="text-center mb-4">
-              <p className="text-sm apple-font text-apple-gray-400 uppercase tracking-wider">Why Trade Here</p>
+          <div className="mb-10">
+            <div className="text-center mb-6">
+              <p className="luxe-subtitle text-gray-500 tracking-widest text-xs mb-2">Why Trade Here</p>
+              <div className="w-16 h-0.5 bg-gradient-to-r from-transparent via-[#d4af37] to-transparent mx-auto"></div>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-              <div className="glass-morphism rounded-apple p-6">
-                <div className="w-12 h-12 bg-green-500/20 rounded-full flex items-center justify-center mb-4">
-                  <Shield className="w-6 h-6 text-green-400" />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+              <div className="luxe-card p-8 group">
+                <div className="w-14 h-14 bg-gradient-to-br from-[#00ff88]/20 to-[#00cc6f]/20 rounded-xl flex items-center justify-center mb-4 group-hover:from-[#00ff88]/30 group-hover:to-[#00cc6f]/30 transition-all">
+                  <Shield className="w-7 h-7 text-[#00ff88]" />
                 </div>
-                <h3 className="text-lg apple-title text-neon-yellow mb-2">Escrow Protection</h3>
-                <p className="text-sm text-apple-gray-400 apple-font leading-relaxed">
+                <h3 className="text-xl luxe-title text-white mb-3">Escrow Protection</h3>
+                <p className="text-sm text-gray-400 font-light leading-relaxed">
                   Your crypto is locked in a smart contract until you confirm delivery. Sellers also stake collateral, so both sides have skin in the game.
                 </p>
               </div>
 
-              <div className="glass-morphism rounded-apple p-6">
-                <div className="w-12 h-12 bg-orange-500/20 rounded-full flex items-center justify-center mb-4">
-                  <Wallet className="w-6 h-6 text-orange-400" />
+              <div className="luxe-card p-8 group">
+                <div className="w-14 h-14 bg-gradient-to-br from-[#d4af37]/20 to-[#f4d03f]/20 rounded-xl flex items-center justify-center mb-4 group-hover:from-[#d4af37]/30 group-hover:to-[#f4d03f]/30 transition-all">
+                  <Wallet className="w-7 h-7 text-[#d4af37]" />
                 </div>
-                <h3 className="text-lg apple-title text-neon-yellow mb-2">Pay With Any Crypto</h3>
-                <p className="text-sm text-apple-gray-400 apple-font leading-relaxed">
+                <h3 className="text-xl luxe-title text-white mb-3">Pay With Any Crypto</h3>
+                <p className="text-sm text-gray-400 font-light leading-relaxed">
                   Sellers choose their preferred token. If you hold something different, swap instantly through the built-in DEX. Paying with GHETTO is gas-free.
                 </p>
               </div>
 
-              <div className="glass-morphism rounded-apple p-6">
-                <div className="w-12 h-12 bg-gray-500/20 rounded-full flex items-center justify-center mb-4">
-                  <AtSign className="w-6 h-6 text-gray-400" />
+              <div className="luxe-card p-8 group">
+                <div className="w-14 h-14 bg-gradient-to-br from-gray-600/20 to-gray-500/20 rounded-xl flex items-center justify-center mb-4 group-hover:from-gray-600/30 group-hover:to-gray-500/30 transition-all">
+                  <AtSign className="w-7 h-7 text-gray-400" />
                 </div>
-                <h3 className="text-lg apple-title text-neon-yellow mb-2">Private by Default</h3>
-                <p className="text-sm text-apple-gray-400 apple-font leading-relaxed">
+                <h3 className="text-xl luxe-title text-white mb-3">Private by Default</h3>
+                <p className="text-sm text-gray-400 font-light leading-relaxed">
                   End-to-end encrypted messaging, stealth profile options, and no personal data required to trade.
                 </p>
               </div>
 
-              <div className="glass-morphism rounded-apple p-6">
-                <div className="w-12 h-12 bg-cyan-500/20 rounded-full flex items-center justify-center mb-4">
-                  <Users className="w-6 h-6 text-cyan-400" />
+              <div className="luxe-card p-8 group">
+                <div className="w-14 h-14 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 rounded-xl flex items-center justify-center mb-4 group-hover:from-blue-500/30 group-hover:to-cyan-500/30 transition-all">
+                  <Users className="w-7 h-7 text-cyan-400" />
                 </div>
-                <h3 className="text-lg apple-title text-neon-yellow mb-2">Moderated Disputes</h3>
-                <p className="text-sm text-apple-gray-400 apple-font leading-relaxed">
+                <h3 className="text-xl luxe-title text-white mb-3">Moderated Disputes</h3>
+                <p className="text-sm text-gray-400 font-light leading-relaxed">
                   If something goes wrong, trained moderators review the evidence and release funds to the right party.
                 </p>
               </div>
@@ -465,14 +470,14 @@ function App() {
       <NetworkSwitchModal />
 
       {/* Header */}
-      <header className={`glass-morphism border-b border-white/10 sticky top-0 z-50 ${
-        isSocialPage ? 'bg-gray-900/95' : ''
+      <header className={`luxe-glass-strong border-b border-white/10 sticky top-0 z-50 ${
+        isSocialPage ? 'bg-black/95' : ''
       }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex flex-col lg:flex-row items-center justify-between py-3 lg:py-0 lg:h-20 gap-3 lg:gap-0">
             {/* Logo - Hidden on mobile, shown on desktop */}
             <div className="hidden lg:flex items-center flex-shrink-0">
-              <Link to="/" className="flex items-center space-x-3">
+              <Link to="/" className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
                 <GraffitiLogo size="sm" />
               </Link>
             </div>
@@ -480,7 +485,7 @@ function App() {
             {/* Search Bar - Full width on mobile, centered on desktop */}
             <div className="w-full lg:flex-1 lg:max-w-xl lg:mx-8">
               <div className="relative">
-                <Search className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 text-apple-gray-500 w-4 h-4" />
+                <Search className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 text-gray-500 w-4 h-4" />
                 <input
                   type="text"
                   placeholder={isSocialPage ? "Search posts, communities, users..." : "Search products and services"}
@@ -488,12 +493,12 @@ function App() {
                   onChange={(e) => setSearchTerm(e.target.value)}
                   onFocus={() => setIsSearchFocused(true)}
                   onBlur={() => setIsSearchFocused(false)}
-                  className="w-full pl-10 sm:pl-12 pr-12 sm:pr-16 py-2.5 sm:py-3 glass-morphism rounded-apple focus:outline-none apple-focus text-white placeholder-apple-gray-500 text-sm apple-font"
+                  className="w-full pl-10 sm:pl-12 pr-12 sm:pr-16 py-2.5 sm:py-3 luxe-glass rounded-lg focus:outline-none focus:ring-2 focus:ring-[#d4af37]/50 text-white placeholder-gray-500 text-sm transition-all"
                 />
                 {!isSocialPage && (
                   <button
                   onClick={() => openModal('advancedSearch')}
-                  className="absolute right-3 sm:right-4 top-1/2 transform -translate-y-1/2 p-2 text-apple-gray-500 hover:text-apple-blue apple-hover"
+                  className="absolute right-3 sm:right-4 top-1/2 transform -translate-y-1/2 p-2 text-gray-500 hover:text-[#d4af37] transition-colors"
                   title="Advanced Search"
                 >
                   <Filter className="w-4 h-4" />
@@ -507,7 +512,7 @@ function App() {
               {issitemaster && (
                 <Link
                   to="/sitemaster"
-                  className="relative p-2 text-red-500 hover:text-red-400 apple-hover"
+                  className="relative p-2 text-red-500 hover:text-red-400 transition-colors"
                   title="Sitemaster Dashboard"
                 >
                   <Shield className="w-5 h-5" />
@@ -516,33 +521,33 @@ function App() {
               <RealtimeNotificationSystem />
               <button
                 onClick={() => openModal('messages')}
-                className="relative p-2 text-apple-gray-500 hover:text-white apple-hover"
+                className="relative p-2 text-gray-400 hover:text-white transition-colors"
                 title="Messages"
               >
                 <Mail className="w-5 h-5" />
                 {unreadMessageCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-apple-red text-white text-xs rounded-full w-4 h-4 flex items-center justify-center text-[10px]">
+                  <span className="absolute -top-1 -right-1 bg-[#00ff88] text-black text-xs rounded-full w-4 h-4 flex items-center justify-center text-[10px] font-bold">
                     {unreadMessageCount}
                   </span>
                 )}
               </button>
               <button
                 onClick={() => openModal('wallet')}
-                className="relative p-2 text-apple-gray-500 hover:text-white apple-hover"
+                className="relative p-2 text-gray-400 hover:text-[#d4af37] transition-colors"
                 title="Wallet"
               >
                 <Wallet className="w-5 h-5" />
               </button>
               <button
                 onClick={() => openModal('orders')}
-                className="relative p-2 text-apple-gray-500 hover:text-white apple-hover"
+                className="relative p-2 text-gray-400 hover:text-white transition-colors"
                 title="My Orders"
               >
                 <ShoppingBag className="w-5 h-5" />
               </button>
               <button
                 onClick={() => openModal('sellerDashboard')}
-                className="relative p-2 text-apple-gray-500 hover:text-white apple-hover"
+                className="relative p-2 text-gray-400 hover:text-white transition-colors"
                 title="Seller Dashboard"
               >
                 <Briefcase className="w-5 h-5" />
@@ -550,7 +555,7 @@ function App() {
 
               <Link
                 to="/social"
-                className="relative p-2 text-apple-gray-500 hover:text-white apple-hover"
+                className="relative p-2 text-gray-400 hover:text-white transition-colors"
                 title="Social Platform"
               >
                 <Globe className="w-5 h-5" />
@@ -558,12 +563,12 @@ function App() {
 
               <button
                 onClick={() => openModal('cart')}
-                className="relative p-2 text-apple-gray-500 hover:text-white apple-hover"
+                className="relative p-2 text-gray-400 hover:text-white transition-colors"
                 title="Shopping Cart"
               >
                 <ShoppingCart className="w-5 h-5" />
                 {getItemCount() > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-apple-red text-white text-xs rounded-full w-4 h-4 flex items-center justify-center text-[10px]">
+                  <span className="absolute -top-1 -right-1 bg-[#d4af37] text-black text-xs rounded-full w-4 h-4 flex items-center justify-center text-[10px] font-bold">
                     {getItemCount()}
                   </span>
                 )}
@@ -573,16 +578,16 @@ function App() {
                 <div className="flex items-center space-x-2 sm:space-x-4 flex-shrink-0">
                   <button
                     onClick={() => openModal('userProfile')}
-                    className="flex items-center space-x-2 p-2 glass-morphism rounded-apple apple-hover"
+                    className="flex items-center space-x-2 p-2 luxe-glass rounded-lg hover:bg-white/10 transition-all"
                   >
-                    <div className="w-8 h-8 bg-apple-blue rounded-full flex items-center justify-center">
+                    <div className="w-8 h-8 bg-gradient-to-br from-[#d4af37] to-[#f4d03f] rounded-full flex items-center justify-center">
                       <UserCircle className="w-4 h-4 text-black" />
                     </div>
-                    <span className="hidden sm:inline text-white apple-font">{user.username}</span>
+                    <span className="hidden sm:inline text-white font-medium">{user.username}</span>
                   </button>
                   <button
                     onClick={logout}
-                    className="btn-apple-secondary px-3 sm:px-4 py-2 text-xs sm:text-sm"
+                    className="luxe-btn-secondary px-3 sm:px-4 py-2 text-xs sm:text-sm"
                   >
                     Logout
                   </button>
@@ -593,7 +598,7 @@ function App() {
                     setAuthMode('login');
                     openModal('auth');
                   }}
-                  className="btn-apple-primary px-4 sm:px-6 py-2 text-sm flex-shrink-0"
+                  className="luxe-btn-primary px-4 sm:px-6 py-2 text-sm flex-shrink-0"
                 >
                   Login
                 </button>

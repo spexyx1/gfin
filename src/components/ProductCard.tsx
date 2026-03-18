@@ -21,78 +21,79 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 }) => {
 
   return (
-    <div className="bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden hover:border-cyan-400/50 hover:shadow-lg hover:shadow-cyan-400/10 transition-all duration-300 group">
-      <div className="relative">
+    <div className="luxe-card overflow-hidden group">
+      <div className="relative overflow-hidden">
         <img
           src={product.image}
           alt={product.title}
-          className="w-full h-56 object-cover transition-transform duration-300"
+          className="w-full h-56 object-cover transition-transform duration-500 group-hover:scale-105"
         />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
         <div className="absolute top-3 right-3">
-          <span className="bg-black/80 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium text-cyan-400">
+          <span className="luxe-glass px-4 py-1.5 rounded-full text-xs luxe-subtitle text-[#d4af37]">
             {product.category}
           </span>
         </div>
         {!product.inStock && (
-          <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
-            <span className="text-white font-medium">Out of Stock</span>
+          <div className="absolute inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center">
+            <span className="text-white font-bold uppercase tracking-wider">Out of Stock</span>
           </div>
         )}
       </div>
-      
+
       <div className="p-6">
         <div className="flex items-start justify-between mb-3">
-          <h3 className="text-lg font-black text-gray-200 transition-colors line-clamp-2 uppercase">
+          <h3 className="text-lg luxe-title text-white line-clamp-2 group-hover:text-[#d4af37] transition-colors">
             {product.title}
           </h3>
         </div>
-        
-        <p className="text-gray-400 text-sm mb-4 line-clamp-2 leading-relaxed font-bold">
+
+        <p className="text-gray-400 text-sm mb-4 line-clamp-2 leading-relaxed font-light">
           {product.description}
         </p>
-        
+
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center space-x-2">
-            <span className="text-2xl font-black text-gray-200 uppercase">
-              {product.price} GHETTO
+            <span className="text-2xl luxe-title text-white">
+              {product.price} <span className="text-[#d4af37]">GHETTO</span>
             </span>
           </div>
-          <div className="flex items-center space-x-1 text-gray-400">
-            <Star className="w-4 h-4 fill-current text-cyan-400" />
-            <span className="text-sm font-black text-gray-200">{product.seller.rating}</span>
+          <div className="flex items-center space-x-1">
+            <Star className="w-4 h-4 fill-current text-[#d4af37]" />
+            <span className="text-sm font-bold text-white">{product.seller.rating}</span>
           </div>
         </div>
-        
-        <div className="flex items-center justify-between mb-4">
+
+        <div className="flex items-center justify-between mb-5 pb-4 border-b border-white/10">
           <div className="flex items-center space-x-2">
-            <span className="text-sm text-gray-500 font-bold uppercase">BY</span>
-            <span className="text-sm font-black text-gray-200 uppercase">
+            <span className="text-xs text-gray-500 luxe-subtitle">BY</span>
+            <span className="text-sm font-semibold text-white uppercase tracking-wide">
               {product.seller.name}
             </span>
             {product.seller.verified && (
-              <Shield className="w-4 h-4 text-cyan-400" />
+              <Shield className="w-4 h-4 text-[#00ff88]" />
             )}
           </div>
         </div>
-        
-        <div className="space-y-3">
+
+        <div className="space-y-2.5">
           {/* Buy Now Button */}
           <button
             onClick={() => onBuyNow(product)}
             disabled={!product.inStock}
-            className={`w-full py-3 rounded-lg font-black uppercase transition-all duration-200 flex items-center justify-center space-x-2 active:btn-neon-active ${
+            className={`w-full py-3 rounded-lg luxe-subtitle transition-all duration-300 flex items-center justify-center space-x-2 ${
               product.inStock
-                ? 'bg-neon-red text-black hover:shadow-neon-red neon-red-glow'
+                ? 'luxe-btn-primary'
                 : 'bg-gray-800 text-gray-600 cursor-not-allowed'
             }`}
           >
             {product.inStock ? (
               <>
                 <Zap className="w-4 h-4" />
-                <span>BUY NOW</span>
+                <span>Buy Now</span>
               </>
             ) : (
-              <span>OUT OF STOCK</span>
+              <span>Out of Stock</span>
             )}
           </button>
           
@@ -100,52 +101,52 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           <button
             onClick={() => onAddToCart(product)}
             disabled={!product.inStock}
-            className={`w-full py-3 rounded-lg font-black uppercase transition-all duration-200 flex items-center justify-center space-x-2 active:btn-neon-active ${
+            className={`w-full py-3 rounded-lg luxe-subtitle transition-all duration-300 flex items-center justify-center space-x-2 ${
               product.inStock
-                ? 'bg-neon-blue text-black hover:shadow-neon-blue'
+                ? 'luxe-btn-neon'
                 : 'bg-gray-800 text-gray-600 cursor-not-allowed'
             }`}
           >
             {product.inStock ? (
               <>
                 <ShoppingCart className="w-4 h-4" />
-                <span>ADD TO CART</span>
+                <span>Add to Cart</span>
               </>
             ) : (
-              <span>OUT OF STOCK</span>
+              <span>Out of Stock</span>
             )}
           </button>
-          
+
           {/* Make Offer and Contact Seller Row */}
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-2.5">
             <button
               onClick={() => onMakeOffer(product)}
               disabled={!product.inStock}
-              className={`py-2 rounded-xl transition-all duration-200 flex items-center justify-center space-x-2 text-sm font-black uppercase ${
+              className={`py-2.5 rounded-lg transition-all duration-300 flex items-center justify-center space-x-2 text-sm luxe-subtitle ${
                 product.inStock
-                  ? 'bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-neon-blue hover:shadow-neon-blue active:btn-neon-active'
+                  ? 'luxe-btn-secondary'
                   : 'bg-gray-800 text-gray-600 cursor-not-allowed'
               }`}
             >
-              <span>MAKE OFFER</span>
+              <span>Make Offer</span>
             </button>
-            
+
             <button
               onClick={() => onContactSeller(product.seller.id)}
-              className="py-2 bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-neon-red hover:shadow-neon-red rounded-xl transition-all duration-200 flex items-center justify-center space-x-2 text-sm font-black uppercase active:neon-red-glow"
+              className="py-2.5 luxe-btn-secondary rounded-lg transition-all duration-300 flex items-center justify-center space-x-2 text-sm luxe-subtitle"
             >
               <MessageCircle className="w-4 h-4" />
-              <span>CONTACT</span>
+              <span>Contact</span>
             </button>
           </div>
-          
+
           {/* Report Listing Button */}
           <button
             onClick={() => onReportListing(product)}
-            className="w-full py-2 bg-gray-800/50 hover:bg-red-900/30 text-gray-500 hover:text-red-400 rounded-xl transition-all duration-200 flex items-center justify-center space-x-2 text-xs font-black uppercase border border-gray-700 hover:border-red-500/50 hover:shadow-lg hover:shadow-red-500/20"
+            className="w-full py-2 luxe-glass hover:bg-red-900/20 text-gray-500 hover:text-red-400 rounded-lg transition-all duration-300 flex items-center justify-center space-x-2 text-xs luxe-subtitle border border-gray-700/50 hover:border-red-500/50"
           >
-            <Flag className="w-4 h-4" />
-            <span>REPORT LISTING</span>
+            <Flag className="w-3 h-3" />
+            <span>Report Listing</span>
           </button>
         </div>
       </div>

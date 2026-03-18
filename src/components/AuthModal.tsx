@@ -86,18 +86,18 @@ export function AuthModal({ isOpen, onClose, initialMode = 'login' }: AuthModalP
   if (!isOpen) return null;
 
   return (
-    <div 
-      className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+    <div
+      className="fixed inset-0 bg-black/70 backdrop-blur-md z-50 flex items-center justify-center p-4"
       onClick={onClose}
     >
-      <div 
-        className="bg-gray-900 rounded-3xl border border-gray-700 w-full max-w-md overflow-hidden shadow-2xl"
+      <div
+        className="luxe-glass-strong rounded-2xl border border-white/20 w-full max-w-md overflow-hidden shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-700">
-          <h2 className="text-2xl matrix-title text-white text-center flex-1">
-            {mode === 'login' ? 'LOGIN' : 'CREATE ACCOUNT'}
+        <div className="flex items-center justify-between p-6 border-b border-white/10">
+          <h2 className="text-2xl luxe-title text-white text-center flex-1">
+            {mode === 'login' ? 'Login' : 'Create Account'}
           </h2>
           <button
             onClick={onClose}
@@ -123,10 +123,10 @@ export function AuthModal({ isOpen, onClose, initialMode = 'login' }: AuthModalP
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-5">
             {/* Username field for both login and signup */}
             <div>
-              <label className="block text-white matrix-font mb-2 text-center">Username</label>
+              <label className="block text-white luxe-subtitle mb-2 text-sm">Username</label>
               <div className="relative">
                 <AtSign className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 w-5 h-5" />
                 <input
@@ -136,25 +136,25 @@ export function AuthModal({ isOpen, onClose, initialMode = 'login' }: AuthModalP
                     const cleanUsername = e.target.value.startsWith('@') ? e.target.value.substring(1) : e.target.value;
                     setFormData({ ...formData, username: cleanUsername });
                   }}
-                  className="w-full pl-12 pr-4 py-3 bg-gray-800 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-neon-blue focus:border-transparent focus:shadow-neon-blue text-white placeholder-gray-500 matrix-font text-center"
+                  className="w-full pl-12 pr-4 py-3 luxe-glass border border-white/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#d4af37]/50 focus:border-[#d4af37]/50 text-white placeholder-gray-500 transition-all"
                   placeholder={mode === 'login' ? 'your_username' : 'choose_a_username'}
                   required
                 />
               </div>
-              <p className="text-gray-500 text-xs mt-1 text-center">
+              <p className="text-gray-500 text-xs mt-1.5 font-light">
                 {mode === 'signup' ? '3-20 characters, letters, numbers, and underscores only' : 'Enter your username (with or without @)'}
               </p>
             </div>
 
             <div>
-              <label className="block text-white matrix-font mb-2 text-center">Password</label>
+              <label className="block text-white luxe-subtitle mb-2 text-sm">Password</label>
               <div className="relative">
                 <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 w-5 h-5" />
                 <input
                   type={showPassword ? 'text' : 'password'}
                   value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                  className="w-full pl-12 pr-12 py-3 bg-gray-800 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-neon-blue focus:border-transparent focus:shadow-neon-blue text-white placeholder-gray-500 matrix-font text-center"
+                  className="w-full pl-12 pr-12 py-3 luxe-glass border border-white/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#d4af37]/50 focus:border-[#d4af37]/50 text-white placeholder-gray-500 transition-all"
                   placeholder={mode === 'signup' ? 'Create a password (min 6 chars)' : 'Enter your password'}
                   required
                 />
@@ -170,14 +170,14 @@ export function AuthModal({ isOpen, onClose, initialMode = 'login' }: AuthModalP
 
             {mode === 'signup' && (
               <div>
-                <label className="block text-white matrix-font mb-2 text-center">Confirm Password</label>
+                <label className="block text-white luxe-subtitle mb-2 text-sm">Confirm Password</label>
                 <div className="relative">
                   <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 w-5 h-5" />
                   <input
                     type={showPassword ? 'text' : 'password'}
                     value={formData.confirmPassword}
                     onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-                    className="w-full pl-12 pr-4 py-3 bg-gray-800 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-neon-blue focus:border-transparent focus:shadow-neon-blue text-white placeholder-gray-500 matrix-font text-center"
+                    className="w-full pl-12 pr-4 py-3 luxe-glass border border-white/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#d4af37]/50 focus:border-[#d4af37]/50 text-white placeholder-gray-500 transition-all"
                     placeholder="Confirm your password"
                     required
                   />
@@ -188,14 +188,14 @@ export function AuthModal({ isOpen, onClose, initialMode = 'login' }: AuthModalP
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-4 bg-neon-blue hover:shadow-neon-blue disabled:bg-gray-700 text-black matrix-title rounded-xl transition-all duration-300 flex items-center justify-center space-x-2 active:btn-neon-active"
+              className="w-full py-4 luxe-btn-primary disabled:opacity-50 disabled:cursor-not-allowed luxe-title rounded-lg transition-all duration-300 flex items-center justify-center space-x-2"
             >
               {isLoading ? (
                 <div className="w-5 h-5 border-2 border-black/30 border-t-black rounded-full animate-spin" />
               ) : (
                 <>
                   {mode === 'login' ? <LogIn className="w-5 h-5" /> : <UserPlus className="w-5 h-5" />}
-                  <span>{mode === 'login' ? 'LOGIN' : 'CREATE ACCOUNT'}</span>
+                  <span>{mode === 'login' ? 'Login' : 'Create Account'}</span>
                 </>
               )}
             </button>
