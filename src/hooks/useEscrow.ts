@@ -44,7 +44,7 @@ export function useEscrow() {
   const { user } = useAuth();
   const { sendMessage, createConversation } = useMessaging();
   const { provider, account, networkName } = useWeb3();
-  const { addresses } = useContractAddresses(networkName.toLowerCase().replace(' ', ''));
+  const { addresses } = useContractAddresses(networkName?.toLowerCase().replace(' ', '') || 'polygon');
   const { calculateSponsorPayouts, recordSponsorTransactions } = useSponsorship();
 
   const ESCROW_CONTRACT_ADDRESS = addresses.escrow || import.meta.env.VITE_ESCROW_CONTRACT_ADDRESS;

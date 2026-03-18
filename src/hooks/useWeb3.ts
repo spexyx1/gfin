@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { ethers, BrowserProvider } from 'ethers';
-import { useAppKit, useAppKitAccount, useAppKitProvider, useAppKitNetwork } from '@reown/appkit/react';
+import { useAppKit, useAppKitAccount, useAppKitProvider, useAppKitNetwork, useDisconnect } from '@reown/appkit/react';
 import { polygon, polygonAmoy } from '@reown/appkit/networks';
 import { DEFAULT_CHAIN_ID, SUPPORTED_CHAIN_IDS } from '../config/reownConfig';
 import { logger } from '../utils/logger';
@@ -24,9 +24,10 @@ const SUPPORTED_NETWORKS = {
 
 export const useWeb3 = () => {
   const { open } = useAppKit();
-  const { address, isConnected, chainId } = useAppKitAccount();
+  const { address, isConnected } = useAppKitAccount();
   const { walletProvider } = useAppKitProvider('eip155');
-  const { switchNetwork } = useAppKitNetwork();
+  const { switchNetwork, chainId } = useAppKitNetwork();
+  const { disconnect } = useDisconnect();
 
   const [provider, setProvider] = useState<BrowserProvider | null>(null);
   const [networkName, setNetworkName] = useState<string>('');
@@ -34,7 +35,7 @@ export const useWeb3 = () => {
   const [isSwitchingNetwork, setIsSwitchingNetwork] = useState(false);
 
   const getTargetNetwork = useCallback(() => {
-    const env = import.meta.env.VITE_NETWORK_ENV || 'polygon';
+    const env = import.meta.env.VITE_NETWORK_ENV || 'mainnet';
     return env === 'testnet' ? SUPPORTED_NETWORKS.polygonAmoy : SUPPORTED_NETWORKS.polygon;
   }, []);
 
@@ -74,7 +75,13 @@ export const useWeb3 = () => {
   };
 
   const disconnectWallet = async () => {
-    await open();
+    try {
+      await disconnect();
+      logger.info('Wallet disconnected successfully', 'useWeb3');
+    } catch (error) {
+      logger.error('Failed to disconnect wallet', 'useWeb3', error);
+      throw error;
+    }
   };
 
   const switchToPolygon = async () => {
