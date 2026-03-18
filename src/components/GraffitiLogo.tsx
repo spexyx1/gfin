@@ -15,166 +15,172 @@ export function GraffitiLogo({ size = 'md', className = '' }: GraffitiLogoProps)
   return (
     <div className={`${sizeClasses[size]} ${className} relative`}>
       <svg
-        viewBox="0 0 400 120"
+        viewBox="0 0 500 150"
         className="w-full h-full"
         xmlns="http://www.w3.org/2000/svg"
       >
         <defs>
-          {/* Clean yellow-orange gradient */}
-          <linearGradient id="yellowOrangeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#FFEA00" />
-            <stop offset="50%" stopColor="#FFD700" />
-            <stop offset="100%" stopColor="#FF8C00" />
+          <linearGradient id="rainbowGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#FF00FF">
+              <animate attributeName="stop-color" values="#FF00FF;#00FFFF;#FFFF00;#FF00FF" dur="3s" repeatCount="indefinite" />
+            </stop>
+            <stop offset="33%" stopColor="#00FFFF">
+              <animate attributeName="stop-color" values="#00FFFF;#FFFF00;#FF00FF;#00FFFF" dur="3s" repeatCount="indefinite" />
+            </stop>
+            <stop offset="66%" stopColor="#FFFF00">
+              <animate attributeName="stop-color" values="#FFFF00;#FF00FF;#00FFFF;#FFFF00" dur="3s" repeatCount="indefinite" />
+            </stop>
+            <stop offset="100%" stopColor="#FF00FF">
+              <animate attributeName="stop-color" values="#FF00FF;#00FFFF;#FFFF00;#FF00FF" dur="3s" repeatCount="indefinite" />
+            </stop>
           </linearGradient>
 
-          {/* Subtle glow filter */}
-          <filter id="subtleGlow" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+          <linearGradient id="neonGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#00ff88" />
+            <stop offset="50%" stopColor="#d4af37" />
+            <stop offset="100%" stopColor="#ff00ff" />
+          </linearGradient>
+
+          <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
             <feMerge>
               <feMergeNode in="coloredBlur"/>
               <feMergeNode in="SourceGraphic"/>
             </feMerge>
           </filter>
+
+          <filter id="bubbleEffect" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+            <feOffset dx="2" dy="2" result="offsetblur"/>
+            <feComponentTransfer>
+              <feFuncA type="linear" slope="0.5"/>
+            </feComponentTransfer>
+            <feMerge>
+              <feMergeNode/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
         </defs>
 
-        {/* GHETTO text - clean, modern style */}
-        <g transform="translate(10, 20)">
-          {/* G */}
-          <path
-            d="M8 12 Q8 5 15 5 L25 5 Q32 5 32 12 L32 20 L22 20 L22 15 L27 15 M32 20 Q32 28 25 28 L15 28 Q8 28 8 20 L8 12"
-            fill="url(#yellowOrangeGradient)"
-            filter="url(#subtleGlow)"
-          />
-
-          {/* H */}
-          <path
-            d="M42 5 Q45 5 45 8 L45 15 L55 15 L55 8 Q55 5 58 5 Q61 5 61 8 L61 25 Q61 28 58 28 Q55 28 55 25 L55 20 L45 20 L45 25 Q45 28 42 28 Q39 28 39 25 L39 8 Q39 5 42 5"
-            fill="url(#yellowOrangeGradient)"
-            filter="url(#subtleGlow)"
-          />
-
-          {/* E */}
-          <path
-            d="M71 8 Q71 5 74 5 L88 5 Q91 5 91 8 Q91 11 88 11 L76 11 L76 15 L85 15 Q88 15 88 18 Q88 21 85 21 L76 21 L76 25 L88 25 Q91 25 91 28 Q91 31 88 31 L74 31 Q71 31 71 28 L71 8"
-            fill="url(#yellowOrangeGradient)"
-            filter="url(#subtleGlow)"
-          />
-
-          {/* T */}
-          <path
-            d="M101 8 Q101 5 104 5 L124 5 Q127 5 127 8 Q127 11 124 11 L117 11 L117 25 Q117 28 114 28 Q111 28 111 25 L111 11 L104 11 Q101 11 101 8"
-            fill="url(#yellowOrangeGradient)"
-            filter="url(#subtleGlow)"
-          />
-
-          {/* T */}
-          <path
-            d="M137 8 Q137 5 140 5 L160 5 Q163 5 163 8 Q163 11 160 11 L153 11 L153 25 Q153 28 150 28 Q147 28 147 25 L147 11 L140 11 Q137 11 137 8"
-            fill="url(#yellowOrangeGradient)"
-            filter="url(#subtleGlow)"
-          />
-
-          {/* O */}
-          <circle
-            cx="185"
-            cy="18"
-            r="18"
-            fill="url(#yellowOrangeGradient)"
-            filter="url(#subtleGlow)"
-          />
-          <circle
-            cx="185"
-            cy="18"
-            r="10"
-            fill="#0a0a0a"
-          />
+        {/* Animated spray paint background */}
+        <g className="spray-background" opacity="0.3">
+          <circle cx="50" cy="30" r="20" fill="url(#rainbowGradient)" opacity="0.4">
+            <animate attributeName="r" values="20;25;20" dur="3s" repeatCount="indefinite" />
+          </circle>
+          <circle cx="450" cy="120" r="25" fill="url(#neonGradient)" opacity="0.4">
+            <animate attributeName="r" values="25;30;25" dur="4s" repeatCount="indefinite" />
+          </circle>
         </g>
 
-        {/* FINANCE text - clean, modern style */}
-        <g transform="translate(10, 65)">
-          {/* F */}
-          <path
-            d="M8 8 Q8 5 11 5 L25 5 Q28 5 28 8 Q28 11 25 11 L13 11 L13 15 L22 15 Q25 15 25 18 Q25 21 22 21 L13 21 L13 28 Q13 31 10 31 Q7 31 7 28 L7 8 Q7 5 8 5"
-            fill="url(#yellowOrangeGradient)"
-            filter="url(#subtleGlow)"
-          />
-
-          {/* I */}
-          <path
-            d="M35 8 Q35 5 38 5 L48 5 Q51 5 51 8 Q51 11 48 11 L45 11 L45 25 L48 25 Q51 25 51 28 Q51 31 48 31 L38 31 Q35 31 35 28 Q35 25 38 25 L41 25 L41 11 L38 11 Q35 11 35 8"
-            fill="url(#yellowOrangeGradient)"
-            filter="url(#subtleGlow)"
-          />
-
-          {/* N */}
-          <path
-            d="M61 8 Q61 5 64 5 Q67 5 67 8 L67 20 L75 8 Q77 5 80 5 Q83 5 83 8 L83 28 Q83 31 80 31 Q77 31 77 28 L77 16 L69 28 Q67 31 64 31 Q61 31 61 28 L61 8"
-            fill="url(#yellowOrangeGradient)"
-            filter="url(#subtleGlow)"
-          />
-
-          {/* A */}
-          <path
-            d="M93 28 Q93 31 96 31 Q99 31 99 28 L101 20 L107 20 L109 28 Q109 31 112 31 Q115 31 115 28 L108 8 Q107 5 104 5 Q101 5 100 8 L93 28 M102 15 L106 15"
-            fill="url(#yellowOrangeGradient)"
-            filter="url(#subtleGlow)"
-          />
-
-          {/* N */}
-          <path
-            d="M125 8 Q125 5 128 5 Q131 5 131 8 L131 20 L139 8 Q141 5 144 5 Q147 5 147 8 L147 28 Q147 31 144 31 Q141 31 141 28 L141 16 L133 28 Q131 31 128 31 Q125 31 125 28 L125 8"
-            fill="url(#yellowOrangeGradient)"
-            filter="url(#subtleGlow)"
-          />
-
-          {/* C */}
-          <path
-            d="M167 12 Q167 5 174 5 L182 5 Q185 5 185 8 Q185 11 182 11 L174 11 Q171 11 171 14 L171 22 Q171 25 174 25 L182 25 Q185 25 185 28 Q185 31 182 31 L174 31 Q167 31 167 24 L167 12"
-            fill="url(#yellowOrangeGradient)"
-            filter="url(#subtleGlow)"
-          />
-
-          {/* E */}
-          <path
-            d="M195 8 Q195 5 198 5 L212 5 Q215 5 215 8 Q215 11 212 11 L200 11 L200 15 L209 15 Q212 15 212 18 Q212 21 209 21 L200 21 L200 25 L212 25 Q215 25 215 28 Q215 31 212 31 L198 31 Q195 31 195 28 L195 8"
-            fill="url(#yellowOrangeGradient)"
-            filter="url(#subtleGlow)"
-          />
+        {/* Floating bubbles */}
+        <g className="floating-bubbles">
+          <circle cx="30" cy="80" r="8" fill="none" stroke="url(#rainbowGradient)" strokeWidth="2" opacity="0.6">
+            <animate attributeName="cy" values="80;60;80" dur="4s" repeatCount="indefinite" />
+          </circle>
+          <circle cx="470" cy="50" r="10" fill="none" stroke="url(#neonGradient)" strokeWidth="2" opacity="0.6">
+            <animate attributeName="cy" values="50;30;50" dur="5s" repeatCount="indefinite" />
+          </circle>
         </g>
 
-        {/* Clean minimal accents */}
-        <g opacity="0.6">
-          {/* Simple star */}
-          <path
-            d="M235 20 L237 25 L242 25 L238 28 L240 33 L235 30 L230 33 L232 28 L228 25 L233 25 Z"
-            fill="url(#yellowOrangeGradient)"
-          />
-
-          {/* Dollar sign in circle */}
-          <circle
-            cx="270"
-            cy="25"
-            r="12"
-            fill="url(#yellowOrangeGradient)"
-            opacity="0.3"
-          />
-          <path
-            d="M267 20 L273 20 M270 15 L270 35 M267 25 L273 25 M267 30 L273 30"
-            fill="none"
-            stroke="url(#yellowOrangeGradient)"
-            strokeWidth="2"
-            strokeLinecap="round"
-          />
+        {/* Background waves */}
+        <g className="background-waves" opacity="0.2">
+          <path d="M0,75 Q125,50 250,75 T500,75" fill="none" stroke="url(#rainbowGradient)" strokeWidth="3">
+            <animate attributeName="d"
+              values="M0,75 Q125,50 250,75 T500,75;M0,75 Q125,100 250,75 T500,75;M0,75 Q125,50 250,75 T500,75"
+              dur="6s"
+              repeatCount="indefinite" />
+          </path>
         </g>
 
-        {/* Clean underline */}
-        <path
-          d="M10 105 L390 105"
-          fill="none"
-          stroke="url(#yellowOrangeGradient)"
-          strokeWidth="2"
-          opacity="0.4"
-        />
+        {/* GHETTO text with graffiti style */}
+        <g transform="translate(20, 20)" className="graffiti-letter">
+          <text x="0" y="40" fontFamily="Impact, sans-serif" fontSize="38" fontWeight="bold"
+                fill="url(#rainbowGradient)" filter="url(#glow)" stroke="#000" strokeWidth="2">
+            GHETTO
+          </text>
+        </g>
+
+        {/* Graffiti decorations around GHETTO */}
+        <g className="graffiti-decorations">
+          <circle cx="195" cy="35" r="4" fill="#00ff88">
+            <animate attributeName="r" values="4;6;4" dur="2s" repeatCount="indefinite" />
+          </circle>
+          <circle cx="205" cy="28" r="3" fill="#d4af37">
+            <animate attributeName="r" values="3;5;3" dur="2.5s" repeatCount="indefinite" />
+          </circle>
+          <path d="M190,45 Q195,50 200,45" fill="none" stroke="#ff00ff" strokeWidth="2" opacity="0.8">
+            <animate attributeName="d" values="M190,45 Q195,50 200,45;M190,45 Q195,55 200,45;M190,45 Q195,50 200,45" dur="3s" repeatCount="indefinite" />
+          </path>
+        </g>
+
+        {/* FINANCE text with street style */}
+        <g transform="translate(20, 70)" className="graffiti-letter">
+          <text x="0" y="40" fontFamily="Impact, sans-serif" fontSize="36" fontWeight="bold"
+                fill="url(#neonGradient)" filter="url(#glow)" stroke="#000" strokeWidth="2">
+            FINANCE
+          </text>
+        </g>
+
+        {/* Decorative stars and symbols */}
+        <g>
+          <g transform="translate(260, 35)" className="graffiti-decorations">
+            <path d="M0,-8 L2,-2 L8,-2 L3,2 L5,8 L0,4 L-5,8 L-3,2 L-8,-2 L-2,-2 Z"
+                  fill="url(#rainbowGradient)" filter="url(#bubbleEffect)">
+              <animateTransform attributeName="transform" type="rotate" from="0 0 0" to="360 0 0" dur="8s" repeatCount="indefinite" />
+            </path>
+          </g>
+
+          <g transform="translate(310, 100)" className="graffiti-decorations">
+            <circle cx="0" cy="0" r="12" fill="url(#neonGradient)" opacity="0.7" filter="url(#bubbleEffect)">
+              <animate attributeName="r" values="12;15;12" dur="3s" repeatCount="indefinite" />
+            </circle>
+            <text x="-7" y="6" fontFamily="Impact" fontSize="18" fontWeight="bold" fill="#000">$</text>
+          </g>
+
+          <g transform="translate(350, 35)" className="graffiti-decorations">
+            <polygon points="0,-10 3,-3 10,-3 4,2 6,10 0,5 -6,10 -4,2 -10,-3 -3,-3"
+                     fill="url(#rainbowGradient)" opacity="0.8" filter="url(#bubbleEffect)">
+              <animateTransform attributeName="transform" type="rotate" from="0 0 0" to="-360 0 0" dur="10s" repeatCount="indefinite" />
+            </polygon>
+          </g>
+        </g>
+
+        {/* Drip effect lines */}
+        <g opacity="0.6" className="graffiti-decorations">
+          <line x1="90" y1="55" x2="90" y2="65" stroke="url(#rainbowGradient)" strokeWidth="3" strokeLinecap="round">
+            <animate attributeName="y2" values="65;70;65" dur="2s" repeatCount="indefinite" />
+          </line>
+          <line x1="160" y1="55" x2="160" y2="68" stroke="url(#neonGradient)" strokeWidth="2.5" strokeLinecap="round">
+            <animate attributeName="y2" values="68;73;68" dur="2.5s" repeatCount="indefinite" />
+          </line>
+          <line x1="130" y1="105" x2="130" y2="115" stroke="url(#rainbowGradient)" strokeWidth="3" strokeLinecap="round">
+            <animate attributeName="y2" values="115;120;115" dur="3s" repeatCount="indefinite" />
+          </line>
+        </g>
+
+        {/* Additional bubble decorations */}
+        <g className="floating-bubbles">
+          <circle cx="240" cy="65" r="6" fill="none" stroke="url(#neonGradient)" strokeWidth="2" opacity="0.7">
+            <animate attributeName="cy" values="65;55;65" dur="3s" repeatCount="indefinite" />
+            <animate attributeName="r" values="6;8;6" dur="3s" repeatCount="indefinite" />
+          </circle>
+          <circle cx="280" cy="90" r="5" fill="none" stroke="url(#rainbowGradient)" strokeWidth="2" opacity="0.7">
+            <animate attributeName="cy" values="90;80;90" dur="4s" repeatCount="indefinite" />
+            <animate attributeName="r" values="5;7;5" dur="4s" repeatCount="indefinite" />
+          </circle>
+        </g>
+
+        {/* Sparkle effects */}
+        <g className="graffiti-decorations">
+          <path d="M400,40 L402,45 L407,45 L403,48 L405,53 L400,50 L395,53 L397,48 L393,45 L398,45 Z"
+                fill="#00ff88" opacity="0.8">
+            <animate attributeName="opacity" values="0.8;1;0.8" dur="1.5s" repeatCount="indefinite" />
+          </path>
+          <path d="M420,90 L421,93 L424,93 L422,95 L423,98 L420,96 L417,98 L418,95 L416,93 L419,93 Z"
+                fill="#d4af37" opacity="0.8">
+            <animate attributeName="opacity" values="0.8;1;0.8" dur="2s" repeatCount="indefinite" />
+          </path>
+        </g>
       </svg>
     </div>
   );
