@@ -10,6 +10,7 @@ import { NetworkSwitchModal } from './components/NetworkSwitchModal';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { RealtimeNotificationSystem } from './components/RealtimeNotificationSystem';
 import { RealtimeStatusIndicator } from './components/RealtimeStatusIndicator';
+import { MobileBottomNav } from './components/MobileBottomNav';
 import { getCopyrightNotice } from './config/legalConstants';
 const SecurityAuditModal = lazy(() => import('./components/SecurityAuditModal').then(m => ({ default: m.SecurityAuditModal })));
 const DocumentationModal = lazy(() => import('./components/DocumentationModal').then(m => ({ default: m.DocumentationModal })));
@@ -185,45 +186,45 @@ function App() {
   // Marketplace component
   const MarketplaceContent = () => (
     <>
-      <main className={`max-w-7xl mx-auto px-6 transition-all duration-500 ease-in-out ${
-        isSearchFocused ? 'pt-4 pb-16' : 'py-16'
+      <main className={`max-w-7xl mx-auto px-4 sm:px-6 transition-all duration-500 ease-in-out ${
+        isSearchFocused ? 'pt-4 pb-16' : 'py-8 sm:py-12 lg:py-16'
       }`}>
         {/* Hero Section */}
         <div className={`transition-all duration-500 ease-in-out ${
-          isSearchFocused ? 'h-0 mb-0 opacity-0 overflow-hidden pointer-events-none' : 'mb-12 opacity-100'
+          isSearchFocused ? 'h-0 mb-0 opacity-0 overflow-hidden pointer-events-none' : 'mb-8 sm:mb-12 opacity-100'
         }`}>
           {/* Headline */}
-          <div className="text-center mb-8">
-            <h1 className="text-5xl md:text-7xl luxe-title mb-4 tracking-tight">
+          <div className="text-center mb-6 sm:mb-8">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl luxe-title mb-3 sm:mb-4 tracking-tight">
               <span className="bg-gradient-to-r from-[#d4af37] via-[#f4d03f] to-[#d4af37] bg-clip-text text-transparent luxe-text-glow">
                 BUY & SELL
               </span>
               <br />
               <span className="text-white">ANYTHING WITH CRYPTO</span>
             </h1>
-            <p className="text-lg md:text-xl text-gray-300 font-light max-w-3xl mx-auto leading-relaxed">
+            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-300 font-light max-w-3xl mx-auto leading-relaxed px-2">
               Escrow-protected trades. Moderated disputes. Built-in privacy. No middleman.
             </p>
           </div>
 
           {/* Legal Items Warning Banner */}
-          <div className="max-w-4xl mx-auto mb-10">
-            <div className="luxe-card border-[#00ff88]/30 p-6">
-              <div className="flex items-center justify-between flex-wrap gap-4">
-                <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-[#00ff88] to-[#00cc6f] rounded-lg flex items-center justify-center flex-shrink-0 luxe-glow-neon">
-                    <Shield className="w-6 h-6 text-black" />
+          <div className="max-w-4xl mx-auto mb-6 sm:mb-10">
+            <div className="luxe-card border-[#00ff88]/30 p-4 sm:p-6">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
+                <div className="flex items-start space-x-3 sm:space-x-4 flex-1">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-[#00ff88] to-[#00cc6f] rounded-lg flex items-center justify-center flex-shrink-0 luxe-glow-neon">
+                    <Shield className="w-5 h-5 sm:w-6 sm:h-6 text-black" />
                   </div>
-                  <div>
-                    <h3 className="text-base luxe-subtitle luxe-text-neon mb-1">Legal Items Only</h3>
-                    <p className="text-sm text-gray-400 font-light leading-relaxed">
+                  <div className="flex-1">
+                    <h3 className="text-sm sm:text-base luxe-subtitle luxe-text-neon mb-1">Legal Items Only</h3>
+                    <p className="text-xs sm:text-sm text-gray-400 font-light leading-relaxed">
                       All illegal goods are strictly prohibited. Community moderation rewards users who help keep the marketplace safe.
                     </p>
                   </div>
                 </div>
                 <button
                   onClick={() => openModal('prohibitedItems')}
-                  className="luxe-btn-neon px-6 py-2.5 text-sm"
+                  className="luxe-btn-neon px-4 sm:px-6 py-2 sm:py-2.5 text-xs sm:text-sm w-full sm:w-auto"
                 >
                   View Policy
                 </button>
@@ -232,13 +233,13 @@ function App() {
           </div>
 
           {/* Why Trade Here */}
-          <div className="mb-10">
-            <div className="text-center mb-6">
+          <div className="mb-6 sm:mb-10">
+            <div className="text-center mb-4 sm:mb-6">
               <p className="luxe-subtitle text-gray-500 tracking-widest text-xs mb-2">Why Trade Here</p>
               <div className="w-16 h-0.5 bg-gradient-to-r from-transparent via-[#d4af37] to-transparent mx-auto"></div>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
-              <div className="luxe-card p-8 group">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 max-w-5xl mx-auto">
+              <div className="luxe-card p-5 sm:p-8 group">
                 <div className="w-14 h-14 bg-gradient-to-br from-[#00ff88]/20 to-[#00cc6f]/20 rounded-xl flex items-center justify-center mb-4 group-hover:from-[#00ff88]/30 group-hover:to-[#00cc6f]/30 transition-all">
                   <Shield className="w-7 h-7 text-[#00ff88]" />
                 </div>
@@ -381,14 +382,14 @@ function App() {
               )}
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-6xl">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 max-w-6xl">
               {filteredProducts.map((product) => (
                 <div key={product.id} className="luxe-glass rounded-xl overflow-hidden luxe-card group">
                   <div className="relative">
                     <img
                       src={product.image}
                       alt={product.title}
-                      className="w-full h-56 object-cover transition-transform duration-300"
+                      className="w-full h-44 sm:h-56 object-cover transition-transform duration-300"
                     />
                     <div className="absolute top-3 right-3">
                       <span className="luxe-glass px-3 py-1 rounded-full text-xs font-medium text-luxe-gold">
@@ -397,20 +398,20 @@ function App() {
                     </div>
                   </div>
                   
-                  <div className="p-6">
-                    <div className="flex items-start justify-between mb-3">
-                      <h3 className="text-lg font-normal text-luxe-gold transition-colors line-clamp-2 text-center w-full font-medium">
+                  <div className="p-4 sm:p-6">
+                    <div className="flex items-start justify-between mb-2 sm:mb-3">
+                      <h3 className="text-base sm:text-lg font-normal text-luxe-gold transition-colors line-clamp-2 text-center w-full font-medium">
                         {product.title}
                       </h3>
                     </div>
-                    
-                    <p className="text-gray-400 text-sm mb-4 line-clamp-2 leading-relaxed font-normal text-center">
+
+                    <p className="text-gray-400 text-xs sm:text-sm mb-3 sm:mb-4 line-clamp-2 leading-relaxed font-normal text-center">
                       {product.description}
                     </p>
-                    
-                    <div className="flex items-center justify-center mb-4">
+
+                    <div className="flex items-center justify-center mb-3 sm:mb-4">
                       <div className="flex items-center justify-center space-x-2">
-                        <span className="text-2xl luxe-title text-luxe-gold text-center font-semibold">
+                        <span className="text-xl sm:text-2xl luxe-title text-luxe-gold text-center font-semibold">
                           {product.price} GHETTO
                         </span>
                       </div>
@@ -430,17 +431,17 @@ function App() {
                     </div>
                     
                     <div className="space-y-2">
-                      <button 
+                      <button
                         onClick={() => handleAddToCart(product)}
-                        className="luxe-btn-primary w-full py-3 flex items-center justify-center space-x-2 font-normal text-center"
+                        className="luxe-btn-primary w-full py-2.5 sm:py-3 flex items-center justify-center space-x-2 font-normal text-center text-sm sm:text-base touch-friendly"
                       >
                         <ShoppingCart className="w-4 h-4" />
                         <span>Add to Cart</span>
                       </button>
-                      
-                      <button 
+
+                      <button
                         onClick={() => handleContactSeller(product.seller.id)}
-                        className="luxe-btn-secondary w-full py-2 flex items-center justify-center space-x-2 text-sm font-normal text-center"
+                        className="luxe-btn-secondary w-full py-2 sm:py-2 flex items-center justify-center space-x-2 text-xs sm:text-sm font-normal text-center touch-friendly"
                       >
                         <MessageCircle className="w-4 h-4" />
                         <span>Contact Seller</span>
@@ -470,45 +471,70 @@ function App() {
       <NetworkSwitchModal />
 
       {/* Header */}
-      <header className={`luxe-glass-strong border-b border-white/10 sticky top-0 z-50 ${
+      <header className={`luxe-glass-strong border-b border-white/10 sticky top-0 z-50 ios-safe-area-top ${
         isSocialPage ? 'bg-black/95' : ''
       }`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="flex flex-col lg:flex-row items-center justify-between py-3 lg:py-0 lg:h-20 gap-3 lg:gap-0">
-            {/* Logo - Hidden on mobile, shown on desktop */}
-            <div className="hidden lg:flex items-center flex-shrink-0">
-              <Link to="/" className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
-                <GraffitiLogo size="sm" />
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
+          <div className="flex items-center justify-between py-2 sm:py-3 lg:py-0 lg:h-16 gap-2 sm:gap-3 lg:gap-0">
+            {/* Logo - Compact on mobile, full on desktop */}
+            <div className="flex items-center flex-shrink-0 lg:w-48">
+              <Link to="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
+                <GraffitiLogo size="xs" className="lg:hidden" />
+                <GraffitiLogo size="sm" className="hidden lg:block" />
               </Link>
             </div>
 
-            {/* Search Bar - Full width on mobile, centered on desktop */}
-            <div className="w-full lg:flex-1 lg:max-w-xl lg:mx-8">
+            {/* Search Bar - Compact on mobile, centered on desktop */}
+            <div className="flex-1 lg:max-w-xl lg:mx-8">
               <div className="relative">
-                <Search className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 text-gray-500 w-4 h-4" />
+                <Search className="absolute left-2 sm:left-3 top-1/2 transform -translate-y-1/2 text-gray-500 w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 <input
                   type="text"
-                  placeholder={isSocialPage ? "Search posts, communities, users..." : "Search products and services"}
+                  placeholder={isSocialPage ? "Search..." : "Search products..."}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   onFocus={() => setIsSearchFocused(true)}
                   onBlur={() => setIsSearchFocused(false)}
-                  className="w-full pl-10 sm:pl-12 pr-12 sm:pr-16 py-2.5 sm:py-3 luxe-glass rounded-lg focus:outline-none focus:ring-2 focus:ring-[#d4af37]/50 text-white placeholder-gray-500 text-sm transition-all"
+                  className="w-full pl-8 sm:pl-10 pr-10 sm:pr-12 py-2 sm:py-2.5 luxe-glass rounded-lg focus:outline-none focus:ring-2 focus:ring-[#d4af37]/50 text-white placeholder-gray-500 text-xs sm:text-sm transition-all"
                 />
                 {!isSocialPage && (
                   <button
                   onClick={() => openModal('advancedSearch')}
-                  className="absolute right-3 sm:right-4 top-1/2 transform -translate-y-1/2 p-2 text-gray-500 hover:text-[#d4af37] transition-colors"
+                  className="absolute right-2 sm:right-3 top-1/2 transform -translate-y-1/2 p-1.5 sm:p-2 text-gray-500 hover:text-[#d4af37] transition-colors touch-friendly"
                   title="Advanced Search"
                 >
-                  <Filter className="w-4 h-4" />
+                  <Filter className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 </button>
                 )}
               </div>
             </div>
 
-            {/* Navigation Icons - Scrollable on mobile */}
-            <div className="flex items-center justify-start lg:justify-center space-x-4 lg:space-x-6 w-full lg:w-auto overflow-x-auto lg:overflow-visible pb-2 lg:pb-0 flex-shrink-0">
+            {/* Mobile User Menu - Only visible on mobile */}
+            <div className="flex lg:hidden items-center flex-shrink-0">
+              {user ? (
+                <button
+                  onClick={() => openModal('userProfile')}
+                  className="p-1.5 luxe-glass rounded-lg hover:bg-white/10 transition-all touch-friendly"
+                >
+                  <div className="w-7 h-7 bg-gradient-to-br from-[#d4af37] to-[#f4d03f] rounded-full flex items-center justify-center">
+                    <UserCircle className="w-4 h-4 text-black" />
+                  </div>
+                </button>
+              ) : (
+                <button
+                  onClick={() => {
+                    setAuthMode('login');
+                    openModal('auth');
+                  }}
+                  className="luxe-btn-primary px-3 py-1.5 text-xs touch-friendly"
+                >
+                  Login
+                </button>
+              )}
+            </div>
+
+            {/* Navigation Icons - Hidden on mobile (shown in bottom nav), visible on desktop */}
+            <div className="hidden lg:flex items-center space-x-4 flex-shrink-0">
               {issitemaster && (
                 <Link
                   to="/sitemaster"
@@ -627,10 +653,44 @@ function App() {
         </Suspense>
       </ErrorBoundary>
 
+      {/* Mobile Bottom Navigation Spacer */}
+      <div className="mobile-bottom-nav-spacer" />
+
+      {/* Mobile Bottom Navigation */}
+      <MobileBottomNav
+        activeView={location.pathname === '/social' ? 'home' : 'home'}
+        onNavigate={(view) => {
+          switch (view) {
+            case 'home':
+              window.location.href = '/';
+              break;
+            case 'cart':
+              openModal('cart');
+              break;
+            case 'wallet':
+              openModal('wallet');
+              break;
+            case 'messages':
+              openModal('messages');
+              break;
+            case 'profile':
+              if (user) {
+                openModal('userProfile');
+              } else {
+                setAuthMode('login');
+                openModal('auth');
+              }
+              break;
+          }
+        }}
+        cartItemCount={getItemCount()}
+        unreadMessages={unreadMessageCount}
+      />
+
       {/* Global Footer */}
-      <footer className="luxe-glass mt-16 border-t border-white/10 bg-gradient-to-b from-transparent to-gray-900/50">
-        <div className="max-w-7xl mx-auto px-6 py-10">
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-8 mb-8">
+      <footer className="luxe-glass mt-8 sm:mt-12 lg:mt-16 border-t border-white/10 bg-gradient-to-b from-transparent to-gray-900/50 pb-20 lg:pb-0">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-10">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 sm:gap-8 mb-6 sm:mb-8">
             {/* About Section */}
             <div className="text-center md:text-left md:col-span-1">
               <div className="flex items-center justify-center md:justify-start mb-3">
