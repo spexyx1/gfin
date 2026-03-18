@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Plus, Package, DollarSign, Eye, CreditCard as Edit, Trash2, Camera, Star, Shield, X, Minus } from 'lucide-react';
+import React, { useState, useMemo } from 'react';
+import { Plus, Package, DollarSign, Eye, Trash2, Camera, Star, Shield, X, Search, Filter, ChevronDown, ChevronUp, LayoutDashboard, ShoppingBag, Wallet, CreditCard as Edit, Menu, TrendingUp, Activity, Clock, CheckCircle } from 'lucide-react';
 import { useSellerProducts } from '../hooks/useSellerProducts';
 import { useWeb3 } from '../hooks/useWeb3';
 import { useEscrow } from '../hooks/useEscrow';
@@ -14,9 +14,24 @@ interface SellerDashboardProps {
   onClose: () => void;
 }
 
+type SortField = 'title' | 'price' | 'category' | 'status' | 'createdAt';
+type SortDirection = 'asc' | 'desc';
+type DashboardSection = 'overview' | 'products' | 'collateral' | 'create' | 'edit';
+
 export function SellerDashboard({ isOpen, onClose }: SellerDashboardProps) {
-  const [activeTab, setActiveTab] = useState<'products' | 'create' | 'edit'>('products');
+  const [activeSection, setActiveSection] = useState<DashboardSection>('overview');
+  const [sidebarOpen, setSidebarOpen] = useState(true);
   const [editingProduct, setEditingProduct] = useState<SellerProduct | null>(null);
+
+  // Table state
+  const [searchQuery, setSearchQuery] = useState('');
+  const [statusFilter, setStatusFilter] = useState<string>('all');
+  const [categoryFilter, setCategoryFilter] = useState<string>('all');
+  const [sortField, setSortField] = useState<SortField>('createdAt');
+  const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
+  const [selectedProducts, setSelectedProducts] = useState<Set<string>>(new Set());
+
+  // Form state
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -38,7 +53,6 @@ export function SellerDashboard({ isOpen, onClose }: SellerDashboardProps) {
     createProduct,
     updateProduct,
     deleteProduct,
-    updateProductImages,
     getProductStats
   } = useSellerProducts();
 
@@ -52,7 +66,6 @@ export function SellerDashboard({ isOpen, onClose }: SellerDashboardProps) {
   const [showCollateralDeposit, setShowCollateralDeposit] = useState(false);
   const [depositAmount, setDepositAmount] = useState('100');
 
-  // Load seller collateral info
   React.useEffect(() => {
     const loadCollateralInfo = async () => {
       if (account) {
@@ -64,14 +77,72 @@ export function SellerDashboard({ isOpen, onClose }: SellerDashboardProps) {
         }
       }
     };
-
     loadCollateralInfo();
   }, [account, getSellerCollateralInfo]);
 
   const categories = [
-    'Hardware', 'Digital Assets', 'Services', 'Software', 
+    'Hardware', 'Digital Assets', 'Services', 'Software',
     'Education', 'Domains', 'NFTs', 'Tools', 'Other'
   ];
+
+  // Filter and sort products
+  const filteredAndSortedProducts = useMemo(() => {
+    let filtered = [...products];
+
+    // Apply search filter
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter(p =>
+        p.title.toLowerCase().includes(query) ||
+        p.description.toLowerCase().includes(query) ||
+        p.tags.some(tag => tag.toLowerCase().includes(query))
+      );
+    }
+
+    // Apply status filter
+    if (statusFilter !== 'all') {
+      filtered = filtered.filter(p => p.status === statusFilter);
+    }
+
+    // Apply category filter
+    if (categoryFilter !== 'all') {
+      filtered = filtered.filter(p => p.category === categoryFilter);
+    }
+
+    // Apply sorting
+    filtered.sort((a, b) => {
+      let aVal: any = a[sortField];
+      let bVal: any = b[sortField];
+
+      if (sortField === 'createdAt') {
+        aVal = a.createdAt.getTime();
+        bVal = b.createdAt.getTime();
+      } else if (sortField === 'price') {
+        aVal = parseFloat(a.price.toString());
+        bVal = parseFloat(b.price.toString());
+      } else if (typeof aVal === 'string') {
+        aVal = aVal.toLowerCase();
+        bVal = bVal.toLowerCase();
+      }
+
+      if (sortDirection === 'asc') {
+        return aVal > bVal ? 1 : -1;
+      } else {
+        return aVal < bVal ? 1 : -1;
+      }
+    });
+
+    return filtered;
+  }, [products, searchQuery, statusFilter, categoryFilter, sortField, sortDirection]);
+
+  const handleSort = (field: SortField) => {
+    if (sortField === field) {
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortField(field);
+      setSortDirection('desc');
+    }
+  };
 
   const resetForm = () => {
     setFormData({
@@ -112,7 +183,7 @@ export function SellerDashboard({ isOpen, onClose }: SellerDashboardProps) {
       }
 
       resetForm();
-      setActiveTab('products');
+      setActiveSection('products');
     } catch (error) {
       logger.error('Failed to save product', 'SellerDashboard', error);
       alert('Failed to save product. Please try again.');
@@ -131,17 +202,70 @@ export function SellerDashboard({ isOpen, onClose }: SellerDashboardProps) {
       status: product.status,
     });
     setProductImages(product.images);
-    setActiveTab('edit');
+    setActiveSection('edit');
   };
 
   const handleDelete = async (productId: string) => {
     if (confirm('Are you sure you want to delete this product?')) {
       try {
         await deleteProduct(productId);
+        setSelectedProducts(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(productId);
+          return newSet;
+        });
       } catch (error) {
         logger.error('Failed to delete product', 'SellerDashboard', error);
         alert('Failed to delete product. Please try again.');
       }
+    }
+  };
+
+  const handleBulkDelete = async () => {
+    if (selectedProducts.size === 0) return;
+    if (confirm(`Delete ${selectedProducts.size} selected products?`)) {
+      try {
+        await Promise.all(
+          Array.from(selectedProducts).map(id => deleteProduct(id))
+        );
+        setSelectedProducts(new Set());
+      } catch (error) {
+        logger.error('Failed to delete products', 'SellerDashboard', error);
+        alert('Failed to delete some products. Please try again.');
+      }
+    }
+  };
+
+  const handleBulkStatusChange = async (newStatus: SellerProduct['status']) => {
+    if (selectedProducts.size === 0) return;
+    try {
+      await Promise.all(
+        Array.from(selectedProducts).map(id => updateProduct(id, { status: newStatus }))
+      );
+      setSelectedProducts(new Set());
+    } catch (error) {
+      logger.error('Failed to update products', 'SellerDashboard', error);
+      alert('Failed to update some products. Please try again.');
+    }
+  };
+
+  const toggleProductSelection = (productId: string) => {
+    setSelectedProducts(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(productId)) {
+        newSet.delete(productId);
+      } else {
+        newSet.add(productId);
+      }
+      return newSet;
+    });
+  };
+
+  const toggleAllProducts = () => {
+    if (selectedProducts.size === filteredAndSortedProducts.length) {
+      setSelectedProducts(new Set());
+    } else {
+      setSelectedProducts(new Set(filteredAndSortedProducts.map(p => p.id)));
     }
   };
 
@@ -150,7 +274,6 @@ export function SellerDashboard({ isOpen, onClose }: SellerDashboardProps) {
       await depositGhettoCollateral(parseFloat(depositAmount));
       setShowCollateralDeposit(false);
       setDepositAmount('100');
-      // Reload collateral info
       const info = await getSellerCollateralInfo();
       setCollateralInfo(info);
     } catch (error) {
@@ -161,347 +284,701 @@ export function SellerDashboard({ isOpen, onClose }: SellerDashboardProps) {
 
   if (!isOpen) return null;
 
+  const SidebarNav = () => (
+    <div className={`${sidebarOpen ? 'w-64' : 'w-0'} luxe-glass-strong border-r border-white/10 transition-all duration-300 overflow-hidden flex-shrink-0`}>
+      <div className="p-6 space-y-2">
+        <NavItem
+          icon={LayoutDashboard}
+          label="Overview"
+          active={activeSection === 'overview'}
+          onClick={() => setActiveSection('overview')}
+        />
+        <NavItem
+          icon={ShoppingBag}
+          label="Products"
+          active={activeSection === 'products'}
+          onClick={() => setActiveSection('products')}
+          badge={stats.total}
+        />
+        <NavItem
+          icon={Wallet}
+          label="Collateral"
+          active={activeSection === 'collateral'}
+          onClick={() => setActiveSection('collateral')}
+        />
+        <div className="pt-4 mt-4 border-t border-white/10">
+          <button
+            onClick={() => {
+              resetForm();
+              setActiveSection('create');
+            }}
+            className="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-600 text-white rounded-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center space-x-2 font-semibold"
+          >
+            <Plus className="w-5 h-5" />
+            <span>Create Product</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="luxe-glass-strong rounded-2xl border border-white/10 w-full max-w-6xl max-h-[90vh] overflow-hidden">
-        <div className="flex items-center justify-between p-6 border-b border-white/10">
-          <h2 className="text-2xl font-bold text-white">Seller Dashboard</h2>
+      <div className="luxe-glass-strong rounded-2xl border border-white/10 w-full max-w-7xl h-[90vh] overflow-hidden flex flex-col">
+        {/* Header */}
+        <div className="flex items-center justify-between p-6 border-b border-white/10 flex-shrink-0">
+          <div className="flex items-center space-x-4">
+            <button
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+              className="p-2 hover:luxe-glass rounded-lg transition-colors lg:hidden"
+            >
+              <Menu className="w-6 h-6 text-gray-400" />
+            </button>
+            <h2 className="text-2xl font-bold text-white">Seller Dashboard</h2>
+          </div>
           <button
             onClick={onClose}
             className="p-2 hover:luxe-glass rounded-lg transition-colors"
           >
-            <Plus className="w-6 h-6 text-gray-400 rotate-45" />
+            <X className="w-6 h-6 text-gray-400" />
           </button>
         </div>
 
-        {/* Stats Bar */}
-        <div className="grid grid-cols-4 gap-4 p-6 border-b border-white/10">
-          {/* GHETTO Collateral Status */}
-          <div className="luxe-glass rounded-lg p-4 text-center">
-            <div className="flex items-center justify-center space-x-2 mb-2">
-              <Shield className="w-6 h-6 text-luxe-gold" />
-              <span className="text-luxe-gold font-black text-sm">GHETTO</span>
-            </div>
-            <p className="text-2xl font-black text-white">{collateralInfo.totalCollateral}</p>
-            <p className="text-gray-400 text-sm">Collateral</p>
-            <p className="text-xs text-gray-500 mt-1">
-              Available: {collateralInfo.availableCollateral} | Held: {collateralInfo.heldCollateral}
-            </p>
-            <button
-              onClick={() => setShowCollateralDeposit(true)}
-              className="mt-3 w-full px-3 py-2 bg-gradient-to-r from-luxe-gold to-yellow-400 hover:from-yellow-400 hover:to-luxe-gold text-black text-xs font-black rounded-lg transition-all duration-300 transform hover:scale-105 shadow-md shadow-luxe-gold/30"
-            >
-              DEPOSIT
-            </button>
-          </div>
+        {/* Main Content */}
+        <div className="flex flex-1 overflow-hidden">
+          <SidebarNav />
 
-          <div className="luxe-glass rounded-lg p-4 text-center">
-            <Package className="w-6 h-6 text-blue-400 mx-auto mb-2" />
-            <p className="text-2xl font-bold text-white">{stats.total}</p>
-            <p className="text-gray-400 text-sm">Total Products</p>
-          </div>
-          <div className="luxe-glass rounded-lg p-4 text-center">
-            <Eye className="w-6 h-6 text-green-400 mx-auto mb-2" />
-            <p className="text-2xl font-bold text-white">{stats.active}</p>
-            <p className="text-gray-400 text-sm">Active</p>
-          </div>
-          <div className="luxe-glass rounded-lg p-4 text-center">
-            <Edit className="w-6 h-6 text-yellow-400 mx-auto mb-2" />
-            <p className="text-2xl font-bold text-white">{stats.draft}</p>
-            <p className="text-gray-400 text-sm">Drafts</p>
-          </div>
-          <div className="luxe-glass rounded-lg p-4 text-center">
-            <DollarSign className="w-6 h-6 text-purple-400 mx-auto mb-2" />
-            <p className="text-2xl font-bold text-white">{stats.sold}</p>
-            <p className="text-gray-400 text-sm">Sold</p>
-          </div>
-        </div>
+          {/* Content Area */}
+          <div className="flex-1 overflow-y-auto">
+            {/* Overview Section */}
+            {activeSection === 'overview' && (
+              <div className="p-6 space-y-6">
+                <h3 className="text-xl font-bold text-white">Dashboard Overview</h3>
 
-        {/* Collateral Warning */}
-        {collateralInfo.totalCollateral < 100 && (
-          <div className="bg-gradient-to-r from-red-500/20 via-red-500/10 to-red-500/20 border-b border-red-500/30 p-5">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                <div className="p-2 bg-red-500/20 rounded-lg">
-                  <Shield className="w-6 h-6 text-red-400" />
+                {/* Stats Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                  <StatCard
+                    icon={Package}
+                    label="Total Products"
+                    value={stats.total}
+                    color="blue"
+                  />
+                  <StatCard
+                    icon={Eye}
+                    label="Active Listings"
+                    value={stats.active}
+                    color="green"
+                  />
+                  <StatCard
+                    icon={CheckCircle}
+                    label="Sold"
+                    value={stats.sold}
+                    color="purple"
+                  />
+                  <StatCard
+                    icon={Shield}
+                    label="Collateral"
+                    value={`${collateralInfo.totalCollateral} GHETTO`}
+                    color="gold"
+                  />
                 </div>
-                <div>
-                  <p className="text-red-400 font-black text-base">COLLATERAL REQUIRED</p>
-                  <p className="text-gray-300 text-sm">Deposit 100 GHETTO to start selling</p>
+
+                {/* Collateral Warning */}
+                {collateralInfo.totalCollateral < 100 && (
+                  <div className="bg-gradient-to-r from-red-500/20 via-red-500/10 to-red-500/20 border border-red-500/30 rounded-xl p-6">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-3">
+                        <div className="p-3 bg-red-500/20 rounded-lg">
+                          <Shield className="w-6 h-6 text-red-400" />
+                        </div>
+                        <div>
+                          <p className="text-red-400 font-bold text-lg">Collateral Required</p>
+                          <p className="text-gray-300 text-sm">Deposit 100 GHETTO to start selling</p>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => setShowCollateralDeposit(true)}
+                        className="px-6 py-3 bg-gradient-to-r from-luxe-gold to-yellow-400 hover:from-yellow-400 hover:to-luxe-gold text-black font-bold rounded-lg transition-all duration-300 transform hover:scale-105"
+                      >
+                        Deposit Now
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {/* Quick Actions */}
+                <div className="luxe-glass rounded-xl p-6 border border-white/10">
+                  <h4 className="text-lg font-bold text-white mb-4">Quick Actions</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <QuickActionButton
+                      icon={Plus}
+                      label="Create Product"
+                      onClick={() => {
+                        resetForm();
+                        setActiveSection('create');
+                      }}
+                    />
+                    <QuickActionButton
+                      icon={Shield}
+                      label="Deposit Collateral"
+                      onClick={() => setShowCollateralDeposit(true)}
+                    />
+                    <QuickActionButton
+                      icon={ShoppingBag}
+                      label="View Products"
+                      onClick={() => setActiveSection('products')}
+                    />
+                  </div>
                 </div>
+
+                {/* Recent Products */}
+                {products.length > 0 && (
+                  <div className="luxe-glass rounded-xl p-6 border border-white/10">
+                    <div className="flex items-center justify-between mb-4">
+                      <h4 className="text-lg font-bold text-white">Recent Products</h4>
+                      <button
+                        onClick={() => setActiveSection('products')}
+                        className="text-blue-400 hover:text-blue-300 text-sm font-medium"
+                      >
+                        View All
+                      </button>
+                    </div>
+                    <div className="space-y-3">
+                      {products.slice(0, 5).map(product => (
+                        <div key={product.id} className="flex items-center justify-between p-3 luxe-glass rounded-lg">
+                          <div className="flex items-center space-x-3">
+                            {product.images.length > 0 ? (
+                              <img
+                                src={product.images.find(img => img.isPrimary)?.url || product.images[0].url}
+                                alt={product.title}
+                                className="w-12 h-12 rounded-lg object-cover"
+                              />
+                            ) : (
+                              <div className="w-12 h-12 luxe-glass rounded-lg flex items-center justify-center">
+                                <Camera className="w-6 h-6 text-gray-500" />
+                              </div>
+                            )}
+                            <div>
+                              <p className="text-white font-medium">{product.title}</p>
+                              <p className="text-gray-400 text-sm">{product.price} GHETTO</p>
+                            </div>
+                          </div>
+                          <StatusBadge status={product.status} />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
-              <button
-                onClick={() => setShowCollateralDeposit(true)}
-                className="px-6 py-3 bg-gradient-to-r from-luxe-gold via-yellow-400 to-luxe-gold hover:from-yellow-400 hover:via-luxe-gold hover:to-yellow-400 text-black font-black rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg shadow-luxe-gold/50 hover:shadow-luxe-gold/70 flex items-center space-x-2 uppercase tracking-wide"
-              >
-                <Shield className="w-5 h-5" />
-                <span>Deposit GHETTO</span>
-              </button>
-            </div>
-          </div>
-        )}
+            )}
 
-        {/* Tabs */}
-        <div className="flex border-b border-white/10">
-          <button
-            onClick={() => setActiveTab('products')}
-            className={`flex-1 px-6 py-4 font-medium transition-colors ${
-              activeTab === 'products'
-                ? 'text-blue-400 border-b-2 border-blue-400 bg-white/5'
-                : 'text-gray-400 hover:text-white hover:bg-white/5'
-            }`}
-          >
-            My Products
-          </button>
-          <button
-            onClick={() => {
-              resetForm();
-              setActiveTab('create');
-            }}
-            className={`flex-1 px-6 py-4 font-medium transition-colors ${
-              activeTab === 'create'
-                ? 'text-blue-400 border-b-2 border-blue-400 bg-white/5'
-                : 'text-gray-400 hover:text-white hover:bg-white/5'
-            }`}
-          >
-            Create Product
-          </button>
-          {activeTab === 'edit' && (
-            <button
-              onClick={() => setActiveTab('edit')}
-              className="flex-1 px-6 py-4 font-medium text-blue-400 border-b-2 border-blue-400 bg-white/5"
-            >
-              Edit Product
-            </button>
-          )}
-        </div>
-
-        <div className="p-6 overflow-y-auto flex-1" style={{ maxHeight: 'calc(90vh - 400px)' }}>
-          {/* Products List */}
-          {activeTab === 'products' && (
-            <div className="space-y-4">
-              {products.length === 0 ? (
-                <div className="text-center py-12">
-                  <Package className="w-16 h-16 text-gray-600 mx-auto mb-4" />
-                  <p className="text-gray-400 text-lg mb-2">No products yet</p>
-                  <p className="text-gray-500 mb-4">Create your first product to start selling</p>
+            {/* Products Section */}
+            {activeSection === 'products' && (
+              <div className="p-6 space-y-6">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-xl font-bold text-white">Products</h3>
                   <button
-                    onClick={() => setActiveTab('create')}
-                    className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+                    onClick={() => {
+                      resetForm();
+                      setActiveSection('create');
+                    }}
+                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors flex items-center space-x-2"
                   >
-                    Create Product
+                    <Plus className="w-4 h-4" />
+                    <span>New Product</span>
                   </button>
                 </div>
-              ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {products.map((product) => (
-                    <div key={product.id} className="luxe-glass rounded-xl border border-white/10 overflow-hidden">
-                      <div className="relative">
-                        {product.images.length > 0 ? (
-                          <img
-                            src={product.images.find(img => img.isPrimary)?.url || product.images[0].url}
-                            alt={product.title}
-                            className="w-full h-48 object-cover"
-                          />
-                        ) : (
-                          <div className="w-full h-48 luxe-glass flex items-center justify-center">
-                            <Camera className="w-12 h-12 text-gray-500" />
-                          </div>
-                        )}
-                        <div className="absolute top-3 right-3">
-                          <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                            product.status === 'active' ? 'bg-green-500/20 text-green-400' :
-                            product.status === 'draft' ? 'bg-yellow-500/20 text-yellow-400' :
-                            product.status === 'sold' ? 'bg-purple-500/20 text-purple-400' :
-                            'bg-gray-500/20 text-gray-400'
-                          }`}>
-                            {product.status.toUpperCase()}
-                          </span>
-                        </div>
-                      </div>
-                      
-                      <div className="p-4">
-                        <h3 className="text-lg font-semibold text-white mb-2 line-clamp-2">
-                          {product.title}
-                        </h3>
-                        <p className="text-gray-400 text-sm mb-3 line-clamp-2">
-                          {product.description}
-                        </p>
-                        <div className="flex items-center justify-between mb-4">
-                          <span className="text-xl font-bold text-white">
-                            {product.price} GHETTO
-                          </span>
-                          <span className="text-sm text-gray-400">
-                            {product.category}
-                          </span>
-                        </div>
-                        
-                        {/* Product Stats */}
-                        <div className="flex items-center justify-between mb-4 text-xs text-gray-500">
-                          <span>Created: {product.createdAt.toLocaleDateString()}</span>
-                          <span>Status: {product.status}</span>
-                        </div>
-                        
-                        <div className="flex space-x-2">
-                          <button
-                            onClick={() => handleEdit(product)}
-                            className="flex-1 px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors text-sm"
-                          >
-                            Edit
-                          </button>
-                          <button
-                            onClick={() => handleDelete(product.id)}
-                            className="px-3 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors text-sm"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          )}
 
-          {/* Create/Edit Product Form */}
-          {(activeTab === 'create' || activeTab === 'edit') && (
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-white font-medium mb-2">Product Title</label>
-                  <input
-                    type="text"
-                    value={formData.title}
-                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                    className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
-                    placeholder="Enter product title"
-                    required
-                  />
-                </div>
-                
-                <div>
-                  <label className="block text-white font-medium mb-2">Price</label>
-                  <input
-                    type="number"
-                    step="0.01"
-                    min="0"
-                    value={formData.price}
-                    onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-                    className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
-                    placeholder="0.00 GHETTO"
-                    required
-                  />
-                  <p className="text-gray-400 text-xs mt-1">Price in GHETTO (1 GHETTO = 1 USDC)</p>
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-white font-medium mb-2">Description</label>
-                <textarea
-                  value={formData.description}
-                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  rows={4}
-                  className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white resize-none"
-                  placeholder="Describe your product in detail"
-                  required
-                />
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-white font-medium mb-2">Category</label>
+                {/* Filters and Search */}
+                <div className="flex flex-col md:flex-row gap-4">
+                  <div className="flex-1 relative">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                    <input
+                      type="text"
+                      placeholder="Search products..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="w-full pl-10 pr-4 py-3 luxe-glass border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
+                    />
+                  </div>
                   <select
-                    value={formData.category}
-                    onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                    className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
-                    required
+                    value={statusFilter}
+                    onChange={(e) => setStatusFilter(e.target.value)}
+                    className="px-4 py-3 luxe-glass border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
                   >
-                    <option value="">Select category</option>
-                    {categories.map(category => (
-                      <option key={category} value={category}>{category}</option>
+                    <option value="all">All Status</option>
+                    <option value="active">Active</option>
+                    <option value="draft">Draft</option>
+                    <option value="paused">Paused</option>
+                    <option value="sold">Sold</option>
+                  </select>
+                  <select
+                    value={categoryFilter}
+                    onChange={(e) => setCategoryFilter(e.target.value)}
+                    className="px-4 py-3 luxe-glass border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
+                  >
+                    <option value="all">All Categories</option>
+                    {categories.map(cat => (
+                      <option key={cat} value={cat}>{cat}</option>
                     ))}
                   </select>
                 </div>
-                
-                <div>
-                  <label className="block text-white font-medium mb-2">Status</label>
-                  <select
-                    value={formData.status}
-                    onChange={(e) => setFormData({ ...formData, status: e.target.value as SellerProduct['status'] })}
-                    className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
-                  >
-                    <option value="draft">Draft</option>
-                    <option value="active">Active</option>
-                    <option value="paused">Paused</option>
-                  </select>
+
+                {/* Bulk Actions */}
+                {selectedProducts.size > 0 && (
+                  <div className="flex items-center justify-between p-4 bg-blue-500/20 border border-blue-500/30 rounded-lg">
+                    <span className="text-white font-medium">
+                      {selectedProducts.size} product{selectedProducts.size > 1 ? 's' : ''} selected
+                    </span>
+                    <div className="flex space-x-2">
+                      <button
+                        onClick={() => handleBulkStatusChange('active')}
+                        className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors text-sm"
+                      >
+                        Activate
+                      </button>
+                      <button
+                        onClick={() => handleBulkStatusChange('paused')}
+                        className="px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg transition-colors text-sm"
+                      >
+                        Pause
+                      </button>
+                      <button
+                        onClick={handleBulkDelete}
+                        className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors text-sm"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {/* Products Table */}
+                {filteredAndSortedProducts.length === 0 ? (
+                  <div className="text-center py-16 luxe-glass rounded-xl border border-white/10">
+                    <Package className="w-16 h-16 text-gray-600 mx-auto mb-4" />
+                    <p className="text-gray-400 text-lg mb-2">No products found</p>
+                    <p className="text-gray-500 mb-4">
+                      {products.length === 0
+                        ? 'Create your first product to start selling'
+                        : 'Try adjusting your filters'}
+                    </p>
+                    {products.length === 0 && (
+                      <button
+                        onClick={() => {
+                          resetForm();
+                          setActiveSection('create');
+                        }}
+                        className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+                      >
+                        Create Product
+                      </button>
+                    )}
+                  </div>
+                ) : (
+                  <div className="luxe-glass rounded-xl border border-white/10 overflow-hidden">
+                    <div className="overflow-x-auto">
+                      <table className="w-full">
+                        <thead className="bg-white/5 border-b border-white/10">
+                          <tr>
+                            <th className="px-4 py-3 text-left">
+                              <input
+                                type="checkbox"
+                                checked={selectedProducts.size === filteredAndSortedProducts.length && filteredAndSortedProducts.length > 0}
+                                onChange={toggleAllProducts}
+                                className="w-4 h-4 text-blue-600 luxe-glass border-gray-600 rounded focus:ring-blue-500"
+                              />
+                            </th>
+                            <th className="px-4 py-3 text-left text-gray-400 text-sm font-medium">Image</th>
+                            <TableHeader
+                              label="Title"
+                              field="title"
+                              currentField={sortField}
+                              direction={sortDirection}
+                              onSort={handleSort}
+                            />
+                            <TableHeader
+                              label="Price"
+                              field="price"
+                              currentField={sortField}
+                              direction={sortDirection}
+                              onSort={handleSort}
+                            />
+                            <TableHeader
+                              label="Category"
+                              field="category"
+                              currentField={sortField}
+                              direction={sortDirection}
+                              onSort={handleSort}
+                            />
+                            <TableHeader
+                              label="Status"
+                              field="status"
+                              currentField={sortField}
+                              direction={sortDirection}
+                              onSort={handleSort}
+                            />
+                            <TableHeader
+                              label="Created"
+                              field="createdAt"
+                              currentField={sortField}
+                              direction={sortDirection}
+                              onSort={handleSort}
+                            />
+                            <th className="px-4 py-3 text-left text-gray-400 text-sm font-medium">Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-white/10">
+                          {filteredAndSortedProducts.map(product => (
+                            <tr key={product.id} className="hover:bg-white/5 transition-colors">
+                              <td className="px-4 py-3">
+                                <input
+                                  type="checkbox"
+                                  checked={selectedProducts.has(product.id)}
+                                  onChange={() => toggleProductSelection(product.id)}
+                                  className="w-4 h-4 text-blue-600 luxe-glass border-gray-600 rounded focus:ring-blue-500"
+                                />
+                              </td>
+                              <td className="px-4 py-3">
+                                {product.images.length > 0 ? (
+                                  <img
+                                    src={product.images.find(img => img.isPrimary)?.url || product.images[0].url}
+                                    alt={product.title}
+                                    className="w-12 h-12 rounded-lg object-cover"
+                                  />
+                                ) : (
+                                  <div className="w-12 h-12 luxe-glass rounded-lg flex items-center justify-center">
+                                    <Camera className="w-6 h-6 text-gray-500" />
+                                  </div>
+                                )}
+                              </td>
+                              <td className="px-4 py-3">
+                                <p className="text-white font-medium line-clamp-1">{product.title}</p>
+                                <p className="text-gray-400 text-xs line-clamp-1">{product.description}</p>
+                              </td>
+                              <td className="px-4 py-3 text-white font-medium">{product.price} GHETTO</td>
+                              <td className="px-4 py-3 text-gray-400 text-sm">{product.category}</td>
+                              <td className="px-4 py-3">
+                                <StatusBadge status={product.status} />
+                              </td>
+                              <td className="px-4 py-3 text-gray-400 text-sm">
+                                {product.createdAt.toLocaleDateString()}
+                              </td>
+                              <td className="px-4 py-3">
+                                <div className="flex space-x-2">
+                                  <button
+                                    onClick={() => handleEdit(product)}
+                                    className="p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+                                    title="Edit"
+                                  >
+                                    <Edit className="w-4 h-4" />
+                                  </button>
+                                  <button
+                                    onClick={() => handleDelete(product.id)}
+                                    className="p-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors"
+                                    title="Delete"
+                                  >
+                                    <Trash2 className="w-4 h-4" />
+                                  </button>
+                                </div>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Collateral Section */}
+            {activeSection === 'collateral' && (
+              <div className="p-6 space-y-6">
+                <h3 className="text-xl font-bold text-white">Collateral Management</h3>
+
+                {/* Collateral Stats */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                  <div className="luxe-glass rounded-xl p-6 border border-white/10">
+                    <div className="flex items-center space-x-3 mb-3">
+                      <Shield className="w-6 h-6 text-luxe-gold" />
+                      <span className="text-gray-400 text-sm">Total Collateral</span>
+                    </div>
+                    <p className="text-3xl font-bold text-white">{collateralInfo.totalCollateral}</p>
+                    <p className="text-luxe-gold text-sm font-medium mt-1">GHETTO</p>
+                  </div>
+
+                  <div className="luxe-glass rounded-xl p-6 border border-white/10">
+                    <div className="flex items-center space-x-3 mb-3">
+                      <CheckCircle className="w-6 h-6 text-green-400" />
+                      <span className="text-gray-400 text-sm">Available</span>
+                    </div>
+                    <p className="text-3xl font-bold text-white">{collateralInfo.availableCollateral}</p>
+                    <p className="text-green-400 text-sm font-medium mt-1">GHETTO</p>
+                  </div>
+
+                  <div className="luxe-glass rounded-xl p-6 border border-white/10">
+                    <div className="flex items-center space-x-3 mb-3">
+                      <Clock className="w-6 h-6 text-yellow-400" />
+                      <span className="text-gray-400 text-sm">Held in Orders</span>
+                    </div>
+                    <p className="text-3xl font-bold text-white">{collateralInfo.heldCollateral}</p>
+                    <p className="text-yellow-400 text-sm font-medium mt-1">GHETTO</p>
+                  </div>
+
+                  <div className="luxe-glass rounded-xl p-6 border border-white/10">
+                    <div className="flex items-center space-x-3 mb-3">
+                      <TrendingUp className="w-6 h-6 text-blue-400" />
+                      <span className="text-gray-400 text-sm">Selling Limit</span>
+                    </div>
+                    <p className="text-3xl font-bold text-white">{collateralInfo.maxOrderValue}</p>
+                    <p className="text-blue-400 text-sm font-medium mt-1">GHETTO</p>
+                  </div>
+                </div>
+
+                {/* Deposit Action */}
+                <div className="luxe-glass rounded-xl p-6 border border-white/10">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h4 className="text-lg font-bold text-white mb-2">Increase Your Collateral</h4>
+                      <p className="text-gray-400 text-sm">
+                        Deposit more GHETTO to increase your maximum order value
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => setShowCollateralDeposit(true)}
+                      className="px-6 py-3 bg-gradient-to-r from-luxe-gold to-yellow-400 hover:from-yellow-400 hover:to-luxe-gold text-black font-bold rounded-lg transition-all duration-300 transform hover:scale-105 flex items-center space-x-2"
+                    >
+                      <Shield className="w-5 h-5" />
+                      <span>Deposit GHETTO</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Collateral Info */}
+                <div className="luxe-glass rounded-xl p-6 border border-white/10">
+                  <h4 className="text-lg font-bold text-white mb-4">How Collateral Works</h4>
+                  <div className="space-y-3 text-gray-400">
+                    <div className="flex items-start space-x-3">
+                      <div className="w-6 h-6 rounded-full bg-luxe-gold/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <span className="text-luxe-gold text-sm font-bold">1</span>
+                      </div>
+                      <div>
+                        <p className="text-white font-medium">Minimum Requirement</p>
+                        <p className="text-sm">Deposit at least 100 GHETTO to start selling on the marketplace</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start space-x-3">
+                      <div className="w-6 h-6 rounded-full bg-luxe-gold/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <span className="text-luxe-gold text-sm font-bold">2</span>
+                      </div>
+                      <div>
+                        <p className="text-white font-medium">Order Limit</p>
+                        <p className="text-sm">Your collateral determines the maximum order value you can accept</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start space-x-3">
+                      <div className="w-6 h-6 rounded-full bg-luxe-gold/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <span className="text-luxe-gold text-sm font-bold">3</span>
+                      </div>
+                      <div>
+                        <p className="text-white font-medium">Protection</p>
+                        <p className="text-sm">Collateral is held during active orders and released upon successful completion</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start space-x-3">
+                      <div className="w-6 h-6 rounded-full bg-luxe-gold/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <span className="text-luxe-gold text-sm font-bold">4</span>
+                      </div>
+                      <div>
+                        <p className="text-white font-medium">Disputes</p>
+                        <p className="text-sm">In case of disputes, collateral may be used to compensate buyers</p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
+            )}
 
-              <div>
-                <label className="block text-white font-medium mb-2">Tags (comma-separated)</label>
-                <input
-                  type="text"
-                  value={formData.tags}
-                  onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
-                  className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
-                  placeholder="crypto, nft, blockchain"
-                />
-              </div>
+            {/* Create/Edit Product Form */}
+            {(activeSection === 'create' || activeSection === 'edit') && (
+              <div className="p-6">
+                <div className="max-w-4xl mx-auto">
+                  <h3 className="text-xl font-bold text-white mb-6">
+                    {editingProduct ? 'Edit Product' : 'Create New Product'}
+                  </h3>
 
-              <div className="flex items-center space-x-3">
-                <input
-                  type="checkbox"
-                  id="inStock"
-                  checked={formData.inStock}
-                  onChange={(e) => setFormData({ ...formData, inStock: e.target.checked })}
-                  className="w-4 h-4 text-blue-600 luxe-glass border-gray-600 rounded focus:ring-blue-500"
-                />
-                <label htmlFor="inStock" className="text-white font-medium">
-                  In Stock
-                </label>
-              </div>
+                  <form onSubmit={handleSubmit} className="space-y-6">
+                    {/* Basic Info Section */}
+                    <div className="luxe-glass rounded-xl p-6 border border-white/10 space-y-6">
+                      <h4 className="text-lg font-bold text-white">Basic Information</h4>
 
-              {/* Photo Upload */}
-              <div>
-                <label className="block text-white font-medium mb-4">Product Photos</label>
-                <PhotoUpload
-                  images={productImages}
-                  onImagesChange={setProductImages}
-                  maxImages={10}
-                />
-              </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                          <label className="block text-white font-medium mb-2">
+                            Product Title <span className="text-red-400">*</span>
+                          </label>
+                          <input
+                            type="text"
+                            value={formData.title}
+                            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                            className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
+                            placeholder="Enter product title"
+                            required
+                          />
+                          <p className="text-gray-500 text-xs mt-1">{formData.title.length}/100 characters</p>
+                        </div>
 
-              <div className="flex space-x-4 pt-6 border-t border-white/10">
-                <button
-                  type="submit"
-                  disabled={isLoading}
-                  className="px-6 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 text-white rounded-lg transition-colors"
-                >
-                  {isLoading ? 'Saving...' : editingProduct ? 'Update Product' : 'Create Product'}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    resetForm();
-                    setActiveTab('products');
-                  }}
-                  className="px-6 py-3 luxe-glass hover:bg-gray-600 text-white rounded-lg transition-colors"
-                >
-                  Cancel
-                </button>
+                        <div>
+                          <label className="block text-white font-medium mb-2">
+                            Price (GHETTO) <span className="text-red-400">*</span>
+                          </label>
+                          <input
+                            type="number"
+                            step="0.01"
+                            min="0"
+                            value={formData.price}
+                            onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+                            className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
+                            placeholder="0.00"
+                            required
+                          />
+                          <p className="text-gray-400 text-xs mt-1">1 GHETTO = 1 USDC</p>
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="block text-white font-medium mb-2">
+                          Description <span className="text-red-400">*</span>
+                        </label>
+                        <textarea
+                          value={formData.description}
+                          onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                          rows={5}
+                          className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white resize-none"
+                          placeholder="Describe your product in detail"
+                          required
+                        />
+                        <p className="text-gray-500 text-xs mt-1">{formData.description.length}/1000 characters</p>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div>
+                          <label className="block text-white font-medium mb-2">
+                            Category <span className="text-red-400">*</span>
+                          </label>
+                          <select
+                            value={formData.category}
+                            onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                            className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
+                            required
+                          >
+                            <option value="">Select category</option>
+                            {categories.map(category => (
+                              <option key={category} value={category}>{category}</option>
+                            ))}
+                          </select>
+                        </div>
+
+                        <div>
+                          <label className="block text-white font-medium mb-2">Status</label>
+                          <select
+                            value={formData.status}
+                            onChange={(e) => setFormData({ ...formData, status: e.target.value as SellerProduct['status'] })}
+                            className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
+                          >
+                            <option value="draft">Draft</option>
+                            <option value="active">Active</option>
+                            <option value="paused">Paused</option>
+                          </select>
+                        </div>
+
+                        <div>
+                          <label className="block text-white font-medium mb-2">Availability</label>
+                          <div className="flex items-center space-x-3 h-12">
+                            <input
+                              type="checkbox"
+                              id="inStock"
+                              checked={formData.inStock}
+                              onChange={(e) => setFormData({ ...formData, inStock: e.target.checked })}
+                              className="w-4 h-4 text-blue-600 luxe-glass border-gray-600 rounded focus:ring-blue-500"
+                            />
+                            <label htmlFor="inStock" className="text-white font-medium">
+                              In Stock
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="block text-white font-medium mb-2">Tags</label>
+                        <input
+                          type="text"
+                          value={formData.tags}
+                          onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
+                          className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
+                          placeholder="crypto, nft, blockchain (comma-separated)"
+                        />
+                        <p className="text-gray-500 text-xs mt-1">Add tags to help buyers find your product</p>
+                      </div>
+                    </div>
+
+                    {/* Images Section */}
+                    <div className="luxe-glass rounded-xl p-6 border border-white/10 space-y-4">
+                      <h4 className="text-lg font-bold text-white">Product Images</h4>
+                      <PhotoUpload
+                        images={productImages}
+                        onImagesChange={setProductImages}
+                        maxImages={10}
+                      />
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className="flex space-x-4">
+                      <button
+                        type="submit"
+                        disabled={isLoading}
+                        className="px-8 py-3 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-600 disabled:from-gray-600 disabled:to-gray-600 text-white rounded-lg transition-all duration-300 transform hover:scale-105 font-semibold flex items-center space-x-2"
+                      >
+                        {isLoading ? (
+                          <span>Saving...</span>
+                        ) : editingProduct ? (
+                          <>
+                            <CheckCircle className="w-5 h-5" />
+                            <span>Update Product</span>
+                          </>
+                        ) : (
+                          <>
+                            <Plus className="w-5 h-5" />
+                            <span>Create Product</span>
+                          </>
+                        )}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          resetForm();
+                          setActiveSection('products');
+                        }}
+                        className="px-8 py-3 luxe-glass hover:bg-gray-600 text-white rounded-lg transition-colors font-semibold"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </form>
+                </div>
               </div>
-            </form>
-          )}
+            )}
+          </div>
         </div>
 
-        {/* GHETTO Collateral Deposit Modal */}
+        {/* Collateral Deposit Modal */}
         {showCollateralDeposit && (
-          <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-60 flex items-center justify-center p-4">
+          <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[60] flex items-center justify-center p-4">
             <div className="luxe-glass-strong rounded-2xl border border-white/10 w-full max-w-md">
               <div className="p-6 border-b border-white/10">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-xl font-black text-white uppercase">Deposit GHETTO Collateral</h3>
+                  <h3 className="text-xl font-bold text-white">Deposit GHETTO Collateral</h3>
                   <button
                     onClick={() => setShowCollateralDeposit(false)}
                     className="p-2 hover:luxe-glass rounded-lg transition-colors"
@@ -510,10 +987,10 @@ export function SellerDashboard({ isOpen, onClose }: SellerDashboardProps) {
                   </button>
                 </div>
               </div>
-              
+
               <div className="p-6 space-y-4">
                 <div className="bg-luxe-gold/10 border border-luxe-gold/20 rounded-lg p-4">
-                  <h4 className="text-luxe-gold font-black mb-2 text-sm">SELLER COLLATERAL SYSTEM</h4>
+                  <h4 className="text-luxe-gold font-bold mb-2 text-sm">SELLER COLLATERAL SYSTEM</h4>
                   <ul className="text-gray-400 text-xs space-y-1">
                     <li>• Minimum 100 GHETTO required to start selling</li>
                     <li>• Your collateral = maximum order value you can accept</li>
@@ -521,7 +998,7 @@ export function SellerDashboard({ isOpen, onClose }: SellerDashboardProps) {
                     <li>• Released when orders complete successfully</li>
                   </ul>
                 </div>
-                
+
                 <div>
                   <label className="block text-white font-medium mb-2">Deposit Amount (GHETTO)</label>
                   <input
@@ -538,12 +1015,12 @@ export function SellerDashboard({ isOpen, onClose }: SellerDashboardProps) {
                     This will be your maximum order value limit
                   </p>
                 </div>
-                
+
                 <div className="flex space-x-3">
                   <button
                     onClick={handleDepositCollateral}
                     disabled={isLoading || parseFloat(depositAmount) < 100}
-                    className="flex-1 py-3 bg-luxe-gold hover:bg-luxe-gold/80 disabled:bg-gray-600 text-black rounded-lg transition-colors font-black uppercase"
+                    className="flex-1 py-3 bg-luxe-gold hover:bg-luxe-gold/80 disabled:bg-gray-600 text-black rounded-lg transition-colors font-bold"
                   >
                     {isLoading ? 'Depositing...' : 'Deposit GHETTO'}
                   </button>
@@ -560,5 +1037,132 @@ export function SellerDashboard({ isOpen, onClose }: SellerDashboardProps) {
         )}
       </div>
     </div>
+  );
+}
+
+// Helper Components
+interface NavItemProps {
+  icon: React.ComponentType<{ className?: string }>;
+  label: string;
+  active: boolean;
+  onClick: () => void;
+  badge?: number;
+}
+
+function NavItem({ icon: Icon, label, active, onClick, badge }: NavItemProps) {
+  return (
+    <button
+      onClick={onClick}
+      className={`w-full flex items-center justify-between px-4 py-3 rounded-lg transition-all duration-200 ${
+        active
+          ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30'
+          : 'text-gray-400 hover:text-white hover:luxe-glass'
+      }`}
+    >
+      <div className="flex items-center space-x-3">
+        <Icon className="w-5 h-5" />
+        <span className="font-medium">{label}</span>
+      </div>
+      {badge !== undefined && badge > 0 && (
+        <span className={`px-2 py-0.5 rounded-full text-xs font-bold ${
+          active ? 'bg-white/20' : 'bg-blue-600/20 text-blue-400'
+        }`}>
+          {badge}
+        </span>
+      )}
+    </button>
+  );
+}
+
+interface StatCardProps {
+  icon: React.ComponentType<{ className?: string }>;
+  label: string;
+  value: string | number;
+  color: 'blue' | 'green' | 'purple' | 'gold';
+}
+
+function StatCard({ icon: Icon, label, value, color }: StatCardProps) {
+  const colorClasses = {
+    blue: 'text-blue-400',
+    green: 'text-green-400',
+    purple: 'text-purple-400',
+    gold: 'text-luxe-gold',
+  };
+
+  return (
+    <div className="luxe-glass rounded-xl p-6 border border-white/10">
+      <div className="flex items-center space-x-3 mb-3">
+        <Icon className={`w-6 h-6 ${colorClasses[color]}`} />
+        <span className="text-gray-400 text-sm">{label}</span>
+      </div>
+      <p className="text-3xl font-bold text-white">{value}</p>
+    </div>
+  );
+}
+
+interface QuickActionButtonProps {
+  icon: React.ComponentType<{ className?: string }>;
+  label: string;
+  onClick: () => void;
+}
+
+function QuickActionButton({ icon: Icon, label, onClick }: QuickActionButtonProps) {
+  return (
+    <button
+      onClick={onClick}
+      className="flex items-center space-x-3 p-4 luxe-glass hover:bg-white/10 rounded-lg border border-white/10 transition-all duration-200 hover:scale-105"
+    >
+      <div className="p-2 bg-blue-600/20 rounded-lg">
+        <Icon className="w-5 h-5 text-blue-400" />
+      </div>
+      <span className="text-white font-medium">{label}</span>
+    </button>
+  );
+}
+
+function StatusBadge({ status }: { status: SellerProduct['status'] }) {
+  const statusConfig = {
+    active: { bg: 'bg-green-500/20', text: 'text-green-400', label: 'Active' },
+    draft: { bg: 'bg-yellow-500/20', text: 'text-yellow-400', label: 'Draft' },
+    sold: { bg: 'bg-purple-500/20', text: 'text-purple-400', label: 'Sold' },
+    paused: { bg: 'bg-gray-500/20', text: 'text-gray-400', label: 'Paused' },
+  };
+
+  const config = statusConfig[status];
+
+  return (
+    <span className={`px-3 py-1 rounded-full text-xs font-semibold ${config.bg} ${config.text}`}>
+      {config.label}
+    </span>
+  );
+}
+
+interface TableHeaderProps {
+  label: string;
+  field: SortField;
+  currentField: SortField;
+  direction: SortDirection;
+  onSort: (field: SortField) => void;
+}
+
+function TableHeader({ label, field, currentField, direction, onSort }: TableHeaderProps) {
+  const isActive = currentField === field;
+
+  return (
+    <th
+      className="px-4 py-3 text-left text-gray-400 text-sm font-medium cursor-pointer hover:text-white transition-colors"
+      onClick={() => onSort(field)}
+    >
+      <div className="flex items-center space-x-1">
+        <span>{label}</span>
+        {isActive && (
+          direction === 'asc' ? (
+            <ChevronUp className="w-4 h-4" />
+          ) : (
+            <ChevronDown className="w-4 h-4" />
+          )
+        )}
+      </div>
+    </th>
   );
 }
