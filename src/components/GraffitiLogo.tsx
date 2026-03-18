@@ -42,8 +42,9 @@ export function GraffitiLogo({ size = 'md', className = '' }: GraffitiLogoProps)
           </linearGradient>
 
           <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+            <feGaussianBlur stdDeviation="5" result="coloredBlur"/>
             <feMerge>
+              <feMergeNode in="coloredBlur"/>
               <feMergeNode in="coloredBlur"/>
               <feMergeNode in="SourceGraphic"/>
             </feMerge>
@@ -92,38 +93,132 @@ export function GraffitiLogo({ size = 'md', className = '' }: GraffitiLogoProps)
           </path>
         </g>
 
-        {/* GHETTO text with graffiti style */}
-        <g transform="translate(20, 20)" className="graffiti-letter">
-          <text x="0" y="40" fontFamily="Impact, sans-serif" fontSize="38" fontWeight="bold"
-                fill="url(#rainbowGradient)" filter="url(#glow)" stroke="#000" strokeWidth="2">
-            GHETTO
-          </text>
+        {/* GHETTO text - custom vector paths */}
+        <g transform="translate(25, 25)">
+          {/* G */}
+          <path d="M5,10 L5,40 L30,40 L30,25 L15,25 L15,30 L25,30 L25,35 L10,35 L10,15 L30,15 L30,10 Z"
+                fill="url(#rainbowGradient)"
+                stroke="#000"
+                strokeWidth="3"
+                strokeLinejoin="round"
+                filter="url(#glow)" />
+
+          {/* H */}
+          <path d="M40,10 L40,40 L45,40 L45,27 L60,27 L60,40 L65,40 L65,10 L60,10 L60,22 L45,22 L45,10 Z"
+                fill="url(#rainbowGradient)"
+                stroke="#000"
+                strokeWidth="3"
+                strokeLinejoin="round"
+                filter="url(#glow)" />
+
+          {/* E */}
+          <path d="M75,10 L75,40 L100,40 L100,35 L80,35 L80,27 L95,27 L95,22 L80,22 L80,15 L100,15 L100,10 Z"
+                fill="url(#rainbowGradient)"
+                stroke="#000"
+                strokeWidth="3"
+                strokeLinejoin="round"
+                filter="url(#glow)" />
+
+          {/* T */}
+          <path d="M105,10 L105,15 L117,15 L117,40 L122,40 L122,15 L134,15 L134,10 Z"
+                fill="url(#rainbowGradient)"
+                stroke="#000"
+                strokeWidth="3"
+                strokeLinejoin="round"
+                filter="url(#glow)" />
+
+          {/* T */}
+          <path d="M139,10 L139,15 L151,15 L151,40 L156,40 L156,15 L168,15 L168,10 Z"
+                fill="url(#rainbowGradient)"
+                stroke="#000"
+                strokeWidth="3"
+                strokeLinejoin="round"
+                filter="url(#glow)" />
+
+          {/* O */}
+          <path d="M178,10 L178,40 L203,40 L203,10 Z M183,15 L198,15 L198,35 L183,35 Z"
+                fill="url(#rainbowGradient)"
+                stroke="#000"
+                strokeWidth="3"
+                strokeLinejoin="round"
+                filter="url(#glow)" />
         </g>
 
         {/* Graffiti decorations around GHETTO */}
         <g className="graffiti-decorations">
-          <circle cx="195" cy="35" r="4" fill="#00ff88">
+          <circle cx="235" cy="40" r="4" fill="#00ff88">
             <animate attributeName="r" values="4;6;4" dur="2s" repeatCount="indefinite" />
           </circle>
-          <circle cx="205" cy="28" r="3" fill="#d4af37">
+          <circle cx="245" cy="33" r="3" fill="#d4af37">
             <animate attributeName="r" values="3;5;3" dur="2.5s" repeatCount="indefinite" />
           </circle>
-          <path d="M190,45 Q195,50 200,45" fill="none" stroke="#ff00ff" strokeWidth="2" opacity="0.8">
-            <animate attributeName="d" values="M190,45 Q195,50 200,45;M190,45 Q195,55 200,45;M190,45 Q195,50 200,45" dur="3s" repeatCount="indefinite" />
+          <path d="M230,50 Q235,55 240,50" fill="none" stroke="#ff00ff" strokeWidth="2" opacity="0.8">
+            <animate attributeName="d" values="M230,50 Q235,55 240,50;M230,50 Q235,60 240,50;M230,50 Q235,55 240,50" dur="3s" repeatCount="indefinite" />
           </path>
         </g>
 
-        {/* FINANCE text with street style */}
-        <g transform="translate(20, 70)" className="graffiti-letter">
-          <text x="0" y="40" fontFamily="Impact, sans-serif" fontSize="36" fontWeight="bold"
-                fill="url(#neonGradient)" filter="url(#glow)" stroke="#000" strokeWidth="2">
-            FINANCE
-          </text>
+        {/* FINANCE text - custom vector paths */}
+        <g transform="translate(25, 75)">
+          {/* F */}
+          <path d="M5,10 L5,40 L10,40 L10,27 L25,27 L25,22 L10,22 L10,15 L30,15 L30,10 Z"
+                fill="url(#neonGradient)"
+                stroke="#000"
+                strokeWidth="3"
+                strokeLinejoin="round"
+                filter="url(#glow)" />
+
+          {/* I */}
+          <path d="M35,10 L35,40 L40,40 L40,10 Z"
+                fill="url(#neonGradient)"
+                stroke="#000"
+                strokeWidth="3"
+                strokeLinejoin="round"
+                filter="url(#glow)" />
+
+          {/* N */}
+          <path d="M45,10 L45,40 L50,40 L50,18 L65,40 L70,40 L70,10 L65,10 L65,32 L50,10 Z"
+                fill="url(#neonGradient)"
+                stroke="#000"
+                strokeWidth="3"
+                strokeLinejoin="round"
+                filter="url(#glow)" />
+
+          {/* A */}
+          <path d="M80,40 L85,40 L87,32 L98,32 L100,40 L105,40 L95,10 L90,10 Z M89,27 L96,27 L92.5,15 Z"
+                fill="url(#neonGradient)"
+                stroke="#000"
+                strokeWidth="3"
+                strokeLinejoin="round"
+                filter="url(#glow)" />
+
+          {/* N */}
+          <path d="M110,10 L110,40 L115,40 L115,18 L130,40 L135,40 L135,10 L130,10 L130,32 L115,10 Z"
+                fill="url(#neonGradient)"
+                stroke="#000"
+                strokeWidth="3"
+                strokeLinejoin="round"
+                filter="url(#glow)" />
+
+          {/* C */}
+          <path d="M165,10 L145,10 L145,40 L165,40 L165,35 L150,35 L150,15 L165,15 Z"
+                fill="url(#neonGradient)"
+                stroke="#000"
+                strokeWidth="3"
+                strokeLinejoin="round"
+                filter="url(#glow)" />
+
+          {/* E */}
+          <path d="M170,10 L170,40 L195,40 L195,35 L175,35 L175,27 L190,27 L190,22 L175,22 L175,15 L195,15 L195,10 Z"
+                fill="url(#neonGradient)"
+                stroke="#000"
+                strokeWidth="3"
+                strokeLinejoin="round"
+                filter="url(#glow)" />
         </g>
 
         {/* Decorative stars and symbols */}
         <g>
-          <g transform="translate(260, 35)" className="graffiti-decorations">
+          <g transform="translate(260, 40)" className="graffiti-decorations">
             <path d="M0,-8 L2,-2 L8,-2 L3,2 L5,8 L0,4 L-5,8 L-3,2 L-8,-2 L-2,-2 Z"
                   fill="url(#rainbowGradient)" filter="url(#bubbleEffect)">
               <animateTransform attributeName="transform" type="rotate" from="0 0 0" to="360 0 0" dur="8s" repeatCount="indefinite" />
@@ -134,10 +229,13 @@ export function GraffitiLogo({ size = 'md', className = '' }: GraffitiLogoProps)
             <circle cx="0" cy="0" r="12" fill="url(#neonGradient)" opacity="0.7" filter="url(#bubbleEffect)">
               <animate attributeName="r" values="12;15;12" dur="3s" repeatCount="indefinite" />
             </circle>
-            <text x="-7" y="6" fontFamily="Impact" fontSize="18" fontWeight="bold" fill="#000">$</text>
+            <path d="M-6,6 L-6,-2 L-2,-2 L-2,-6 L2,-6 L2,-2 L6,-2 L6,2 L2,2 L2,6 Z"
+                  fill="#000"
+                  stroke="#d4af37"
+                  strokeWidth="1" />
           </g>
 
-          <g transform="translate(350, 35)" className="graffiti-decorations">
+          <g transform="translate(350, 40)" className="graffiti-decorations">
             <polygon points="0,-10 3,-3 10,-3 4,2 6,10 0,5 -6,10 -4,2 -10,-3 -3,-3"
                      fill="url(#rainbowGradient)" opacity="0.8" filter="url(#bubbleEffect)">
               <animateTransform attributeName="transform" type="rotate" from="0 0 0" to="-360 0 0" dur="10s" repeatCount="indefinite" />
@@ -147,25 +245,25 @@ export function GraffitiLogo({ size = 'md', className = '' }: GraffitiLogoProps)
 
         {/* Drip effect lines */}
         <g opacity="0.6" className="graffiti-decorations">
-          <line x1="90" y1="55" x2="90" y2="65" stroke="url(#rainbowGradient)" strokeWidth="3" strokeLinecap="round">
-            <animate attributeName="y2" values="65;70;65" dur="2s" repeatCount="indefinite" />
+          <line x1="90" y1="62" x2="90" y2="72" stroke="url(#rainbowGradient)" strokeWidth="3" strokeLinecap="round">
+            <animate attributeName="y2" values="72;77;72" dur="2s" repeatCount="indefinite" />
           </line>
-          <line x1="160" y1="55" x2="160" y2="68" stroke="url(#neonGradient)" strokeWidth="2.5" strokeLinecap="round">
-            <animate attributeName="y2" values="68;73;68" dur="2.5s" repeatCount="indefinite" />
+          <line x1="160" y1="62" x2="160" y2="75" stroke="url(#neonGradient)" strokeWidth="2.5" strokeLinecap="round">
+            <animate attributeName="y2" values="75;80;75" dur="2.5s" repeatCount="indefinite" />
           </line>
-          <line x1="130" y1="105" x2="130" y2="115" stroke="url(#rainbowGradient)" strokeWidth="3" strokeLinecap="round">
-            <animate attributeName="y2" values="115;120;115" dur="3s" repeatCount="indefinite" />
+          <line x1="130" y1="112" x2="130" y2="122" stroke="url(#rainbowGradient)" strokeWidth="3" strokeLinecap="round">
+            <animate attributeName="y2" values="122;127;122" dur="3s" repeatCount="indefinite" />
           </line>
         </g>
 
         {/* Additional bubble decorations */}
         <g className="floating-bubbles">
-          <circle cx="240" cy="65" r="6" fill="none" stroke="url(#neonGradient)" strokeWidth="2" opacity="0.7">
-            <animate attributeName="cy" values="65;55;65" dur="3s" repeatCount="indefinite" />
+          <circle cx="240" cy="70" r="6" fill="none" stroke="url(#neonGradient)" strokeWidth="2" opacity="0.7">
+            <animate attributeName="cy" values="70;60;70" dur="3s" repeatCount="indefinite" />
             <animate attributeName="r" values="6;8;6" dur="3s" repeatCount="indefinite" />
           </circle>
-          <circle cx="280" cy="90" r="5" fill="none" stroke="url(#rainbowGradient)" strokeWidth="2" opacity="0.7">
-            <animate attributeName="cy" values="90;80;90" dur="4s" repeatCount="indefinite" />
+          <circle cx="280" cy="95" r="5" fill="none" stroke="url(#rainbowGradient)" strokeWidth="2" opacity="0.7">
+            <animate attributeName="cy" values="95;85;95" dur="4s" repeatCount="indefinite" />
             <animate attributeName="r" values="5;7;5" dur="4s" repeatCount="indefinite" />
           </circle>
         </g>
