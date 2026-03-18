@@ -155,7 +155,11 @@ export function GraffitiLogo({ size = 'md', className = '' }: GraffitiLogoProps)
 
       <div className="relative z-10 flex flex-col items-center justify-center h-full transition-transform duration-300 group-hover:scale-105">
         <div className={`font-graffiti ${config.fontSize} font-black flex items-center justify-center`}
-          style={{ letterSpacing: config.letterSpacing }}>
+          style={{
+            letterSpacing: config.letterSpacing,
+            transform: 'rotate(-2deg) skewX(-5deg)',
+            fontStretch: 'expanded',
+          }}>
           {ghettoLetters.map((letter, index) => (
             <span
               key={`ghetto-${index}-${animationKey}`}
@@ -163,7 +167,10 @@ export function GraffitiLogo({ size = 'md', className = '' }: GraffitiLogoProps)
               style={{
                 color: letter.color,
                 textShadow: getShadow(letter.shadow, config.shadowIntensity),
-                transform: 'skewX(-8deg)',
+                transform: `skewX(-12deg) rotate(${Math.random() * 6 - 3}deg) scaleY(${0.95 + Math.random() * 0.15})`,
+                fontWeight: 900,
+                WebkitTextStroke: '2px rgba(0, 0, 0, 0.8)',
+                paintOrder: 'stroke fill',
                 animation: hasAnimated
                   ? `letterBounce 2.5s ease-in-out infinite ${index * 0.15}s, glowPulse 3s ease-in-out infinite ${index * 0.2}s, neonFlicker 4s ease-in-out infinite ${index * 0.5}s`
                   : `sprayIn 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards ${index * 0.08}s`,
@@ -175,8 +182,12 @@ export function GraffitiLogo({ size = 'md', className = '' }: GraffitiLogoProps)
           ))}
         </div>
 
-        <div className={`font-graffiti ${config.fontSize} font-black flex items-center justify-center -mt-1`}
-          style={{ letterSpacing: config.letterSpacing }}>
+        <div className={`font-graffiti ${config.fontSize} font-black flex items-center justify-center -mt-2`}
+          style={{
+            letterSpacing: config.letterSpacing,
+            transform: 'rotate(-2deg) skewX(-5deg)',
+            fontStretch: 'expanded',
+          }}>
           {financeLetters.map((letter, index) => (
             <span
               key={`finance-${index}-${animationKey}`}
@@ -184,7 +195,10 @@ export function GraffitiLogo({ size = 'md', className = '' }: GraffitiLogoProps)
               style={{
                 color: letter.color,
                 textShadow: getShadow(letter.shadow, config.shadowIntensity),
-                transform: 'skewX(-8deg)',
+                transform: `skewX(-12deg) rotate(${Math.random() * 6 - 3}deg) scaleY(${0.95 + Math.random() * 0.15})`,
+                fontWeight: 900,
+                WebkitTextStroke: '2px rgba(0, 0, 0, 0.8)',
+                paintOrder: 'stroke fill',
                 animation: hasAnimated
                   ? `letterBounce 2.5s ease-in-out infinite ${(index + 6) * 0.15}s, glowPulse 3s ease-in-out infinite ${(index + 6) * 0.2}s, neonFlicker 4s ease-in-out infinite ${(index + 6) * 0.5}s`
                   : `sprayIn 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards ${(index + 6) * 0.08}s`,
