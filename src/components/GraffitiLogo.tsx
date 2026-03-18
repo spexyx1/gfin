@@ -9,29 +9,34 @@ interface GraffitiLogoProps {
 export function GraffitiLogo({ size = 'md', className = '', animated = true }: GraffitiLogoProps) {
   const sizeConfig = {
     xs: {
-      fontSize: 'text-xl',
+      fontSize: 'text-sm',
       spacing: 'space-x-0.5',
       height: 'h-8',
+      gap: '-mt-0.5',
     },
     sm: {
-      fontSize: 'text-3xl',
+      fontSize: 'text-lg',
       spacing: 'space-x-1',
-      height: 'h-12',
+      height: 'h-10',
+      gap: '-mt-1',
     },
     md: {
       fontSize: 'text-5xl',
       spacing: 'space-x-1.5',
       height: 'h-20',
+      gap: '-mt-2',
     },
     lg: {
       fontSize: 'text-7xl',
       spacing: 'space-x-2',
       height: 'h-28',
+      gap: '-mt-3',
     },
     xl: {
       fontSize: 'text-8xl',
       spacing: 'space-x-3',
       height: 'h-36',
+      gap: '-mt-4',
     },
   };
 
@@ -109,11 +114,6 @@ export function GraffitiLogo({ size = 'md', className = '', animated = true }: G
           50% { opacity: 0.15; }
         }
 
-        @keyframes drip {
-          0% { transform: translateY(0); opacity: 1; }
-          100% { transform: translateY(10px); opacity: 0; }
-        }
-
         .graffiti-text {
           position: relative;
           background: linear-gradient(135deg, #ff0080 0%, #ff8c00 25%, #40e0d0 50%, #9d4edd 75%, #ff0080 100%);
@@ -139,14 +139,6 @@ export function GraffitiLogo({ size = 'md', className = '', animated = true }: G
           animation: spray-paint 2s ease-in-out infinite;
           pointer-events: none;
         }
-
-        .drip-effect {
-          position: absolute;
-          width: 3px;
-          height: 8px;
-          background: linear-gradient(180deg, rgba(255, 0, 128, 0.6) 0%, transparent 100%);
-          animation: drip 3s ease-in-out infinite;
-        }
       `}</style>
 
       {/* Spray paint effect background */}
@@ -164,16 +156,11 @@ export function GraffitiLogo({ size = 'md', className = '', animated = true }: G
         {...containerProps}
       >
         {animated ? splitText('GHETTO') : 'GHETTO'}
-
-        {/* Drip effects */}
-        <div className="drip-effect" style={{ left: '20%', top: '100%', animationDelay: '0s' }} />
-        <div className="drip-effect" style={{ left: '45%', top: '100%', animationDelay: '0.5s' }} />
-        <div className="drip-effect" style={{ left: '70%', top: '100%', animationDelay: '1s' }} />
       </MotionDiv>
 
       {/* FINANCE text */}
       <MotionDiv
-        className={`${config.fontSize} font-bold tracking-tight select-none graffiti-text -mt-2 relative`}
+        className={`${config.fontSize} font-bold tracking-tight select-none graffiti-text ${config.gap} relative`}
         style={{
           fontFamily: "'Brush Script MT', 'Segoe Script', 'Comic Sans MS', cursive",
           letterSpacing: '-0.02em',
@@ -183,11 +170,6 @@ export function GraffitiLogo({ size = 'md', className = '', animated = true }: G
         {...containerProps}
       >
         {animated ? splitText('FINANCE') : 'FINANCE'}
-
-        {/* Drip effects */}
-        <div className="drip-effect" style={{ left: '15%', top: '100%', animationDelay: '0.3s' }} />
-        <div className="drip-effect" style={{ left: '50%', top: '100%', animationDelay: '0.8s' }} />
-        <div className="drip-effect" style={{ left: '85%', top: '100%', animationDelay: '1.3s' }} />
       </MotionDiv>
 
       {/* Glow effect overlay */}
