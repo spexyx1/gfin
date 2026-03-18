@@ -196,11 +196,11 @@ function App() {
           {/* Headline */}
           <div className="text-center mb-6 sm:mb-8">
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl luxe-title mb-3 sm:mb-4 tracking-tight">
-              <span className="bg-gradient-to-r from-[#d4af37] via-[#f4d03f] to-[#d4af37] bg-clip-text text-transparent luxe-text-glow">
-                BUY & SELL
+              <span className="bg-gradient-to-r from-[#FFEA00] via-[#FFD700] to-[#FF8C00] bg-clip-text text-transparent luxe-text-glow">
+                Buy & Sell
               </span>
               <br />
-              <span className="text-white">ANYTHING WITH CRYPTO</span>
+              <span className="text-white">Anything With Crypto</span>
             </h1>
             <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-300 font-light max-w-3xl mx-auto leading-relaxed px-2">
               Escrow-protected trades. Moderated disputes. Built-in privacy. No middleman.
@@ -209,10 +209,10 @@ function App() {
 
           {/* Legal Items Warning Banner */}
           <div className="max-w-4xl mx-auto mb-6 sm:mb-10">
-            <div className="luxe-card border-[#00ff88]/30 p-4 sm:p-6">
+            <div className="luxe-card border-[#FFD700]/20 p-4 sm:p-6">
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
                 <div className="flex items-start space-x-3 sm:space-x-4 flex-1">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-[#00ff88] to-[#00cc6f] rounded-lg flex items-center justify-center flex-shrink-0 luxe-glow-neon">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-[#FFEA00] to-[#FF8C00] rounded-lg flex items-center justify-center flex-shrink-0 luxe-glow-neon">
                     <Shield className="w-5 h-5 sm:w-6 sm:h-6 text-black" />
                   </div>
                   <div className="flex-1">
@@ -236,12 +236,12 @@ function App() {
           <div className="mb-6 sm:mb-10">
             <div className="text-center mb-4 sm:mb-6">
               <p className="luxe-subtitle text-gray-500 tracking-widest text-xs mb-2">Why Trade Here</p>
-              <div className="w-16 h-0.5 bg-gradient-to-r from-transparent via-[#d4af37] to-transparent mx-auto"></div>
+              <div className="w-16 h-0.5 bg-gradient-to-r from-transparent via-[#FFD700] to-transparent mx-auto"></div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 max-w-5xl mx-auto">
               <div className="luxe-card p-5 sm:p-8 group">
-                <div className="w-14 h-14 bg-gradient-to-br from-[#00ff88]/20 to-[#00cc6f]/20 rounded-xl flex items-center justify-center mb-4 group-hover:from-[#00ff88]/30 group-hover:to-[#00cc6f]/30 transition-all">
-                  <Shield className="w-7 h-7 text-[#00ff88]" />
+                <div className="w-14 h-14 bg-gradient-to-br from-[#22c55e]/20 to-[#16a34a]/20 rounded-xl flex items-center justify-center mb-4 group-hover:from-[#22c55e]/30 group-hover:to-[#16a34a]/30 transition-all">
+                  <Shield className="w-7 h-7 text-[#22c55e]" />
                 </div>
                 <h3 className="text-xl luxe-title text-white mb-3">Escrow Protection</h3>
                 <p className="text-sm text-gray-400 font-light leading-relaxed">
@@ -250,8 +250,8 @@ function App() {
               </div>
 
               <div className="luxe-card p-8 group">
-                <div className="w-14 h-14 bg-gradient-to-br from-[#d4af37]/20 to-[#f4d03f]/20 rounded-xl flex items-center justify-center mb-4 group-hover:from-[#d4af37]/30 group-hover:to-[#f4d03f]/30 transition-all">
-                  <Wallet className="w-7 h-7 text-[#d4af37]" />
+                <div className="w-14 h-14 bg-gradient-to-br from-[#FFD700]/20 to-[#FF8C00]/20 rounded-xl flex items-center justify-center mb-4 group-hover:from-[#FFD700]/30 group-hover:to-[#FF8C00]/30 transition-all">
+                  <Wallet className="w-7 h-7 text-[#FFD700]" />
                 </div>
                 <h3 className="text-xl luxe-title text-white mb-3">Pay With Any Crypto</h3>
                 <p className="text-sm text-gray-400 font-light leading-relaxed">
@@ -292,7 +292,7 @@ function App() {
                 <div className="w-10 h-10 bg-yellow-500/20 rounded-full flex items-center justify-center mx-auto mb-3 border-2 border-yellow-500/50">
                   <span className="text-lg luxe-title text-yellow-400">1</span>
                 </div>
-                <h4 className="text-sm luxe-title text-luxe-gold mb-1">Browse</h4>
+                <h4 className="text-sm luxe-title text-neon-yellow mb-1">Browse</h4>
                 <p className="text-xs text-gray-400 font-normal leading-relaxed">
                   Find what you want and place an order
                 </p>
@@ -302,7 +302,7 @@ function App() {
                 <div className="w-10 h-10 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-3 border-2 border-green-500/50">
                   <span className="text-lg luxe-title text-green-400">2</span>
                 </div>
-                <h4 className="text-sm luxe-title text-luxe-gold mb-1">Pay</h4>
+                <h4 className="text-sm luxe-title text-neon-yellow mb-1">Pay</h4>
                 <p className="text-xs text-gray-400 font-normal leading-relaxed">
                   Send crypto — funds go straight into escrow
                 </p>
@@ -312,7 +312,7 @@ function App() {
                 <div className="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-3 border-2 border-blue-500/50">
                   <span className="text-lg luxe-title text-blue-400">3</span>
                 </div>
-                <h4 className="text-sm luxe-title text-luxe-gold mb-1">Receive</h4>
+                <h4 className="text-sm luxe-title text-neon-yellow mb-1">Receive</h4>
                 <p className="text-xs text-gray-400 font-normal leading-relaxed">
                   Seller ships the item with tracking
                 </p>
@@ -322,7 +322,7 @@ function App() {
                 <div className="w-10 h-10 bg-orange-500/20 rounded-full flex items-center justify-center mx-auto mb-3 border-2 border-orange-500/50">
                   <span className="text-lg luxe-title text-orange-400">4</span>
                 </div>
-                <h4 className="text-sm luxe-title text-luxe-gold mb-1">Confirm</h4>
+                <h4 className="text-sm luxe-title text-neon-yellow mb-1">Confirm</h4>
                 <p className="text-xs text-gray-400 font-normal leading-relaxed">
                   Approve delivery and funds release to seller
                 </p>
@@ -344,14 +344,14 @@ function App() {
           {productsLoading ? (
             <div className="flex items-center justify-center py-16">
               <div className="w-8 h-8 border-2 border-neon-blue border-t-transparent rounded-full animate-spin"></div>
-              <span className="ml-3 text-luxe-gold font-normal">Loading products...</span>
+              <span className="ml-3 text-neon-yellow font-normal">Loading products...</span>
             </div>
           ) : filteredProducts.length === 0 ? (
             <div className="text-center py-16">
               <div className="w-24 h-24 bg-gray-800/50 rounded-full flex items-center justify-center mb-6 mx-auto">
                 <Package className="w-12 h-12 text-gray-400" />
               </div>
-              <h3 className="text-xl luxe-title text-luxe-gold mb-2">No products found</h3>
+              <h3 className="text-xl luxe-title text-neon-yellow mb-2">No products found</h3>
               <p className="text-gray-400 font-normal max-w-md mx-auto">
                 {searchTerm || searchFilters.query 
                   ? 'Try adjusting your search terms or filters'
@@ -400,7 +400,7 @@ function App() {
                   
                   <div className="p-4 sm:p-6">
                     <div className="flex items-start justify-between mb-2 sm:mb-3">
-                      <h3 className="text-base sm:text-lg font-normal text-luxe-gold transition-colors line-clamp-2 text-center w-full font-medium">
+                      <h3 className="text-base sm:text-lg font-normal text-neon-yellow transition-colors line-clamp-2 text-center w-full font-medium">
                         {product.title}
                       </h3>
                     </div>
@@ -411,7 +411,7 @@ function App() {
 
                     <div className="flex items-center justify-center mb-3 sm:mb-4">
                       <div className="flex items-center justify-center space-x-2">
-                        <span className="text-xl sm:text-2xl luxe-title text-luxe-gold text-center font-semibold">
+                        <span className="text-xl sm:text-2xl luxe-title text-neon-yellow text-center font-semibold">
                           {product.price} GHETTO
                         </span>
                       </div>
@@ -424,7 +424,7 @@ function App() {
                           {product.seller.name}
                         </span>
                         {product.seller.verified && (
-                          <Shield className="w-4 h-4 text-luxe-gold" />
+                          <Shield className="w-4 h-4 text-neon-yellow" />
                         )}
                         <span className="text-sm font-normal text-yellow-400 text-center">★{product.seller.rating}</span>
                       </div>
@@ -500,7 +500,7 @@ function App() {
                 {!isSocialPage && (
                   <button
                   onClick={() => openModal('advancedSearch')}
-                  className="absolute right-2 sm:right-3 top-1/2 transform -translate-y-1/2 p-1.5 sm:p-2 text-gray-500 hover:text-[#d4af37] transition-colors touch-friendly"
+                  className="absolute right-2 sm:right-3 top-1/2 transform -translate-y-1/2 p-1.5 sm:p-2 text-gray-500 hover:text-[#FFD700] transition-colors touch-friendly"
                   title="Advanced Search"
                 >
                   <Filter className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
@@ -516,7 +516,7 @@ function App() {
                   onClick={() => openModal('userProfile')}
                   className="p-1.5 luxe-glass rounded-lg hover:bg-white/10 transition-all touch-friendly"
                 >
-                  <div className="w-7 h-7 bg-gradient-to-br from-[#d4af37] to-[#f4d03f] rounded-full flex items-center justify-center">
+                  <div className="w-7 h-7 bg-gradient-to-br from-[#FFD700] to-[#FF8C00] rounded-full flex items-center justify-center">
                     <UserCircle className="w-4 h-4 text-black" />
                   </div>
                 </button>
@@ -552,14 +552,14 @@ function App() {
               >
                 <Mail className="w-5 h-5" />
                 {unreadMessageCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-[#00ff88] text-black text-xs rounded-full w-4 h-4 flex items-center justify-center text-[10px] font-bold">
+                  <span className="absolute -top-1 -right-1 bg-[#22c55e] text-black text-xs rounded-full w-4 h-4 flex items-center justify-center text-[10px] font-bold">
                     {unreadMessageCount}
                   </span>
                 )}
               </button>
               <button
                 onClick={() => openModal('wallet')}
-                className="relative p-2 text-gray-400 hover:text-[#d4af37] transition-colors"
+                className="relative p-2 text-gray-400 hover:text-[#FFD700] transition-colors"
                 title="Wallet"
               >
                 <Wallet className="w-5 h-5" />
@@ -594,7 +594,7 @@ function App() {
               >
                 <ShoppingCart className="w-5 h-5" />
                 {getItemCount() > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-[#d4af37] text-black text-xs rounded-full w-4 h-4 flex items-center justify-center text-[10px] font-bold">
+                  <span className="absolute -top-1 -right-1 bg-[#FFD700] text-black text-xs rounded-full w-4 h-4 flex items-center justify-center text-[10px] font-bold">
                     {getItemCount()}
                   </span>
                 )}
@@ -606,7 +606,7 @@ function App() {
                     onClick={() => openModal('userProfile')}
                     className="flex items-center space-x-2 p-2 luxe-glass rounded-lg hover:bg-white/10 transition-all"
                   >
-                    <div className="w-8 h-8 bg-gradient-to-br from-[#d4af37] to-[#f4d03f] rounded-full flex items-center justify-center">
+                    <div className="w-8 h-8 bg-gradient-to-br from-[#FFD700] to-[#FF8C00] rounded-full flex items-center justify-center">
                       <UserCircle className="w-4 h-4 text-black" />
                     </div>
                     <span className="hidden sm:inline text-white font-medium">{user.username}</span>
