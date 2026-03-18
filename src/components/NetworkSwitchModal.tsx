@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { AlertTriangle, X, Shield, Zap } from 'lucide-react';
+import { AlertTriangle, X, Shield, Zap, Loader2 } from 'lucide-react';
 import { useWeb3 } from '../hooks/useWeb3';
+import { logger } from '../utils/logger';
 
 export function NetworkSwitchModal() {
-  const { isConnected, chainId, isCorrectNetwork, switchToPolygon, targetNetwork } = useWeb3();
+  const { isConnected, chainId, isCorrectNetwork, switchToPolygon, isSwitchingNetwork, targetNetwork } = useWeb3();
   const [showModal, setShowModal] = useState(false);
   const [hasShownThisSession, setHasShownThisSession] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     // Show modal when user connects to wrong network
@@ -18,12 +20,25 @@ export function NetworkSwitchModal() {
     if (!isConnected) {
       setHasShownThisSession(false);
       setShowModal(false);
+      setError(null);
     }
-  }, [isConnected, isCorrectNetwork, hasShownThisSession]);
+
+    // Close modal when network is correct
+    if (isCorrectNetwork && showModal) {
+      setShowModal(false);
+      setError(null);
+    }
+  }, [isConnected, isCorrectNetwork, hasShownThisSession, showModal]);
 
   const handleSwitch = async () => {
-    await switchToPolygon();
-    setShowModal(false);
+    try {
+      setError(null);
+      await switchToPolygon();
+      // Modal will close automatically when isCorrectNetwork becomes true
+    } catch (err) {
+      logger.error('Network switch failed in modal', 'NetworkSwitchModal', err);
+      setError('Failed to switch network. Please try manually switching in your wallet.');
+    }
   };
 
   const handleDismiss = () => {
@@ -96,17 +111,33 @@ export function NetworkSwitchModal() {
             </p>
           </div>
 
+          {/* Error message */}
+          {error && (
+            <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-4">
+              <p className="text-xs text-red-300">{error}</p>
+            </div>
+          )}
+
           {/* Actions */}
-          <div className="flex space-x-3">
+          <div className="flex flex-col sm:flex-row gap-3">
             <button
               onClick={handleSwitch}
-              className="flex-1 px-6 py-3 bg-gradient-to-r from-neon-blue to-neon-blue/80 hover:from-neon-blue/90 hover:to-neon-blue/70 text-black font-black rounded-xl transition-all uppercase"
+              disabled={isSwitchingNetwork}
+              className="flex-1 px-6 py-3 bg-gradient-to-r from-neon-blue to-neon-blue/80 hover:from-neon-blue/90 hover:to-neon-blue/70 text-black font-black rounded-xl transition-all uppercase disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
             >
-              Switch to Polygon
+              {isSwitchingNetwork ? (
+                <>
+                  <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                  Switching...
+                </>
+              ) : (
+                'Switch to Polygon'
+              )}
             </button>
             <button
               onClick={handleDismiss}
-              className="px-6 py-3 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded-xl transition-colors font-medium"
+              disabled={isSwitchingNetwork}
+              className="px-6 py-3 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded-xl transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Browse Only
             </button>

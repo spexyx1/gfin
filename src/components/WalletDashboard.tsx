@@ -94,10 +94,24 @@ export function WalletDashboard({ isOpen, onClose, initialTab }: WalletDashboard
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-gray-900 rounded-3xl border border-gray-700 w-full max-w-6xl h-[90vh] overflow-hidden flex shadow-2xl">
-        {/* Sidebar */}
-        <div className="w-64 bg-gray-800 border-r border-gray-700 flex flex-col">
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-2 sm:p-4">
+      <div className="bg-gray-900 rounded-2xl sm:rounded-3xl border border-gray-700 w-full max-w-6xl h-[95vh] sm:h-[90vh] overflow-hidden flex flex-col lg:flex-row shadow-2xl">
+        {/* Mobile Header - Visible only on mobile */}
+        <div className="lg:hidden flex items-center justify-between p-4 border-b border-gray-700 bg-gray-800">
+          <div className="flex items-center space-x-2">
+            <Wallet className="h-5 w-5 text-neon-blue" />
+            <h2 className="text-base font-black text-white uppercase">Wallet</h2>
+          </div>
+          <button
+            onClick={onClose}
+            className="p-2 hover:bg-gray-700 rounded-lg transition-colors"
+          >
+            <X className="w-5 h-5 text-gray-400" />
+          </button>
+        </div>
+
+        {/* Sidebar - Hidden on mobile, shown as horizontal tabs */}
+        <div className="hidden lg:flex lg:w-64 bg-gray-800 border-r border-gray-700 flex-col">
           <div className="p-6 border-b border-gray-700">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
@@ -152,11 +166,40 @@ export function WalletDashboard({ isOpen, onClose, initialTab }: WalletDashboard
           </div>
         </div>
 
+        {/* Mobile Tab Navigation - Visible only on mobile */}
+        <div className="lg:hidden border-b border-gray-700 bg-gray-800 overflow-x-auto">
+          <div className="flex space-x-2 p-2 min-w-max">
+            {[
+              { id: 'connect', label: 'Connect', icon: Link },
+              { id: 'overview', label: 'Overview', icon: Eye },
+              { id: 'send', label: 'Send', icon: Send },
+              { id: 'buy', label: 'Buy', icon: CreditCard },
+              { id: 'swap', label: 'Swap', icon: ArrowUpDown },
+              { id: 'atomic-swap', label: 'Atomic', icon: Repeat },
+              { id: 'trade', label: 'Trade', icon: TrendingUp },
+              { id: 'cards', label: 'Cards', icon: CreditCard },
+            ].map(({ id, label, icon: Icon }) => (
+              <button
+                key={id}
+                onClick={() => setActiveTab(id as any)}
+                className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 font-bold text-sm whitespace-nowrap ${
+                  activeTab === id
+                    ? 'bg-neon-blue text-black'
+                    : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                }`}
+              >
+                <Icon className="w-4 h-4" />
+                <span>{label}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+
         {/* Main Content */}
-        <div className="flex-1 flex flex-col">
+        <div className="flex-1 flex flex-col overflow-hidden">
           {/* Connect Tab */}
           {activeTab === 'connect' && (
-            <div className="flex-1 overflow-y-auto p-8">
+            <div className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
               <h3 className="text-2xl font-black text-white mb-8 uppercase">Connect DeFi Wallets</h3>
               
               {/* Wallet Connection */}
@@ -216,7 +259,7 @@ export function WalletDashboard({ isOpen, onClose, initialTab }: WalletDashboard
 
           {/* Overview Tab */}
           {activeTab === 'overview' && (
-            <div className="flex-1 overflow-y-auto p-8">
+            <div className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
               <div className="flex items-center justify-between mb-8">
                 <h3 className="text-2xl font-black text-white uppercase">Wallet Overview</h3>
                 <div className="bg-neon-blue/10 border border-neon-blue/20 rounded-xl px-4 py-2">
@@ -299,7 +342,7 @@ export function WalletDashboard({ isOpen, onClose, initialTab }: WalletDashboard
 
           {/* Send Tab */}
           {activeTab === 'send' && (
-            <div className="flex-1 overflow-y-auto p-8">
+            <div className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
               <h3 className="text-2xl font-black text-white mb-4 uppercase">Send Crypto</h3>
 
               {/* Network Indicator */}
@@ -369,7 +412,7 @@ export function WalletDashboard({ isOpen, onClose, initialTab }: WalletDashboard
 
           {/* Buy Tab */}
           {activeTab === 'buy' && (
-            <div className="flex-1 overflow-y-auto p-8">
+            <div className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
               <h3 className="text-2xl font-black text-white mb-4 uppercase">Buy Crypto</h3>
 
               {/* Network Indicator */}
@@ -449,7 +492,7 @@ export function WalletDashboard({ isOpen, onClose, initialTab }: WalletDashboard
 
           {/* Swap Tab */}
           {activeTab === 'swap' && (
-            <div className="flex-1 overflow-y-auto p-8">
+            <div className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
               <div className="text-center mb-8">
                 <h3 className="text-2xl font-black text-white mb-4 uppercase">Token Swap</h3>
                 <div className="bg-neon-blue/10 border border-neon-blue/20 rounded-2xl p-4 max-w-md mx-auto">
@@ -562,7 +605,7 @@ export function WalletDashboard({ isOpen, onClose, initialTab }: WalletDashboard
           {/* Trade Tab */}
           {/* Atomic Swap Tab */}
           {activeTab === 'atomic-swap' && (
-            <div className="flex-1 overflow-y-auto p-8">
+            <div className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
               {!isConnected || !account ? (
                 <div className="text-center py-16">
                   <Repeat className="w-16 h-16 text-gray-600 mx-auto mb-6" />
@@ -594,14 +637,14 @@ export function WalletDashboard({ isOpen, onClose, initialTab }: WalletDashboard
           )}
 
           {activeTab === 'cards' && (
-            <div className="flex-1 overflow-y-auto p-8">
+            <div className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
               <h3 className="text-2xl font-black text-white mb-8 uppercase">GHETTO Finance Card</h3>
               <CardProgramTab />
             </div>
           )}
 
           {activeTab === 'trade' && (
-            <div className="flex-1 overflow-y-auto p-8">
+            <div className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
               <h3 className="text-2xl font-black text-white mb-8 uppercase">Exchange Trading</h3>
               
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">

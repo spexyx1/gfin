@@ -468,19 +468,19 @@ function App() {
       <header className={`glass-morphism border-b border-white/10 sticky top-0 z-50 ${
         isSocialPage ? 'bg-gray-900/95' : ''
       }`}>
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex items-center justify-center h-20">
-            <div className="flex items-center justify-center flex-1">
-              <div className="flex items-center space-x-3 justify-center">
-                <Link to="/" className="flex items-center space-x-3">
-                  <GraffitiLogo size="sm" />
-                </Link>
-              </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="flex flex-col lg:flex-row items-center justify-between py-3 lg:py-0 lg:h-20 gap-3 lg:gap-0">
+            {/* Logo - Hidden on mobile, shown on desktop */}
+            <div className="hidden lg:flex items-center flex-shrink-0">
+              <Link to="/" className="flex items-center space-x-3">
+                <GraffitiLogo size="sm" />
+              </Link>
             </div>
 
-            <div className="flex-1 max-w-xl mx-8">
+            {/* Search Bar - Full width on mobile, centered on desktop */}
+            <div className="w-full lg:flex-1 lg:max-w-xl lg:mx-8">
               <div className="relative">
-                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-apple-gray-500 w-4 h-4" />
+                <Search className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 text-apple-gray-500 w-4 h-4" />
                 <input
                   type="text"
                   placeholder={isSocialPage ? "Search posts, communities, users..." : "Search products and services"}
@@ -488,12 +488,12 @@ function App() {
                   onChange={(e) => setSearchTerm(e.target.value)}
                   onFocus={() => setIsSearchFocused(true)}
                   onBlur={() => setIsSearchFocused(false)}
-                  className="w-full min-w-[600px] pl-12 pr-16 py-3 glass-morphism rounded-apple focus:outline-none apple-focus text-white placeholder-apple-gray-500 text-sm apple-font"
+                  className="w-full pl-10 sm:pl-12 pr-12 sm:pr-16 py-2.5 sm:py-3 glass-morphism rounded-apple focus:outline-none apple-focus text-white placeholder-apple-gray-500 text-sm apple-font"
                 />
                 {!isSocialPage && (
                   <button
                   onClick={() => openModal('advancedSearch')}
-                  className="absolute right-4 top-1/2 transform -translate-y-1/2 p-2 text-apple-gray-500 hover:text-apple-blue apple-hover"
+                  className="absolute right-3 sm:right-4 top-1/2 transform -translate-y-1/2 p-2 text-apple-gray-500 hover:text-apple-blue apple-hover"
                   title="Advanced Search"
                 >
                   <Filter className="w-4 h-4" />
@@ -502,7 +502,8 @@ function App() {
               </div>
             </div>
 
-            <div className="flex items-center justify-center space-x-6 flex-1">
+            {/* Navigation Icons - Scrollable on mobile */}
+            <div className="flex items-center justify-start lg:justify-center space-x-4 lg:space-x-6 w-full lg:w-auto overflow-x-auto lg:overflow-visible pb-2 lg:pb-0 flex-shrink-0">
               {issitemaster && (
                 <Link
                   to="/sitemaster"
@@ -569,7 +570,7 @@ function App() {
               </button>
 
               {user ? (
-                <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-2 sm:space-x-4 flex-shrink-0">
                   <button
                     onClick={() => openModal('userProfile')}
                     className="flex items-center space-x-2 p-2 glass-morphism rounded-apple apple-hover"
@@ -577,11 +578,11 @@ function App() {
                     <div className="w-8 h-8 bg-apple-blue rounded-full flex items-center justify-center">
                       <UserCircle className="w-4 h-4 text-black" />
                     </div>
-                    <span className="text-white apple-font">{user.username}</span>
+                    <span className="hidden sm:inline text-white apple-font">{user.username}</span>
                   </button>
                   <button
                     onClick={logout}
-                    className="btn-apple-secondary px-4 py-2 text-sm"
+                    className="btn-apple-secondary px-3 sm:px-4 py-2 text-xs sm:text-sm"
                   >
                     Logout
                   </button>
@@ -592,7 +593,7 @@ function App() {
                     setAuthMode('login');
                     openModal('auth');
                   }}
-                  className="btn-apple-primary px-6 py-2"
+                  className="btn-apple-primary px-4 sm:px-6 py-2 text-sm flex-shrink-0"
                 >
                   Login
                 </button>

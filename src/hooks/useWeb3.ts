@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { ethers, BrowserProvider } from 'ethers';
-import { useAppKit, useAppKitAccount, useAppKitProvider } from '@reown/appkit/react';
+import { useAppKit, useAppKitAccount, useAppKitProvider, useAppKitNetwork } from '@reown/appkit/react';
+import { polygon, polygonAmoy } from '@reown/appkit/networks';
 import { DEFAULT_CHAIN_ID, SUPPORTED_CHAIN_IDS } from '../config/reownConfig';
 import { logger } from '../utils/logger';
 
@@ -25,10 +26,12 @@ export const useWeb3 = () => {
   const { open } = useAppKit();
   const { address, isConnected, chainId } = useAppKitAccount();
   const { walletProvider } = useAppKitProvider('eip155');
+  const { switchNetwork } = useAppKitNetwork();
 
   const [provider, setProvider] = useState<BrowserProvider | null>(null);
   const [networkName, setNetworkName] = useState<string>('');
   const [isCorrectNetwork, setIsCorrectNetwork] = useState(false);
+  const [isSwitchingNetwork, setIsSwitchingNetwork] = useState(false);
 
   const getTargetNetwork = useCallback(() => {
     const env = import.meta.env.VITE_NETWORK_ENV || 'polygon';
@@ -75,7 +78,27 @@ export const useWeb3 = () => {
   };
 
   const switchToPolygon = async () => {
-    await open({ view: 'Networks' });
+    if (isSwitchingNetwork) {
+      logger.info('Network switch already in progress', 'useWeb3');
+      return;
+    }
+
+    try {
+      setIsSwitchingNetwork(true);
+      const env = import.meta.env.VITE_NETWORK_ENV || 'mainnet';
+      const targetNetwork = env === 'testnet' ? polygonAmoy : polygon;
+
+      logger.info(`Switching to ${targetNetwork.name}`, 'useWeb3');
+      await switchNetwork(targetNetwork);
+      logger.info('Network switch successful', 'useWeb3');
+    } catch (error) {
+      logger.error('Failed to switch network', 'useWeb3', error);
+      // If automatic switch fails, open the network selection UI as fallback
+      await open({ view: 'Networks' });
+      throw error;
+    } finally {
+      setIsSwitchingNetwork(false);
+    }
   };
 
   const getBalance = async (): Promise<string> => {
@@ -120,6 +143,7 @@ export const useWeb3 = () => {
     getBalance,
     sendTransaction,
     switchToPolygon,
+    isSwitchingNetwork,
     targetNetwork: getTargetNetwork(),
     supportedNetworks: SUPPORTED_NETWORKS,
   };
