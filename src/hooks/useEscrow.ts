@@ -387,6 +387,41 @@ export function useEscrow() {
     }
   };
 
+  // Withdraw GHETTO collateral (only available collateral, not held)
+  const withdrawGhettoCollateral = async (amount: number): Promise<void> => {
+    if (!provider || !account) {
+      throw new Error('Web3 wallet not connected');
+    }
+
+    if (!amount || amount <= 0) {
+      throw new Error('Amount must be greater than 0');
+    }
+
+    setIsLoading(true);
+    try {
+      // Get current collateral info to validate withdrawal
+      const collateralInfo = await getSellerCollateralInfo();
+
+      if (amount > collateralInfo.availableCollateral) {
+        throw new Error(`Cannot withdraw ${amount} GHETTO. Only ${collateralInfo.availableCollateral} GHETTO is available for withdrawal. ${collateralInfo.heldCollateral} GHETTO is held in active orders.`);
+      }
+
+      // Withdraw collateral from smart contract
+      const { escrowContract } = await getContracts();
+      const withdrawTx = await escrowContract.withdrawGhettoCollateral(
+        ethers.parseUnits(amount.toString(), await getTokenDecimals(GHETTO_CONTRACT_ADDRESS))
+      );
+      await withdrawTx.wait();
+
+      logger.debug('Collateral withdrawn successfully', 'useEscrow', { amount, txHash: withdrawTx.hash });
+    } catch (error) {
+      handleSupabaseError(error);
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   // Calculate total fee for a payment
   const calculateTotalFee = async (amount: number, paymentTokenAddress: string): Promise<number> => {
     if (!provider) {
@@ -1206,6 +1241,7 @@ export function useEscrow() {
     withdrawSellerBalance,
     checkTokenBalance,
     depositGhettoCollateral,
+    withdrawGhettoCollateral,
     getSellerCollateralInfo,
     calculateTotalFee,
     getOrdersByUser,

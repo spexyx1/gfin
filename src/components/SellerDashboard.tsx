@@ -46,7 +46,7 @@ export function SellerDashboard({ isOpen, onClose }: SellerDashboardProps) {
   const { account } = useWeb3();
   const { user } = useAuth();
   const { needsTermsAcceptance } = useTerms();
-  const { getSellerCollateralInfo, depositGhettoCollateral } = useEscrow();
+  const { getSellerCollateralInfo, depositGhettoCollateral, withdrawGhettoCollateral } = useEscrow();
   const {
     products,
     isLoading,
@@ -64,7 +64,9 @@ export function SellerDashboard({ isOpen, onClose }: SellerDashboardProps) {
     maxOrderValue: 0,
   });
   const [showCollateralDeposit, setShowCollateralDeposit] = useState(false);
+  const [showCollateralWithdraw, setShowCollateralWithdraw] = useState(false);
   const [depositAmount, setDepositAmount] = useState('100');
+  const [withdrawAmount, setWithdrawAmount] = useState('');
 
   React.useEffect(() => {
     const loadCollateralInfo = async () => {
@@ -282,6 +284,25 @@ export function SellerDashboard({ isOpen, onClose }: SellerDashboardProps) {
     }
   };
 
+  const handleWithdrawCollateral = async () => {
+    try {
+      const amount = parseFloat(withdrawAmount);
+      if (isNaN(amount) || amount <= 0) {
+        alert('Please enter a valid amount');
+        return;
+      }
+
+      await withdrawGhettoCollateral(amount);
+      setShowCollateralWithdraw(false);
+      setWithdrawAmount('');
+      const info = await getSellerCollateralInfo();
+      setCollateralInfo(info);
+    } catch (error: any) {
+      logger.error('Failed to withdraw collateral', 'SellerDashboard', error);
+      alert(error.message || 'Failed to withdraw collateral. Please try again.');
+    }
+  };
+
   if (!isOpen) return null;
 
   const SidebarNav = () => (
@@ -385,22 +406,23 @@ export function SellerDashboard({ isOpen, onClose }: SellerDashboardProps) {
 
                 {/* Collateral Warning */}
                 {collateralInfo.totalCollateral < 100 && (
-                  <div className="bg-gradient-to-r from-red-500/20 via-red-500/10 to-red-500/20 border border-red-500/30 rounded-xl p-6">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-3">
-                        <div className="p-3 bg-red-500/20 rounded-lg">
-                          <Shield className="w-6 h-6 text-red-400" />
+                  <div className="bg-gradient-to-r from-red-500/20 via-red-500/10 to-red-500/20 border-2 border-red-500/50 rounded-xl p-8 shadow-lg shadow-red-500/20">
+                    <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+                      <div className="flex items-center space-x-4">
+                        <div className="p-4 bg-red-500/30 rounded-xl shadow-lg">
+                          <Shield className="w-8 h-8 text-red-400" />
                         </div>
                         <div>
-                          <p className="text-red-400 font-bold text-lg">Collateral Required</p>
-                          <p className="text-gray-300 text-sm">Deposit 100 GHETTO to start selling</p>
+                          <p className="text-red-400 font-bold text-xl mb-1">Collateral Required to Start Selling</p>
+                          <p className="text-gray-300">You need to deposit at least 100 GHETTO tokens to activate your seller account</p>
                         </div>
                       </div>
                       <button
                         onClick={() => setShowCollateralDeposit(true)}
-                        className="px-6 py-3 bg-gradient-to-r from-luxe-gold to-yellow-400 hover:from-yellow-400 hover:to-luxe-gold text-black font-bold rounded-lg transition-all duration-300 transform hover:scale-105"
+                        className="px-8 py-4 bg-gradient-to-r from-luxe-gold via-yellow-400 to-luxe-gold hover:from-yellow-400 hover:via-luxe-gold hover:to-yellow-400 text-black font-bold rounded-xl transition-all duration-300 transform hover:scale-110 shadow-lg shadow-luxe-gold/30 text-lg flex items-center space-x-2 whitespace-nowrap"
                       >
-                        Deposit Now
+                        <Shield className="w-6 h-6" />
+                        <span>Deposit Now</span>
                       </button>
                     </div>
                   </div>
@@ -736,22 +758,55 @@ export function SellerDashboard({ isOpen, onClose }: SellerDashboardProps) {
                   </div>
                 </div>
 
-                {/* Deposit Action */}
-                <div className="luxe-glass rounded-xl p-6 border border-white/10">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h4 className="text-lg font-bold text-white mb-2">Increase Your Collateral</h4>
-                      <p className="text-gray-400 text-sm">
-                        Deposit more GHETTO to increase your maximum order value
-                      </p>
+                {/* Deposit and Withdraw Actions */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="luxe-glass rounded-xl p-6 border border-white/10">
+                    <div className="flex flex-col space-y-4">
+                      <div>
+                        <h4 className="text-lg font-bold text-white mb-2">Deposit Collateral</h4>
+                        <p className="text-gray-400 text-sm">
+                          Increase your collateral to accept larger orders
+                        </p>
+                      </div>
+                      <button
+                        onClick={() => setShowCollateralDeposit(true)}
+                        className="w-full px-6 py-3 bg-gradient-to-r from-luxe-gold to-yellow-400 hover:from-yellow-400 hover:to-luxe-gold text-black font-bold rounded-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center space-x-2"
+                      >
+                        <Shield className="w-5 h-5" />
+                        <span>Deposit GHETTO</span>
+                      </button>
                     </div>
-                    <button
-                      onClick={() => setShowCollateralDeposit(true)}
-                      className="px-6 py-3 bg-gradient-to-r from-luxe-gold to-yellow-400 hover:from-yellow-400 hover:to-luxe-gold text-black font-bold rounded-lg transition-all duration-300 transform hover:scale-105 flex items-center space-x-2"
-                    >
-                      <Shield className="w-5 h-5" />
-                      <span>Deposit GHETTO</span>
-                    </button>
+                  </div>
+
+                  <div className="luxe-glass rounded-xl p-6 border border-white/10">
+                    <div className="flex flex-col space-y-4">
+                      <div>
+                        <h4 className="text-lg font-bold text-white mb-2">Withdraw Collateral</h4>
+                        <p className="text-gray-400 text-sm">
+                          Withdraw available collateral (not held in orders)
+                        </p>
+                      </div>
+                      <button
+                        onClick={() => {
+                          if (collateralInfo.availableCollateral <= 0) {
+                            alert('No collateral available for withdrawal. All collateral is currently held in active orders.');
+                            return;
+                          }
+                          setWithdrawAmount(collateralInfo.availableCollateral.toString());
+                          setShowCollateralWithdraw(true);
+                        }}
+                        disabled={collateralInfo.availableCollateral <= 0}
+                        className="w-full px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-600 disabled:from-gray-600 disabled:to-gray-600 disabled:cursor-not-allowed text-white font-bold rounded-lg transition-all duration-300 transform hover:scale-105 disabled:hover:scale-100 flex items-center justify-center space-x-2"
+                      >
+                        <Package className="w-5 h-5" />
+                        <span>Withdraw GHETTO</span>
+                      </button>
+                      {collateralInfo.availableCollateral > 0 && (
+                        <p className="text-green-400 text-xs text-center">
+                          {collateralInfo.availableCollateral} GHETTO available
+                        </p>
+                      )}
+                    </div>
                   </div>
                 </div>
 
@@ -1026,6 +1081,90 @@ export function SellerDashboard({ isOpen, onClose }: SellerDashboardProps) {
                   </button>
                   <button
                     onClick={() => setShowCollateralDeposit(false)}
+                    className="px-6 py-3 luxe-glass hover:bg-gray-600 text-white rounded-lg transition-colors"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Collateral Withdraw Modal */}
+        {showCollateralWithdraw && (
+          <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[60] flex items-center justify-center p-4">
+            <div className="luxe-glass-strong rounded-2xl border border-white/10 w-full max-w-md">
+              <div className="p-6 border-b border-white/10">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-xl font-bold text-white">Withdraw GHETTO Collateral</h3>
+                  <button
+                    onClick={() => setShowCollateralWithdraw(false)}
+                    className="p-2 hover:luxe-glass rounded-lg transition-colors"
+                  >
+                    <X className="w-5 h-5 text-gray-400" />
+                  </button>
+                </div>
+              </div>
+
+              <div className="p-6 space-y-4">
+                <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-4">
+                  <h4 className="text-blue-400 font-bold mb-2 text-sm">WITHDRAWAL INFORMATION</h4>
+                  <ul className="text-gray-400 text-xs space-y-1">
+                    <li>• Only available collateral can be withdrawn</li>
+                    <li>• Collateral held in active orders cannot be withdrawn</li>
+                    <li>• Withdrawn funds will be returned to your wallet</li>
+                    <li>• Your maximum order value will decrease accordingly</li>
+                  </ul>
+                </div>
+
+                <div className="bg-white/5 rounded-lg p-4">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-gray-400 text-sm">Available for Withdrawal:</span>
+                    <span className="text-green-400 font-bold">{collateralInfo.availableCollateral} GHETTO</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-400 text-sm">Held in Orders:</span>
+                    <span className="text-yellow-400 font-bold">{collateralInfo.heldCollateral} GHETTO</span>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-white font-medium mb-2">Withdraw Amount (GHETTO)</label>
+                  <input
+                    type="number"
+                    min="0.01"
+                    max={collateralInfo.availableCollateral}
+                    step="0.01"
+                    value={withdrawAmount}
+                    onChange={(e) => setWithdrawAmount(e.target.value)}
+                    className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
+                    placeholder={`Max: ${collateralInfo.availableCollateral}`}
+                    required
+                  />
+                  <div className="flex justify-between items-center mt-2">
+                    <p className="text-gray-500 text-xs">
+                      Maximum: {collateralInfo.availableCollateral} GHETTO
+                    </p>
+                    <button
+                      onClick={() => setWithdrawAmount(collateralInfo.availableCollateral.toString())}
+                      className="text-blue-400 hover:text-blue-300 text-xs font-medium"
+                    >
+                      Withdraw All
+                    </button>
+                  </div>
+                </div>
+
+                <div className="flex space-x-3">
+                  <button
+                    onClick={handleWithdrawCollateral}
+                    disabled={isLoading || !withdrawAmount || parseFloat(withdrawAmount) <= 0 || parseFloat(withdrawAmount) > collateralInfo.availableCollateral}
+                    className="flex-1 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 text-white rounded-lg transition-colors font-bold"
+                  >
+                    {isLoading ? 'Withdrawing...' : 'Withdraw GHETTO'}
+                  </button>
+                  <button
+                    onClick={() => setShowCollateralWithdraw(false)}
                     className="px-6 py-3 luxe-glass hover:bg-gray-600 text-white rounded-lg transition-colors"
                   >
                     Cancel
