@@ -1,3 +1,5 @@
+import { logger } from './logger';
+
 export interface EnvValidationResult {
   valid: boolean;
   errors: string[];
