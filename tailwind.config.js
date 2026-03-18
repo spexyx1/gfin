@@ -5,7 +5,7 @@ export default {
     extend: {
       fontFamily: {
         sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
-        graffiti: ['Rubik Spray Paint', 'Impact', 'Arial Black', 'cursive'],
+        graffiti: ['Freckle Face', 'Impact', 'Arial Black', 'cursive'],
       },
       colors: {
         'neon-yellow': '#FFD700',
