@@ -16,7 +16,7 @@ interface Section {
 function Accordion({ title, children, defaultOpen = false }: { title: string; children: React.ReactNode; defaultOpen?: boolean }) {
   const [open, setOpen] = useState(defaultOpen);
   return (
-    <div className="rounded-xl border border-white/8 luxe-glass/30 overflow-hidden">
+    <div className="rounded-xl border border-white/8 luxe-glass opacity-30 overflow-hidden">
       <button
         onClick={() => setOpen(!open)}
         className="w-full flex items-center justify-between p-4 text-left hover:bg-white/5 transition-colors"
@@ -159,7 +159,7 @@ export function DocumentationModal({ isOpen, onClose }: DocumentationModalProps)
                     { icon: Users, title: 'P2P Trading', desc: 'Direct buyer-to-seller transactions with no intermediaries taking cuts beyond the platform fee.' },
                     { icon: Globe, title: 'Multi-Currency', desc: 'Pay with GHETTO tokens (discounted fees) or any supported ERC20 token.' },
                   ].map(item => (
-                    <div key={item.title} className="rounded-xl luxe-glass/40 border border-white/5 p-4 flex items-start gap-3">
+                    <div key={item.title} className="rounded-xl luxe-glass opacity-40 border border-white/5 p-4 flex items-start gap-3">
                       <item.icon className="w-5 h-5 text-orange-400 shrink-0 mt-0.5" />
                       <div>
                         <p className="text-white font-black text-sm">{item.title}</p>
@@ -272,7 +272,7 @@ export function DocumentationModal({ isOpen, onClose }: DocumentationModalProps)
                       { status: 'Disputed', desc: 'Either party raised a dispute. Mediator review pending.' },
                       { status: 'Cancelled', desc: 'Order cancelled. Buyer refunded (if funded).' },
                     ].map(item => (
-                      <div key={item.status} className="flex items-center gap-3 luxe-glass/30 rounded-lg p-3 border border-white/5">
+                      <div key={item.status} className="flex items-center gap-3 luxe-glass opacity-30 rounded-lg p-3 border border-white/5">
                         <span className="text-xs font-black text-orange-400 w-20 shrink-0">{item.status}</span>
                         <ArrowRight className="w-3 h-3 text-gray-600 shrink-0" />
                         <span className="text-sm text-gray-300">{item.desc}</span>
@@ -304,7 +304,7 @@ export function DocumentationModal({ isOpen, onClose }: DocumentationModalProps)
               <div className="space-y-5">
                 <h3 className="text-xl font-black text-white">Wallet & Tokens</h3>
 
-                <div className="rounded-xl luxe-glass/40 border border-white/5 p-4 space-y-2">
+                <div className="rounded-xl luxe-glass opacity-40 border border-white/5 p-4 space-y-2">
                   <div className="flex items-center gap-2 mb-1">
                     <Zap className="w-4 h-4 text-orange-400" />
                     <h4 className="text-white font-black text-sm">GHETTO Token (GHETTO)</h4>
@@ -388,7 +388,7 @@ export function DocumentationModal({ isOpen, onClose }: DocumentationModalProps)
                     { icon: Package, title: 'Post Listings', desc: 'Share your listings on the social feed for increased visibility.' },
                     { icon: CheckCircle, title: 'Reputation System', desc: 'Reputation is earned through completed trades, dispute outcomes, and community ratings.' },
                   ].map(item => (
-                    <div key={item.title} className="rounded-xl luxe-glass/40 border border-white/5 p-3 flex items-start gap-3">
+                    <div key={item.title} className="rounded-xl luxe-glass opacity-40 border border-white/5 p-3 flex items-start gap-3">
                       <item.icon className="w-4 h-4 text-orange-400 shrink-0 mt-0.5" />
                       <div>
                         <p className="text-white font-black text-sm">{item.title}</p>
@@ -414,7 +414,7 @@ export function DocumentationModal({ isOpen, onClose }: DocumentationModalProps)
                 <h3 className="text-xl font-black text-white">Merchant API</h3>
                 <p className="text-gray-300">The GHETTO Finance Merchant API allows businesses and developers to integrate our escrow payment system into their own platforms and applications.</p>
 
-                <div className="rounded-xl luxe-glass/40 border border-white/5 p-4 space-y-3">
+                <div className="rounded-xl luxe-glass opacity-40 border border-white/5 p-4 space-y-3">
                   <h4 className="text-white font-black text-sm">Getting API Access</h4>
                   <div className="space-y-2">
                     <Step n={1} title="Register as a Merchant">Create a GHETTO Finance account and navigate to Merchant Dashboard → API Settings.</Step>
@@ -470,7 +470,7 @@ export function DocumentationModal({ isOpen, onClose }: DocumentationModalProps)
                     { icon: Zap, title: 'No Custodial Risk', desc: 'Escrow funds are held in smart contracts, not in any centralized wallet controlled by GHETTO Finance.' },
                     { icon: AlertTriangle, title: 'Dispute Resolution', desc: 'Multi-party mediator system for contested transactions with evidence submission.' },
                   ].map(item => (
-                    <div key={item.title} className="rounded-xl luxe-glass/40 border border-white/5 p-4 flex items-start gap-3">
+                    <div key={item.title} className="rounded-xl luxe-glass opacity-40 border border-white/5 p-4 flex items-start gap-3">
                       <item.icon className="w-5 h-5 text-orange-400 shrink-0 mt-0.5" />
                       <div>
                         <p className="text-white font-black text-sm">{item.title}</p>
@@ -506,7 +506,7 @@ export function DocumentationModal({ isOpen, onClose }: DocumentationModalProps)
               <div className="space-y-5">
                 <h3 className="text-xl font-black text-white">Fee Structure</h3>
 
-                <div className="rounded-xl luxe-glass/40 border border-white/5 overflow-hidden">
+                <div className="rounded-xl luxe-glass opacity-40 border border-white/5 overflow-hidden">
                   <table className="w-full text-sm">
                     <thead>
                       <tr className="border-b border-white/10">
@@ -573,7 +573,7 @@ export function DocumentationModal({ isOpen, onClose }: DocumentationModalProps)
                       methods: ['createSwap', 'depositInitiatorTokens', 'depositRecipientTokens', 'cancelSwap'],
                     },
                   ].map(c => (
-                    <div key={c.name} className="rounded-xl luxe-glass/40 border border-white/5 p-4">
+                    <div key={c.name} className="rounded-xl luxe-glass opacity-40 border border-white/5 p-4">
                       <div className="flex items-start justify-between mb-2">
                         <div>
                           <p className="text-white font-black">{c.name}</p>

@@ -238,8 +238,8 @@ export function SellerDashboard({ isOpen, onClose }: SellerDashboardProps) {
             onClick={() => setActiveTab('products')}
             className={`flex-1 px-6 py-4 font-medium transition-colors ${
               activeTab === 'products'
-                ? 'text-blue-400 border-b-2 border-blue-400 luxe-glass/50'
-                : 'text-gray-400 hover:text-white hover:luxe-glass/30'
+                ? 'text-blue-400 border-b-2 border-blue-400 bg-white/5'
+                : 'text-gray-400 hover:text-white hover:bg-white/5'
             }`}
           >
             My Products
@@ -251,8 +251,8 @@ export function SellerDashboard({ isOpen, onClose }: SellerDashboardProps) {
             }}
             className={`flex-1 px-6 py-4 font-medium transition-colors ${
               activeTab === 'create'
-                ? 'text-blue-400 border-b-2 border-blue-400 luxe-glass/50'
-                : 'text-gray-400 hover:text-white hover:luxe-glass/30'
+                ? 'text-blue-400 border-b-2 border-blue-400 bg-white/5'
+                : 'text-gray-400 hover:text-white hover:bg-white/5'
             }`}
           >
             Create Product
@@ -260,7 +260,7 @@ export function SellerDashboard({ isOpen, onClose }: SellerDashboardProps) {
           {activeTab === 'edit' && (
             <button
               onClick={() => setActiveTab('edit')}
-              className="flex-1 px-6 py-4 font-medium text-blue-400 border-b-2 border-blue-400 luxe-glass/50"
+              className="flex-1 px-6 py-4 font-medium text-blue-400 border-b-2 border-blue-400 bg-white/5"
             >
               Edit Product
             </button>

@@ -165,7 +165,7 @@ export function AuctionDetailsModal({ isOpen, onClose, auction, onPlaceBid }: Au
                     className={`p-4 rounded-xl border ${
                       bid.isWinning
                         ? 'bg-luxe-gold/10 border-luxe-gold/50'
-                        : 'luxe-glass/50 border-white/10'
+                        : 'luxe-glass opacity-50 border-white/10'
                     }`}
                   >
                     <div className="flex items-center justify-between">

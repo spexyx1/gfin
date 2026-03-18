@@ -77,19 +77,19 @@ export function HousingMarketplace() {
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6 text-sm max-w-4xl mx-auto px-4">
-            <div className="flex items-center justify-center sm:justify-start space-x-2 luxe-glass/50 p-3 rounded-lg">
+            <div className="flex items-center justify-center sm:justify-start space-x-2 luxe-glass opacity-50 p-3 rounded-lg">
               <Globe className="w-4 h-4 sm:w-5 sm:h-5 text-luxe-gold flex-shrink-0" />
               <span className="text-gray-300 text-xs sm:text-sm">Global Impact</span>
             </div>
-            <div className="flex items-center justify-center sm:justify-start space-x-2 luxe-glass/50 p-3 rounded-lg">
+            <div className="flex items-center justify-center sm:justify-start space-x-2 luxe-glass opacity-50 p-3 rounded-lg">
               <Users className="w-4 h-4 sm:w-5 sm:h-5 text-luxe-green flex-shrink-0" />
               <span className="text-gray-300 text-xs sm:text-sm">Direct Partnerships</span>
             </div>
-            <div className="flex items-center justify-center sm:justify-start space-x-2 luxe-glass/50 p-3 rounded-lg">
+            <div className="flex items-center justify-center sm:justify-start space-x-2 luxe-glass opacity-50 p-3 rounded-lg">
               <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-luxe-gold flex-shrink-0" />
               <span className="text-gray-300 text-xs sm:text-sm">85/10/5 Revenue Split</span>
             </div>
-            <div className="flex items-center justify-center sm:justify-start space-x-2 luxe-glass/50 p-3 rounded-lg">
+            <div className="flex items-center justify-center sm:justify-start space-x-2 luxe-glass opacity-50 p-3 rounded-lg">
               <Award className="w-4 h-4 sm:w-5 sm:h-5 text-luxe-gold flex-shrink-0" />
               <span className="text-gray-300 text-xs sm:text-sm">Lifetime Fee Waiver</span>
             </div>
@@ -428,7 +428,7 @@ function ProjectDetailModal({ project, onClose, onPurchase, getStatusColor, getS
                 <div className="text-blue-400 font-black text-base sm:text-lg">10%</div>
                 <div className="text-blue-200 text-[10px] sm:text-xs">Sponsor</div>
               </div>
-              <div className="luxe-glass/50 p-2 sm:p-3 rounded text-center">
+              <div className="luxe-glass opacity-50 p-2 sm:p-3 rounded text-center">
                 <div className="text-gray-400 font-black text-base sm:text-lg">5%</div>
                 <div className="text-gray-300 text-[10px] sm:text-xs">Platform</div>
               </div>

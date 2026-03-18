@@ -200,8 +200,8 @@ export function OrderManagement({ isOpen, onClose }: OrderManagementProps) {
             onClick={() => setActiveTab('buyer')}
             className={`flex-1 px-6 py-4 font-medium transition-colors ${
               activeTab === 'buyer'
-                ? 'text-blue-400 border-b-2 border-blue-400 luxe-glass/50'
-                : 'text-gray-400 hover:text-white hover:luxe-glass/30'
+                ? 'text-blue-400 border-b-2 border-blue-400 bg-white/5'
+                : 'text-gray-400 hover:text-white hover:bg-white/5'
             }`}
           >
             My Purchases ({buyerOrders.length})
@@ -210,8 +210,8 @@ export function OrderManagement({ isOpen, onClose }: OrderManagementProps) {
             onClick={() => setActiveTab('seller')}
             className={`flex-1 px-6 py-4 font-medium transition-colors ${
               activeTab === 'seller'
-                ? 'text-blue-400 border-b-2 border-blue-400 luxe-glass/50'
-                : 'text-gray-400 hover:text-white hover:luxe-glass/30'
+                ? 'text-blue-400 border-b-2 border-blue-400 bg-white/5'
+                : 'text-gray-400 hover:text-white hover:bg-white/5'
             }`}
           >
             My Sales ({sellerOrders.length})
@@ -286,7 +286,7 @@ export function OrderManagement({ isOpen, onClose }: OrderManagementProps) {
 
                     {/* Tracking Information for Buyers */}
                     {order.status === 'shipped' && order.trackingNumber && (
-                      <div className="luxe-glass/50 rounded-xl p-4 mb-4 border border-white/10">
+                      <div className="bg-white/5 rounded-xl p-4 mb-4 border border-white/10">
                         <div className="flex items-center space-x-2 mb-3">
                           <Truck className="w-5 h-5 text-blue-400" />
                           <h5 className="text-white font-medium">Tracking Information</h5>
@@ -494,7 +494,7 @@ export function OrderManagement({ isOpen, onClose }: OrderManagementProps) {
 
                       {/* Tracking Information for Sellers */}
                       {(order.status === 'shipped' || order.status === 'delivered' || order.status === 'completed') && order.trackingNumber && (
-                        <div className="luxe-glass/50 rounded-xl p-4 mb-4 border border-white/10">
+                        <div className="bg-white/5 rounded-xl p-4 mb-4 border border-white/10">
                           <div className="flex items-center justify-between mb-3">
                             <div className="flex items-center space-x-2">
                               <Truck className="w-5 h-5 text-blue-400" />
@@ -717,7 +717,7 @@ export function OrderManagement({ isOpen, onClose }: OrderManagementProps) {
                     className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-white"
                   />
                 </div>
-                <div className="luxe-glass/50 rounded-lg p-4 border border-white/10">
+                <div className="bg-white/5 rounded-lg p-4 border border-white/10">
                   <p className="text-gray-400 text-sm">
                     Adding tracking information helps buyers track their packages and builds trust. 
                     You can also add or update this information later.

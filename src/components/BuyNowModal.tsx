@@ -183,7 +183,7 @@ export function BuyNowModal({ isOpen, onClose, product }: BuyNowModalProps) {
               </div>
 
               {/* Payment Method Selection */}
-              <div className="luxe-glass/50 rounded-2xl p-4 mb-6 border border-white/10">
+              <div className="luxe-glass opacity-50 rounded-2xl p-4 mb-6 border border-white/10">
                 <h4 className="text-gray-200 font-black mb-3 uppercase text-sm">Payment Method</h4>
                 <div className="space-y-2">
                   {paymentOptions.map((option) => (
@@ -249,7 +249,7 @@ export function BuyNowModal({ isOpen, onClose, product }: BuyNowModalProps) {
               )}
 
               {/* Price Breakdown */}
-              <div className="luxe-glass/50 rounded-2xl p-4 mb-6 border border-white/10">
+              <div className="luxe-glass opacity-50 rounded-2xl p-4 mb-6 border border-white/10">
                 <h4 className="text-gray-200 font-black mb-3 uppercase text-sm">Price Breakdown</h4>
                 <div className="space-y-2">
                   <div className="flex items-center justify-between text-sm">
@@ -268,7 +268,7 @@ export function BuyNowModal({ isOpen, onClose, product }: BuyNowModalProps) {
               </div>
 
               {/* Security Info */}
-              <div className="luxe-glass/50 rounded-2xl p-4 mb-6 border border-white/10">
+              <div className="luxe-glass opacity-50 rounded-2xl p-4 mb-6 border border-white/10">
                 <div className="flex items-center space-x-2 mb-3">
                   <Shield className="h-5 w-5 text-cyan-400" />
                   <span className="text-gray-200 font-black uppercase">SECURE PAYMENT</span>

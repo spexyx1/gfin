@@ -186,7 +186,7 @@ export function HousingFAQ() {
           >
             <button
               onClick={() => setOpenIndex(openIndex === index ? null : index)}
-              className="w-full px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between text-left hover:luxe-glass/50 active:luxe-glass transition-colors min-h-[56px]"
+              className="w-full px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between text-left hover:bg-white/5 active:bg-white/10 transition-colors min-h-[56px]"
             >
               <span className="text-white font-bold pr-3 sm:pr-4 text-sm sm:text-base">{faq.question}</span>
               {openIndex === index ? (

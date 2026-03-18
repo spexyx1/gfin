@@ -276,7 +276,7 @@ export function CreateAuctionModal({ isOpen, onClose, product, onCreateAuction }
                 </div>
 
                 {auctionType === 'dutch' && (
-                  <div className="grid grid-cols-2 gap-4 p-4 luxe-glass/50 rounded-xl border border-white/10">
+                  <div className="grid grid-cols-2 gap-4 p-4 luxe-glass opacity-50 rounded-xl border border-white/10">
                     <div>
                       <label className="block text-gray-200 font-black mb-2 uppercase text-sm">Price Drop Every</label>
                       <input
@@ -311,7 +311,7 @@ export function CreateAuctionModal({ isOpen, onClose, product, onCreateAuction }
                   </div>
                 )}
 
-                <div className="luxe-glass/50 rounded-xl p-4 border border-white/10">
+                <div className="luxe-glass opacity-50 rounded-xl p-4 border border-white/10">
                   <h4 className="text-gray-200 font-black mb-2 uppercase text-sm">Auction Details:</h4>
                   <ul className="space-y-1 text-gray-400 text-xs font-bold uppercase">
                     <li>• 5-MINUTE AUTO-EXTENSION IF BID IN LAST 5 MINUTES</li>

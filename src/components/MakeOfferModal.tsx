@@ -172,7 +172,7 @@ export function MakeOfferModal({ isOpen, onClose, product }: MakeOfferModalProps
                 )}
 
                 {/* Info Box */}
-                <div className="luxe-glass/50 rounded-2xl p-4 border border-white/10">
+                <div className="luxe-glass opacity-50 rounded-2xl p-4 border border-white/10">
                   <h4 className="text-gray-200 font-black mb-2 uppercase text-sm">How it works:</h4>
                   <ul className="space-y-1 text-gray-400 text-xs font-bold uppercase">
                     <li>• YOUR OFFER WILL BE SENT TO THE SELLER</li>

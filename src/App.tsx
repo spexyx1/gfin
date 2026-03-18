@@ -283,53 +283,53 @@ function App() {
           {/* How It Works */}
           <div className="luxe-glass rounded-xl p-6 max-w-4xl mx-auto">
             <div className="text-center mb-6">
-              <p className="text-sm apple-font text-apple-gray-400 uppercase tracking-wider mb-2">How It Works</p>
+              <p className="text-sm font-normal text-gray-400 uppercase tracking-wider mb-2">How It Works</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
               <div className="text-center">
                 <div className="w-10 h-10 bg-yellow-500/20 rounded-full flex items-center justify-center mx-auto mb-3 border-2 border-yellow-500/50">
-                  <span className="text-lg apple-title text-yellow-400">1</span>
+                  <span className="text-lg luxe-title text-yellow-400">1</span>
                 </div>
-                <h4 className="text-sm apple-title text-luxe-gold mb-1">Browse</h4>
-                <p className="text-xs text-apple-gray-400 apple-font leading-relaxed">
+                <h4 className="text-sm luxe-title text-luxe-gold mb-1">Browse</h4>
+                <p className="text-xs text-gray-400 font-normal leading-relaxed">
                   Find what you want and place an order
                 </p>
               </div>
 
               <div className="text-center">
                 <div className="w-10 h-10 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-3 border-2 border-green-500/50">
-                  <span className="text-lg apple-title text-green-400">2</span>
+                  <span className="text-lg luxe-title text-green-400">2</span>
                 </div>
-                <h4 className="text-sm apple-title text-luxe-gold mb-1">Pay</h4>
-                <p className="text-xs text-apple-gray-400 apple-font leading-relaxed">
+                <h4 className="text-sm luxe-title text-luxe-gold mb-1">Pay</h4>
+                <p className="text-xs text-gray-400 font-normal leading-relaxed">
                   Send crypto — funds go straight into escrow
                 </p>
               </div>
 
               <div className="text-center">
                 <div className="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-3 border-2 border-blue-500/50">
-                  <span className="text-lg apple-title text-blue-400">3</span>
+                  <span className="text-lg luxe-title text-blue-400">3</span>
                 </div>
-                <h4 className="text-sm apple-title text-luxe-gold mb-1">Receive</h4>
-                <p className="text-xs text-apple-gray-400 apple-font leading-relaxed">
+                <h4 className="text-sm luxe-title text-luxe-gold mb-1">Receive</h4>
+                <p className="text-xs text-gray-400 font-normal leading-relaxed">
                   Seller ships the item with tracking
                 </p>
               </div>
 
               <div className="text-center">
                 <div className="w-10 h-10 bg-orange-500/20 rounded-full flex items-center justify-center mx-auto mb-3 border-2 border-orange-500/50">
-                  <span className="text-lg apple-title text-orange-400">4</span>
+                  <span className="text-lg luxe-title text-orange-400">4</span>
                 </div>
-                <h4 className="text-sm apple-title text-luxe-gold mb-1">Confirm</h4>
-                <p className="text-xs text-apple-gray-400 apple-font leading-relaxed">
+                <h4 className="text-sm luxe-title text-luxe-gold mb-1">Confirm</h4>
+                <p className="text-xs text-gray-400 font-normal leading-relaxed">
                   Approve delivery and funds release to seller
                 </p>
               </div>
             </div>
 
             <div className="pt-4 border-t border-white/10 text-center">
-              <p className="text-xs text-apple-gray-400 apple-font">
+              <p className="text-xs text-gray-400 font-normal">
                 All transactions are secured and moderated by trained specialists
               </p>
             </div>
@@ -343,15 +343,15 @@ function App() {
           {productsLoading ? (
             <div className="flex items-center justify-center py-16">
               <div className="w-8 h-8 border-2 border-neon-blue border-t-transparent rounded-full animate-spin"></div>
-              <span className="ml-3 text-luxe-gold apple-font">Loading products...</span>
+              <span className="ml-3 text-luxe-gold font-normal">Loading products...</span>
             </div>
           ) : filteredProducts.length === 0 ? (
             <div className="text-center py-16">
               <div className="w-24 h-24 bg-gray-800/50 rounded-full flex items-center justify-center mb-6 mx-auto">
                 <Package className="w-12 h-12 text-gray-400" />
               </div>
-              <h3 className="text-xl apple-title text-luxe-gold mb-2">No products found</h3>
-              <p className="text-neon-orange apple-font max-w-md mx-auto">
+              <h3 className="text-xl luxe-title text-luxe-gold mb-2">No products found</h3>
+              <p className="text-gray-400 font-normal max-w-md mx-auto">
                 {searchTerm || searchFilters.query 
                   ? 'Try adjusting your search terms or filters'
                   : 'No products are currently available. Check back soon!'
@@ -383,7 +383,7 @@ function App() {
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-6xl">
               {filteredProducts.map((product) => (
-                <div key={product.id} className="luxe-glass rounded-xl overflow-hidden apple-card group">
+                <div key={product.id} className="luxe-glass rounded-xl overflow-hidden luxe-card group">
                   <div className="relative">
                     <img
                       src={product.image}
@@ -391,7 +391,7 @@ function App() {
                       className="w-full h-56 object-cover transition-transform duration-300"
                     />
                     <div className="absolute top-3 right-3">
-                      <span className="luxe-glass px-3 py-1 rounded-full text-xs font-medium text-apple-blue">
+                      <span className="luxe-glass px-3 py-1 rounded-full text-xs font-medium text-luxe-gold">
                         {product.category}
                       </span>
                     </div>
@@ -399,18 +399,18 @@ function App() {
                   
                   <div className="p-6">
                     <div className="flex items-start justify-between mb-3">
-                      <h3 className="text-lg apple-font text-luxe-gold transition-colors line-clamp-2 text-center w-full font-medium">
+                      <h3 className="text-lg font-normal text-luxe-gold transition-colors line-clamp-2 text-center w-full font-medium">
                         {product.title}
                       </h3>
                     </div>
                     
-                    <p className="text-neon-orange text-sm mb-4 line-clamp-2 leading-relaxed apple-font text-center">
+                    <p className="text-gray-400 text-sm mb-4 line-clamp-2 leading-relaxed font-normal text-center">
                       {product.description}
                     </p>
                     
                     <div className="flex items-center justify-center mb-4">
                       <div className="flex items-center justify-center space-x-2">
-                        <span className="text-2xl apple-title text-luxe-gold text-center font-semibold">
+                        <span className="text-2xl luxe-title text-luxe-gold text-center font-semibold">
                           {product.price} GHETTO
                         </span>
                       </div>
@@ -418,21 +418,21 @@ function App() {
                     
                     <div className="flex items-center justify-center mb-4">
                       <div className="flex items-center justify-center space-x-2">
-                        <span className="text-sm text-apple-gray-500 apple-font text-center">by</span>
-                        <span className="text-sm apple-font text-neon-orange text-center font-medium">
+                        <span className="text-sm text-gray-500 font-normal text-center">by</span>
+                        <span className="text-sm font-normal text-gray-400 text-center font-medium">
                           {product.seller.name}
                         </span>
                         {product.seller.verified && (
-                          <Shield className="w-4 h-4 text-apple-blue" />
+                          <Shield className="w-4 h-4 text-luxe-gold" />
                         )}
-                        <span className="text-sm apple-font text-apple-yellow text-center">★{product.seller.rating}</span>
+                        <span className="text-sm font-normal text-yellow-400 text-center">★{product.seller.rating}</span>
                       </div>
                     </div>
                     
                     <div className="space-y-2">
                       <button 
                         onClick={() => handleAddToCart(product)}
-                        className="luxe-btn-primary w-full py-3 flex items-center justify-center space-x-2 apple-font text-center"
+                        className="luxe-btn-primary w-full py-3 flex items-center justify-center space-x-2 font-normal text-center"
                       >
                         <ShoppingCart className="w-4 h-4" />
                         <span>Add to Cart</span>
@@ -440,7 +440,7 @@ function App() {
                       
                       <button 
                         onClick={() => handleContactSeller(product.seller.id)}
-                        className="luxe-btn-secondary w-full py-2 flex items-center justify-center space-x-2 text-sm apple-font text-center"
+                        className="luxe-btn-secondary w-full py-2 flex items-center justify-center space-x-2 text-sm font-normal text-center"
                       >
                         <MessageCircle className="w-4 h-4" />
                         <span>Contact Seller</span>
@@ -455,7 +455,7 @@ function App() {
 
         {filteredProducts.length > 0 && (
           <div className="mt-16 text-center flex justify-center">
-            <p className="text-apple-gray-600 text-sm apple-font">
+            <p className="text-gray-600 text-sm font-normal">
               Showing {filteredProducts.length} of {allProducts.length} products
             </p>
           </div>
@@ -465,7 +465,7 @@ function App() {
     </>
   );
   return (
-    <div className="min-h-screen bg-apple-gray-950">
+    <div className="min-h-screen bg-black">
       <MobileNetworkIndicator />
       <NetworkSwitchModal />
 

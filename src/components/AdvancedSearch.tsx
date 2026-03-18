@@ -80,7 +80,7 @@ export function AdvancedSearch({ isOpen, onClose, onSearch }: AdvancedSearchProp
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="luxe-glass-strong rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden apple-card">
+      <div className="luxe-glass-strong rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden luxe-card">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-white/10">
           <div className="flex items-center space-x-3">
@@ -103,12 +103,12 @@ export function AdvancedSearch({ isOpen, onClose, onSearch }: AdvancedSearchProp
               <div>
                 <label className="block text-white luxe-title mb-3">Search Terms</label>
                 <div className="relative">
-                  <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-apple-gray-500 w-5 h-5" />
+                  <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 w-5 h-5" />
                   <input
                     type="text"
                     value={filters.query}
                     onChange={(e) => setFilters({ ...filters, query: e.target.value })}
-                    className="w-full pl-12 pr-4 py-3 luxe-glass rounded-xl focus:ring-2 focus:ring-luxe-gold text-white placeholder-apple-gray-500 font-normal"
+                    className="w-full pl-12 pr-4 py-3 luxe-glass rounded-xl focus:ring-2 focus:ring-luxe-gold text-white placeholder-gray-500 font-normal"
                     placeholder="Search products, descriptions, sellers..."
                   />
                 </div>
@@ -135,26 +135,26 @@ export function AdvancedSearch({ isOpen, onClose, onSearch }: AdvancedSearchProp
                 <label className="block text-white luxe-title mb-3">Price Range (USDC)</label>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="relative">
-                    <DollarSign className="absolute left-4 top-1/2 transform -translate-y-1/2 text-apple-gray-500 w-4 h-4" />
+                    <DollarSign className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 w-4 h-4" />
                     <input
                       type="number"
                       min="0"
                       step="0.01"
                       value={filters.priceMin}
                       onChange={(e) => setFilters({ ...filters, priceMin: parseFloat(e.target.value) || 0 })}
-                      className="w-full pl-10 pr-4 py-3 luxe-glass rounded-xl focus:ring-2 focus:ring-luxe-gold text-white placeholder-apple-gray-500 font-normal"
+                      className="w-full pl-10 pr-4 py-3 luxe-glass rounded-xl focus:ring-2 focus:ring-luxe-gold text-white placeholder-gray-500 font-normal"
                       placeholder="Min"
                     />
                   </div>
                   <div className="relative">
-                    <DollarSign className="absolute left-4 top-1/2 transform -translate-y-1/2 text-apple-gray-500 w-4 h-4" />
+                    <DollarSign className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 w-4 h-4" />
                     <input
                       type="number"
                       min="0"
                       step="0.01"
                       value={filters.priceMax}
                       onChange={(e) => setFilters({ ...filters, priceMax: parseFloat(e.target.value) || maxPrice })}
-                      className="w-full pl-10 pr-4 py-3 luxe-glass rounded-xl focus:ring-2 focus:ring-luxe-gold text-white placeholder-apple-gray-500 font-normal"
+                      className="w-full pl-10 pr-4 py-3 luxe-glass rounded-xl focus:ring-2 focus:ring-luxe-gold text-white placeholder-gray-500 font-normal"
                       placeholder="Max"
                     />
                   </div>
@@ -208,7 +208,7 @@ export function AdvancedSearch({ isOpen, onClose, onSearch }: AdvancedSearchProp
                       id="verifiedOnly"
                       checked={filters.verifiedOnly}
                       onChange={(e) => setFilters({ ...filters, verifiedOnly: e.target.checked })}
-                      className="w-4 h-4 text-luxe-gold bg-apple-gray-800 border-apple-gray-600 rounded focus:ring-luxe-gold"
+                      className="w-4 h-4 text-luxe-gold bg-gray-800 border-gray-600 rounded focus:ring-luxe-gold"
                     />
                     <label htmlFor="verifiedOnly" className="text-white font-medium flex items-center space-x-2">
                       <Shield className="w-4 h-4 text-luxe-gold" />
@@ -222,7 +222,7 @@ export function AdvancedSearch({ isOpen, onClose, onSearch }: AdvancedSearchProp
                       id="inStockOnly"
                       checked={filters.inStockOnly}
                       onChange={(e) => setFilters({ ...filters, inStockOnly: e.target.checked })}
-                      className="w-4 h-4 text-luxe-gold bg-apple-gray-800 border-apple-gray-600 rounded focus:ring-luxe-gold"
+                      className="w-4 h-4 text-luxe-gold bg-gray-800 border-gray-600 rounded focus:ring-luxe-gold"
                     />
                     <label htmlFor="inStockOnly" className="text-white font-medium">
                       In Stock Only
@@ -242,8 +242,8 @@ export function AdvancedSearch({ isOpen, onClose, onSearch }: AdvancedSearchProp
                         onClick={() => handleTagToggle(tag)}
                         className={`px-3 py-2 rounded-lg text-sm font-medium hover:bg-white/5 ${
                           selectedTags.includes(tag)
-                            ? 'bg-apple-blue text-white'
-                            : 'bg-white/10 text-apple-gray-300 hover:bg-white/20'
+                            ? 'bg-luxe-gold text-white'
+                            : 'bg-white/10 text-gray-300 hover:bg-white/20'
                         }`}
                       >
                         #{tag}
@@ -262,12 +262,12 @@ export function AdvancedSearch({ isOpen, onClose, onSearch }: AdvancedSearchProp
               <div>
                 <label className="block text-white luxe-title mb-3">Location</label>
                 <div className="relative">
-                  <MapPin className="absolute left-4 top-1/2 transform -translate-y-1/2 text-apple-gray-500 w-5 h-5" />
+                  <MapPin className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 w-5 h-5" />
                   <input
                     type="text"
                     value={filters.location}
                     onChange={(e) => setFilters({ ...filters, location: e.target.value })}
-                    className="w-full pl-12 pr-4 py-3 luxe-glass rounded-xl focus:ring-2 focus:ring-luxe-gold text-white placeholder-apple-gray-500 font-normal"
+                    className="w-full pl-12 pr-4 py-3 luxe-glass rounded-xl focus:ring-2 focus:ring-luxe-gold text-white placeholder-gray-500 font-normal"
                     placeholder="City, State, Country..."
                   />
                 </div>
@@ -284,19 +284,19 @@ export function AdvancedSearch({ isOpen, onClose, onSearch }: AdvancedSearchProp
                 <p className="text-gray-400 text-sm font-normal">Total Products</p>
               </div>
               <div>
-                <p className="text-2xl luxe-title text-apple-green">
+                <p className="text-2xl luxe-title text-green-400">
                   {products.filter(p => p.seller.verified).length}
                 </p>
                 <p className="text-gray-400 text-sm font-normal">Verified Sellers</p>
               </div>
               <div>
-                <p className="text-2xl luxe-title text-apple-yellow">
+                <p className="text-2xl luxe-title text-yellow-400">
                   {products.filter(p => p.inStock).length}
                 </p>
                 <p className="text-gray-400 text-sm font-normal">In Stock</p>
               </div>
               <div>
-                <p className="text-2xl luxe-title text-apple-purple">
+                <p className="text-2xl luxe-title text-purple-400">
                   ${Math.round(products.reduce((sum, p) => sum + p.price, 0) / products.length || 0)}
                 </p>
                 <p className="text-gray-400 text-sm font-normal">Avg Price</p>

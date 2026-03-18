@@ -241,7 +241,7 @@ export function WalletDashboard({ isOpen, onClose, initialTab }: WalletDashboard
               )}
 
               {/* Security Notice */}
-              <div className="mt-8 luxe-glass/50 rounded-2xl p-6 border border-white/10">
+              <div className="mt-8 luxe-glass opacity-50 rounded-2xl p-6 border border-white/10">
                 <div className="flex items-center space-x-3 mb-4">
                   <Shield className="w-6 h-6 text-luxe-gold" />
                   <h4 className="text-lg font-black text-white uppercase">Security & Privacy</h4>

@@ -74,7 +74,7 @@ export function AuctionCard({ auction, onClick, onQuickBid }: AuctionCardProps) 
   return (
     <div
       onClick={onClick}
-      className="luxe-glass/50 rounded-2xl border border-white/10 overflow-hidden hover:border-luxe-gold/50 transition-all duration-300 cursor-pointer group hover:shadow-lg hover:shadow-neon-blue/20"
+      className="luxe-glass opacity-50 rounded-2xl border border-white/10 overflow-hidden hover:border-luxe-gold/50 transition-all duration-300 cursor-pointer group hover:shadow-lg hover:shadow-luxe-gold"
     >
       <div className="relative">
         <img

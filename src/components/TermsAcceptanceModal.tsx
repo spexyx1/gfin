@@ -57,7 +57,7 @@ export function TermsAcceptanceModal({
             </div>
 
             <div className="space-y-4">
-              <div className="luxe-glass/50 border border-white/10 rounded-xl p-5">
+              <div className="luxe-glass opacity-50 border border-white/10 rounded-xl p-5">
                 <div className="flex items-start space-x-3">
                   <Shield className="h-5 w-5 text-yellow-400 flex-shrink-0 mt-1" />
                   <div>
@@ -71,7 +71,7 @@ export function TermsAcceptanceModal({
                 </div>
               </div>
 
-              <div className="luxe-glass/50 border border-white/10 rounded-xl p-5">
+              <div className="luxe-glass opacity-50 border border-white/10 rounded-xl p-5">
                 <div className="flex items-start space-x-3">
                   <Scale className="h-5 w-5 text-blue-400 flex-shrink-0 mt-1" />
                   <div>
@@ -85,7 +85,7 @@ export function TermsAcceptanceModal({
                 </div>
               </div>
 
-              <div className="luxe-glass/50 border border-white/10 rounded-xl p-5">
+              <div className="luxe-glass opacity-50 border border-white/10 rounded-xl p-5">
                 <div className="flex items-start space-x-3">
                   <FileText className="h-5 w-5 text-red-400 flex-shrink-0 mt-1" />
                   <div>
@@ -99,7 +99,7 @@ export function TermsAcceptanceModal({
                 </div>
               </div>
 
-              <div className="luxe-glass/50 border border-white/10 rounded-xl p-5">
+              <div className="luxe-glass opacity-50 border border-white/10 rounded-xl p-5">
                 <div className="flex items-start space-x-3">
                   <AlertTriangle className="h-5 w-5 text-orange-400 flex-shrink-0 mt-1" />
                   <div>
@@ -113,7 +113,7 @@ export function TermsAcceptanceModal({
                 </div>
               </div>
 
-              <div className="luxe-glass/50 border border-white/10 rounded-xl p-5">
+              <div className="luxe-glass opacity-50 border border-white/10 rounded-xl p-5">
                 <div className="flex items-start space-x-3">
                   <Shield className="h-5 w-5 text-gray-400 flex-shrink-0 mt-1" />
                   <div>
@@ -143,7 +143,7 @@ export function TermsAcceptanceModal({
           </div>
         </div>
 
-        <div className="p-8 pt-6 border-t border-white/10 luxe-glass/30">
+        <div className="p-8 pt-6 border-t border-white/10 luxe-glass opacity-30">
           <div className="mb-6">
             <button
               onClick={handleCheckboxClick}

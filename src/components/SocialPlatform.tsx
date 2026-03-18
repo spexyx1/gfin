@@ -235,7 +235,7 @@ export function SocialPlatform({ searchTerm, setSearchTerm }: SocialPlatformProp
   });
 
   return (
-    <div className="min-h-screen bg-apple-gray-950 flex">
+    <div className="min-h-screen bg-black flex">
         {/* Sidebar */}
         <div className="w-80 luxe-glass border-r border-white/10 flex flex-col min-h-screen">
           <div className="p-6 border-b border-white/10">

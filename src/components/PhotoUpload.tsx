@@ -235,7 +235,7 @@ export function PhotoUpload({ images, onImagesChange, maxImages = 10 }: PhotoUpl
           </div>
 
           {/* Tips */}
-          <div className="luxe-glass/50 rounded-lg p-4 border border-white/10">
+          <div className="luxe-glass opacity-50 rounded-lg p-4 border border-white/10">
             <h5 className="text-white font-medium mb-2">Photo Tips</h5>
             <ul className="text-gray-400 text-sm space-y-1">
               <li>• Use high-resolution images (at least 1000x1000 pixels)</li>
