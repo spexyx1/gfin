@@ -73,9 +73,23 @@ export function GraffitiLogo({ size = 'md', className = '' }: GraffitiLogoProps)
         <g opacity="0.3">
           <circle cx="100" cy="60" r="40" fill="url(#sprayEffect1)">
             <animate attributeName="r" values="40;50;40" dur="3s" repeatCount="indefinite" />
+            <animate attributeName="cx" values="100;110;100" dur="5s" repeatCount="indefinite" />
+            <animate attributeName="cy" values="60;55;60" dur="4s" repeatCount="indefinite" />
           </circle>
           <circle cx="500" cy="140" r="50" fill="url(#sprayEffect2)">
             <animate attributeName="r" values="50;60;50" dur="4s" repeatCount="indefinite" />
+            <animate attributeName="cx" values="500;490;500" dur="6s" repeatCount="indefinite" />
+            <animate attributeName="cy" values="140;135;140" dur="5s" repeatCount="indefinite" />
+          </circle>
+          <circle cx="250" cy="100" r="35" fill="url(#sprayEffect3)">
+            <animate attributeName="r" values="35;45;35" dur="3.5s" repeatCount="indefinite" />
+            <animate attributeName="cx" values="250;260;250" dur="5.5s" repeatCount="indefinite" />
+            <animate attributeName="cy" values="100;95;100" dur="4.5s" repeatCount="indefinite" />
+          </circle>
+          <circle cx="400" cy="180" r="30" fill="url(#sprayEffect1)">
+            <animate attributeName="r" values="30;40;30" dur="3.8s" repeatCount="indefinite" />
+            <animate attributeName="cx" values="400;410;400" dur="5.2s" repeatCount="indefinite" />
+            <animate attributeName="cy" values="180;175;180" dur="4.8s" repeatCount="indefinite" />
           </circle>
         </g>
 
@@ -86,21 +100,37 @@ export function GraffitiLogo({ size = 'md', className = '' }: GraffitiLogoProps)
             <animate attributeName="cx" values="15;35;15" dur="3s" repeatCount="indefinite" />
             <animate attributeName="cy" values="30;50;30" dur="3s" repeatCount="indefinite" />
             <animate attributeName="r" values="2;1;2" dur="3s" repeatCount="indefinite" />
+            <animate attributeName="opacity" values="0.6;1;0.6" dur="3s" repeatCount="indefinite" />
           </circle>
           <circle cx="25" cy="25" r="2.5" fill="url(#sprayParticle)" opacity="0.5">
             <animate attributeName="cx" values="25;50;25" dur="2.8s" repeatCount="indefinite" />
             <animate attributeName="cy" values="25;45;25" dur="2.8s" repeatCount="indefinite" />
             <animate attributeName="r" values="2.5;1.5;2.5" dur="2.8s" repeatCount="indefinite" />
+            <animate attributeName="opacity" values="0.5;1;0.5" dur="2.8s" repeatCount="indefinite" />
           </circle>
           <circle cx="30" cy="35" r="1.8" fill="url(#sprayParticle)" opacity="0.7">
             <animate attributeName="cx" values="30;45;30" dur="3.2s" repeatCount="indefinite" />
             <animate attributeName="cy" values="35;55;35" dur="3.2s" repeatCount="indefinite" />
             <animate attributeName="r" values="1.8;0.8;1.8" dur="3.2s" repeatCount="indefinite" />
+            <animate attributeName="opacity" values="0.7;1;0.7" dur="3.2s" repeatCount="indefinite" />
           </circle>
           <circle cx="20" cy="40" r="2.2" fill="url(#sprayParticle)" opacity="0.6">
             <animate attributeName="cx" values="20;40;20" dur="2.5s" repeatCount="indefinite" />
             <animate attributeName="cy" values="40;60;40" dur="2.5s" repeatCount="indefinite" />
             <animate attributeName="r" values="2.2;1;2.2" dur="2.5s" repeatCount="indefinite" />
+            <animate attributeName="opacity" values="0.6;1;0.6" dur="2.5s" repeatCount="indefinite" />
+          </circle>
+          <circle cx="40" cy="20" r="1.5" fill="url(#sprayParticle)" opacity="0.5">
+            <animate attributeName="cx" values="40;60;40" dur="3.5s" repeatCount="indefinite" />
+            <animate attributeName="cy" values="20;40;20" dur="3.5s" repeatCount="indefinite" />
+            <animate attributeName="r" values="1.5;0.5;1.5" dur="3.5s" repeatCount="indefinite" />
+            <animate attributeName="opacity" values="0.5;1;0.5" dur="3.5s" repeatCount="indefinite" />
+          </circle>
+          <circle cx="10" cy="45" r="2" fill="url(#sprayParticle)" opacity="0.6">
+            <animate attributeName="cx" values="10;30;10" dur="2.7s" repeatCount="indefinite" />
+            <animate attributeName="cy" values="45;65;45" dur="2.7s" repeatCount="indefinite" />
+            <animate attributeName="r" values="2;0.8;2" dur="2.7s" repeatCount="indefinite" />
+            <animate attributeName="opacity" values="0.6;1;0.6" dur="2.7s" repeatCount="indefinite" />
           </circle>
         </g>
 
@@ -111,7 +141,8 @@ export function GraffitiLogo({ size = 'md', className = '' }: GraffitiLogoProps)
           <text x="20" y="80" fill="#ff1493" stroke="#ff69b4" strokeWidth="3" filter="url(#neonGlow1)" transform="skewX(-10)">
             G
             <animate attributeName="fill" values="#ff1493;#ff69b4;#ff1493" dur="2s" repeatCount="indefinite" />
-            <animateTransform attributeName="transform" type="translate" values="0,0; 0,-3; 0,0" dur="2s" repeatCount="indefinite" additive="sum" />
+            <animateTransform attributeName="transform" type="translate" values="0,0; 0,-5; 0,0" dur="2s" repeatCount="indefinite" additive="sum" />
+            <animate attributeName="opacity" values="1;0.9;1" dur="2s" repeatCount="indefinite" />
           </text>
           {/* G shadow */}
           <text x="22" y="82" fill="#990044" stroke="#660033" strokeWidth="2" opacity="0.5" transform="skewX(-10)">
@@ -122,7 +153,8 @@ export function GraffitiLogo({ size = 'md', className = '' }: GraffitiLogoProps)
           <text x="88" y="80" fill="#00ffff" stroke="#00bfff" strokeWidth="3" filter="url(#neonGlow2)" transform="skewX(-8)">
             H
             <animate attributeName="fill" values="#00ffff;#00bfff;#00ffff" dur="2.2s" repeatCount="indefinite" />
-            <animateTransform attributeName="transform" type="translate" values="0,0; 0,-3; 0,0" dur="2.2s" repeatCount="indefinite" begin="0.2s" additive="sum" />
+            <animateTransform attributeName="transform" type="translate" values="0,0; 0,-5; 0,0" dur="2.2s" repeatCount="indefinite" begin="0.2s" additive="sum" />
+            <animate attributeName="opacity" values="1;0.9;1" dur="2.2s" repeatCount="indefinite" />
           </text>
           <text x="90" y="82" fill="#006666" stroke="#004444" strokeWidth="2" opacity="0.5" transform="skewX(-8)">
             H
@@ -132,7 +164,8 @@ export function GraffitiLogo({ size = 'md', className = '' }: GraffitiLogoProps)
           <text x="158" y="80" fill="#00ff00" stroke="#32cd32" strokeWidth="3" filter="url(#neonGlow1)" transform="skewX(-12)">
             E
             <animate attributeName="fill" values="#00ff00;#32cd32;#00ff00" dur="2.4s" repeatCount="indefinite" />
-            <animateTransform attributeName="transform" type="translate" values="0,0; 0,-3; 0,0" dur="2.4s" repeatCount="indefinite" begin="0.4s" additive="sum" />
+            <animateTransform attributeName="transform" type="translate" values="0,0; 0,-5; 0,0" dur="2.4s" repeatCount="indefinite" begin="0.4s" additive="sum" />
+            <animate attributeName="opacity" values="1;0.9;1" dur="2.4s" repeatCount="indefinite" />
           </text>
           <text x="160" y="82" fill="#006600" stroke="#004400" strokeWidth="2" opacity="0.5" transform="skewX(-12)">
             E
@@ -142,7 +175,8 @@ export function GraffitiLogo({ size = 'md', className = '' }: GraffitiLogoProps)
           <text x="216" y="80" fill="#ffd700" stroke="#ffed4e" strokeWidth="3" filter="url(#neonGlow2)" transform="skewX(-10)">
             T
             <animate attributeName="fill" values="#ffd700;#ffed4e;#ffd700" dur="2.6s" repeatCount="indefinite" />
-            <animateTransform attributeName="transform" type="translate" values="0,0; 0,-3; 0,0" dur="2.6s" repeatCount="indefinite" begin="0.6s" additive="sum" />
+            <animateTransform attributeName="transform" type="translate" values="0,0; 0,-5; 0,0" dur="2.6s" repeatCount="indefinite" begin="0.6s" additive="sum" />
+            <animate attributeName="opacity" values="1;0.9;1" dur="2.6s" repeatCount="indefinite" />
           </text>
           <text x="218" y="82" fill="#886600" stroke="#664400" strokeWidth="2" opacity="0.5" transform="skewX(-10)">
             T
@@ -152,7 +186,8 @@ export function GraffitiLogo({ size = 'md', className = '' }: GraffitiLogoProps)
           <text x="268" y="80" fill="#ff6600" stroke="#ff8c00" strokeWidth="3" filter="url(#neonGlow1)" transform="skewX(-9)">
             T
             <animate attributeName="fill" values="#ff6600;#ff8c00;#ff6600" dur="2.8s" repeatCount="indefinite" />
-            <animateTransform attributeName="transform" type="translate" values="0,0; 0,-3; 0,0" dur="2.8s" repeatCount="indefinite" begin="0.8s" additive="sum" />
+            <animateTransform attributeName="transform" type="translate" values="0,0; 0,-5; 0,0" dur="2.8s" repeatCount="indefinite" begin="0.8s" additive="sum" />
+            <animate attributeName="opacity" values="1;0.9;1" dur="2.8s" repeatCount="indefinite" />
           </text>
           <text x="270" y="82" fill="#884400" stroke="#662200" strokeWidth="2" opacity="0.5" transform="skewX(-9)">
             T
@@ -162,7 +197,8 @@ export function GraffitiLogo({ size = 'md', className = '' }: GraffitiLogoProps)
           <text x="320" y="80" fill="#9d00ff" stroke="#bf00ff" strokeWidth="3" filter="url(#neonGlow2)" transform="skewX(-11)">
             O
             <animate attributeName="fill" values="#9d00ff;#bf00ff;#9d00ff" dur="3s" repeatCount="indefinite" />
-            <animateTransform attributeName="transform" type="translate" values="0,0; 0,-3; 0,0" dur="3s" repeatCount="indefinite" begin="1s" additive="sum" />
+            <animateTransform attributeName="transform" type="translate" values="0,0; 0,-5; 0,0" dur="3s" repeatCount="indefinite" begin="1s" additive="sum" />
+            <animate attributeName="opacity" values="1;0.9;1" dur="3s" repeatCount="indefinite" />
           </text>
           <text x="322" y="82" fill="#550088" stroke="#330066" strokeWidth="2" opacity="0.5" transform="skewX(-11)">
             O
@@ -186,7 +222,8 @@ export function GraffitiLogo({ size = 'md', className = '' }: GraffitiLogoProps)
           <text x="20" y="160" fill="#0080ff" stroke="#00a0ff" strokeWidth="3" filter="url(#neonGlow1)" transform="skewX(-10)">
             F
             <animate attributeName="fill" values="#0080ff;#00a0ff;#0080ff" dur="2s" repeatCount="indefinite" />
-            <animateTransform attributeName="transform" type="translate" values="0,0; 0,-2; 0,0" dur="2s" repeatCount="indefinite" additive="sum" />
+            <animateTransform attributeName="transform" type="translate" values="0,0; 0,-4; 0,0" dur="2s" repeatCount="indefinite" additive="sum" />
+            <animate attributeName="opacity" values="1;0.9;1" dur="2s" repeatCount="indefinite" />
           </text>
           <text x="22" y="162" fill="#004488" stroke="#003366" strokeWidth="2" opacity="0.5" transform="skewX(-10)">
             F
@@ -196,7 +233,8 @@ export function GraffitiLogo({ size = 'md', className = '' }: GraffitiLogoProps)
           <text x="73" y="160" fill="#ff1493" stroke="#ff69b4" strokeWidth="3" filter="url(#neonGlow2)" transform="skewX(-9)">
             I
             <animate attributeName="fill" values="#ff1493;#ff69b4;#ff1493" dur="2.2s" repeatCount="indefinite" />
-            <animateTransform attributeName="transform" type="translate" values="0,0; 0,-2; 0,0" dur="2.2s" repeatCount="indefinite" begin="0.2s" additive="sum" />
+            <animateTransform attributeName="transform" type="translate" values="0,0; 0,-4; 0,0" dur="2.2s" repeatCount="indefinite" begin="0.2s" additive="sum" />
+            <animate attributeName="opacity" values="1;0.9;1" dur="2.2s" repeatCount="indefinite" />
           </text>
           <text x="75" y="162" fill="#990044" stroke="#660033" strokeWidth="2" opacity="0.5" transform="skewX(-9)">
             I
@@ -206,7 +244,8 @@ export function GraffitiLogo({ size = 'md', className = '' }: GraffitiLogoProps)
           <text x="105" y="160" fill="#ff0000" stroke="#ff3333" strokeWidth="3" filter="url(#neonGlow1)" transform="skewX(-11)">
             N
             <animate attributeName="fill" values="#ff0000;#ff3333;#ff0000" dur="2.4s" repeatCount="indefinite" />
-            <animateTransform attributeName="transform" type="translate" values="0,0; 0,-2; 0,0" dur="2.4s" repeatCount="indefinite" begin="0.4s" additive="sum" />
+            <animateTransform attributeName="transform" type="translate" values="0,0; 0,-4; 0,0" dur="2.4s" repeatCount="indefinite" begin="0.4s" additive="sum" />
+            <animate attributeName="opacity" values="1;0.9;1" dur="2.4s" repeatCount="indefinite" />
           </text>
           <text x="107" y="162" fill="#880000" stroke="#550000" strokeWidth="2" opacity="0.5" transform="skewX(-11)">
             N
@@ -216,7 +255,8 @@ export function GraffitiLogo({ size = 'md', className = '' }: GraffitiLogoProps)
           <text x="173" y="160" fill="#00ffaa" stroke="#00ffcc" strokeWidth="3" filter="url(#neonGlow2)" transform="skewX(-8)">
             A
             <animate attributeName="fill" values="#00ffaa;#00ffcc;#00ffaa" dur="2.6s" repeatCount="indefinite" />
-            <animateTransform attributeName="transform" type="translate" values="0,0; 0,-2; 0,0" dur="2.6s" repeatCount="indefinite" begin="0.6s" additive="sum" />
+            <animateTransform attributeName="transform" type="translate" values="0,0; 0,-4; 0,0" dur="2.6s" repeatCount="indefinite" begin="0.6s" additive="sum" />
+            <animate attributeName="opacity" values="1;0.9;1" dur="2.6s" repeatCount="indefinite" />
           </text>
           <text x="175" y="162" fill="#008866" stroke="#006644" strokeWidth="2" opacity="0.5" transform="skewX(-8)">
             A
@@ -226,7 +266,8 @@ export function GraffitiLogo({ size = 'md', className = '' }: GraffitiLogoProps)
           <text x="241" y="160" fill="#ffff00" stroke="#ffff66" strokeWidth="3" filter="url(#neonGlow1)" transform="skewX(-12)">
             N
             <animate attributeName="fill" values="#ffff00;#ffff66;#ffff00" dur="2.8s" repeatCount="indefinite" />
-            <animateTransform attributeName="transform" type="translate" values="0,0; 0,-2; 0,0" dur="2.8s" repeatCount="indefinite" begin="0.8s" additive="sum" />
+            <animateTransform attributeName="transform" type="translate" values="0,0; 0,-4; 0,0" dur="2.8s" repeatCount="indefinite" begin="0.8s" additive="sum" />
+            <animate attributeName="opacity" values="1;0.9;1" dur="2.8s" repeatCount="indefinite" />
           </text>
           <text x="243" y="162" fill="#888800" stroke="#666600" strokeWidth="2" opacity="0.5" transform="skewX(-12)">
             N
@@ -236,7 +277,8 @@ export function GraffitiLogo({ size = 'md', className = '' }: GraffitiLogoProps)
           <text x="309" y="160" fill="#ff7f50" stroke="#ff9966" strokeWidth="3" filter="url(#neonGlow2)" transform="skewX(-10)">
             C
             <animate attributeName="fill" values="#ff7f50;#ff9966;#ff7f50" dur="3s" repeatCount="indefinite" />
-            <animateTransform attributeName="transform" type="translate" values="0,0; 0,-2; 0,0" dur="3s" repeatCount="indefinite" begin="1s" additive="sum" />
+            <animateTransform attributeName="transform" type="translate" values="0,0; 0,-4; 0,0" dur="3s" repeatCount="indefinite" begin="1s" additive="sum" />
+            <animate attributeName="opacity" values="1;0.9;1" dur="3s" repeatCount="indefinite" />
           </text>
           <text x="311" y="162" fill="#884422" stroke="#663311" strokeWidth="2" opacity="0.5" transform="skewX(-10)">
             C
@@ -246,7 +288,8 @@ export function GraffitiLogo({ size = 'md', className = '' }: GraffitiLogoProps)
           <text x="377" y="160" fill="#ee82ee" stroke="#ff99ff" strokeWidth="3" filter="url(#neonGlow1)" transform="skewX(-9)">
             E
             <animate attributeName="fill" values="#ee82ee;#ff99ff;#ee82ee" dur="3.2s" repeatCount="indefinite" />
-            <animateTransform attributeName="transform" type="translate" values="0,0; 0,-2; 0,0" dur="3.2s" repeatCount="indefinite" begin="1.2s" additive="sum" />
+            <animateTransform attributeName="transform" type="translate" values="0,0; 0,-4; 0,0" dur="3.2s" repeatCount="indefinite" begin="1.2s" additive="sum" />
+            <animate attributeName="opacity" values="1;0.9;1" dur="3.2s" repeatCount="indefinite" />
           </text>
           <text x="379" y="162" fill="#884488" stroke="#663366" strokeWidth="2" opacity="0.5" transform="skewX(-9)">
             E
@@ -353,6 +396,8 @@ export function GraffitiLogo({ size = 'md', className = '' }: GraffitiLogoProps)
                   fill="#ffd700" stroke="#ffed4e" strokeWidth="2" filter="url(#neonGlow1)" transform="rotate(-15)">
               $
               <animate attributeName="fill" values="#ffd700;#ffed4e;#ffd700" dur="2.5s" repeatCount="indefinite" />
+              <animateTransform attributeName="transform" type="rotate" values="-15 0 0;-10 0 0;-15 0 0" dur="3s" repeatCount="indefinite" />
+              <animate attributeName="opacity" values="1;0.8;1" dur="2.5s" repeatCount="indefinite" />
             </text>
             {/* 3D shadow layers */}
             <text x="-2" y="-2" fontFamily="Impact, Arial Black" fontSize="32" fontWeight="900"
@@ -371,7 +416,9 @@ export function GraffitiLogo({ size = 'md', className = '' }: GraffitiLogoProps)
             <path d="M-10,-5 L-10,-15 L-5,-10 L0,-15 L5,-10 L10,-15 L10,-5 Z"
                   fill="#ff6600" stroke="#ff8c00" strokeWidth="1.5">
               <animate attributeName="fill" values="#ff6600;#ff8c00;#ff6600" dur="2s" repeatCount="indefinite" />
+              <animateTransform attributeName="transform" type="scale" values="1,1;1.1,1.1;1,1" dur="2s" repeatCount="indefinite" additive="sum" />
             </path>
+            <animate attributeName="opacity" values="0.8;1;0.8" dur="2s" repeatCount="indefinite" />
           </g>
 
           {/* Lightning bolt */}
@@ -416,6 +463,8 @@ export function GraffitiLogo({ size = 'md', className = '' }: GraffitiLogoProps)
                   fill="#ff0000" stroke="#ff3333" strokeWidth="2" filter="url(#neonGlow2)" fontStyle="italic">
               GF
               <animate attributeName="fill" values="#ff0000;#ff3333;#ff0000" dur="2.8s" repeatCount="indefinite" />
+              <animateTransform attributeName="transform" type="translate" values="0,0;0,-3;0,0" dur="2.5s" repeatCount="indefinite" />
+              <animate attributeName="opacity" values="1;0.85;1" dur="2.8s" repeatCount="indefinite" />
             </text>
             <text x="2" y="2" fontFamily="'Comic Sans MS', cursive" fontSize="28" fontWeight="900"
                   fill="#880000" stroke="#550000" strokeWidth="1" opacity="0.5" fontStyle="italic">
@@ -469,6 +518,8 @@ export function GraffitiLogo({ size = 'md', className = '' }: GraffitiLogoProps)
             <path d="M20,10 L40,0 L40,20 L20,30 Z" fill="#0080ff" stroke="#00a0ff" strokeWidth="2" opacity="0.8">
               <animate attributeName="fill" values="#0080ff;#00a0ff;#0080ff" dur="3s" repeatCount="indefinite" />
             </path>
+            <animateTransform attributeName="transform" type="rotate" values="0 20 15;10 20 15;0 20 15" dur="4s" repeatCount="indefinite" />
+            <animate attributeName="opacity" values="0.8;1;0.8" dur="3s" repeatCount="indefinite" />
           </g>
 
           {/* Floating graffiti bubbles */}
