@@ -97,16 +97,16 @@ export function ReportListingModal({ isOpen, onClose, product }: ReportListingMo
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-gray-900 rounded-3xl border border-gray-700 w-full max-w-md overflow-hidden shadow-2xl">
+      <div className="luxe-glass-strong rounded-3xl border border-white/10 w-full max-w-md overflow-hidden shadow-2xl">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-700">
+        <div className="flex items-center justify-between p-6 border-b border-white/10">
           <div className="flex items-center space-x-2">
             <Flag className="h-5 w-5 text-red-400" />
             <h2 className="text-xl font-black text-gray-200 uppercase">REPORT LISTING</h2>
           </div>
           <button
             onClick={handleClose}
-            className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
+            className="p-2 hover:luxe-glass rounded-lg transition-colors"
           >
             <X className="w-6 h-6 text-gray-400" />
           </button>
@@ -122,7 +122,7 @@ export function ReportListingModal({ isOpen, onClose, product }: ReportListingMo
           ) : (
             <>
               {/* Product Summary */}
-              <div className="bg-gray-800 rounded-2xl p-4 mb-6 border border-gray-700">
+              <div className="luxe-glass rounded-2xl p-4 mb-6 border border-white/10">
                 <div className="flex items-start space-x-4">
                   <img
                     src={product.image}
@@ -196,7 +196,7 @@ export function ReportListingModal({ isOpen, onClose, product }: ReportListingMo
                           className={`p-3 rounded-xl font-black text-sm uppercase transition-all ${
                             severity === severityKey
                               ? `bg-${color}-500/20 border-2 border-${color}-500 text-${color}-400`
-                              : 'bg-gray-800 border border-gray-700 text-gray-400 hover:border-gray-600'
+                              : 'luxe-glass border border-white/10 text-gray-400 hover:border-gray-600'
                           }`}
                         >
                           {label}
@@ -215,7 +215,7 @@ export function ReportListingModal({ isOpen, onClose, product }: ReportListingMo
                     <select
                       value={prohibitedCategoryId}
                       onChange={(e) => setProhibitedCategoryId(e.target.value)}
-                      className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-400 text-gray-200 font-medium"
+                      className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-400 text-gray-200 font-medium"
                     >
                       <option value="">Select if applicable...</option>
                       {prohibitedCategories.map((cat) => (
@@ -236,7 +236,7 @@ export function ReportListingModal({ isOpen, onClose, product }: ReportListingMo
                     value={reason}
                     onChange={(e) => setReason(e.target.value)}
                     rows={4}
-                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-transparent text-gray-200 placeholder-gray-500 resize-none font-medium"
+                    className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-transparent text-gray-200 placeholder-gray-500 resize-none font-medium"
                     placeholder="Describe why this listing should be removed..."
                     required
                   />
@@ -251,7 +251,7 @@ export function ReportListingModal({ isOpen, onClose, product }: ReportListingMo
                     value={evidenceUrls}
                     onChange={(e) => setEvidenceUrls(e.target.value)}
                     rows={2}
-                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-transparent text-gray-200 placeholder-gray-500 resize-none font-medium text-sm"
+                    className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-transparent text-gray-200 placeholder-gray-500 resize-none font-medium text-sm"
                     placeholder="One URL per line (screenshots, references, etc.)"
                   />
                 </div>
@@ -262,7 +262,7 @@ export function ReportListingModal({ isOpen, onClose, product }: ReportListingMo
                     type="checkbox"
                     checked={isAnonymous}
                     onChange={(e) => setIsAnonymous(e.target.checked)}
-                    className="w-4 h-4 text-red-400 bg-gray-800 border-gray-600 rounded focus:ring-red-400"
+                    className="w-4 h-4 text-red-400 luxe-glass border-gray-600 rounded focus:ring-red-400"
                   />
                   <span className="text-gray-300 text-sm font-medium">Submit anonymously</span>
                 </label>
@@ -294,7 +294,7 @@ export function ReportListingModal({ isOpen, onClose, product }: ReportListingMo
                 </div>
 
                 {/* Info Box */}
-                <div className="bg-gray-800/50 rounded-2xl p-4 border border-gray-700">
+                <div className="luxe-glass/50 rounded-2xl p-4 border border-white/10">
                   <h4 className="text-gray-200 font-black mb-2 uppercase text-sm">What happens next:</h4>
                   <ul className="space-y-1 text-gray-400 text-xs font-bold uppercase">
                     <li>• MODERATORS WILL REVIEW WITHIN 24-48 HOURS</li>
@@ -307,7 +307,7 @@ export function ReportListingModal({ isOpen, onClose, product }: ReportListingMo
                 <button
                   type="submit"
                   disabled={isSubmitting || !user}
-                  className="w-full py-4 bg-red-600 hover:bg-red-700 disabled:bg-gray-700 text-white font-black rounded-2xl transition-all duration-200 flex items-center justify-center space-x-2 uppercase"
+                  className="w-full py-4 bg-red-600 hover:bg-red-700 disabled:luxe-glass text-white font-black rounded-2xl transition-all duration-200 flex items-center justify-center space-x-2 uppercase"
                 >
                   {isSubmitting ? (
                     <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />

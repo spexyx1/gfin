@@ -17,8 +17,8 @@ export const CategoryFilter: React.FC<CategoryFilterProps> = ({
         onClick={() => onCategoryChange('All')}
         className={`px-6 py-2 rounded-full whitespace-nowrap transition-all duration-200 text-sm font-black uppercase ${
           selectedCategory === 'All'
-            ? 'bg-neon-blue text-black neon-blue-glow'
-            : 'bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-gray-200'
+            ? 'bg-luxe-gold text-black neon-blue-glow'
+            : 'luxe-glass text-gray-300 hover:luxe-glass hover:text-gray-200'
         } active:btn-neon-active`}
       >
         ALL CATEGORIES
@@ -29,8 +29,8 @@ export const CategoryFilter: React.FC<CategoryFilterProps> = ({
           onClick={() => onCategoryChange(category)}
           className={`px-6 py-2 rounded-full whitespace-nowrap transition-all duration-200 text-sm font-black uppercase ${
             selectedCategory === category
-              ? 'bg-neon-blue text-black neon-blue-glow'
-              : 'bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-gray-200'
+              ? 'bg-luxe-gold text-black neon-blue-glow'
+              : 'luxe-glass text-gray-300 hover:luxe-glass hover:text-gray-200'
           } active:btn-neon-active`}
         >
           {category.toUpperCase()}

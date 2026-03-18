@@ -84,7 +84,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             className={`w-full py-3 rounded-lg luxe-subtitle transition-all duration-300 flex items-center justify-center space-x-2 ${
               product.inStock
                 ? 'luxe-btn-primary'
-                : 'bg-gray-800 text-gray-600 cursor-not-allowed'
+                : 'luxe-glass text-gray-600 cursor-not-allowed'
             }`}
           >
             {product.inStock ? (
@@ -104,7 +104,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             className={`w-full py-3 rounded-lg luxe-subtitle transition-all duration-300 flex items-center justify-center space-x-2 ${
               product.inStock
                 ? 'luxe-btn-neon'
-                : 'bg-gray-800 text-gray-600 cursor-not-allowed'
+                : 'luxe-glass text-gray-600 cursor-not-allowed'
             }`}
           >
             {product.inStock ? (
@@ -125,7 +125,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               className={`py-2.5 rounded-lg transition-all duration-300 flex items-center justify-center space-x-2 text-sm luxe-subtitle ${
                 product.inStock
                   ? 'luxe-btn-secondary'
-                  : 'bg-gray-800 text-gray-600 cursor-not-allowed'
+                  : 'luxe-glass text-gray-600 cursor-not-allowed'
               }`}
             >
               <span>Make Offer</span>
@@ -143,7 +143,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           {/* Report Listing Button */}
           <button
             onClick={() => onReportListing(product)}
-            className="w-full py-2 luxe-glass hover:bg-red-900/20 text-gray-500 hover:text-red-400 rounded-lg transition-all duration-300 flex items-center justify-center space-x-2 text-xs luxe-subtitle border border-gray-700/50 hover:border-red-500/50"
+            className="w-full py-2 luxe-glass hover:bg-red-900/20 text-gray-500 hover:text-red-400 rounded-lg transition-all duration-300 flex items-center justify-center space-x-2 text-xs luxe-subtitle border border-white/10/50 hover:border-red-500/50"
           >
             <Flag className="w-3 h-3" />
             <span>Report Listing</span>

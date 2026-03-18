@@ -23,7 +23,7 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
   if (products.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-16">
-        <div className="w-24 h-24 bg-gray-800/50 rounded-full flex items-center justify-center mb-6">
+        <div className="w-24 h-24 luxe-glass/50 rounded-full flex items-center justify-center mb-6">
           <Package className="w-12 h-12 text-gray-400" />
         </div>
         <h3 className="text-xl font-semibold text-white mb-2">No products found</h3>

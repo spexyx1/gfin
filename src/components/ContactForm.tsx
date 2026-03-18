@@ -79,16 +79,16 @@ export function ContactForm({ isOpen, onClose }: ContactFormProps) {
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-gray-900 rounded-3xl border border-gray-700 w-full max-w-md overflow-hidden shadow-2xl">
+      <div className="luxe-glass-strong rounded-3xl border border-white/10 w-full max-w-md overflow-hidden shadow-2xl">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-700">
+        <div className="flex items-center justify-between p-6 border-b border-white/10">
           <div className="flex items-center space-x-2">
-            <Mail className="h-5 w-5 text-neon-blue" />
+            <Mail className="h-5 w-5 text-luxe-gold" />
             <h2 className="text-xl font-black text-white uppercase">Contact Us</h2>
           </div>
           <button
             onClick={handleClose}
-            className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
+            className="p-2 hover:luxe-glass rounded-lg transition-colors"
           >
             <X className="w-6 h-6 text-gray-400" />
           </button>
@@ -118,7 +118,7 @@ export function ContactForm({ isOpen, onClose }: ContactFormProps) {
                       type="text"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full pl-12 pr-4 py-3 bg-gray-800 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-neon-blue focus:border-transparent text-white placeholder-gray-500"
+                      className="w-full pl-12 pr-4 py-3 luxe-glass border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-luxe-gold focus:border-transparent text-white placeholder-gray-500"
                       placeholder="Your name"
                       required
                     />
@@ -133,7 +133,7 @@ export function ContactForm({ isOpen, onClose }: ContactFormProps) {
                       type="email"
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="w-full pl-12 pr-4 py-3 bg-gray-800 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-neon-blue focus:border-transparent text-white placeholder-gray-500"
+                      className="w-full pl-12 pr-4 py-3 luxe-glass border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-luxe-gold focus:border-transparent text-white placeholder-gray-500"
                       placeholder="your@email.com"
                       required
                     />
@@ -146,7 +146,7 @@ export function ContactForm({ isOpen, onClose }: ContactFormProps) {
                     type="text"
                     value={formData.subject}
                     onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-neon-blue focus:border-transparent text-white placeholder-gray-500"
+                    className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-luxe-gold focus:border-transparent text-white placeholder-gray-500"
                     placeholder="What's this about?"
                   />
                 </div>
@@ -159,7 +159,7 @@ export function ContactForm({ isOpen, onClose }: ContactFormProps) {
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                       rows={4}
-                      className="w-full pl-12 pr-4 py-3 bg-gray-800 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-neon-blue focus:border-transparent text-white placeholder-gray-500 resize-none"
+                      className="w-full pl-12 pr-4 py-3 luxe-glass border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-luxe-gold focus:border-transparent text-white placeholder-gray-500 resize-none"
                       placeholder="Tell us what's on your mind..."
                       required
                     />
@@ -176,7 +176,7 @@ export function ContactForm({ isOpen, onClose }: ContactFormProps) {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full py-4 bg-neon-blue hover:bg-neon-blue/80 disabled:bg-gray-700 text-black font-black rounded-2xl transition-all duration-200 flex items-center justify-center space-x-2 uppercase"
+                  className="w-full py-4 bg-luxe-gold hover:bg-luxe-gold/80 disabled:luxe-glass text-black font-black rounded-2xl transition-all duration-200 flex items-center justify-center space-x-2 uppercase"
                 >
                   {isSubmitting ? (
                     <div className="w-5 h-5 border-2 border-black/30 border-t-black rounded-full animate-spin" />
@@ -192,7 +192,7 @@ export function ContactForm({ isOpen, onClose }: ContactFormProps) {
               <div className="mt-6 text-center">
                 <p className="text-gray-500 text-sm">
                   Or email us directly at{' '}
-                  <a href="mailto:info@ghetto.finance" className="text-neon-blue hover:text-neon-blue/80 transition-colors">
+                  <a href="mailto:info@ghetto.finance" className="text-luxe-gold hover:text-luxe-gold/80 transition-colors">
                     info@ghetto.finance
                   </a>
                 </p>

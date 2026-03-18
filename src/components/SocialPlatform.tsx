@@ -237,16 +237,16 @@ export function SocialPlatform({ searchTerm, setSearchTerm }: SocialPlatformProp
   return (
     <div className="min-h-screen bg-apple-gray-950 flex">
         {/* Sidebar */}
-        <div className="w-80 bg-gray-800 border-r border-gray-700 flex flex-col min-h-screen">
-          <div className="p-6 border-b border-gray-700">
+        <div className="w-80 luxe-glass border-r border-white/10 flex flex-col min-h-screen">
+          <div className="p-6 border-b border-white/10">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center space-x-2">
-                <Globe className="h-6 w-6 text-neon-blue" />
+                <Globe className="h-6 w-6 text-luxe-gold" />
                 <h2 className="text-xl font-black text-white uppercase">Social Platform</h2>
               </div>
               <button
                 onClick={() => navigate('/')}
-                className="p-2 hover:bg-gray-700 rounded-lg transition-colors"
+                className="p-2 hover:luxe-glass rounded-lg transition-colors"
                 title="Back to Marketplace"
               >
                 <ArrowLeft className="w-5 h-5 text-gray-400" />
@@ -260,13 +260,13 @@ export function SocialPlatform({ searchTerm, setSearchTerm }: SocialPlatformProp
                 placeholder="Search posts, communities..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-neon-blue text-white placeholder-gray-400 text-sm"
+                className="w-full pl-10 pr-4 py-2 luxe-glass border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-luxe-gold text-white placeholder-gray-400 text-sm"
               />
             </div>
           </div>
 
           {/* Navigation */}
-          <div className="p-4 border-b border-gray-700">
+          <div className="p-4 border-b border-white/10">
             <div className="grid grid-cols-2 gap-2">
               {[
                 { id: 'feed', label: 'Feed', icon: TrendingUp },
@@ -283,8 +283,8 @@ export function SocialPlatform({ searchTerm, setSearchTerm }: SocialPlatformProp
                   }}
                   className={`flex items-center justify-center space-x-2 px-3 py-2 rounded-lg transition-colors text-sm font-medium ${
                     activeTab === id
-                      ? 'bg-neon-blue text-black'
-                      : 'text-gray-300 hover:bg-gray-700'
+                      ? 'bg-luxe-gold text-black'
+                      : 'text-gray-300 hover:luxe-glass'
                   }`}
                 >
                   <Icon className="w-4 h-4" />
@@ -300,7 +300,7 @@ export function SocialPlatform({ searchTerm, setSearchTerm }: SocialPlatformProp
               <h3 className="text-white font-black uppercase text-sm">Communities</h3>
               <button
                 onClick={() => setShowCreateCommunity(true)}
-                className="p-1 hover:bg-gray-700 rounded text-gray-400 hover:text-neon-blue transition-colors"
+                className="p-1 hover:luxe-glass rounded text-gray-400 hover:text-luxe-gold transition-colors"
               >
                 <Plus className="w-4 h-4" />
               </button>
@@ -311,8 +311,8 @@ export function SocialPlatform({ searchTerm, setSearchTerm }: SocialPlatformProp
                 onClick={() => setSelectedCommunity(null)}
                 className={`w-full text-left p-3 rounded-lg transition-colors ${
                   !selectedCommunity
-                    ? 'bg-neon-blue/20 border border-neon-blue/30 text-neon-blue'
-                    : 'bg-gray-700 hover:bg-gray-600 text-gray-300'
+                    ? 'bg-luxe-gold/20 border border-luxe-gold/30 text-luxe-gold'
+                    : 'luxe-glass hover:bg-gray-600 text-gray-300'
                 }`}
               >
                 <div className="font-medium text-sm">All Communities</div>
@@ -325,8 +325,8 @@ export function SocialPlatform({ searchTerm, setSearchTerm }: SocialPlatformProp
                   onClick={() => setSelectedCommunity(community.id)}
                   className={`w-full text-left p-3 rounded-lg transition-colors ${
                     selectedCommunity === community.id
-                      ? 'bg-neon-blue/20 border border-neon-blue/30'
-                      : 'bg-gray-700 hover:bg-gray-600'
+                      ? 'bg-luxe-gold/20 border border-luxe-gold/30'
+                      : 'luxe-glass hover:bg-gray-600'
                   }`}
                 >
                   <div className="flex items-start justify-between">
@@ -348,7 +348,7 @@ export function SocialPlatform({ searchTerm, setSearchTerm }: SocialPlatformProp
         {/* Main Content */}
         <div className="flex-1 flex flex-col min-h-screen">
           {/* Header */}
-          <div className="p-6 border-b border-gray-700">
+          <div className="p-6 border-b border-white/10">
             <div className="flex items-center justify-between">
               <div>
                 <h2 className="text-2xl font-black text-white uppercase">
@@ -373,7 +373,7 @@ export function SocialPlatform({ searchTerm, setSearchTerm }: SocialPlatformProp
                 <select
                   value={filterCategory}
                   onChange={(e) => setFilterCategory(e.target.value)}
-                  className="px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-neon-blue"
+                  className="px-3 py-2 luxe-glass border border-white/10 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-luxe-gold"
                 >
                   <option value="all">All Categories</option>
                   {postCategories.map(cat => (
@@ -384,7 +384,7 @@ export function SocialPlatform({ searchTerm, setSearchTerm }: SocialPlatformProp
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value as any)}
-                  className="px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-neon-blue"
+                  className="px-3 py-2 luxe-glass border border-white/10 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-luxe-gold"
                 >
                   <option value="recent">Recent</option>
                   <option value="popular">Popular</option>
@@ -393,7 +393,7 @@ export function SocialPlatform({ searchTerm, setSearchTerm }: SocialPlatformProp
 
                 <button
                   onClick={() => setShowCreatePost(true)}
-                  className="px-4 py-2 bg-neon-blue hover:bg-neon-blue/80 text-black rounded-lg transition-colors font-medium flex items-center space-x-2"
+                  className="px-4 py-2 bg-luxe-gold hover:bg-luxe-gold/80 text-black rounded-lg transition-colors font-medium flex items-center space-x-2"
                 >
                   <Plus className="w-4 h-4" />
                   <span>Create Post</span>
@@ -409,7 +409,7 @@ export function SocialPlatform({ searchTerm, setSearchTerm }: SocialPlatformProp
             ) : activeTab === 'communities' && !selectedCommunity ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredCommunities.map((community) => (
-                  <div key={community.id} className="bg-gray-800 rounded-2xl p-6 border border-gray-700 hover:border-neon-blue/30 transition-all duration-300">
+                  <div key={community.id} className="luxe-glass rounded-2xl p-6 border border-white/10 hover:border-luxe-gold/30 transition-all duration-300">
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex-1">
                         <h3 className="text-lg font-black text-white mb-2">{community.name}</h3>
@@ -431,11 +431,11 @@ export function SocialPlatform({ searchTerm, setSearchTerm }: SocialPlatformProp
                     <div className="flex space-x-2">
                       <button
                         onClick={() => setSelectedCommunity(community.id)}
-                        className="flex-1 px-4 py-2 bg-neon-blue hover:bg-neon-blue/80 text-black rounded-lg transition-colors font-medium"
+                        className="flex-1 px-4 py-2 bg-luxe-gold hover:bg-luxe-gold/80 text-black rounded-lg transition-colors font-medium"
                       >
                         View
                       </button>
-                      <button className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors">
+                      <button className="px-4 py-2 luxe-glass hover:bg-gray-600 text-white rounded-lg transition-colors">
                         Join
                       </button>
                     </div>
@@ -449,7 +449,7 @@ export function SocialPlatform({ searchTerm, setSearchTerm }: SocialPlatformProp
                     <p className="text-gray-500">Try different search terms or browse all communities</p>
                     <button
                       onClick={() => setSearchTerm('')}
-                      className="mt-4 px-4 py-2 bg-neon-blue hover:bg-neon-blue/80 text-black rounded-lg transition-colors font-medium"
+                      className="mt-4 px-4 py-2 bg-luxe-gold hover:bg-luxe-gold/80 text-black rounded-lg transition-colors font-medium"
                     >
                       Clear Search
                     </button>
@@ -460,11 +460,11 @@ export function SocialPlatform({ searchTerm, setSearchTerm }: SocialPlatformProp
               /* Posts Feed */
               <div className="space-y-6">
                 {sortedPosts.map((post) => (
-                  <div key={post.id} className="bg-gray-800 rounded-2xl p-6 border border-gray-700 hover:border-gray-600 transition-all duration-300">
+                  <div key={post.id} className="luxe-glass rounded-2xl p-6 border border-white/10 hover:border-gray-600 transition-all duration-300">
                     {/* Post Header */}
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex items-start space-x-4 flex-1">
-                        <div className="w-10 h-10 bg-neon-blue rounded-full flex items-center justify-center flex-shrink-0">
+                        <div className="w-10 h-10 bg-luxe-gold rounded-full flex items-center justify-center flex-shrink-0">
                           <span className="text-black font-bold text-sm">
                             {post.authorId.charAt(0).toUpperCase()}
                           </span>
@@ -476,7 +476,7 @@ export function SocialPlatform({ searchTerm, setSearchTerm }: SocialPlatformProp
                               {formatDistanceToNow(post.createdAt, { addSuffix: true })}
                             </span>
                             {post.communityId && (
-                              <span className="text-neon-blue text-sm">
+                              <span className="text-luxe-gold text-sm">
                                 in {communities.find(c => c.id === post.communityId)?.name}
                               </span>
                             )}
@@ -490,11 +490,11 @@ export function SocialPlatform({ searchTerm, setSearchTerm }: SocialPlatformProp
                             }`}>
                               {post.type.toUpperCase()}
                             </span>
-                            <span className="px-2 py-1 bg-gray-700 text-gray-300 rounded-full text-xs">
+                            <span className="px-2 py-1 luxe-glass text-gray-300 rounded-full text-xs">
                               {post.category}
                             </span>
                             {post.isPromoted && (
-                              <span className="px-2 py-1 bg-neon-red/20 text-neon-red rounded-full text-xs font-medium">
+                              <span className="px-2 py-1 bg-red-500/20 text-red-400 rounded-full text-xs font-medium">
                                 PROMOTED
                               </span>
                             )}
@@ -535,7 +535,7 @@ export function SocialPlatform({ searchTerm, setSearchTerm }: SocialPlatformProp
                       {post.tags.length > 0 && (
                         <div className="flex flex-wrap gap-2 mt-3">
                           {post.tags.map((tag, index) => (
-                            <span key={index} className="px-2 py-1 bg-gray-700 text-gray-300 rounded-full text-xs">
+                            <span key={index} className="px-2 py-1 luxe-glass text-gray-300 rounded-full text-xs">
                               #{tag}
                             </span>
                           ))}
@@ -570,14 +570,14 @@ export function SocialPlatform({ searchTerm, setSearchTerm }: SocialPlatformProp
                     )}
 
                     {/* Post Actions */}
-                    <div className="flex items-center justify-between pt-4 border-t border-gray-700">
+                    <div className="flex items-center justify-between pt-4 border-t border-white/10">
                       <div className="flex items-center space-x-6">
                         <button
                           onClick={() => handleLikePost(post.id)}
                           className={`flex items-center space-x-2 transition-colors ${
                             user && post.likes.includes(user.id)
-                              ? 'text-neon-red'
-                              : 'text-gray-400 hover:text-neon-red'
+                              ? 'text-red-400'
+                              : 'text-gray-400 hover:text-red-400'
                           }`}
                         >
                           <Heart className={`w-4 h-4 ${user && post.likes.includes(user.id) ? 'fill-current' : ''}`} />
@@ -603,7 +603,7 @@ export function SocialPlatform({ searchTerm, setSearchTerm }: SocialPlatformProp
                               handleContactUser(post.contactInfo.value);
                             }
                           }}
-                          className="px-4 py-2 bg-neon-blue hover:bg-neon-blue/80 text-black rounded-lg transition-colors font-medium flex items-center space-x-2"
+                          className="px-4 py-2 bg-luxe-gold hover:bg-luxe-gold/80 text-black rounded-lg transition-colors font-medium flex items-center space-x-2"
                         >
                           <MessageCircle className="w-4 h-4" />
                           <span>Contact</span>
@@ -622,7 +622,7 @@ export function SocialPlatform({ searchTerm, setSearchTerm }: SocialPlatformProp
                         <p className="text-gray-500">Try different search terms or browse all posts</p>
                         <button
                           onClick={() => setSearchTerm('')}
-                          className="mt-4 px-4 py-2 bg-neon-blue hover:bg-neon-blue/80 text-black rounded-lg transition-colors font-medium"
+                          className="mt-4 px-4 py-2 bg-luxe-gold hover:bg-luxe-gold/80 text-black rounded-lg transition-colors font-medium"
                         >
                           Clear Search
                         </button>
@@ -644,13 +644,13 @@ export function SocialPlatform({ searchTerm, setSearchTerm }: SocialPlatformProp
       {/* Create Post Modal */}
       {showCreatePost && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-gray-900 rounded-2xl border border-gray-700 w-full max-w-2xl max-h-[80vh] overflow-y-auto">
-            <div className="p-6 border-b border-gray-700">
+          <div className="luxe-glass-strong rounded-2xl border border-white/10 w-full max-w-2xl max-h-[80vh] overflow-y-auto">
+            <div className="p-6 border-b border-white/10">
               <div className="flex items-center justify-between">
                 <h3 className="text-xl font-black text-white uppercase">Create Post</h3>
                 <button
                   onClick={() => setShowCreatePost(false)}
-                  className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
+                  className="p-2 hover:luxe-glass rounded-lg transition-colors"
                 >
                   <ArrowLeft className="w-5 h-5 text-gray-400" />
                 </button>
@@ -664,7 +664,7 @@ export function SocialPlatform({ searchTerm, setSearchTerm }: SocialPlatformProp
                   <select
                     value={newPostData.type}
                     onChange={(e) => setNewPostData({ ...newPostData, type: e.target.value as any })}
-                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-neon-blue text-white"
+                    className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-luxe-gold text-white"
                   >
                     <option value="discussion">Discussion</option>
                     <option value="deal">Deal/Offer</option>
@@ -677,7 +677,7 @@ export function SocialPlatform({ searchTerm, setSearchTerm }: SocialPlatformProp
                   <select
                     value={newPostData.category}
                     onChange={(e) => setNewPostData({ ...newPostData, category: e.target.value })}
-                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-neon-blue text-white"
+                    className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-luxe-gold text-white"
                   >
                     {postCategories.map(cat => (
                       <option key={cat} value={cat}>{cat.charAt(0).toUpperCase() + cat.slice(1)}</option>
@@ -692,7 +692,7 @@ export function SocialPlatform({ searchTerm, setSearchTerm }: SocialPlatformProp
                   type="text"
                   value={newPostData.title}
                   onChange={(e) => setNewPostData({ ...newPostData, title: e.target.value })}
-                  className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-neon-blue text-white"
+                  className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-luxe-gold text-white"
                   placeholder="Enter post title..."
                   required
                 />
@@ -704,7 +704,7 @@ export function SocialPlatform({ searchTerm, setSearchTerm }: SocialPlatformProp
                   value={newPostData.content}
                   onChange={(e) => setNewPostData({ ...newPostData, content: e.target.value })}
                   rows={4}
-                  className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-neon-blue text-white resize-none"
+                  className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-luxe-gold text-white resize-none"
                   placeholder="Share your thoughts, deals, or classifieds..."
                   required
                 />
@@ -719,7 +719,7 @@ export function SocialPlatform({ searchTerm, setSearchTerm }: SocialPlatformProp
                       step="0.01"
                       value={newPostData.price}
                       onChange={(e) => setNewPostData({ ...newPostData, price: e.target.value })}
-                      className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-neon-blue text-white"
+                      className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-luxe-gold text-white"
                       placeholder="0.00"
                     />
                   </div>
@@ -728,7 +728,7 @@ export function SocialPlatform({ searchTerm, setSearchTerm }: SocialPlatformProp
                     <select
                       value={newPostData.currency}
                       onChange={(e) => setNewPostData({ ...newPostData, currency: e.target.value })}
-                      className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-neon-blue text-white"
+                      className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-luxe-gold text-white"
                     >
                       <option value="USDC">USDC</option>
                       <option value="ETH">ETH</option>
@@ -747,7 +747,7 @@ export function SocialPlatform({ searchTerm, setSearchTerm }: SocialPlatformProp
                     type="text"
                     value={newPostData.location}
                     onChange={(e) => setNewPostData({ ...newPostData, location: e.target.value })}
-                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-neon-blue text-white"
+                    className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-luxe-gold text-white"
                     placeholder="City, State/Country"
                   />
                 </div>
@@ -757,7 +757,7 @@ export function SocialPlatform({ searchTerm, setSearchTerm }: SocialPlatformProp
                     type="text"
                     value={newPostData.tags}
                     onChange={(e) => setNewPostData({ ...newPostData, tags: e.target.value })}
-                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-neon-blue text-white"
+                    className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-luxe-gold text-white"
                     placeholder="crypto, nft, trading"
                   />
                 </div>
@@ -778,8 +778,8 @@ export function SocialPlatform({ searchTerm, setSearchTerm }: SocialPlatformProp
                         onClick={() => setNewPostData({ ...newPostData, contactMethod: id as any })}
                         className={`py-2 rounded-lg font-medium transition-colors ${
                           newPostData.contactMethod === id
-                            ? 'bg-neon-blue text-black'
-                            : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                            ? 'bg-luxe-gold text-black'
+                            : 'luxe-glass text-gray-300 hover:bg-gray-600'
                         }`}
                       >
                         {label}
@@ -791,7 +791,7 @@ export function SocialPlatform({ searchTerm, setSearchTerm }: SocialPlatformProp
                       type={newPostData.contactMethod === 'email' ? 'email' : 'tel'}
                       value={newPostData.contactValue}
                       onChange={(e) => setNewPostData({ ...newPostData, contactValue: e.target.value })}
-                      className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-neon-blue text-white"
+                      className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-luxe-gold text-white"
                       placeholder={newPostData.contactMethod === 'email' ? 'your@email.com' : '+1 (555) 123-4567'}
                       required
                     />
@@ -802,14 +802,14 @@ export function SocialPlatform({ searchTerm, setSearchTerm }: SocialPlatformProp
               <div className="flex space-x-4">
                 <button
                   type="submit"
-                  className="flex-1 py-3 bg-neon-blue hover:bg-neon-blue/80 text-black rounded-lg transition-colors font-medium"
+                  className="flex-1 py-3 bg-luxe-gold hover:bg-luxe-gold/80 text-black rounded-lg transition-colors font-medium"
                 >
                   Create Post
                 </button>
                 <button
                   type="button"
                   onClick={() => setShowCreatePost(false)}
-                  className="px-6 py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors"
+                  className="px-6 py-3 luxe-glass hover:bg-gray-600 text-white rounded-lg transition-colors"
                 >
                   Cancel
                 </button>
@@ -822,13 +822,13 @@ export function SocialPlatform({ searchTerm, setSearchTerm }: SocialPlatformProp
       {/* Create Community Modal */}
       {showCreateCommunity && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-gray-900 rounded-2xl border border-gray-700 w-full max-w-md">
-            <div className="p-6 border-b border-gray-700">
+          <div className="luxe-glass-strong rounded-2xl border border-white/10 w-full max-w-md">
+            <div className="p-6 border-b border-white/10">
               <div className="flex items-center justify-between">
                 <h3 className="text-xl font-black text-white uppercase">Create Community</h3>
                 <button
                   onClick={() => setShowCreateCommunity(false)}
-                  className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
+                  className="p-2 hover:luxe-glass rounded-lg transition-colors"
                 >
                   <ArrowLeft className="w-5 h-5 text-gray-400" />
                 </button>
@@ -842,7 +842,7 @@ export function SocialPlatform({ searchTerm, setSearchTerm }: SocialPlatformProp
                   type="text"
                   value={newCommunityData.name}
                   onChange={(e) => setNewCommunityData({ ...newCommunityData, name: e.target.value })}
-                  className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-neon-blue text-white"
+                  className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-luxe-gold text-white"
                   placeholder="Enter community name..."
                   required
                 />
@@ -854,7 +854,7 @@ export function SocialPlatform({ searchTerm, setSearchTerm }: SocialPlatformProp
                   value={newCommunityData.description}
                   onChange={(e) => setNewCommunityData({ ...newCommunityData, description: e.target.value })}
                   rows={3}
-                  className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-neon-blue text-white resize-none"
+                  className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-luxe-gold text-white resize-none"
                   placeholder="Describe your community..."
                   required
                 />
@@ -865,7 +865,7 @@ export function SocialPlatform({ searchTerm, setSearchTerm }: SocialPlatformProp
                 <select
                   value={newCommunityData.category}
                   onChange={(e) => setNewCommunityData({ ...newCommunityData, category: e.target.value })}
-                  className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-neon-blue text-white"
+                  className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-luxe-gold text-white"
                 >
                   <option value="trading">Trading</option>
                   <option value="nft">NFT</option>
@@ -882,7 +882,7 @@ export function SocialPlatform({ searchTerm, setSearchTerm }: SocialPlatformProp
                   id="isPrivate"
                   checked={newCommunityData.isPrivate}
                   onChange={(e) => setNewCommunityData({ ...newCommunityData, isPrivate: e.target.checked })}
-                  className="w-4 h-4 text-neon-blue bg-gray-800 border-gray-600 rounded focus:ring-neon-blue"
+                  className="w-4 h-4 text-luxe-gold luxe-glass border-gray-600 rounded focus:ring-luxe-gold"
                 />
                 <label htmlFor="isPrivate" className="text-white font-medium">Private Community</label>
               </div>
@@ -890,14 +890,14 @@ export function SocialPlatform({ searchTerm, setSearchTerm }: SocialPlatformProp
               <div className="flex space-x-4">
                 <button
                   type="submit"
-                  className="flex-1 py-3 bg-neon-blue hover:bg-neon-blue/80 text-black rounded-lg transition-colors font-medium"
+                  className="flex-1 py-3 bg-luxe-gold hover:bg-luxe-gold/80 text-black rounded-lg transition-colors font-medium"
                 >
                   Create Community
                 </button>
                 <button
                   type="button"
                   onClick={() => setShowCreateCommunity(false)}
-                  className="px-6 py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors"
+                  className="px-6 py-3 luxe-glass hover:bg-gray-600 text-white rounded-lg transition-colors"
                 >
                   Cancel
                 </button>

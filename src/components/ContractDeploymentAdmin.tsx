@@ -162,7 +162,7 @@ export const ContractDeploymentAdmin: React.FC = () => {
       </div>
 
       {showAddForm && (
-        <div className="bg-gray-800 rounded-lg p-6 mb-8 border border-gray-700">
+        <div className="luxe-glass rounded-lg p-6 mb-8 border border-white/10">
           <h2 className="text-xl font-bold text-white mb-4">Add New Deployment</h2>
           <form onSubmit={handleAddDeployment} className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
@@ -173,7 +173,7 @@ export const ContractDeploymentAdmin: React.FC = () => {
                 <select
                   value={formData.contract_name}
                   onChange={(e) => setFormData({ ...formData, contract_name: e.target.value })}
-                  className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white"
+                  className="w-full px-4 py-2 luxe-glass border border-gray-600 rounded-lg text-white"
                 >
                   <option value="GhettoToken">GhettoToken</option>
                   <option value="EscrowContract">EscrowContract</option>
@@ -195,7 +195,7 @@ export const ContractDeploymentAdmin: React.FC = () => {
                       chain_id: network === 'polygon' ? 137 : 80001,
                     });
                   }}
-                  className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white"
+                  className="w-full px-4 py-2 luxe-glass border border-gray-600 rounded-lg text-white"
                 >
                   <option value="polygon">Polygon Mainnet</option>
                   <option value="polygonMumbai">Polygon Mumbai Testnet</option>
@@ -212,7 +212,7 @@ export const ContractDeploymentAdmin: React.FC = () => {
                   onChange={(e) => setFormData({ ...formData, contract_address: e.target.value })}
                   placeholder="0x..."
                   required
-                  className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white"
+                  className="w-full px-4 py-2 luxe-glass border border-gray-600 rounded-lg text-white"
                 />
               </div>
 
@@ -226,7 +226,7 @@ export const ContractDeploymentAdmin: React.FC = () => {
                   onChange={(e) => setFormData({ ...formData, deployer_address: e.target.value })}
                   placeholder="0x..."
                   required
-                  className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white"
+                  className="w-full px-4 py-2 luxe-glass border border-gray-600 rounded-lg text-white"
                 />
               </div>
 
@@ -239,7 +239,7 @@ export const ContractDeploymentAdmin: React.FC = () => {
                   value={formData.transaction_hash}
                   onChange={(e) => setFormData({ ...formData, transaction_hash: e.target.value })}
                   placeholder="0x..."
-                  className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white"
+                  className="w-full px-4 py-2 luxe-glass border border-gray-600 rounded-lg text-white"
                 />
               </div>
 
@@ -252,7 +252,7 @@ export const ContractDeploymentAdmin: React.FC = () => {
                   value={formData.block_number}
                   onChange={(e) => setFormData({ ...formData, block_number: e.target.value })}
                   placeholder="12345678"
-                  className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white"
+                  className="w-full px-4 py-2 luxe-glass border border-gray-600 rounded-lg text-white"
                 />
               </div>
             </div>
@@ -280,7 +280,7 @@ export const ContractDeploymentAdmin: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setShowAddForm(false)}
-                className="px-6 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition"
+                className="px-6 py-2 luxe-glass text-white rounded-lg hover:bg-gray-600 transition"
               >
                 Cancel
               </button>
@@ -293,8 +293,8 @@ export const ContractDeploymentAdmin: React.FC = () => {
         {deployments.map((deployment) => (
           <div
             key={deployment.id}
-            className={`bg-gray-800 rounded-lg p-6 border-2 transition ${
-              deployment.is_active ? 'border-green-500' : 'border-gray-700'
+            className={`luxe-glass rounded-lg p-6 border-2 transition ${
+              deployment.is_active ? 'border-green-500' : 'border-white/10'
             }`}
           >
             <div className="flex items-start justify-between mb-4">
@@ -340,7 +340,7 @@ export const ContractDeploymentAdmin: React.FC = () => {
                 <code className="text-yellow-400 flex-1">{deployment.contract_address}</code>
                 <button
                   onClick={() => copyToClipboard(deployment.contract_address)}
-                  className="p-1 hover:bg-gray-700 rounded"
+                  className="p-1 hover:luxe-glass rounded"
                 >
                   <Copy className="w-4 h-4 text-gray-400" />
                 </button>
@@ -348,7 +348,7 @@ export const ContractDeploymentAdmin: React.FC = () => {
                   href={getExplorerUrl(deployment)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-1 hover:bg-gray-700 rounded"
+                  className="p-1 hover:luxe-glass rounded"
                 >
                   <ExternalLink className="w-4 h-4 text-gray-400" />
                 </a>
@@ -359,7 +359,7 @@ export const ContractDeploymentAdmin: React.FC = () => {
                 <code className="text-gray-300">{deployment.deployer_address}</code>
                 <button
                   onClick={() => copyToClipboard(deployment.deployer_address)}
-                  className="p-1 hover:bg-gray-700 rounded"
+                  className="p-1 hover:luxe-glass rounded"
                 >
                   <Copy className="w-4 h-4 text-gray-400" />
                 </button>
@@ -371,7 +371,7 @@ export const ContractDeploymentAdmin: React.FC = () => {
                   <code className="text-gray-300 text-xs">{deployment.transaction_hash}</code>
                   <button
                     onClick={() => copyToClipboard(deployment.transaction_hash!)}
-                    className="p-1 hover:bg-gray-700 rounded"
+                    className="p-1 hover:luxe-glass rounded"
                   >
                     <Copy className="w-4 h-4 text-gray-400" />
                   </button>

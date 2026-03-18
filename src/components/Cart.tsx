@@ -131,17 +131,17 @@ export function Cart({ isOpen, onClose }: CartProps) {
     <div className="fixed inset-0 z-50 overflow-hidden">
       <div className="absolute inset-0 bg-black/20 backdrop-blur-sm" onClick={onClose} />
       
-      <div className="absolute right-0 top-0 h-full w-full max-w-md bg-gray-900 shadow-2xl border-l border-gray-800">
+      <div className="absolute right-0 top-0 h-full w-full max-w-md luxe-glass-strong shadow-2xl border-l border-white/10">
         <div className="flex h-full flex-col">
           {/* Header */}
-          <div className="flex items-center justify-between border-b border-gray-800 p-6">
+          <div className="flex items-center justify-between border-b border-white/10 p-6">
             <div className="flex items-center space-x-2">
-              <ShoppingCart className="h-5 w-5 text-cyan-400" />
+              <ShoppingCart className="h-5 w-5 text-luxe-gold" />
               <h2 className="text-xl font-black text-gray-200 uppercase">CART</h2>
             </div>
             <button
               onClick={onClose}
-              className="rounded-lg p-2 text-gray-400 hover:bg-gray-800 hover:text-gray-200 transition-colors"
+              className="rounded-lg p-2 text-gray-400 hover:luxe-glass hover:text-gray-200 transition-colors"
             >
               <X className="h-5 w-5" />
             </button>
@@ -166,7 +166,7 @@ export function Cart({ isOpen, onClose }: CartProps) {
             ) : (
               <div className="space-y-4">
                 {items.map((item) => (
-                  <div key={item.product.id} className="bg-gray-800 rounded-2xl p-4 border border-gray-700">
+                  <div key={item.product.id} className="luxe-glass rounded-2xl p-4 border border-white/10">
                     <div className="flex items-start space-x-4">
                       <img
                         src={item.product.image}
@@ -190,14 +190,14 @@ export function Cart({ isOpen, onClose }: CartProps) {
                       <div className="flex items-center space-x-3">
                         <button
                           onClick={() => updateQuantity(item.product.id, Math.max(0, item.quantity - 1))}
-                          className="w-8 h-8 rounded-full bg-gray-700 hover:bg-gray-600 flex items-center justify-center text-gray-200 transition-colors"
+                          className="w-8 h-8 rounded-full luxe-glass hover:bg-gray-600 flex items-center justify-center text-gray-200 transition-colors"
                         >
                           <Minus className="h-4 w-4" />
                         </button>
                         <span className="text-gray-200 font-medium w-8 text-center">{item.quantity}</span>
                         <button
                           onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
-                          className="w-8 h-8 rounded-full bg-gray-700 hover:bg-gray-600 flex items-center justify-center text-gray-200 font-black transition-colors"
+                          className="w-8 h-8 rounded-full luxe-glass hover:bg-gray-600 flex items-center justify-center text-gray-200 font-black transition-colors"
                         >
                           <Plus className="h-4 w-4" />
                         </button>
@@ -214,9 +214,9 @@ export function Cart({ isOpen, onClose }: CartProps) {
 
           {/* Footer */}
           {items.length > 0 && (
-            <div className="border-t border-gray-800 p-6 space-y-4">
+            <div className="border-t border-white/10 p-6 space-y-4">
               {/* Payment Method Selection */}
-              <div className="bg-gray-800 rounded-2xl p-4 border border-gray-700">
+              <div className="luxe-glass rounded-2xl p-4 border border-white/10">
                 <h4 className="text-gray-200 font-black mb-3 uppercase text-sm">Payment Method</h4>
                 <div className="space-y-2">
                   {paymentOptions.map((option) => (
@@ -227,7 +227,7 @@ export function Cart({ isOpen, onClose }: CartProps) {
                         value={option.token}
                         checked={selectedPaymentToken === option.token}
                         onChange={(e) => setSelectedPaymentToken(e.target.value)}
-                        className="w-4 h-4 text-neon-blue bg-gray-700 border-gray-600"
+                        className="w-4 h-4 text-luxe-gold luxe-glass border-gray-600"
                       />
                       <div className="flex-1 flex items-center justify-between">
                         <div className="flex items-center space-x-2">
@@ -270,7 +270,7 @@ export function Cart({ isOpen, onClose }: CartProps) {
                 </div>
               )}
               
-              <div className="bg-gray-800 rounded-2xl p-4 border border-gray-700">
+              <div className="luxe-glass rounded-2xl p-4 border border-white/10">
                 <div className="flex items-center space-x-2 mb-2">
                   <Shield className="h-4 w-4 text-green-400" />
                   <span className="text-green-400 text-xs font-bold uppercase">Escrow Protected</span>
@@ -283,7 +283,7 @@ export function Cart({ isOpen, onClose }: CartProps) {
               <button
                 onClick={handleCheckout}
                 disabled={isLoading || checkoutStep !== 'review'}
-                className="w-full bg-neon-blue hover:shadow-neon-blue disabled:bg-gray-700 text-black font-black py-4 px-6 rounded-2xl transition-all duration-200 flex items-center justify-center space-x-2 uppercase active:btn-neon-active"
+                className="w-full bg-luxe-gold hover:shadow-neon-blue disabled:luxe-glass text-black font-black py-4 px-6 rounded-2xl transition-all duration-200 flex items-center justify-center space-x-2 uppercase active:btn-neon-active"
               >
                 <CreditCard className="h-5 w-5" />
                 <span>

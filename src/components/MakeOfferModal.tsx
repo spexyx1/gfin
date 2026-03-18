@@ -85,16 +85,16 @@ export function MakeOfferModal({ isOpen, onClose, product }: MakeOfferModalProps
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-gray-900 rounded-3xl border border-gray-700 w-full max-w-md overflow-hidden shadow-2xl">
+      <div className="luxe-glass-strong rounded-3xl border border-white/10 w-full max-w-md overflow-hidden shadow-2xl">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-700">
+        <div className="flex items-center justify-between p-6 border-b border-white/10">
           <div className="flex items-center space-x-2">
-            <DollarSign className="h-5 w-5 text-neon-blue" />
+            <DollarSign className="h-5 w-5 text-luxe-gold" />
             <h2 className="text-xl font-black text-gray-200 uppercase">MAKE OFFER</h2>
           </div>
           <button
             onClick={handleClose}
-            className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
+            className="p-2 hover:luxe-glass rounded-lg transition-colors"
           >
             <X className="w-6 h-6 text-gray-400" />
           </button>
@@ -110,7 +110,7 @@ export function MakeOfferModal({ isOpen, onClose, product }: MakeOfferModalProps
           ) : (
             <>
               {/* Product Summary */}
-              <div className="bg-gray-800 rounded-2xl p-4 mb-6 border border-gray-700">
+              <div className="luxe-glass rounded-2xl p-4 mb-6 border border-white/10">
                 <div className="flex items-start space-x-4">
                   <img
                     src={product.image}
@@ -125,7 +125,7 @@ export function MakeOfferModal({ isOpen, onClose, product }: MakeOfferModalProps
                       <span className="text-gray-400 text-sm font-bold uppercase">
                         BY {product.seller.name}
                       </span>
-                      <span className="text-xl font-black text-neon-blue uppercase">
+                      <span className="text-xl font-black text-luxe-gold uppercase">
                         {product.price} GHETTO
                       </span>
                     </div>
@@ -144,7 +144,7 @@ export function MakeOfferModal({ isOpen, onClose, product }: MakeOfferModalProps
                     max={maxOffer}
                     value={offerAmount}
                     onChange={(e) => setOfferAmount(e.target.value)}
-                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-neon-blue focus:border-transparent text-gray-200 placeholder-gray-500 font-bold text-center"
+                    className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-luxe-gold focus:border-transparent text-gray-200 placeholder-gray-500 font-bold text-center"
                     placeholder={`${minOffer.toFixed(2)} - ${maxOffer.toFixed(2)}`}
                     required
                   />
@@ -159,7 +159,7 @@ export function MakeOfferModal({ isOpen, onClose, product }: MakeOfferModalProps
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     rows={3}
-                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-neon-blue focus:border-transparent text-gray-200 placeholder-gray-500 resize-none font-bold"
+                    className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-luxe-gold focus:border-transparent text-gray-200 placeholder-gray-500 resize-none font-bold"
                     placeholder="Add a personal message to your offer..."
                   />
                 </div>
@@ -172,7 +172,7 @@ export function MakeOfferModal({ isOpen, onClose, product }: MakeOfferModalProps
                 )}
 
                 {/* Info Box */}
-                <div className="bg-gray-800/50 rounded-2xl p-4 border border-gray-700">
+                <div className="luxe-glass/50 rounded-2xl p-4 border border-white/10">
                   <h4 className="text-gray-200 font-black mb-2 uppercase text-sm">How it works:</h4>
                   <ul className="space-y-1 text-gray-400 text-xs font-bold uppercase">
                     <li>• YOUR OFFER WILL BE SENT TO THE SELLER</li>
@@ -184,7 +184,7 @@ export function MakeOfferModal({ isOpen, onClose, product }: MakeOfferModalProps
                 <button
                   type="submit"
                   disabled={isSubmitting || !user}
-                  className="w-full py-4 bg-neon-blue hover:shadow-neon-blue disabled:bg-gray-700 text-black font-black rounded-2xl transition-all duration-200 flex items-center justify-center space-x-2 uppercase active:btn-neon-active"
+                  className="w-full py-4 bg-luxe-gold hover:shadow-neon-blue disabled:luxe-glass text-black font-black rounded-2xl transition-all duration-200 flex items-center justify-center space-x-2 uppercase active:btn-neon-active"
                 >
                   {isSubmitting ? (
                     <div className="w-5 h-5 border-2 border-black/30 border-t-black rounded-full animate-spin" />

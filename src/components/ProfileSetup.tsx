@@ -85,33 +85,33 @@ export function ProfileSetup({ isOpen, onClose }: ProfileSetupProps) {
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-gray-900 rounded-3xl border border-gray-700 w-full max-w-2xl max-h-[90vh] overflow-hidden shadow-2xl">
+      <div className="luxe-glass-strong rounded-3xl border border-white/10 w-full max-w-2xl max-h-[90vh] overflow-hidden shadow-2xl">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-700">
+        <div className="flex items-center justify-between p-6 border-b border-white/10">
           <h2 className="text-2xl font-black text-white uppercase">
             {step === 1 ? 'Create Profile' : step === 2 ? 'Store Setup' : 'Complete Setup'}
           </h2>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
+            className="p-2 hover:luxe-glass rounded-lg transition-colors"
           >
             <X className="w-6 h-6 text-gray-400" />
           </button>
         </div>
 
         {/* Progress Bar */}
-        <div className="px-6 py-4 border-b border-gray-700">
+        <div className="px-6 py-4 border-b border-white/10">
           <div className="flex items-center space-x-4">
             {[1, 2, 3].map((stepNum) => (
               <div key={stepNum} className="flex items-center">
                 <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
-                  step >= stepNum ? 'bg-neon-blue text-black' : 'bg-gray-700 text-gray-400'
+                  step >= stepNum ? 'bg-luxe-gold text-black' : 'luxe-glass text-gray-400'
                 }`}>
                   {stepNum}
                 </div>
                 {stepNum < 3 && (
                   <div className={`w-16 h-1 mx-2 ${
-                    step > stepNum ? 'bg-neon-blue' : 'bg-gray-700'
+                    step > stepNum ? 'bg-luxe-gold' : 'luxe-glass'
                   }`} />
                 )}
               </div>
@@ -135,7 +135,7 @@ export function ProfileSetup({ isOpen, onClose }: ProfileSetupProps) {
                       setFormData({ ...formData, handle: cleanHandle });
                       setError(validateHandle(cleanHandle));
                     }}
-                    className="w-full pl-12 pr-4 py-3 bg-gray-800 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-neon-blue focus:border-transparent text-white placeholder-gray-500"
+                    className="w-full pl-12 pr-4 py-3 luxe-glass border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-luxe-gold focus:border-transparent text-white placeholder-gray-500"
                     placeholder="your_handle"
                     required
                   />
@@ -151,7 +151,7 @@ export function ProfileSetup({ isOpen, onClose }: ProfileSetupProps) {
                     type="text"
                     value={formData.displayName}
                     onChange={(e) => setFormData({ ...formData, displayName: e.target.value })}
-                    className="w-full pl-12 pr-4 py-3 bg-gray-800 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-neon-blue focus:border-transparent text-white placeholder-gray-500"
+                    className="w-full pl-12 pr-4 py-3 luxe-glass border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-luxe-gold focus:border-transparent text-white placeholder-gray-500"
                     placeholder="Your display name"
                     required
                   />
@@ -164,7 +164,7 @@ export function ProfileSetup({ isOpen, onClose }: ProfileSetupProps) {
                   value={formData.bio}
                   onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
                   rows={3}
-                  className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-neon-blue focus:border-transparent text-white placeholder-gray-500 resize-none"
+                  className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-luxe-gold focus:border-transparent text-white placeholder-gray-500 resize-none"
                   placeholder="Tell others about yourself..."
                 />
               </div>
@@ -178,7 +178,7 @@ export function ProfileSetup({ isOpen, onClose }: ProfileSetupProps) {
                       type="text"
                       value={formData.location}
                       onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                      className="w-full pl-12 pr-4 py-3 bg-gray-800 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-neon-blue focus:border-transparent text-white placeholder-gray-500"
+                      className="w-full pl-12 pr-4 py-3 luxe-glass border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-luxe-gold focus:border-transparent text-white placeholder-gray-500"
                       placeholder="City, Country"
                     />
                   </div>
@@ -192,7 +192,7 @@ export function ProfileSetup({ isOpen, onClose }: ProfileSetupProps) {
                       type="url"
                       value={formData.website}
                       onChange={(e) => setFormData({ ...formData, website: e.target.value })}
-                      className="w-full pl-12 pr-4 py-3 bg-gray-800 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-neon-blue focus:border-transparent text-white placeholder-gray-500"
+                      className="w-full pl-12 pr-4 py-3 luxe-glass border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-luxe-gold focus:border-transparent text-white placeholder-gray-500"
                       placeholder="https://your-website.com"
                     />
                   </div>
@@ -210,7 +210,7 @@ export function ProfileSetup({ isOpen, onClose }: ProfileSetupProps) {
                   id="storeEnabled"
                   checked={formData.storeEnabled}
                   onChange={(e) => setFormData({ ...formData, storeEnabled: e.target.checked })}
-                  className="w-5 h-5 text-neon-blue bg-gray-800 border-gray-600 rounded focus:ring-neon-blue"
+                  className="w-5 h-5 text-luxe-gold luxe-glass border-gray-600 rounded focus:ring-luxe-gold"
                 />
                 <label htmlFor="storeEnabled" className="text-white font-black uppercase">
                   Enable Store Page
@@ -227,7 +227,7 @@ export function ProfileSetup({ isOpen, onClose }: ProfileSetupProps) {
                         type="text"
                         value={formData.storeName}
                         onChange={(e) => setFormData({ ...formData, storeName: e.target.value })}
-                        className="w-full pl-12 pr-4 py-3 bg-gray-800 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-neon-blue focus:border-transparent text-white placeholder-gray-500"
+                        className="w-full pl-12 pr-4 py-3 luxe-glass border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-luxe-gold focus:border-transparent text-white placeholder-gray-500"
                         placeholder="Your store name"
                       />
                     </div>
@@ -239,7 +239,7 @@ export function ProfileSetup({ isOpen, onClose }: ProfileSetupProps) {
                       value={formData.storeDescription}
                       onChange={(e) => setFormData({ ...formData, storeDescription: e.target.value })}
                       rows={3}
-                      className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-neon-blue focus:border-transparent text-white placeholder-gray-500 resize-none"
+                      className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-luxe-gold focus:border-transparent text-white placeholder-gray-500 resize-none"
                       placeholder="Describe what you sell..."
                     />
                   </div>
@@ -251,7 +251,7 @@ export function ProfileSetup({ isOpen, onClose }: ProfileSetupProps) {
                       <select
                         value={formData.storeTheme}
                         onChange={(e) => setFormData({ ...formData, storeTheme: e.target.value as any })}
-                        className="w-full pl-12 pr-4 py-3 bg-gray-800 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-neon-blue focus:border-transparent text-white"
+                        className="w-full pl-12 pr-4 py-3 luxe-glass border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-luxe-gold focus:border-transparent text-white"
                       >
                         <option value="cyberpunk">Cyberpunk</option>
                         <option value="dark">Dark</option>
@@ -268,11 +268,11 @@ export function ProfileSetup({ isOpen, onClose }: ProfileSetupProps) {
           {/* Step 3: Review */}
           {step === 3 && (
             <div className="space-y-6">
-              <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+              <div className="luxe-glass rounded-2xl p-6 border border-white/10">
                 <h3 className="text-lg font-black text-white mb-4 uppercase">Profile Preview</h3>
                 <div className="space-y-3">
                   <div className="flex items-center space-x-3">
-                    <div className="w-12 h-12 bg-neon-blue rounded-full flex items-center justify-center">
+                    <div className="w-12 h-12 bg-luxe-gold rounded-full flex items-center justify-center">
                       <User className="w-6 h-6 text-black" />
                     </div>
                     <div>
@@ -287,8 +287,8 @@ export function ProfileSetup({ isOpen, onClose }: ProfileSetupProps) {
                     <p className="text-gray-400 text-sm">📍 {formData.location}</p>
                   )}
                   {formData.storeEnabled && (
-                    <div className="mt-4 p-3 bg-gray-700 rounded-lg">
-                      <p className="text-neon-blue font-black">🏪 {formData.storeName}</p>
+                    <div className="mt-4 p-3 luxe-glass rounded-lg">
+                      <p className="text-luxe-gold font-black">🏪 {formData.storeName}</p>
                       <p className="text-gray-400 text-sm">{formData.storeDescription}</p>
                     </div>
                   )}
@@ -309,7 +309,7 @@ export function ProfileSetup({ isOpen, onClose }: ProfileSetupProps) {
               <button
                 type="button"
                 onClick={() => setStep(step - 1)}
-                className="px-6 py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-xl transition-colors font-medium"
+                className="px-6 py-3 luxe-glass hover:bg-gray-600 text-white rounded-xl transition-colors font-medium"
               >
                 Back
               </button>
@@ -321,7 +321,7 @@ export function ProfileSetup({ isOpen, onClose }: ProfileSetupProps) {
                   type="button"
                   onClick={() => setStep(step + 1)}
                   disabled={step === 1 && (!formData.handle || !formData.displayName || error)}
-                  className="px-6 py-3 bg-neon-blue hover:bg-neon-blue/80 disabled:bg-gray-700 text-black rounded-xl transition-colors font-black uppercase"
+                  className="px-6 py-3 bg-luxe-gold hover:bg-luxe-gold/80 disabled:luxe-glass text-black rounded-xl transition-colors font-black uppercase"
                 >
                   Next
                 </button>
@@ -329,7 +329,7 @@ export function ProfileSetup({ isOpen, onClose }: ProfileSetupProps) {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="px-6 py-3 bg-neon-blue hover:bg-neon-blue/80 disabled:bg-gray-700 text-black rounded-xl transition-colors font-black uppercase"
+                  className="px-6 py-3 bg-luxe-gold hover:bg-luxe-gold/80 disabled:luxe-glass text-black rounded-xl transition-colors font-black uppercase"
                 >
                   {isLoading ? 'Creating...' : 'Create Profile'}
                 </button>

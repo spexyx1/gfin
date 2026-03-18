@@ -101,7 +101,7 @@ export function AuthModal({ isOpen, onClose, initialMode = 'login' }: AuthModalP
           </h2>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
+            className="p-2 hover:luxe-glass rounded-lg transition-colors"
           >
             <X className="w-6 h-6 text-gray-400" />
           </button>
@@ -209,7 +209,7 @@ export function AuthModal({ isOpen, onClose, initialMode = 'login' }: AuthModalP
             </p>
             <button
               onClick={() => handleModeSwitch(mode === 'login' ? 'signup' : 'login')}
-              className="mt-2 text-neon-red hover:text-neon-red hover:shadow-neon-red matrix-font transition-all duration-300 neon-red-text"
+              className="mt-2 text-red-400 hover:text-red-400 hover:shadow-neon-red matrix-font transition-all duration-300 neon-red-text"
             >
               {mode === 'login' ? 'CREATE ACCOUNT' : 'LOGIN'}
             </button>

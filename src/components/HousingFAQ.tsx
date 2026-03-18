@@ -148,7 +148,7 @@ export function HousingFAQ() {
       <div className="text-center mb-8 sm:mb-12">
         <div className="flex items-center justify-center mb-4 sm:mb-6">
           <div className="relative">
-            <Home className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 text-neon-yellow" />
+            <Home className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 text-luxe-gold" />
             <Heart className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-red-500 absolute -bottom-2 -right-2 animate-pulse" />
           </div>
         </div>
@@ -169,7 +169,7 @@ export function HousingFAQ() {
             className={`flex items-center justify-center sm:justify-start space-x-1.5 sm:space-x-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg transition-all duration-300 min-h-[44px] ${
               filterCategory === id
                 ? 'bg-gradient-to-r from-neon-yellow to-neon-orange text-black'
-                : 'bg-gray-800 text-gray-300 hover:bg-gray-700 active:bg-gray-600'
+                : 'luxe-glass text-gray-300 hover:luxe-glass active:bg-gray-600'
             }`}
           >
             <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
@@ -182,15 +182,15 @@ export function HousingFAQ() {
         {filteredFAQs.map((faq, index) => (
           <div
             key={index}
-            className="bg-gray-900 rounded-xl border border-gray-700 overflow-hidden hover:border-neon-yellow/30 active:border-neon-yellow/50 transition-all duration-300"
+            className="luxe-glass-strong rounded-xl border border-white/10 overflow-hidden hover:border-luxe-gold/30 active:border-luxe-gold/50 transition-all duration-300"
           >
             <button
               onClick={() => setOpenIndex(openIndex === index ? null : index)}
-              className="w-full px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between text-left hover:bg-gray-800/50 active:bg-gray-800 transition-colors min-h-[56px]"
+              className="w-full px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between text-left hover:luxe-glass/50 active:luxe-glass transition-colors min-h-[56px]"
             >
               <span className="text-white font-bold pr-3 sm:pr-4 text-sm sm:text-base">{faq.question}</span>
               {openIndex === index ? (
-                <ChevronUp className="w-5 h-5 text-neon-yellow flex-shrink-0" />
+                <ChevronUp className="w-5 h-5 text-luxe-gold flex-shrink-0" />
               ) : (
                 <ChevronDown className="w-5 h-5 text-gray-400 flex-shrink-0" />
               )}
@@ -198,7 +198,7 @@ export function HousingFAQ() {
 
             {openIndex === index && (
               <div className="px-4 sm:px-6 pb-3 sm:pb-4">
-                <div className="pt-2 pb-2 border-t border-gray-800">
+                <div className="pt-2 pb-2 border-t border-white/10">
                   <p className="text-gray-300 leading-relaxed text-sm sm:text-base">{faq.answer}</p>
                 </div>
               </div>
@@ -215,7 +215,7 @@ export function HousingFAQ() {
 
       <div className="mt-8 sm:mt-12 bg-gradient-to-br from-blue-900/30 to-green-900/30 rounded-2xl p-4 sm:p-6 md:p-8 border border-blue-500/30">
         <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4">
-          <TrendingUp className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-neon-green flex-shrink-0 mt-1" />
+          <TrendingUp className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-luxe-green flex-shrink-0 mt-1" />
           <div className="flex-1">
             <h3 className="text-xl sm:text-2xl font-black text-white mb-2 sm:mb-3">Still Have Questions?</h3>
             <p className="text-gray-300 mb-3 sm:mb-4 text-sm sm:text-base">
@@ -225,7 +225,7 @@ export function HousingFAQ() {
               <button className="px-4 sm:px-6 py-3 bg-gradient-to-r from-neon-yellow to-neon-orange text-black font-black rounded-lg hover:shadow-lg hover:shadow-neon-yellow/50 active:shadow-neon-orange/50 transition-all duration-300 text-sm sm:text-base min-h-[44px]">
                 Contact Support
               </button>
-              <button className="px-4 sm:px-6 py-3 bg-gray-800 hover:bg-gray-700 active:bg-gray-600 text-white font-black rounded-lg transition-colors text-sm sm:text-base min-h-[44px]">
+              <button className="px-4 sm:px-6 py-3 luxe-glass hover:luxe-glass active:bg-gray-600 text-white font-black rounded-lg transition-colors text-sm sm:text-base min-h-[44px]">
                 Browse Projects
               </button>
             </div>

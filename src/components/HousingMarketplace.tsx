@@ -51,7 +51,7 @@ export function HousingMarketplace() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-4 border-neon-yellow border-t-transparent"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-4 border-luxe-gold border-t-transparent"></div>
       </div>
     );
   }
@@ -62,7 +62,7 @@ export function HousingMarketplace() {
         <div className="text-center mb-8 sm:mb-12 md:mb-16">
           <div className="flex items-center justify-center mb-4 sm:mb-6">
             <div className="relative">
-              <Home className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 text-neon-yellow" />
+              <Home className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 text-luxe-gold" />
               <Heart className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-red-500 absolute -bottom-2 -right-2 animate-pulse" />
             </div>
           </div>
@@ -77,20 +77,20 @@ export function HousingMarketplace() {
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6 text-sm max-w-4xl mx-auto px-4">
-            <div className="flex items-center justify-center sm:justify-start space-x-2 bg-gray-800/50 p-3 rounded-lg">
-              <Globe className="w-4 h-4 sm:w-5 sm:h-5 text-neon-blue flex-shrink-0" />
+            <div className="flex items-center justify-center sm:justify-start space-x-2 luxe-glass/50 p-3 rounded-lg">
+              <Globe className="w-4 h-4 sm:w-5 sm:h-5 text-luxe-gold flex-shrink-0" />
               <span className="text-gray-300 text-xs sm:text-sm">Global Impact</span>
             </div>
-            <div className="flex items-center justify-center sm:justify-start space-x-2 bg-gray-800/50 p-3 rounded-lg">
-              <Users className="w-4 h-4 sm:w-5 sm:h-5 text-neon-green flex-shrink-0" />
+            <div className="flex items-center justify-center sm:justify-start space-x-2 luxe-glass/50 p-3 rounded-lg">
+              <Users className="w-4 h-4 sm:w-5 sm:h-5 text-luxe-green flex-shrink-0" />
               <span className="text-gray-300 text-xs sm:text-sm">Direct Partnerships</span>
             </div>
-            <div className="flex items-center justify-center sm:justify-start space-x-2 bg-gray-800/50 p-3 rounded-lg">
-              <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-neon-orange flex-shrink-0" />
+            <div className="flex items-center justify-center sm:justify-start space-x-2 luxe-glass/50 p-3 rounded-lg">
+              <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-luxe-gold flex-shrink-0" />
               <span className="text-gray-300 text-xs sm:text-sm">85/10/5 Revenue Split</span>
             </div>
-            <div className="flex items-center justify-center sm:justify-start space-x-2 bg-gray-800/50 p-3 rounded-lg">
-              <Award className="w-4 h-4 sm:w-5 sm:h-5 text-neon-yellow flex-shrink-0" />
+            <div className="flex items-center justify-center sm:justify-start space-x-2 luxe-glass/50 p-3 rounded-lg">
+              <Award className="w-4 h-4 sm:w-5 sm:h-5 text-luxe-gold flex-shrink-0" />
               <span className="text-gray-300 text-xs sm:text-sm">Lifetime Fee Waiver</span>
             </div>
           </div>
@@ -101,7 +101,7 @@ export function HousingMarketplace() {
               className={`flex items-center justify-center space-x-2 px-4 sm:px-6 py-3 rounded-lg font-black transition-all duration-300 min-h-[44px] ${
                 activeView === 'marketplace'
                   ? 'bg-gradient-to-r from-neon-yellow to-neon-orange text-black shadow-lg'
-                  : 'bg-gray-800 text-gray-300 hover:bg-gray-700 active:bg-gray-600'
+                  : 'luxe-glass text-gray-300 hover:luxe-glass active:bg-gray-600'
               }`}
             >
               <Building className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -112,7 +112,7 @@ export function HousingMarketplace() {
               className={`flex items-center justify-center space-x-2 px-4 sm:px-6 py-3 rounded-lg font-black transition-all duration-300 min-h-[44px] ${
                 activeView === 'faq'
                   ? 'bg-gradient-to-r from-neon-yellow to-neon-orange text-black shadow-lg'
-                  : 'bg-gray-800 text-gray-300 hover:bg-gray-700 active:bg-gray-600'
+                  : 'luxe-glass text-gray-300 hover:luxe-glass active:bg-gray-600'
               }`}
             >
               <HelpCircle className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -125,12 +125,12 @@ export function HousingMarketplace() {
           <HousingFAQ />
         ) : (
           <>
-            <div className="mb-6 sm:mb-8 flex flex-col sm:flex-row sm:flex-wrap gap-3 sm:gap-4 items-stretch sm:items-center justify-between bg-gray-900/50 p-4 sm:p-6 rounded-2xl border border-gray-700">
+            <div className="mb-6 sm:mb-8 flex flex-col sm:flex-row sm:flex-wrap gap-3 sm:gap-4 items-stretch sm:items-center justify-between luxe-glass-strong/50 p-4 sm:p-6 rounded-2xl border border-white/10">
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto">
             <select
               value={filterCountry}
               onChange={(e) => setFilterCountry(e.target.value)}
-              className="w-full sm:w-auto px-4 py-2.5 bg-gray-800 border border-gray-600 rounded-lg text-white text-sm focus:ring-2 focus:ring-neon-yellow focus:border-transparent min-h-[44px]"
+              className="w-full sm:w-auto px-4 py-2.5 luxe-glass border border-gray-600 rounded-lg text-white text-sm focus:ring-2 focus:ring-luxe-gold focus:border-transparent min-h-[44px]"
             >
               <option value="all">All Countries</option>
               {countries.map(country => (
@@ -141,7 +141,7 @@ export function HousingMarketplace() {
             <select
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
-              className="w-full sm:w-auto px-4 py-2.5 bg-gray-800 border border-gray-600 rounded-lg text-white text-sm focus:ring-2 focus:ring-neon-yellow focus:border-transparent min-h-[44px]"
+              className="w-full sm:w-auto px-4 py-2.5 luxe-glass border border-gray-600 rounded-lg text-white text-sm focus:ring-2 focus:ring-luxe-gold focus:border-transparent min-h-[44px]"
             >
               <option value="all">All Status</option>
               <option value="fundraising">Fundraising</option>
@@ -150,7 +150,7 @@ export function HousingMarketplace() {
             </select>
           </div>
 
-          <div className="text-neon-yellow font-bold text-sm sm:text-base text-center sm:text-left">
+          <div className="text-luxe-gold font-bold text-sm sm:text-base text-center sm:text-left">
             {filteredProjects.length} Projects Available
           </div>
         </div>
@@ -217,7 +217,7 @@ function ProjectCard({ project, onSelect, getStatusColor, getStatusIcon }: Proje
   return (
     <div
       onClick={onSelect}
-      className="group relative bg-gray-900 rounded-2xl overflow-hidden border border-gray-700 hover:border-neon-yellow active:border-neon-orange transition-all duration-300 cursor-pointer transform hover:scale-105 active:scale-100"
+      className="group relative luxe-glass-strong rounded-2xl overflow-hidden border border-white/10 hover:border-luxe-gold active:border-luxe-gold transition-all duration-300 cursor-pointer transform hover:scale-105 active:scale-100"
     >
       <div className="aspect-video bg-gradient-to-br from-gray-800 to-gray-900 relative overflow-hidden">
         {project.property_images.length > 0 ? (
@@ -240,7 +240,7 @@ function ProjectCard({ project, onSelect, getStatusColor, getStatusIcon }: Proje
 
       <div className="p-4 sm:p-6">
         <div className="flex items-start justify-between mb-2 sm:mb-3">
-          <h3 className="text-lg sm:text-xl font-black text-white group-hover:text-neon-yellow transition-colors">
+          <h3 className="text-lg sm:text-xl font-black text-white group-hover:text-luxe-gold transition-colors">
             {project.title}
           </h3>
         </div>
@@ -257,9 +257,9 @@ function ProjectCard({ project, onSelect, getStatusColor, getStatusIcon }: Proje
         <div className="mb-3 sm:mb-4">
           <div className="flex justify-between text-xs sm:text-sm mb-1.5 sm:mb-2">
             <span className="text-gray-400">Funding Progress</span>
-            <span className="text-neon-yellow font-bold">{fundingPercentage.toFixed(0)}%</span>
+            <span className="text-luxe-gold font-bold">{fundingPercentage.toFixed(0)}%</span>
           </div>
-          <div className="w-full bg-gray-800 rounded-full h-2 overflow-hidden">
+          <div className="w-full luxe-glass rounded-full h-2 overflow-hidden">
             <div
               className="h-full bg-gradient-to-r from-neon-yellow to-neon-orange transition-all duration-500"
               style={{ width: `${Math.min(fundingPercentage, 100)}%` }}
@@ -267,10 +267,10 @@ function ProjectCard({ project, onSelect, getStatusColor, getStatusIcon }: Proje
           </div>
         </div>
 
-        <div className="flex items-center justify-between pt-3 sm:pt-4 border-t border-gray-800">
+        <div className="flex items-center justify-between pt-3 sm:pt-4 border-t border-white/10">
           <div>
             <div className="text-[10px] sm:text-xs text-gray-500 uppercase">NFT Price</div>
-            <div className="text-base sm:text-lg font-black text-neon-yellow">${project.nft_price}</div>
+            <div className="text-base sm:text-lg font-black text-luxe-gold">${project.nft_price}</div>
           </div>
           <div className="text-right">
             <div className="text-[10px] sm:text-xs text-gray-500 uppercase">Available</div>
@@ -301,7 +301,7 @@ function ProjectDetailModal({ project, onClose, onPurchase, getStatusColor, getS
 
   return (
     <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 flex items-start sm:items-center justify-center p-0 sm:p-4 overflow-y-auto">
-      <div className="bg-gray-900 rounded-none sm:rounded-3xl max-w-4xl w-full border-0 sm:border border-gray-700 shadow-2xl min-h-screen sm:min-h-0 sm:my-8">
+      <div className="luxe-glass-strong rounded-none sm:rounded-3xl max-w-4xl w-full border-0 sm:border border-white/10 shadow-2xl min-h-screen sm:min-h-0 sm:my-8">
         <div className="relative aspect-video sm:aspect-video bg-gradient-to-br from-gray-800 to-gray-900 rounded-t-none sm:rounded-t-3xl overflow-hidden">
           {project.property_images.length > 0 ? (
             <img
@@ -337,26 +337,26 @@ function ProjectDetailModal({ project, onClose, onPurchase, getStatusColor, getS
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-4 sm:mb-6">
-            <div className="bg-gray-800 rounded-xl p-3 sm:p-4">
+            <div className="luxe-glass rounded-xl p-3 sm:p-4">
               <div className="text-gray-400 text-xs sm:text-sm mb-1">Project Type</div>
               <div className="text-white font-black capitalize text-sm sm:text-base">{project.property_type}</div>
             </div>
-            <div className="bg-gray-800 rounded-xl p-3 sm:p-4">
+            <div className="luxe-glass rounded-xl p-3 sm:p-4">
               <div className="text-gray-400 text-xs sm:text-sm mb-1">Total Cost</div>
-              <div className="text-neon-yellow font-black text-sm sm:text-base">${project.estimated_cost.toLocaleString()}</div>
+              <div className="text-luxe-gold font-black text-sm sm:text-base">${project.estimated_cost.toLocaleString()}</div>
             </div>
-            <div className="bg-gray-800 rounded-xl p-3 sm:p-4">
+            <div className="luxe-glass rounded-xl p-3 sm:p-4">
               <div className="text-gray-400 text-xs sm:text-sm mb-1">Funds Raised</div>
-              <div className="text-neon-green font-black text-sm sm:text-base">${project.funds_raised.toLocaleString()}</div>
+              <div className="text-luxe-green font-black text-sm sm:text-base">${project.funds_raised.toLocaleString()}</div>
             </div>
           </div>
 
           <div className="mb-4 sm:mb-6">
             <div className="flex justify-between text-xs sm:text-sm mb-2">
               <span className="text-gray-400">Funding Progress</span>
-              <span className="text-neon-yellow font-bold">{fundingPercentage.toFixed(1)}%</span>
+              <span className="text-luxe-gold font-bold">{fundingPercentage.toFixed(1)}%</span>
             </div>
-            <div className="w-full bg-gray-800 rounded-full h-2 sm:h-3 overflow-hidden">
+            <div className="w-full luxe-glass rounded-full h-2 sm:h-3 overflow-hidden">
               <div
                 className="h-full bg-gradient-to-r from-neon-yellow to-neon-orange"
                 style={{ width: `${Math.min(fundingPercentage, 100)}%` }}
@@ -374,12 +374,12 @@ function ProjectDetailModal({ project, onClose, onPurchase, getStatusColor, getS
             </p>
           </div>
 
-          <div className="bg-gray-800 rounded-xl p-4 sm:p-6 mb-4 sm:mb-6">
+          <div className="luxe-glass rounded-xl p-4 sm:p-6 mb-4 sm:mb-6">
             <h3 className="text-lg sm:text-xl font-black text-white mb-3 sm:mb-4">NFT Details</h3>
             <div className="grid grid-cols-2 gap-3 sm:gap-4">
               <div>
                 <div className="text-gray-400 text-xs sm:text-sm mb-1">Price per NFT</div>
-                <div className="text-lg sm:text-xl md:text-2xl font-black text-neon-yellow">${project.nft_price}</div>
+                <div className="text-lg sm:text-xl md:text-2xl font-black text-luxe-gold">${project.nft_price}</div>
               </div>
               <div>
                 <div className="text-gray-400 text-xs sm:text-sm mb-1">Available</div>
@@ -387,13 +387,13 @@ function ProjectDetailModal({ project, onClose, onPurchase, getStatusColor, getS
               </div>
               <div>
                 <div className="text-gray-400 text-xs sm:text-sm mb-1">Ownership per NFT</div>
-                <div className="text-base sm:text-lg font-black text-neon-blue">
+                <div className="text-base sm:text-lg font-black text-luxe-gold">
                   {((1 / project.total_nft_supply) * 100).toFixed(2)}%
                 </div>
               </div>
               <div>
                 <div className="text-gray-400 text-xs sm:text-sm mb-1">NFTs Sold</div>
-                <div className="text-base sm:text-lg font-black text-neon-green">{project.nfts_sold}</div>
+                <div className="text-base sm:text-lg font-black text-luxe-green">{project.nfts_sold}</div>
               </div>
             </div>
           </div>
@@ -428,7 +428,7 @@ function ProjectDetailModal({ project, onClose, onPurchase, getStatusColor, getS
                 <div className="text-blue-400 font-black text-base sm:text-lg">10%</div>
                 <div className="text-blue-200 text-[10px] sm:text-xs">Sponsor</div>
               </div>
-              <div className="bg-gray-800/50 p-2 sm:p-3 rounded text-center">
+              <div className="luxe-glass/50 p-2 sm:p-3 rounded text-center">
                 <div className="text-gray-400 font-black text-base sm:text-lg">5%</div>
                 <div className="text-gray-300 text-[10px] sm:text-xs">Platform</div>
               </div>
@@ -456,7 +456,7 @@ function ProjectDetailModal({ project, onClose, onPurchase, getStatusColor, getS
             </button>
             <button
               onClick={onClose}
-              className="px-4 sm:px-6 py-3.5 sm:py-4 bg-gray-800 hover:bg-gray-700 active:bg-gray-600 text-white font-black rounded-xl transition-colors text-sm sm:text-base min-h-[48px]"
+              className="px-4 sm:px-6 py-3.5 sm:py-4 luxe-glass hover:luxe-glass active:bg-gray-600 text-white font-black rounded-xl transition-colors text-sm sm:text-base min-h-[48px]"
             >
               Close
             </button>

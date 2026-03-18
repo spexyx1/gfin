@@ -25,10 +25,10 @@ export function RealtimeStatusIndicator({
 
     testChannel
       .on('system', {}, (payload) => {
-        console.log('Realtime system event:', payload);
+        logger.debug('Realtime system event', 'RealtimeStatusIndicator', { payload });
       })
       .subscribe((status) => {
-        console.log('Realtime status:', status);
+        logger.debug('Realtime status', 'RealtimeStatusIndicator', { status });
 
         switch (status) {
           case 'SUBSCRIBED':
@@ -137,7 +137,7 @@ export function RealtimeStatusIndicator({
               initial={{ opacity: 0, y: 10, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 10, scale: 0.95 }}
-              className="absolute bottom-full left-0 mb-2 w-64 bg-gray-900/95 backdrop-blur-lg rounded-lg shadow-xl border border-white/10 p-4"
+              className="absolute bottom-full left-0 mb-2 w-64 luxe-glass-strong/95 backdrop-blur-lg rounded-lg shadow-xl border border-white/10 p-4"
             >
               <h3 className="font-bold text-white mb-3">
                 Real-Time Connection

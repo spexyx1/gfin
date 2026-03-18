@@ -51,9 +51,9 @@ export function NetworkSwitchModal() {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-      <div className="bg-gray-900 rounded-2xl border-2 border-yellow-500/50 max-w-lg w-full shadow-2xl">
+      <div className="luxe-glass-strong rounded-2xl border-2 border-yellow-500/50 max-w-lg w-full shadow-2xl">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-800">
+        <div className="flex items-center justify-between p-6 border-b border-white/10">
           <div className="flex items-center space-x-3">
             <div className="p-2 bg-yellow-500/20 rounded-lg">
               <AlertTriangle className="w-6 h-6 text-yellow-400" />
@@ -62,7 +62,7 @@ export function NetworkSwitchModal() {
           </div>
           <button
             onClick={handleDismiss}
-            className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
+            className="p-2 hover:luxe-glass rounded-lg transition-colors"
           >
             <X className="w-5 h-5 text-gray-400" />
           </button>
@@ -72,7 +72,7 @@ export function NetworkSwitchModal() {
         <div className="p-6 space-y-6">
           <p className="text-gray-300 text-sm">
             You're currently connected to the wrong network. This marketplace requires{' '}
-            <span className="text-neon-blue font-bold">{targetNetwork.name}</span> for full functionality.
+            <span className="text-luxe-gold font-bold">{targetNetwork.name}</span> for full functionality.
           </p>
 
           {/* Features requiring Polygon */}
@@ -80,21 +80,21 @@ export function NetworkSwitchModal() {
             <p className="text-sm font-bold text-white uppercase">Features requiring Polygon:</p>
             <div className="space-y-2">
               <div className="flex items-start space-x-3 text-sm">
-                <Shield className="w-4 h-4 text-neon-blue mt-0.5 flex-shrink-0" />
+                <Shield className="w-4 h-4 text-luxe-gold mt-0.5 flex-shrink-0" />
                 <div>
                   <p className="text-white font-medium">Escrow Protection</p>
                   <p className="text-gray-400 text-xs">Secure buyer-seller transactions with blockchain escrow</p>
                 </div>
               </div>
               <div className="flex items-start space-x-3 text-sm">
-                <Zap className="w-4 h-4 text-neon-yellow mt-0.5 flex-shrink-0" />
+                <Zap className="w-4 h-4 text-luxe-gold mt-0.5 flex-shrink-0" />
                 <div>
                   <p className="text-white font-medium">GHETTO Token Transactions</p>
                   <p className="text-gray-400 text-xs">Buy, sell, and trade using GHETTO tokens</p>
                 </div>
               </div>
               <div className="flex items-start space-x-3 text-sm">
-                <Zap className="w-4 h-4 text-neon-orange mt-0.5 flex-shrink-0" />
+                <Zap className="w-4 h-4 text-luxe-gold mt-0.5 flex-shrink-0" />
                 <div>
                   <p className="text-white font-medium">Marketplace Features</p>
                   <p className="text-gray-400 text-xs">Create listings, place bids, and complete purchases</p>
@@ -137,7 +137,7 @@ export function NetworkSwitchModal() {
             <button
               onClick={handleDismiss}
               disabled={isSwitchingNetwork}
-              className="px-6 py-3 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded-xl transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-6 py-3 luxe-glass hover:luxe-glass text-gray-300 rounded-xl transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Browse Only
             </button>

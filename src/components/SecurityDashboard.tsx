@@ -56,16 +56,16 @@ export function SecurityDashboard({ isOpen, onClose }: SecurityDashboardProps) {
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-gray-900 rounded-3xl border border-gray-700 w-full max-w-6xl h-[90vh] overflow-hidden shadow-2xl">
+      <div className="luxe-glass-strong rounded-3xl border border-white/10 w-full max-w-6xl h-[90vh] overflow-hidden shadow-2xl">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-700">
+        <div className="flex items-center justify-between p-6 border-b border-white/10">
           <div className="flex items-center space-x-3">
-            <Shield className="h-6 w-6 text-neon-blue" />
+            <Shield className="h-6 w-6 text-luxe-gold" />
             <h2 className="text-2xl font-black text-white uppercase">Security Center</h2>
           </div>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
+            className="p-2 hover:luxe-glass rounded-lg transition-colors"
           >
             <X className="w-6 h-6 text-gray-400" />
           </button>
@@ -73,8 +73,8 @@ export function SecurityDashboard({ isOpen, onClose }: SecurityDashboardProps) {
 
         <div className="flex h-[calc(90vh-120px)]">
           {/* Sidebar */}
-          <div className="w-64 bg-gray-800 border-r border-gray-700 flex flex-col">
-            <div className="p-6 border-b border-gray-700">
+          <div className="w-64 luxe-glass border-r border-white/10 flex flex-col">
+            <div className="p-6 border-b border-white/10">
               <div className="text-center">
                 <div className={`text-3xl font-black mb-2 ${getScoreColor(securityScore)}`}>
                   {securityScore}%
@@ -96,8 +96,8 @@ export function SecurityDashboard({ isOpen, onClose }: SecurityDashboardProps) {
                     onClick={() => setActiveTab(id as any)}
                     className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 font-medium ${
                       activeTab === id
-                        ? 'bg-neon-blue text-black'
-                        : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                        ? 'bg-luxe-gold text-black'
+                        : 'text-gray-300 hover:luxe-glass hover:text-white'
                     }`}
                   >
                     <Icon className="w-5 h-5" />
@@ -118,7 +118,7 @@ export function SecurityDashboard({ isOpen, onClose }: SecurityDashboardProps) {
                   
                   {/* Security Status Cards */}
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-                    <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+                    <div className="luxe-glass rounded-2xl p-6 border border-white/10">
                       <div className="flex items-center space-x-3 mb-4">
                         <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
                           securitySettings.twoFactorEnabled ? 'bg-green-500/20' : 'bg-red-500/20'
@@ -138,7 +138,7 @@ export function SecurityDashboard({ isOpen, onClose }: SecurityDashboardProps) {
                       </div>
                     </div>
 
-                    <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+                    <div className="luxe-glass rounded-2xl p-6 border border-white/10">
                       <div className="flex items-center space-x-3 mb-4">
                         <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
                           securitySettings.emailVerified ? 'bg-green-500/20' : 'bg-yellow-500/20'
@@ -158,7 +158,7 @@ export function SecurityDashboard({ isOpen, onClose }: SecurityDashboardProps) {
                       </div>
                     </div>
 
-                    <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+                    <div className="luxe-glass rounded-2xl p-6 border border-white/10">
                       <div className="flex items-center space-x-3 mb-4">
                         <div className="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center">
                           <Smartphone className="w-5 h-5 text-blue-400" />
@@ -172,7 +172,7 @@ export function SecurityDashboard({ isOpen, onClose }: SecurityDashboardProps) {
                   </div>
 
                   {/* Security Report */}
-                  <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+                  <div className="luxe-glass rounded-2xl p-6 border border-white/10">
                     <h4 className="text-lg font-black text-white mb-4 uppercase">30-Day Security Report</h4>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                       <div className="text-center">
@@ -203,7 +203,7 @@ export function SecurityDashboard({ isOpen, onClose }: SecurityDashboardProps) {
                 <h3 className="text-2xl font-black text-white mb-6 uppercase">Security Settings</h3>
 
                 {/* Two-Factor Authentication */}
-                <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+                <div className="luxe-glass rounded-2xl p-6 border border-white/10">
                   <div className="flex items-center justify-between mb-4">
                     <div>
                       <h4 className="text-lg font-black text-white uppercase">Two-Factor Authentication</h4>
@@ -224,7 +224,7 @@ export function SecurityDashboard({ isOpen, onClose }: SecurityDashboardProps) {
                 </div>
 
                 {/* Session Settings */}
-                <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+                <div className="luxe-glass rounded-2xl p-6 border border-white/10">
                   <h4 className="text-lg font-black text-white mb-4 uppercase">Session Settings</h4>
                   <div className="space-y-4">
                     <div>
@@ -232,7 +232,7 @@ export function SecurityDashboard({ isOpen, onClose }: SecurityDashboardProps) {
                       <select
                         value={securitySettings.sessionTimeout}
                         onChange={(e) => updateSecuritySettings({ sessionTimeout: parseInt(e.target.value) })}
-                        className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-neon-blue text-white"
+                        className="w-full px-4 py-3 luxe-glass border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-luxe-gold text-white"
                       >
                         <option value={15}>15 minutes</option>
                         <option value={30}>30 minutes</option>
@@ -254,7 +254,7 @@ export function SecurityDashboard({ isOpen, onClose }: SecurityDashboardProps) {
                           onChange={(e) => updateSecuritySettings({ loginNotifications: e.target.checked })}
                           className="sr-only peer"
                         />
-                        <div className="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-neon-blue"></div>
+                        <div className="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-luxe-gold"></div>
                       </label>
                     </div>
 
@@ -270,7 +270,7 @@ export function SecurityDashboard({ isOpen, onClose }: SecurityDashboardProps) {
                           onChange={(e) => updateSecuritySettings({ deviceTrust: e.target.checked })}
                           className="sr-only peer"
                         />
-                        <div className="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-neon-blue"></div>
+                        <div className="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-luxe-gold"></div>
                       </label>
                     </div>
                   </div>
@@ -285,7 +285,7 @@ export function SecurityDashboard({ isOpen, onClose }: SecurityDashboardProps) {
                   <h3 className="text-2xl font-black text-white uppercase">Trusted Devices</h3>
                   <button
                     onClick={() => addTrustedDevice('Current Device')}
-                    className="px-4 py-2 bg-neon-blue hover:bg-neon-blue/80 text-black rounded-lg font-medium transition-colors"
+                    className="px-4 py-2 bg-luxe-gold hover:bg-luxe-gold/80 text-black rounded-lg font-medium transition-colors"
                   >
                     Trust This Device
                   </button>
@@ -293,11 +293,11 @@ export function SecurityDashboard({ isOpen, onClose }: SecurityDashboardProps) {
 
                 <div className="space-y-4">
                   {trustedDevices.map((device) => (
-                    <div key={device.id} className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+                    <div key={device.id} className="luxe-glass rounded-2xl p-6 border border-white/10">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center space-x-4">
-                          <div className="w-12 h-12 bg-neon-blue/20 rounded-full flex items-center justify-center">
-                            <Smartphone className="w-6 h-6 text-neon-blue" />
+                          <div className="w-12 h-12 bg-luxe-gold/20 rounded-full flex items-center justify-center">
+                            <Smartphone className="w-6 h-6 text-luxe-gold" />
                           </div>
                           <div>
                             <h4 className="text-white font-medium">{device.name}</h4>
@@ -335,7 +335,7 @@ export function SecurityDashboard({ isOpen, onClose }: SecurityDashboardProps) {
 
                 <div className="space-y-4">
                   {securityEvents.slice(0, 20).map((event) => (
-                    <div key={event.id} className="bg-gray-800 rounded-2xl p-4 border border-gray-700">
+                    <div key={event.id} className="luxe-glass rounded-2xl p-4 border border-white/10">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center space-x-4">
                           <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
@@ -386,8 +386,8 @@ export function SecurityDashboard({ isOpen, onClose }: SecurityDashboardProps) {
       {/* 2FA Setup Modal */}
       {show2FASetup && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-60 flex items-center justify-center p-4">
-          <div className="bg-gray-900 rounded-2xl border border-gray-700 w-full max-w-md">
-            <div className="p-6 border-b border-gray-700">
+          <div className="luxe-glass-strong rounded-2xl border border-white/10 w-full max-w-md">
+            <div className="p-6 border-b border-white/10">
               <h3 className="text-xl font-black text-white uppercase">2FA Setup Complete</h3>
             </div>
             <div className="p-6">
@@ -396,13 +396,13 @@ export function SecurityDashboard({ isOpen, onClose }: SecurityDashboardProps) {
                 <p className="text-gray-400 text-sm mb-4">
                   Save these backup codes in a secure location. You can use them to access your account if you lose your authenticator device.
                 </p>
-                <div className="bg-gray-800 rounded-lg p-4 space-y-2">
+                <div className="luxe-glass rounded-lg p-4 space-y-2">
                   {backupCodes.map((code, index) => (
                     <div key={index} className="flex items-center justify-between">
-                      <code className="text-neon-blue font-mono">{code}</code>
+                      <code className="text-luxe-gold font-mono">{code}</code>
                       <button
                         onClick={() => copyToClipboard(code)}
-                        className="p-1 hover:bg-gray-700 rounded"
+                        className="p-1 hover:luxe-glass rounded"
                       >
                         <Copy className="w-4 h-4 text-gray-400" />
                       </button>
@@ -413,13 +413,13 @@ export function SecurityDashboard({ isOpen, onClose }: SecurityDashboardProps) {
               <div className="flex space-x-4">
                 <button
                   onClick={() => copyToClipboard(backupCodes.join('\n'))}
-                  className="flex-1 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors"
+                  className="flex-1 py-2 luxe-glass hover:bg-gray-600 text-white rounded-lg transition-colors"
                 >
                   Copy All
                 </button>
                 <button
                   onClick={() => setShow2FASetup(false)}
-                  className="flex-1 py-2 bg-neon-blue hover:bg-neon-blue/80 text-black rounded-lg transition-colors"
+                  className="flex-1 py-2 bg-luxe-gold hover:bg-luxe-gold/80 text-black rounded-lg transition-colors"
                 >
                   Done
                 </button>

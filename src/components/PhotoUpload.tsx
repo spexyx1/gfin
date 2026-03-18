@@ -87,7 +87,7 @@ export function PhotoUpload({ images, onImagesChange, maxImages = 10 }: PhotoUpl
           onDragLeave={() => setDragOver(false)}
         >
           <div className="flex flex-col items-center space-y-4">
-            <div className="w-16 h-16 bg-gray-700 rounded-full flex items-center justify-center">
+            <div className="w-16 h-16 luxe-glass rounded-full flex items-center justify-center">
               <ImageIcon className="w-8 h-8 text-gray-400" />
             </div>
             
@@ -124,7 +124,7 @@ export function PhotoUpload({ images, onImagesChange, maxImages = 10 }: PhotoUpl
                   <span>Uploading...</span>
                   <span>{uploadProgress}%</span>
                 </div>
-                <div className="w-full bg-gray-700 rounded-full h-2">
+                <div className="w-full luxe-glass rounded-full h-2">
                   <div
                     className="bg-blue-500 h-2 rounded-full transition-all duration-300"
                     style={{ width: `${uploadProgress}%` }}
@@ -168,7 +168,7 @@ export function PhotoUpload({ images, onImagesChange, maxImages = 10 }: PhotoUpl
             {images.map((image, index) => (
               <div
                 key={image.id}
-                className="relative group bg-gray-800 rounded-lg overflow-hidden border border-gray-700 hover:border-gray-600 transition-colors"
+                className="relative group luxe-glass rounded-lg overflow-hidden border border-white/10 hover:border-gray-600 transition-colors"
                 draggable
                 onDragStart={(e) => {
                   e.dataTransfer.setData('text/plain', index.toString());
@@ -235,7 +235,7 @@ export function PhotoUpload({ images, onImagesChange, maxImages = 10 }: PhotoUpl
           </div>
 
           {/* Tips */}
-          <div className="bg-gray-800/50 rounded-lg p-4 border border-gray-700">
+          <div className="luxe-glass/50 rounded-lg p-4 border border-white/10">
             <h5 className="text-white font-medium mb-2">Photo Tips</h5>
             <ul className="text-gray-400 text-sm space-y-1">
               <li>• Use high-resolution images (at least 1000x1000 pixels)</li>

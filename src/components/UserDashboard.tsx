@@ -225,7 +225,7 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+        <div className="luxe-glass rounded-2xl p-6 border border-white/10">
           <div className="flex items-center justify-between mb-3">
             <ShoppingBag className="w-8 h-8 text-blue-400" />
             <span className="text-xs bg-blue-500/20 text-blue-400 px-2 py-1 rounded-full">Active</span>
@@ -234,7 +234,7 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
           <p className="text-gray-400 text-sm">Active Orders</p>
         </div>
 
-        <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+        <div className="luxe-glass rounded-2xl p-6 border border-white/10">
           <div className="flex items-center justify-between mb-3">
             <Wallet className="w-8 h-8 text-green-400" />
             <span className="text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded-full">Available</span>
@@ -243,16 +243,16 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
           <p className="text-gray-400 text-sm">GHETTO Balance</p>
         </div>
 
-        <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+        <div className="luxe-glass rounded-2xl p-6 border border-white/10">
           <div className="flex items-center justify-between mb-3">
-            <Share2 className="w-8 h-8 text-neon-yellow" />
+            <Share2 className="w-8 h-8 text-luxe-gold" />
             <span className="text-xs bg-yellow-500/20 text-yellow-400 px-2 py-1 rounded-full">Earned</span>
           </div>
           <p className="text-3xl font-black text-white mb-1">{referralBalance?.balanceGhetto.toFixed(2) || '0.00'}</p>
           <p className="text-gray-400 text-sm">Referral Rewards</p>
         </div>
 
-        <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+        <div className="luxe-glass rounded-2xl p-6 border border-white/10">
           <div className="flex items-center justify-between mb-3">
             <Star className="w-8 h-8 text-orange-400" />
             <span className="text-xs bg-orange-500/20 text-orange-400 px-2 py-1 rounded-full">Rating</span>
@@ -263,36 +263,36 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+        <div className="luxe-glass rounded-2xl p-6 border border-white/10">
           <h3 className="text-xl font-black text-white mb-4 flex items-center">
-            <TrendingUp className="w-5 h-5 mr-2 text-neon-blue" />
+            <TrendingUp className="w-5 h-5 mr-2 text-luxe-gold" />
             Quick Actions
           </h3>
           <div className="grid grid-cols-2 gap-3">
             <button
               onClick={() => setShowOrdersModal(true)}
-              className="p-4 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors text-left"
+              className="p-4 luxe-glass hover:bg-gray-600 rounded-lg transition-colors text-left"
             >
               <ShoppingBag className="w-6 h-6 text-blue-400 mb-2" />
               <p className="text-white font-medium text-sm">View Orders</p>
             </button>
             <button
               onClick={() => setShowWalletModal(true)}
-              className="p-4 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors text-left"
+              className="p-4 luxe-glass hover:bg-gray-600 rounded-lg transition-colors text-left"
             >
               <Wallet className="w-6 h-6 text-green-400 mb-2" />
               <p className="text-white font-medium text-sm">Manage Wallet</p>
             </button>
             <button
               onClick={() => setShowMessagesModal(true)}
-              className="p-4 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors text-left"
+              className="p-4 luxe-glass hover:bg-gray-600 rounded-lg transition-colors text-left"
             >
               <MessageCircle className="w-6 h-6 text-purple-400 mb-2" />
               <p className="text-white font-medium text-sm">Messages</p>
             </button>
             <button
               onClick={() => setActiveSection('referrals')}
-              className="p-4 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors text-left"
+              className="p-4 luxe-glass hover:bg-gray-600 rounded-lg transition-colors text-left"
             >
               <Share2 className="w-6 h-6 text-yellow-400 mb-2" />
               <p className="text-white font-medium text-sm">Refer & Earn</p>
@@ -300,13 +300,13 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
           </div>
         </div>
 
-        <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+        <div className="luxe-glass rounded-2xl p-6 border border-white/10">
           <h3 className="text-xl font-black text-white mb-4 flex items-center">
-            <Activity className="w-5 h-5 mr-2 text-neon-blue" />
+            <Activity className="w-5 h-5 mr-2 text-luxe-gold" />
             Recent Activity
           </h3>
           <div className="space-y-3">
-            <div className="flex items-start space-x-3 p-3 bg-gray-700 rounded-lg">
+            <div className="flex items-start space-x-3 p-3 luxe-glass rounded-lg">
               <div className="w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center flex-shrink-0">
                 <User className="w-4 h-4 text-blue-400" />
               </div>
@@ -316,7 +316,7 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
               </div>
             </div>
             {referralTransactions.slice(0, 2).map((tx) => (
-              <div key={tx.id} className="flex items-start space-x-3 p-3 bg-gray-700 rounded-lg">
+              <div key={tx.id} className="flex items-start space-x-3 p-3 luxe-glass rounded-lg">
                 <div className="w-8 h-8 bg-yellow-500/20 rounded-full flex items-center justify-center flex-shrink-0">
                   <Share2 className="w-4 h-4 text-yellow-400" />
                 </div>
@@ -340,27 +340,27 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
         <p className="text-gray-400">Share your link and earn rewards when friends join and trade</p>
       </div>
 
-      <div className="bg-gradient-to-r from-neon-blue/20 to-neon-yellow/20 rounded-2xl p-6 border border-neon-blue/50">
+      <div className="bg-gradient-to-r from-neon-blue/20 to-neon-yellow/20 rounded-2xl p-6 border border-luxe-gold/50">
         <div className="flex items-start justify-between mb-4">
           <div>
             <h3 className="text-xl font-black text-white mb-2">Your Referral Link</h3>
             <p className="text-gray-300 text-sm">Share this link to invite new users</p>
           </div>
-          <Award className="w-10 h-10 text-neon-yellow" />
+          <Award className="w-10 h-10 text-luxe-gold" />
         </div>
 
         {referralCode ? (
           <div className="space-y-4">
-            <div className="flex items-center space-x-2 bg-gray-900/50 rounded-lg p-4">
+            <div className="flex items-center space-x-2 luxe-glass-strong/50 rounded-lg p-4">
               <input
                 type="text"
                 readOnly
                 value={`${window.location.origin}/?ref=${referralCode.code}`}
-                className="flex-1 bg-transparent text-neon-blue font-mono text-sm outline-none"
+                className="flex-1 bg-transparent text-luxe-gold font-mono text-sm outline-none"
               />
               <button
                 onClick={handleCopyReferralLink}
-                className="px-4 py-2 bg-neon-blue hover:bg-neon-blue/80 text-black rounded-lg font-medium flex items-center space-x-2 transition-colors"
+                className="px-4 py-2 bg-luxe-gold hover:bg-luxe-gold/80 text-black rounded-lg font-medium flex items-center space-x-2 transition-colors"
               >
                 {copiedLink ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
                 <span>{copiedLink ? 'Copied!' : 'Copy'}</span>
@@ -371,25 +371,25 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
               <span className="text-gray-300 text-sm">Share on:</span>
               <button
                 onClick={() => shareOnSocial('twitter')}
-                className="px-3 py-1 bg-gray-700 hover:bg-gray-600 text-white rounded-lg text-sm transition-colors"
+                className="px-3 py-1 luxe-glass hover:bg-gray-600 text-white rounded-lg text-sm transition-colors"
               >
                 Twitter
               </button>
               <button
                 onClick={() => shareOnSocial('facebook')}
-                className="px-3 py-1 bg-gray-700 hover:bg-gray-600 text-white rounded-lg text-sm transition-colors"
+                className="px-3 py-1 luxe-glass hover:bg-gray-600 text-white rounded-lg text-sm transition-colors"
               >
                 Facebook
               </button>
               <button
                 onClick={() => shareOnSocial('linkedin')}
-                className="px-3 py-1 bg-gray-700 hover:bg-gray-600 text-white rounded-lg text-sm transition-colors"
+                className="px-3 py-1 luxe-glass hover:bg-gray-600 text-white rounded-lg text-sm transition-colors"
               >
                 LinkedIn
               </button>
               <button
                 onClick={() => shareOnSocial('reddit')}
-                className="px-3 py-1 bg-gray-700 hover:bg-gray-600 text-white rounded-lg text-sm transition-colors"
+                className="px-3 py-1 luxe-glass hover:bg-gray-600 text-white rounded-lg text-sm transition-colors"
               >
                 Reddit
               </button>
@@ -401,7 +401,7 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+        <div className="luxe-glass rounded-2xl p-6 border border-white/10">
           <div className="flex items-center justify-between mb-3">
             <Users className="w-8 h-8 text-blue-400" />
           </div>
@@ -409,7 +409,7 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
           <p className="text-gray-400 text-sm">Total Referrals</p>
         </div>
 
-        <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+        <div className="luxe-glass rounded-2xl p-6 border border-white/10">
           <div className="flex items-center justify-between mb-3">
             <DollarSign className="w-8 h-8 text-green-400" />
           </div>
@@ -417,7 +417,7 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
           <p className="text-gray-400 text-sm">Total Earned (GHETTO)</p>
         </div>
 
-        <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+        <div className="luxe-glass rounded-2xl p-6 border border-white/10">
           <div className="flex items-center justify-between mb-3">
             <Target className="w-8 h-8 text-purple-400" />
           </div>
@@ -427,11 +427,11 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+        <div className="luxe-glass rounded-2xl p-6 border border-white/10">
           <h3 className="text-xl font-black text-white mb-4">Referral Balance</h3>
           <div className="mb-6">
             <div className="flex items-baseline mb-2">
-              <span className="text-4xl font-black text-neon-yellow">{referralBalance?.balanceGhetto.toFixed(2) || '0.00'}</span>
+              <span className="text-4xl font-black text-luxe-gold">{referralBalance?.balanceGhetto.toFixed(2) || '0.00'}</span>
               <span className="text-gray-400 ml-2">GHETTO</span>
             </div>
             <p className="text-gray-400 text-sm">Available to redeem</p>
@@ -448,14 +448,14 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
                   max={referralBalance.balanceGhetto}
                   value={redeemAmount}
                   onChange={(e) => setRedeemAmount(e.target.value)}
-                  className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-neon-blue text-white"
+                  className="w-full px-4 py-3 luxe-glass border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-luxe-gold text-white"
                   placeholder={`Min ${platformSettings.referral_min_redeem_ghetto} GHETTO`}
                 />
               </div>
               <button
                 onClick={handleRedeemBalance}
                 disabled={referralsLoading || !redeemAmount || parseFloat(redeemAmount) < parseFloat(platformSettings.referral_min_redeem_ghetto)}
-                className="w-full py-3 bg-neon-blue hover:bg-neon-blue/80 text-black rounded-lg transition-colors font-black uppercase disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full py-3 bg-luxe-gold hover:bg-luxe-gold/80 text-black rounded-lg transition-colors font-black uppercase disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {referralsLoading ? 'Processing...' : 'Redeem GHETTO'}
               </button>
@@ -464,7 +464,7 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
               </p>
             </div>
           ) : (
-            <div className="bg-gray-700 rounded-lg p-4">
+            <div className="luxe-glass rounded-lg p-4">
               <p className="text-gray-300 text-sm text-center">
                 Earn more GHETTO to reach the minimum redemption of {platformSettings.referral_min_redeem_ghetto || 'N/A'} GHETTO
               </p>
@@ -472,14 +472,14 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
           )}
         </div>
 
-        <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+        <div className="luxe-glass rounded-2xl p-6 border border-white/10">
           <h3 className="text-xl font-black text-white mb-4">Referred Users ({referredUsers.length})</h3>
           <div className="space-y-3 max-h-80 overflow-y-auto">
             {referredUsers.length > 0 ? (
               referredUsers.map((refUser) => (
-                <div key={refUser.id} className="flex items-center justify-between bg-gray-700 rounded-lg p-3">
+                <div key={refUser.id} className="flex items-center justify-between luxe-glass rounded-lg p-3">
                   <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 bg-neon-blue rounded-full flex items-center justify-center">
+                    <div className="w-10 h-10 bg-luxe-gold rounded-full flex items-center justify-center">
                       <User className="w-5 h-5 text-black" />
                     </div>
                     <div>
@@ -505,15 +505,15 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
         </div>
       </div>
 
-      <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+      <div className="luxe-glass rounded-2xl p-6 border border-white/10">
         <h3 className="text-xl font-black text-white mb-4 flex items-center">
-          <BarChart3 className="w-5 h-5 mr-2 text-neon-blue" />
+          <BarChart3 className="w-5 h-5 mr-2 text-luxe-gold" />
           Reward History
         </h3>
         <div className="space-y-3 max-h-96 overflow-y-auto">
           {referralTransactions.length > 0 ? (
             referralTransactions.map((tx) => (
-              <div key={tx.id} className="flex items-center justify-between bg-gray-700 rounded-lg p-4">
+              <div key={tx.id} className="flex items-center justify-between luxe-glass rounded-lg p-4">
                 <div className="flex items-center space-x-3">
                   <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
                     tx.type === 'signup_reward' ? 'bg-blue-500/20' :
@@ -559,14 +559,14 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
         </div>
         <button
           onClick={() => setShowSellerModal(true)}
-          className="px-6 py-3 bg-neon-blue hover:bg-neon-blue/80 text-black rounded-lg transition-colors font-black uppercase"
+          className="px-6 py-3 bg-luxe-gold hover:bg-luxe-gold/80 text-black rounded-lg transition-colors font-black uppercase"
         >
           Manage All Listings
         </button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+        <div className="luxe-glass rounded-2xl p-6 border border-white/10">
           <div className="flex items-center justify-between mb-3">
             <Package className="w-8 h-8 text-green-400" />
           </div>
@@ -574,7 +574,7 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
           <p className="text-gray-400 text-sm">Active Listings</p>
         </div>
 
-        <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+        <div className="luxe-glass rounded-2xl p-6 border border-white/10">
           <div className="flex items-center justify-between mb-3">
             <TrendingUp className="w-8 h-8 text-blue-400" />
           </div>
@@ -582,7 +582,7 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
           <p className="text-gray-400 text-sm">Total Products</p>
         </div>
 
-        <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+        <div className="luxe-glass rounded-2xl p-6 border border-white/10">
           <div className="flex items-center justify-between mb-3">
             <Star className="w-8 h-8 text-yellow-400" />
           </div>
@@ -592,11 +592,11 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
       </div>
 
       {products.length > 0 ? (
-        <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+        <div className="luxe-glass rounded-2xl p-6 border border-white/10">
           <h3 className="text-xl font-black text-white mb-4">Recent Listings</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {products.slice(0, 6).map((product) => (
-              <div key={product.id} className="bg-gray-700 rounded-lg p-4 flex items-start space-x-3">
+              <div key={product.id} className="luxe-glass rounded-lg p-4 flex items-start space-x-3">
                 {product.images.length > 0 ? (
                   <img
                     src={product.images.find(img => img.isPrimary)?.url || product.images[0].url}
@@ -624,13 +624,13 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
           </div>
         </div>
       ) : (
-        <div className="bg-gray-800 rounded-2xl p-12 border border-gray-700 text-center">
+        <div className="luxe-glass rounded-2xl p-12 border border-white/10 text-center">
           <Package className="w-16 h-16 text-gray-600 mx-auto mb-4" />
           <h3 className="text-xl font-black text-white mb-2">No listings yet</h3>
           <p className="text-gray-400 mb-6">Start selling by creating your first listing</p>
           <button
             onClick={() => setShowSellerModal(true)}
-            className="px-6 py-3 bg-neon-blue hover:bg-neon-blue/80 text-black rounded-lg transition-colors font-black uppercase"
+            className="px-6 py-3 bg-luxe-gold hover:bg-luxe-gold/80 text-black rounded-lg transition-colors font-black uppercase"
           >
             Create Listing
           </button>
@@ -646,7 +646,7 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
         <p className="text-gray-400">Manage your preferences and account information</p>
       </div>
 
-      <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+      <div className="luxe-glass rounded-2xl p-6 border border-white/10">
         <h3 className="text-xl font-black text-white mb-4">Notification Preferences</h3>
         <div className="space-y-4">
           {Object.entries(notificationSettings).map(([key, value]) => (
@@ -658,7 +658,7 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
               <button
                 onClick={() => setNotificationSettings({ ...notificationSettings, [key]: !value })}
                 className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                  value ? 'bg-neon-blue' : 'bg-gray-600'
+                  value ? 'bg-luxe-gold' : 'bg-gray-600'
                 }`}
               >
                 <span
@@ -672,7 +672,7 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
         </div>
       </div>
 
-      <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+      <div className="luxe-glass rounded-2xl p-6 border border-white/10">
         <h3 className="text-xl font-black text-white mb-4">Account Information</h3>
         <div className="space-y-4">
           <div>
@@ -681,7 +681,7 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
               type="text"
               value={user.username}
               disabled
-              className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white opacity-50 cursor-not-allowed"
+              className="w-full px-4 py-3 luxe-glass border border-gray-600 rounded-lg text-white opacity-50 cursor-not-allowed"
             />
           </div>
           <div>
@@ -690,7 +690,7 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
               type="email"
               value={user.email || 'Not set'}
               disabled
-              className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white opacity-50 cursor-not-allowed"
+              className="w-full px-4 py-3 luxe-glass border border-gray-600 rounded-lg text-white opacity-50 cursor-not-allowed"
             />
           </div>
           <div>
@@ -699,7 +699,7 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
               type="text"
               value={new Date(user.createdAt).toLocaleDateString()}
               disabled
-              className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white opacity-50 cursor-not-allowed"
+              className="w-full px-4 py-3 luxe-glass border border-gray-600 rounded-lg text-white opacity-50 cursor-not-allowed"
             />
           </div>
         </div>
@@ -712,12 +712,12 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
   return (
     <>
       <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-        <div className="bg-gray-900 rounded-3xl border border-gray-700 w-full max-w-7xl h-[90vh] overflow-hidden shadow-2xl flex">
+        <div className="luxe-glass-strong rounded-3xl border border-white/10 w-full max-w-7xl h-[90vh] overflow-hidden shadow-2xl flex">
           {/* Sidebar */}
-          <div className="w-64 bg-gray-800 border-r border-gray-700 flex flex-col">
-            <div className="p-6 border-b border-gray-700">
+          <div className="w-64 luxe-glass border-r border-white/10 flex flex-col">
+            <div className="p-6 border-b border-white/10">
               <div className="flex items-center space-x-3">
-                <div className="w-12 h-12 bg-neon-blue rounded-full flex items-center justify-center">
+                <div className="w-12 h-12 bg-luxe-gold rounded-full flex items-center justify-center">
                   <User className="w-6 h-6 text-black" />
                 </div>
                 <div className="flex-1 min-w-0">
@@ -735,8 +735,8 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
                     onClick={() => setActiveSection(item.id as DashboardSection)}
                     className={`w-full flex items-center justify-between px-4 py-3 rounded-lg transition-colors ${
                       activeSection === item.id
-                        ? 'bg-neon-blue text-black'
-                        : 'text-gray-300 hover:bg-gray-700'
+                        ? 'bg-luxe-gold text-black'
+                        : 'text-gray-300 hover:luxe-glass'
                     }`}
                   >
                     <div className="flex items-center space-x-3">
@@ -745,7 +745,7 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
                     </div>
                     {item.badge !== undefined && item.badge > 0 && (
                       <span className={`px-2 py-1 rounded-full text-xs font-bold ${
-                        activeSection === item.id ? 'bg-black/20 text-black' : 'bg-neon-blue text-black'
+                        activeSection === item.id ? 'bg-black/20 text-black' : 'bg-luxe-gold text-black'
                       }`}>
                         {item.badge}
                       </span>
@@ -755,10 +755,10 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
               </div>
             </nav>
 
-            <div className="p-4 border-t border-gray-700">
+            <div className="p-4 border-t border-white/10">
               <button
                 onClick={onClose}
-                className="w-full px-4 py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors font-medium flex items-center justify-center space-x-2"
+                className="w-full px-4 py-3 luxe-glass hover:bg-gray-600 text-white rounded-lg transition-colors font-medium flex items-center justify-center space-x-2"
               >
                 <X className="w-5 h-5" />
                 <span>Close Dashboard</span>
@@ -786,7 +786,7 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
                 </div>
                 <button
                   onClick={() => setShowOrdersModal(true)}
-                  className="w-full py-4 bg-neon-blue hover:bg-neon-blue/80 text-black rounded-lg transition-colors font-black uppercase"
+                  className="w-full py-4 bg-luxe-gold hover:bg-luxe-gold/80 text-black rounded-lg transition-colors font-black uppercase"
                 >
                   Open Order Management
                 </button>
@@ -800,7 +800,7 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
                 </div>
                 <button
                   onClick={() => setShowWalletModal(true)}
-                  className="w-full py-4 bg-neon-blue hover:bg-neon-blue/80 text-black rounded-lg transition-colors font-black uppercase"
+                  className="w-full py-4 bg-luxe-gold hover:bg-luxe-gold/80 text-black rounded-lg transition-colors font-black uppercase"
                 >
                   Open Wallet Dashboard
                 </button>
@@ -814,7 +814,7 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
                 </div>
                 <button
                   onClick={() => setShowMessagesModal(true)}
-                  className="w-full py-4 bg-neon-blue hover:bg-neon-blue/80 text-black rounded-lg transition-colors font-black uppercase"
+                  className="w-full py-4 bg-luxe-gold hover:bg-luxe-gold/80 text-black rounded-lg transition-colors font-black uppercase"
                 >
                   Open Messaging Center
                 </button>
@@ -827,14 +827,14 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
                   <p className="text-gray-400">Invest in sellers or receive funding for your business</p>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+                  <div className="luxe-glass rounded-2xl p-6 border border-white/10">
                     <h3 className="text-xl font-black text-white mb-4">My Investments</h3>
-                    <p className="text-3xl font-black text-neon-blue mb-2">{myInvestments.length}</p>
+                    <p className="text-3xl font-black text-luxe-gold mb-2">{myInvestments.length}</p>
                     <p className="text-gray-400 text-sm">Active sponsorships</p>
                   </div>
-                  <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+                  <div className="luxe-glass rounded-2xl p-6 border border-white/10">
                     <h3 className="text-xl font-black text-white mb-4">My Requests</h3>
-                    <p className="text-3xl font-black text-neon-yellow mb-2">{myRequests.length}</p>
+                    <p className="text-3xl font-black text-luxe-gold mb-2">{myRequests.length}</p>
                     <p className="text-gray-400 text-sm">Funding requests</p>
                   </div>
                 </div>
@@ -846,7 +846,7 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
                   <h2 className="text-3xl font-black text-white mb-2">Disputes</h2>
                   <p className="text-gray-400">Manage and track your dispute cases</p>
                 </div>
-                <div className="bg-gray-800 rounded-2xl p-12 border border-gray-700 text-center">
+                <div className="luxe-glass rounded-2xl p-12 border border-white/10 text-center">
                   <AlertCircle className="w-16 h-16 text-gray-600 mx-auto mb-4" />
                   <h3 className="text-xl font-black text-white mb-2">No active disputes</h3>
                   <p className="text-gray-400">You don't have any open dispute cases</p>
@@ -859,7 +859,7 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
                   <h2 className="text-3xl font-black text-white mb-2">Activity Timeline</h2>
                   <p className="text-gray-400">Your recent actions and events on the platform</p>
                 </div>
-                <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+                <div className="luxe-glass rounded-2xl p-6 border border-white/10">
                   <div className="space-y-4">
                     <div className="flex items-start space-x-4">
                       <div className="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center flex-shrink-0">
@@ -886,14 +886,14 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
                   <p className="text-gray-400">Search and manage platform users</p>
                 </div>
 
-                <div className="bg-gray-800 rounded-2xl p-6 border border-red-500/20">
+                <div className="luxe-glass rounded-2xl p-6 border border-red-500/20">
                   <div className="mb-6">
                     <input
                       type="text"
                       value={smSearchQuery}
                       onChange={(e) => setSmSearchQuery(e.target.value)}
                       placeholder="Search users by username or email..."
-                      className="w-full bg-gray-900 text-white px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500"
+                      className="w-full luxe-glass-strong text-white px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500"
                     />
                     <button
                       onClick={async () => {
@@ -909,7 +909,7 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
                   {smSearchResults.length > 0 && (
                     <div className="space-y-3">
                       {smSearchResults.map((searchUser: any) => (
-                        <div key={searchUser.id} className="bg-gray-900 p-4 rounded-xl">
+                        <div key={searchUser.id} className="luxe-glass-strong p-4 rounded-xl">
                           <div className="flex justify-between items-start">
                             <div>
                               <p className="text-white font-bold">{searchUser.username}</p>
@@ -950,17 +950,17 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+                  <div className="luxe-glass rounded-2xl p-6 border border-white/10">
                     <Package className="w-8 h-8 text-blue-400 mb-3" />
                     <p className="text-3xl font-black text-white mb-1">{platformStats?.totalProducts || 0}</p>
                     <p className="text-gray-400 text-sm">Total Products</p>
                   </div>
-                  <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+                  <div className="luxe-glass rounded-2xl p-6 border border-white/10">
                     <MessageCircle className="w-8 h-8 text-green-400 mb-3" />
                     <p className="text-3xl font-black text-white mb-1">{platformStats?.totalMessages || 0}</p>
                     <p className="text-gray-400 text-sm">Total Messages</p>
                   </div>
-                  <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+                  <div className="luxe-glass rounded-2xl p-6 border border-white/10">
                     <Users className="w-8 h-8 text-purple-400 mb-3" />
                     <p className="text-3xl font-black text-white mb-1">{platformStats?.totalUsers || 0}</p>
                     <p className="text-gray-400 text-sm">Total Users</p>
@@ -982,7 +982,7 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
                 <div className="space-y-3">
                   {flags && flags.length > 0 ? (
                     flags.map((flag: any) => (
-                      <div key={flag.id} className="bg-gray-800 rounded-2xl p-6 border border-yellow-500/20">
+                      <div key={flag.id} className="luxe-glass rounded-2xl p-6 border border-yellow-500/20">
                         <div className="flex justify-between items-start">
                           <div>
                             <p className="text-white font-bold">Flag Type: {flag.flag_type}</p>
@@ -999,7 +999,7 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
                       </div>
                     ))
                   ) : (
-                    <div className="bg-gray-800 rounded-2xl p-12 border border-gray-700 text-center">
+                    <div className="luxe-glass rounded-2xl p-12 border border-white/10 text-center">
                       <AlertCircle className="w-16 h-16 text-gray-600 mx-auto mb-4" />
                       <h3 className="text-xl font-black text-white mb-2">No flagged content</h3>
                       <p className="text-gray-400">All reports have been resolved</p>
@@ -1022,7 +1022,7 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
                 <div className="space-y-3">
                   {smEscrowOrders && smEscrowOrders.length > 0 ? (
                     smEscrowOrders.map((order: any) => (
-                      <div key={order.id} className="bg-gray-800 rounded-2xl p-6 border border-blue-500/20">
+                      <div key={order.id} className="luxe-glass rounded-2xl p-6 border border-blue-500/20">
                         <div className="flex justify-between items-start">
                           <div>
                             <p className="text-white font-bold">Order: {order.order_number || order.id}</p>
@@ -1033,7 +1033,7 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
                       </div>
                     ))
                   ) : (
-                    <div className="bg-gray-800 rounded-2xl p-12 border border-gray-700 text-center">
+                    <div className="luxe-glass rounded-2xl p-12 border border-white/10 text-center">
                       <Shield className="w-16 h-16 text-gray-600 mx-auto mb-4" />
                       <h3 className="text-xl font-black text-white mb-2">No escrow orders</h3>
                       <p className="text-gray-400">No active escrow transactions</p>
@@ -1054,22 +1054,22 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                  <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+                  <div className="luxe-glass rounded-2xl p-6 border border-white/10">
                     <Users className="w-8 h-8 text-blue-400 mb-3" />
                     <p className="text-3xl font-black text-white mb-1">{platformStats?.totalUsers || 0}</p>
                     <p className="text-gray-400 text-sm">Total Users</p>
                   </div>
-                  <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+                  <div className="luxe-glass rounded-2xl p-6 border border-white/10">
                     <Package className="w-8 h-8 text-green-400 mb-3" />
                     <p className="text-3xl font-black text-white mb-1">{platformStats?.totalProducts || 0}</p>
                     <p className="text-gray-400 text-sm">Total Products</p>
                   </div>
-                  <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+                  <div className="luxe-glass rounded-2xl p-6 border border-white/10">
                     <ShoppingBag className="w-8 h-8 text-yellow-400 mb-3" />
                     <p className="text-3xl font-black text-white mb-1">{platformStats?.totalOrders || 0}</p>
                     <p className="text-gray-400 text-sm">Total Orders</p>
                   </div>
-                  <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+                  <div className="luxe-glass rounded-2xl p-6 border border-white/10">
                     <DollarSign className="w-8 h-8 text-purple-400 mb-3" />
                     <p className="text-3xl font-black text-white mb-1">${platformStats?.totalRevenue || 0}</p>
                     <p className="text-gray-400 text-sm">Total Revenue</p>
@@ -1088,19 +1088,19 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
                   <p className="text-gray-400">Configure platform-wide settings</p>
                 </div>
 
-                <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+                <div className="luxe-glass rounded-2xl p-6 border border-white/10">
                   <h3 className="text-xl font-black text-white mb-4">System Configuration</h3>
                   <div className="space-y-4">
-                    <div className="flex items-center justify-between p-4 bg-gray-900 rounded-xl">
+                    <div className="flex items-center justify-between p-4 luxe-glass-strong rounded-xl">
                       <div>
                         <p className="text-white font-bold">Maintenance Mode</p>
                         <p className="text-gray-400 text-sm">Enable site-wide maintenance mode</p>
                       </div>
-                      <button className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-xl">
+                      <button className="px-4 py-2 luxe-glass hover:bg-gray-600 text-white rounded-xl">
                         Toggle
                       </button>
                     </div>
-                    <div className="flex items-center justify-between p-4 bg-gray-900 rounded-xl">
+                    <div className="flex items-center justify-between p-4 luxe-glass-strong rounded-xl">
                       <div>
                         <p className="text-white font-bold">User Registration</p>
                         <p className="text-gray-400 text-sm">Allow new user signups</p>
@@ -1194,9 +1194,9 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
                   </div>
                 </div>
 
-                <div className="bg-gray-800 rounded-2xl p-6 border border-purple-500/30">
+                <div className="luxe-glass rounded-2xl p-6 border border-purple-500/30">
                   <h3 className="text-xl font-black text-purple-400 mb-4">Spell Console</h3>
-                  <div className="bg-gray-900 rounded-xl p-4 font-mono text-sm">
+                  <div className="luxe-glass-strong rounded-xl p-4 font-mono text-sm">
                     <p className="text-green-400">$ <span className="text-white">Ready to cast spells...</span></p>
                     <p className="text-gray-500 mt-2"># Execute custom commands with wizard privileges</p>
                     <p className="text-gray-500"># Type 'help' for available incantations</p>

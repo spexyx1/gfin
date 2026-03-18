@@ -52,7 +52,7 @@ export function TrackingCard({ order, className = '' }: TrackingCardProps) {
   };
 
   return (
-    <div className={`bg-gray-800 rounded-2xl p-6 border border-gray-700 ${className}`}>
+    <div className={`luxe-glass rounded-2xl p-6 border border-white/10 ${className}`}>
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center space-x-3">
@@ -120,7 +120,7 @@ export function TrackingCard({ order, className = '' }: TrackingCardProps) {
       </div>
 
       {/* Status Timeline */}
-      <div className="mt-6 pt-4 border-t border-gray-700">
+      <div className="mt-6 pt-4 border-t border-white/10">
         <div className="flex items-center space-x-4">
           <div className="flex items-center space-x-2">
             <div className="w-3 h-3 bg-green-500 rounded-full"></div>

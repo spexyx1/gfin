@@ -163,24 +163,24 @@ export function SellerDashboard({ isOpen, onClose }: SellerDashboardProps) {
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-gray-900 rounded-2xl border border-gray-700 w-full max-w-6xl max-h-[90vh] overflow-hidden">
-        <div className="flex items-center justify-between p-6 border-b border-gray-700">
+      <div className="luxe-glass-strong rounded-2xl border border-white/10 w-full max-w-6xl max-h-[90vh] overflow-hidden">
+        <div className="flex items-center justify-between p-6 border-b border-white/10">
           <h2 className="text-2xl font-bold text-white">Seller Dashboard</h2>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
+            className="p-2 hover:luxe-glass rounded-lg transition-colors"
           >
             <Plus className="w-6 h-6 text-gray-400 rotate-45" />
           </button>
         </div>
 
         {/* Stats Bar */}
-        <div className="grid grid-cols-4 gap-4 p-6 border-b border-gray-700">
+        <div className="grid grid-cols-4 gap-4 p-6 border-b border-white/10">
           {/* GHETTO Collateral Status */}
-          <div className="bg-gray-800 rounded-lg p-4 text-center">
+          <div className="luxe-glass rounded-lg p-4 text-center">
             <div className="flex items-center justify-center space-x-2 mb-2">
-              <Shield className="w-6 h-6 text-neon-blue" />
-              <span className="text-neon-blue font-black text-sm">GHETTO</span>
+              <Shield className="w-6 h-6 text-luxe-gold" />
+              <span className="text-luxe-gold font-black text-sm">GHETTO</span>
             </div>
             <p className="text-2xl font-black text-white">{collateralInfo.totalCollateral}</p>
             <p className="text-gray-400 text-sm">Collateral</p>
@@ -189,22 +189,22 @@ export function SellerDashboard({ isOpen, onClose }: SellerDashboardProps) {
             </p>
           </div>
 
-          <div className="bg-gray-800 rounded-lg p-4 text-center">
+          <div className="luxe-glass rounded-lg p-4 text-center">
             <Package className="w-6 h-6 text-blue-400 mx-auto mb-2" />
             <p className="text-2xl font-bold text-white">{stats.total}</p>
             <p className="text-gray-400 text-sm">Total Products</p>
           </div>
-          <div className="bg-gray-800 rounded-lg p-4 text-center">
+          <div className="luxe-glass rounded-lg p-4 text-center">
             <Eye className="w-6 h-6 text-green-400 mx-auto mb-2" />
             <p className="text-2xl font-bold text-white">{stats.active}</p>
             <p className="text-gray-400 text-sm">Active</p>
           </div>
-          <div className="bg-gray-800 rounded-lg p-4 text-center">
+          <div className="luxe-glass rounded-lg p-4 text-center">
             <Edit className="w-6 h-6 text-yellow-400 mx-auto mb-2" />
             <p className="text-2xl font-bold text-white">{stats.draft}</p>
             <p className="text-gray-400 text-sm">Drafts</p>
           </div>
-          <div className="bg-gray-800 rounded-lg p-4 text-center">
+          <div className="luxe-glass rounded-lg p-4 text-center">
             <DollarSign className="w-6 h-6 text-purple-400 mx-auto mb-2" />
             <p className="text-2xl font-bold text-white">{stats.sold}</p>
             <p className="text-gray-400 text-sm">Sold</p>
@@ -224,7 +224,7 @@ export function SellerDashboard({ isOpen, onClose }: SellerDashboardProps) {
               </div>
               <button
                 onClick={() => setShowCollateralDeposit(true)}
-                className="px-4 py-2 bg-neon-blue hover:bg-neon-blue/80 text-black rounded-lg font-medium"
+                className="px-4 py-2 bg-luxe-gold hover:bg-luxe-gold/80 text-black rounded-lg font-medium"
               >
                 Deposit GHETTO
               </button>
@@ -233,13 +233,13 @@ export function SellerDashboard({ isOpen, onClose }: SellerDashboardProps) {
         )}
 
         {/* Tabs */}
-        <div className="flex border-b border-gray-700">
+        <div className="flex border-b border-white/10">
           <button
             onClick={() => setActiveTab('products')}
             className={`flex-1 px-6 py-4 font-medium transition-colors ${
               activeTab === 'products'
-                ? 'text-blue-400 border-b-2 border-blue-400 bg-gray-800/50'
-                : 'text-gray-400 hover:text-white hover:bg-gray-800/30'
+                ? 'text-blue-400 border-b-2 border-blue-400 luxe-glass/50'
+                : 'text-gray-400 hover:text-white hover:luxe-glass/30'
             }`}
           >
             My Products
@@ -251,8 +251,8 @@ export function SellerDashboard({ isOpen, onClose }: SellerDashboardProps) {
             }}
             className={`flex-1 px-6 py-4 font-medium transition-colors ${
               activeTab === 'create'
-                ? 'text-blue-400 border-b-2 border-blue-400 bg-gray-800/50'
-                : 'text-gray-400 hover:text-white hover:bg-gray-800/30'
+                ? 'text-blue-400 border-b-2 border-blue-400 luxe-glass/50'
+                : 'text-gray-400 hover:text-white hover:luxe-glass/30'
             }`}
           >
             Create Product
@@ -260,7 +260,7 @@ export function SellerDashboard({ isOpen, onClose }: SellerDashboardProps) {
           {activeTab === 'edit' && (
             <button
               onClick={() => setActiveTab('edit')}
-              className="flex-1 px-6 py-4 font-medium text-blue-400 border-b-2 border-blue-400 bg-gray-800/50"
+              className="flex-1 px-6 py-4 font-medium text-blue-400 border-b-2 border-blue-400 luxe-glass/50"
             >
               Edit Product
             </button>
@@ -286,7 +286,7 @@ export function SellerDashboard({ isOpen, onClose }: SellerDashboardProps) {
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {products.map((product) => (
-                    <div key={product.id} className="bg-gray-800 rounded-xl border border-gray-700 overflow-hidden">
+                    <div key={product.id} className="luxe-glass rounded-xl border border-white/10 overflow-hidden">
                       <div className="relative">
                         {product.images.length > 0 ? (
                           <img
@@ -295,7 +295,7 @@ export function SellerDashboard({ isOpen, onClose }: SellerDashboardProps) {
                             className="w-full h-48 object-cover"
                           />
                         ) : (
-                          <div className="w-full h-48 bg-gray-700 flex items-center justify-center">
+                          <div className="w-full h-48 luxe-glass flex items-center justify-center">
                             <Camera className="w-12 h-12 text-gray-500" />
                           </div>
                         )}
@@ -365,7 +365,7 @@ export function SellerDashboard({ isOpen, onClose }: SellerDashboardProps) {
                     type="text"
                     value={formData.title}
                     onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
+                    className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
                     placeholder="Enter product title"
                     required
                   />
@@ -379,7 +379,7 @@ export function SellerDashboard({ isOpen, onClose }: SellerDashboardProps) {
                     min="0"
                     value={formData.price}
                     onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
+                    className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
                     placeholder="0.00 GHETTO"
                     required
                   />
@@ -393,7 +393,7 @@ export function SellerDashboard({ isOpen, onClose }: SellerDashboardProps) {
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                   rows={4}
-                  className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white resize-none"
+                  className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white resize-none"
                   placeholder="Describe your product in detail"
                   required
                 />
@@ -405,7 +405,7 @@ export function SellerDashboard({ isOpen, onClose }: SellerDashboardProps) {
                   <select
                     value={formData.category}
                     onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
+                    className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
                     required
                   >
                     <option value="">Select category</option>
@@ -420,7 +420,7 @@ export function SellerDashboard({ isOpen, onClose }: SellerDashboardProps) {
                   <select
                     value={formData.status}
                     onChange={(e) => setFormData({ ...formData, status: e.target.value as SellerProduct['status'] })}
-                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
+                    className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
                   >
                     <option value="draft">Draft</option>
                     <option value="active">Active</option>
@@ -435,7 +435,7 @@ export function SellerDashboard({ isOpen, onClose }: SellerDashboardProps) {
                   type="text"
                   value={formData.tags}
                   onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
-                  className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
+                  className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
                   placeholder="crypto, nft, blockchain"
                 />
               </div>
@@ -446,7 +446,7 @@ export function SellerDashboard({ isOpen, onClose }: SellerDashboardProps) {
                   id="inStock"
                   checked={formData.inStock}
                   onChange={(e) => setFormData({ ...formData, inStock: e.target.checked })}
-                  className="w-4 h-4 text-blue-600 bg-gray-800 border-gray-600 rounded focus:ring-blue-500"
+                  className="w-4 h-4 text-blue-600 luxe-glass border-gray-600 rounded focus:ring-blue-500"
                 />
                 <label htmlFor="inStock" className="text-white font-medium">
                   In Stock
@@ -463,7 +463,7 @@ export function SellerDashboard({ isOpen, onClose }: SellerDashboardProps) {
                 />
               </div>
 
-              <div className="flex space-x-4 pt-6 border-t border-gray-700">
+              <div className="flex space-x-4 pt-6 border-t border-white/10">
                 <button
                   type="submit"
                   disabled={isLoading}
@@ -477,7 +477,7 @@ export function SellerDashboard({ isOpen, onClose }: SellerDashboardProps) {
                     resetForm();
                     setActiveTab('products');
                   }}
-                  className="px-6 py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors"
+                  className="px-6 py-3 luxe-glass hover:bg-gray-600 text-white rounded-lg transition-colors"
                 >
                   Cancel
                 </button>
@@ -489,13 +489,13 @@ export function SellerDashboard({ isOpen, onClose }: SellerDashboardProps) {
         {/* GHETTO Collateral Deposit Modal */}
         {showCollateralDeposit && (
           <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-60 flex items-center justify-center p-4">
-            <div className="bg-gray-900 rounded-2xl border border-gray-700 w-full max-w-md">
-              <div className="p-6 border-b border-gray-700">
+            <div className="luxe-glass-strong rounded-2xl border border-white/10 w-full max-w-md">
+              <div className="p-6 border-b border-white/10">
                 <div className="flex items-center justify-between">
                   <h3 className="text-xl font-black text-white uppercase">Deposit GHETTO Collateral</h3>
                   <button
                     onClick={() => setShowCollateralDeposit(false)}
-                    className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
+                    className="p-2 hover:luxe-glass rounded-lg transition-colors"
                   >
                     <X className="w-5 h-5 text-gray-400" />
                   </button>
@@ -503,8 +503,8 @@ export function SellerDashboard({ isOpen, onClose }: SellerDashboardProps) {
               </div>
               
               <div className="p-6 space-y-4">
-                <div className="bg-neon-blue/10 border border-neon-blue/20 rounded-lg p-4">
-                  <h4 className="text-neon-blue font-black mb-2 text-sm">SELLER COLLATERAL SYSTEM</h4>
+                <div className="bg-luxe-gold/10 border border-luxe-gold/20 rounded-lg p-4">
+                  <h4 className="text-luxe-gold font-black mb-2 text-sm">SELLER COLLATERAL SYSTEM</h4>
                   <ul className="text-gray-400 text-xs space-y-1">
                     <li>• Minimum 100 GHETTO required to start selling</li>
                     <li>• Your collateral = maximum order value you can accept</li>
@@ -521,7 +521,7 @@ export function SellerDashboard({ isOpen, onClose }: SellerDashboardProps) {
                     step="1"
                     value={depositAmount}
                     onChange={(e) => setDepositAmount(e.target.value)}
-                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-neon-blue text-white"
+                    className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-luxe-gold text-white"
                     placeholder="100"
                     required
                   />
@@ -534,13 +534,13 @@ export function SellerDashboard({ isOpen, onClose }: SellerDashboardProps) {
                   <button
                     onClick={handleDepositCollateral}
                     disabled={isLoading || parseFloat(depositAmount) < 100}
-                    className="flex-1 py-3 bg-neon-blue hover:bg-neon-blue/80 disabled:bg-gray-600 text-black rounded-lg transition-colors font-black uppercase"
+                    className="flex-1 py-3 bg-luxe-gold hover:bg-luxe-gold/80 disabled:bg-gray-600 text-black rounded-lg transition-colors font-black uppercase"
                   >
                     {isLoading ? 'Depositing...' : 'Deposit GHETTO'}
                   </button>
                   <button
                     onClick={() => setShowCollateralDeposit(false)}
-                    className="px-6 py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors"
+                    className="px-6 py-3 luxe-glass hover:bg-gray-600 text-white rounded-lg transition-colors"
                   >
                     Cancel
                   </button>

@@ -116,15 +116,15 @@ export function SocialHub({ isOpen, onClose }: SocialHubProps) {
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-gray-900 rounded-3xl border border-gray-700 w-full max-w-7xl h-[90vh] overflow-hidden flex shadow-2xl">
+      <div className="luxe-glass-strong rounded-3xl border border-white/10 w-full max-w-7xl h-[90vh] overflow-hidden flex shadow-2xl">
         {/* Sidebar */}
-        <div className="w-80 bg-gray-800 border-r border-gray-700 flex flex-col">
-          <div className="p-6 border-b border-gray-700">
+        <div className="w-80 luxe-glass border-r border-white/10 flex flex-col">
+          <div className="p-6 border-b border-white/10">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-black text-white uppercase">Social Hub</h2>
               <button
                 onClick={onClose}
-                className="p-2 hover:bg-gray-700 rounded-lg transition-colors"
+                className="p-2 hover:luxe-glass rounded-lg transition-colors"
               >
                 <X className="w-5 h-5 text-gray-400" />
               </button>
@@ -137,13 +137,13 @@ export function SocialHub({ isOpen, onClose }: SocialHubProps) {
                 placeholder="Search groups or users..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-neon-blue text-white placeholder-gray-400 text-sm"
+                className="w-full pl-10 pr-4 py-2 luxe-glass border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-luxe-gold text-white placeholder-gray-400 text-sm"
               />
             </div>
           </div>
 
           {/* Navigation */}
-          <div className="p-4 border-b border-gray-700">
+          <div className="p-4 border-b border-white/10">
             <div className="grid grid-cols-2 gap-2">
               {[
                 { id: 'groups', label: 'Groups', icon: Users },
@@ -156,8 +156,8 @@ export function SocialHub({ isOpen, onClose }: SocialHubProps) {
                   onClick={() => setActiveTab(id as any)}
                   className={`flex items-center justify-center space-x-2 px-3 py-2 rounded-lg transition-colors text-sm font-medium ${
                     activeTab === id
-                      ? 'bg-neon-blue text-black'
-                      : 'text-gray-300 hover:bg-gray-700'
+                      ? 'bg-luxe-gold text-black'
+                      : 'text-gray-300 hover:luxe-glass'
                   }`}
                 >
                   <Icon className="w-4 h-4" />
@@ -171,8 +171,8 @@ export function SocialHub({ isOpen, onClose }: SocialHubProps) {
               onClick={() => setActiveTab('sponsorships')}
               className={`w-full mt-2 flex items-center justify-center space-x-2 px-3 py-2 rounded-lg transition-colors text-sm font-medium ${
                 activeTab === 'sponsorships'
-                  ? 'bg-neon-green text-black'
-                  : 'text-gray-300 hover:bg-gray-700'
+                  ? 'bg-luxe-green text-black'
+                  : 'text-gray-300 hover:luxe-glass'
               }`}
             >
               <TrendingUp className="w-4 h-4" />
@@ -188,7 +188,7 @@ export function SocialHub({ isOpen, onClose }: SocialHubProps) {
               </h3>
               <button
                 onClick={() => setShowCreateGroup(true)}
-                className="p-1 hover:bg-gray-700 rounded text-gray-400 hover:text-neon-blue transition-colors"
+                className="p-1 hover:luxe-glass rounded text-gray-400 hover:text-luxe-gold transition-colors"
               >
                 <Plus className="w-4 h-4" />
               </button>
@@ -203,8 +203,8 @@ export function SocialHub({ isOpen, onClose }: SocialHubProps) {
                     onClick={() => setSelectedGroup(group.id)}
                     className={`p-3 rounded-lg cursor-pointer transition-colors ${
                       selectedGroup === group.id
-                        ? 'bg-neon-blue/20 border border-neon-blue/30'
-                        : 'bg-gray-700 hover:bg-gray-600'
+                        ? 'bg-luxe-gold/20 border border-luxe-gold/30'
+                        : 'luxe-glass hover:bg-gray-600'
                     }`}
                   >
                     <div className="flex items-start justify-between">
@@ -222,7 +222,7 @@ export function SocialHub({ isOpen, onClose }: SocialHubProps) {
                             e.stopPropagation();
                             handleJoinGroup(group.id);
                           }}
-                          className="px-2 py-1 bg-neon-blue text-black rounded text-xs font-medium hover:bg-neon-blue/80 transition-colors"
+                          className="px-2 py-1 bg-luxe-gold text-black rounded text-xs font-medium hover:bg-luxe-gold/80 transition-colors"
                         >
                           Join
                         </button>
@@ -242,7 +242,7 @@ export function SocialHub({ isOpen, onClose }: SocialHubProps) {
           ) : selectedGroupData ? (
             <>
               {/* Group Header */}
-              <div className="p-6 border-b border-gray-700">
+              <div className="p-6 border-b border-white/10">
                 <div className="flex items-start justify-between">
                   <div>
                     <h2 className="text-2xl font-black text-white">{selectedGroupData.name}</h2>
@@ -265,20 +265,20 @@ export function SocialHub({ isOpen, onClose }: SocialHubProps) {
 
               {/* Post Creation */}
               {user && selectedGroupData.members.some(m => m.userId === user.id) && (
-                <div className="p-6 border-b border-gray-700">
+                <div className="p-6 border-b border-white/10">
                   <form onSubmit={handleCreatePost} className="space-y-4">
                     <textarea
                       value={newPostContent}
                       onChange={(e) => setNewPostContent(e.target.value)}
                       placeholder="Share something with the group..."
                       rows={3}
-                      className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-neon-blue text-white placeholder-gray-500 resize-none"
+                      className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-luxe-gold text-white placeholder-gray-500 resize-none"
                     />
                     <div className="flex justify-end">
                       <button
                         type="submit"
                         disabled={!newPostContent.trim()}
-                        className="px-4 py-2 bg-neon-blue hover:bg-neon-blue/80 disabled:bg-gray-700 text-black rounded-lg transition-colors font-medium flex items-center space-x-2"
+                        className="px-4 py-2 bg-luxe-gold hover:bg-luxe-gold/80 disabled:luxe-glass text-black rounded-lg transition-colors font-medium flex items-center space-x-2"
                       >
                         <Send className="w-4 h-4" />
                         <span>Post</span>
@@ -294,9 +294,9 @@ export function SocialHub({ isOpen, onClose }: SocialHubProps) {
                   {groupPosts.map((post) => {
                     const author = getUserProfile(post.authorId);
                     return (
-                      <div key={post.id} className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+                      <div key={post.id} className="luxe-glass rounded-2xl p-6 border border-white/10">
                         <div className="flex items-start space-x-4">
-                          <div className="w-10 h-10 bg-neon-blue rounded-full flex items-center justify-center flex-shrink-0">
+                          <div className="w-10 h-10 bg-luxe-gold rounded-full flex items-center justify-center flex-shrink-0">
                             <span className="text-black font-bold text-sm">
                               {author?.handle?.[0]?.toUpperCase() || 'U'}
                             </span>
@@ -324,8 +324,8 @@ export function SocialHub({ isOpen, onClose }: SocialHubProps) {
                                     onClick={() => handleReaction(post.id, reactionType as any)}
                                     className={`flex items-center space-x-1 px-2 py-1 rounded-lg transition-colors ${
                                       userReacted
-                                        ? 'bg-neon-blue/20 text-neon-blue'
-                                        : 'text-gray-400 hover:text-gray-300 hover:bg-gray-700'
+                                        ? 'bg-luxe-gold/20 text-luxe-gold'
+                                        : 'text-gray-400 hover:text-gray-300 hover:luxe-glass'
                                     }`}
                                   >
                                     {getReactionIcon(reactionType)}
@@ -365,8 +365,8 @@ export function SocialHub({ isOpen, onClose }: SocialHubProps) {
       {/* Create Group Modal */}
       {showCreateGroup && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-60 flex items-center justify-center p-4">
-          <div className="bg-gray-900 rounded-2xl border border-gray-700 w-full max-w-md">
-            <div className="p-6 border-b border-gray-700">
+          <div className="luxe-glass-strong rounded-2xl border border-white/10 w-full max-w-md">
+            <div className="p-6 border-b border-white/10">
               <h3 className="text-xl font-black text-white uppercase">Create Group</h3>
             </div>
             <form onSubmit={handleCreateGroup} className="p-6 space-y-4">
@@ -376,7 +376,7 @@ export function SocialHub({ isOpen, onClose }: SocialHubProps) {
                   type="text"
                   value={newGroupData.name}
                   onChange={(e) => setNewGroupData({ ...newGroupData, name: e.target.value })}
-                  className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-neon-blue text-white"
+                  className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-luxe-gold text-white"
                   required
                 />
               </div>
@@ -386,7 +386,7 @@ export function SocialHub({ isOpen, onClose }: SocialHubProps) {
                   value={newGroupData.description}
                   onChange={(e) => setNewGroupData({ ...newGroupData, description: e.target.value })}
                   rows={3}
-                  className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-neon-blue text-white resize-none"
+                  className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-luxe-gold text-white resize-none"
                 />
               </div>
               <div>
@@ -394,7 +394,7 @@ export function SocialHub({ isOpen, onClose }: SocialHubProps) {
                 <select
                   value={newGroupData.category}
                   onChange={(e) => setNewGroupData({ ...newGroupData, category: e.target.value })}
-                  className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-neon-blue text-white"
+                  className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-luxe-gold text-white"
                 >
                   <option value="trading">Trading</option>
                   <option value="nft">NFT</option>
@@ -409,21 +409,21 @@ export function SocialHub({ isOpen, onClose }: SocialHubProps) {
                   id="isPrivate"
                   checked={newGroupData.isPrivate}
                   onChange={(e) => setNewGroupData({ ...newGroupData, isPrivate: e.target.checked })}
-                  className="w-4 h-4 text-neon-blue bg-gray-800 border-gray-600 rounded focus:ring-neon-blue"
+                  className="w-4 h-4 text-luxe-gold luxe-glass border-gray-600 rounded focus:ring-luxe-gold"
                 />
                 <label htmlFor="isPrivate" className="text-white font-medium">Private Group</label>
               </div>
               <div className="flex space-x-4">
                 <button
                   type="submit"
-                  className="flex-1 py-3 bg-neon-blue hover:bg-neon-blue/80 text-black rounded-lg transition-colors font-medium"
+                  className="flex-1 py-3 bg-luxe-gold hover:bg-luxe-gold/80 text-black rounded-lg transition-colors font-medium"
                 >
                   Create Group
                 </button>
                 <button
                   type="button"
                   onClick={() => setShowCreateGroup(false)}
-                  className="px-6 py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors"
+                  className="px-6 py-3 luxe-glass hover:bg-gray-600 text-white rounded-lg transition-colors"
                 >
                   Cancel
                 </button>

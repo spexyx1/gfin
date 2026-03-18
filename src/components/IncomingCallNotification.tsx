@@ -26,7 +26,7 @@ export function IncomingCallNotification({ incomingCall, onAccept, onDecline }: 
 
   return (
     <div className="fixed top-6 right-6 z-[200] w-80 animate-in slide-in-from-top-4">
-      <div className="bg-gray-900 border border-gray-700 rounded-2xl shadow-2xl overflow-hidden">
+      <div className="luxe-glass-strong border border-white/10 rounded-2xl shadow-2xl overflow-hidden">
         <div className="h-1 bg-gradient-to-r from-green-500 to-blue-500" />
 
         <div className="p-5">
@@ -39,7 +39,7 @@ export function IncomingCallNotification({ incomingCall, onAccept, onDecline }: 
                   className="w-14 h-14 rounded-full object-cover border-2 border-green-500"
                 />
               ) : (
-                <div className="w-14 h-14 rounded-full bg-gray-700 border-2 border-green-500 flex items-center justify-center">
+                <div className="w-14 h-14 rounded-full luxe-glass border-2 border-green-500 flex items-center justify-center">
                   <User className="w-7 h-7 text-gray-400" />
                 </div>
               )}

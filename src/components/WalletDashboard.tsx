@@ -95,32 +95,32 @@ export function WalletDashboard({ isOpen, onClose, initialTab }: WalletDashboard
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-2 sm:p-4">
-      <div className="bg-gray-900 rounded-2xl sm:rounded-3xl border border-gray-700 w-full max-w-6xl h-[95vh] sm:h-[90vh] overflow-hidden flex flex-col lg:flex-row shadow-2xl">
+      <div className="luxe-glass-strong rounded-2xl sm:rounded-3xl border border-white/20 w-full max-w-6xl h-[95vh] sm:h-[90vh] overflow-hidden flex flex-col lg:flex-row shadow-luxe">
         {/* Mobile Header - Visible only on mobile */}
-        <div className="lg:hidden flex items-center justify-between p-4 border-b border-gray-700 bg-gray-800">
+        <div className="lg:hidden flex items-center justify-between p-4 border-b border-white/10 luxe-glass">
           <div className="flex items-center space-x-2">
-            <Wallet className="h-5 w-5 text-neon-blue" />
-            <h2 className="text-base font-black text-white uppercase">Wallet</h2>
+            <Wallet className="h-5 w-5 text-luxe-gold" />
+            <h2 className="text-base font-black text-white uppercase luxe-title">Wallet</h2>
           </div>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gray-700 rounded-lg transition-colors"
+            className="p-2 hover:bg-white/5 rounded-lg transition-colors"
           >
             <X className="w-5 h-5 text-gray-400" />
           </button>
         </div>
 
         {/* Sidebar - Hidden on mobile, shown as horizontal tabs */}
-        <div className="hidden lg:flex lg:w-64 bg-gray-800 border-r border-gray-700 flex-col">
-          <div className="p-6 border-b border-gray-700">
+        <div className="hidden lg:flex lg:w-64 luxe-glass border-r border-white/10 flex-col">
+          <div className="p-6 border-b border-white/10">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
-                <Wallet className="h-6 w-6 text-neon-blue" />
-                <h2 className="text-lg font-black text-white uppercase">Wallet</h2>
+                <Wallet className="h-6 w-6 text-luxe-gold" />
+                <h2 className="text-lg font-black text-white uppercase luxe-title">Wallet</h2>
               </div>
               <button
                 onClick={onClose}
-                className="p-2 hover:bg-gray-700 rounded-lg transition-colors"
+                className="p-2 hover:bg-white/5 rounded-lg transition-colors"
               >
                 <X className="w-5 h-5 text-gray-400" />
               </button>
@@ -144,8 +144,8 @@ export function WalletDashboard({ isOpen, onClose, initialTab }: WalletDashboard
                   onClick={() => setActiveTab(id as any)}
                   className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 font-black ${
                     activeTab === id
-                      ? 'bg-neon-blue text-black'
-                      : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                      ? 'bg-gradient-to-r from-luxe-gold to-yellow-500 text-black shadow-luxe-gold'
+                      : 'text-gray-300 hover:bg-white/5 hover:text-white'
                   }`}
                 >
                   <Icon className="w-5 h-5" />
@@ -156,7 +156,7 @@ export function WalletDashboard({ isOpen, onClose, initialTab }: WalletDashboard
           </nav>
 
           {/* Total Balance */}
-          <div className="p-6 border-t border-gray-700">
+          <div className="p-6 border-t border-white/10">
             <div className="text-center">
               <p className="text-gray-400 text-sm font-medium mb-1">Total Balance</p>
               <p className="text-2xl font-black text-white">
@@ -167,7 +167,7 @@ export function WalletDashboard({ isOpen, onClose, initialTab }: WalletDashboard
         </div>
 
         {/* Mobile Tab Navigation - Visible only on mobile */}
-        <div className="lg:hidden border-b border-gray-700 bg-gray-800 overflow-x-auto">
+        <div className="lg:hidden border-b border-white/10 luxe-glass overflow-x-auto">
           <div className="flex space-x-2 p-2 min-w-max">
             {[
               { id: 'connect', label: 'Connect', icon: Link },
@@ -184,8 +184,8 @@ export function WalletDashboard({ isOpen, onClose, initialTab }: WalletDashboard
                 onClick={() => setActiveTab(id as any)}
                 className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 font-bold text-sm whitespace-nowrap ${
                   activeTab === id
-                    ? 'bg-neon-blue text-black'
-                    : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                    ? 'bg-gradient-to-r from-luxe-gold to-yellow-500 text-black shadow-luxe-gold'
+                    : 'text-gray-300 hover:bg-white/5 hover:text-white'
                 }`}
               >
                 <Icon className="w-4 h-4" />
@@ -206,10 +206,10 @@ export function WalletDashboard({ isOpen, onClose, initialTab }: WalletDashboard
               {isConnected && account ? (
                 <div className="mb-8">
                   <h4 className="text-lg font-black text-white mb-4 uppercase">Connected Wallet</h4>
-                  <div className="bg-gray-800 rounded-2xl p-6 border-2 border-neon-blue/30">
+                  <div className="luxe-glass rounded-2xl p-6 border-2 border-luxe-gold/30">
                     <div className="flex items-center justify-between mb-4">
                       <div className="flex items-center space-x-4">
-                        <Wallet className="text-neon-blue w-8 h-8" />
+                        <Wallet className="text-luxe-gold w-8 h-8" />
                         <div>
                           <h5 className="text-white font-medium">Connected Wallet</h5>
                           <p className="text-gray-400 text-sm font-mono">
@@ -219,7 +219,7 @@ export function WalletDashboard({ isOpen, onClose, initialTab }: WalletDashboard
                       </div>
                       <button
                         onClick={() => open()}
-                        className="px-4 py-2 bg-neon-blue hover:bg-neon-blue/80 text-black rounded-lg font-medium transition-colors"
+                        className="px-4 py-2 luxe-btn-primary text-black rounded-lg font-medium transition-colors"
                       >
                         Manage Wallet
                       </button>
@@ -233,7 +233,7 @@ export function WalletDashboard({ isOpen, onClose, initialTab }: WalletDashboard
                   <p className="text-gray-400 mb-6">Connect with 300+ wallets including MetaMask, Coinbase, Trust, Ledger and more</p>
                   <button
                     onClick={() => open()}
-                    className="px-8 py-3 bg-neon-blue hover:bg-neon-blue/80 text-black rounded-lg font-black uppercase transition-colors"
+                    className="px-8 py-3 luxe-btn-primary text-black rounded-lg font-black uppercase transition-colors"
                   >
                     Connect Wallet
                   </button>
@@ -241,9 +241,9 @@ export function WalletDashboard({ isOpen, onClose, initialTab }: WalletDashboard
               )}
 
               {/* Security Notice */}
-              <div className="mt-8 bg-gray-800/50 rounded-2xl p-6 border border-gray-700">
+              <div className="mt-8 luxe-glass/50 rounded-2xl p-6 border border-white/10">
                 <div className="flex items-center space-x-3 mb-4">
-                  <Shield className="w-6 h-6 text-neon-blue" />
+                  <Shield className="w-6 h-6 text-luxe-gold" />
                   <h4 className="text-lg font-black text-white uppercase">Security & Privacy</h4>
                 </div>
                 <ul className="space-y-2 text-gray-400 text-sm">
@@ -262,22 +262,22 @@ export function WalletDashboard({ isOpen, onClose, initialTab }: WalletDashboard
             <div className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
               <div className="flex items-center justify-between mb-8">
                 <h3 className="text-2xl font-black text-white uppercase">Wallet Overview</h3>
-                <div className="bg-neon-blue/10 border border-neon-blue/20 rounded-xl px-4 py-2">
-                  <p className="text-neon-blue font-black text-sm uppercase">💡 Use GHETTO for lower fees!</p>
+                <div className="bg-luxe-gold/10 border border-luxe-gold/20 rounded-xl px-4 py-2">
+                  <p className="text-luxe-gold font-black text-sm uppercase">💡 Use GHETTO for lower fees!</p>
                 </div>
               </div>
               
               {/* Balance Cards */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                 {balances.map((balance) => (
-                  <div key={balance.symbol} className={`bg-gray-800 rounded-2xl p-6 border ${
-                    balance.symbol === 'GHETTO' ? 'border-neon-blue/30 bg-neon-blue/5' : 'border-gray-700'
+                  <div key={balance.symbol} className={`luxe-glass rounded-2xl p-6 border ${
+                    balance.symbol === 'GHETTO' ? 'border-luxe-gold/30 bg-luxe-gold/5' : 'border-white/10'
                   }`}>
                     <div className="flex items-center justify-between mb-4">
                       <div className="flex items-center space-x-2">
                         <h4 className="text-lg font-black text-white">{balance.symbol}</h4>
                         {balance.symbol === 'GHETTO' && (
-                          <span className="bg-neon-blue/20 text-neon-blue px-2 py-1 rounded-full text-xs font-medium">
+                          <span className="bg-luxe-gold/20 text-luxe-gold px-2 py-1 rounded-full text-xs font-medium">
                             PRIMARY
                           </span>
                         )}
@@ -299,7 +299,7 @@ export function WalletDashboard({ isOpen, onClose, initialTab }: WalletDashboard
                 <h4 className="text-lg font-black text-white mb-4 uppercase">Recent Transactions</h4>
                 <div className="space-y-3">
                   {transactions.slice(0, 5).map((tx) => (
-                    <div key={tx.id} className="bg-gray-800 rounded-xl p-4 border border-gray-700">
+                    <div key={tx.id} className="luxe-glass rounded-xl p-4 border border-white/10">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center space-x-3">
                           <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
@@ -365,7 +365,7 @@ export function WalletDashboard({ isOpen, onClose, initialTab }: WalletDashboard
                     type="text"
                     value={sendForm.to}
                     onChange={(e) => setSendForm({ ...sendForm, to: e.target.value })}
-                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-neon-blue text-white"
+                    className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-luxe-gold text-white"
                     placeholder="0x... or ENS name"
                     required
                   />
@@ -376,7 +376,7 @@ export function WalletDashboard({ isOpen, onClose, initialTab }: WalletDashboard
                   <select
                     value={sendForm.asset}
                     onChange={(e) => setSendForm({ ...sendForm, asset: e.target.value })}
-                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-neon-blue text-white"
+                    className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-luxe-gold text-white"
                   >
                     {balances.map(balance => (
                       <option key={balance.symbol} value={balance.symbol}>
@@ -393,7 +393,7 @@ export function WalletDashboard({ isOpen, onClose, initialTab }: WalletDashboard
                     step="0.000001"
                     value={sendForm.amount}
                     onChange={(e) => setSendForm({ ...sendForm, amount: e.target.value })}
-                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-neon-blue text-white"
+                    className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-luxe-gold text-white"
                     placeholder="0.00"
                     required
                   />
@@ -402,7 +402,7 @@ export function WalletDashboard({ isOpen, onClose, initialTab }: WalletDashboard
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full py-4 bg-neon-blue hover:bg-neon-blue/80 disabled:bg-gray-700 text-black font-black rounded-xl transition-colors uppercase"
+                  className="w-full py-4 luxe-btn-primary disabled:opacity-50 text-black font-black rounded-xl transition-colors uppercase"
                 >
                   {isLoading ? 'Sending...' : 'Send Transaction'}
                 </button>
@@ -434,7 +434,7 @@ export function WalletDashboard({ isOpen, onClose, initialTab }: WalletDashboard
                   <select
                     value={buyForm.asset}
                     onChange={(e) => setBuyForm({ ...buyForm, asset: e.target.value })}
-                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-neon-blue text-white"
+                    className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-luxe-gold text-white"
                   >
                     {isPolygon ? (
                       <>
@@ -461,7 +461,7 @@ export function WalletDashboard({ isOpen, onClose, initialTab }: WalletDashboard
                     step="0.000001"
                     value={buyForm.amount}
                     onChange={(e) => setBuyForm({ ...buyForm, amount: e.target.value })}
-                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-neon-blue text-white"
+                    className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-luxe-gold text-white"
                     placeholder="0.00"
                     required
                   />
@@ -472,7 +472,7 @@ export function WalletDashboard({ isOpen, onClose, initialTab }: WalletDashboard
                   <select
                     value={buyForm.paymentMethod}
                     onChange={(e) => setBuyForm({ ...buyForm, paymentMethod: e.target.value as 'card' | 'bank' })}
-                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-neon-blue text-white"
+                    className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-luxe-gold text-white"
                   >
                     <option value="card">Credit/Debit Card</option>
                     <option value="bank">Bank Transfer</option>
@@ -482,7 +482,7 @@ export function WalletDashboard({ isOpen, onClose, initialTab }: WalletDashboard
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full py-4 bg-neon-blue hover:bg-neon-blue/80 disabled:bg-gray-700 text-black font-black rounded-xl transition-colors uppercase"
+                  className="w-full py-4 luxe-btn-primary disabled:opacity-50 text-black font-black rounded-xl transition-colors uppercase"
                 >
                   {isLoading ? 'Processing...' : 'Buy Crypto'}
                 </button>
@@ -495,8 +495,8 @@ export function WalletDashboard({ isOpen, onClose, initialTab }: WalletDashboard
             <div className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
               <div className="text-center mb-8">
                 <h3 className="text-2xl font-black text-white mb-4 uppercase">Token Swap</h3>
-                <div className="bg-neon-blue/10 border border-neon-blue/20 rounded-2xl p-4 max-w-md mx-auto">
-                  <p className="text-neon-blue font-black text-sm uppercase">
+                <div className="bg-luxe-gold/10 border border-luxe-gold/20 rounded-2xl p-4 max-w-md mx-auto">
+                  <p className="text-luxe-gold font-black text-sm uppercase">
                     💰 Swap to GHETTO for 1.25% lower fees on all purchases!
                   </p>
                 </div>
@@ -524,7 +524,7 @@ export function WalletDashboard({ isOpen, onClose, initialTab }: WalletDashboard
                   <select
                     value={swapForm.fromAsset}
                     onChange={(e) => setSwapForm({ ...swapForm, fromAsset: e.target.value })}
-                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-neon-blue text-white"
+                    className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-luxe-gold text-white"
                   >
                     {balances.map(balance => (
                       <option key={balance.symbol} value={balance.symbol}>
@@ -541,7 +541,7 @@ export function WalletDashboard({ isOpen, onClose, initialTab }: WalletDashboard
                     step="0.000001"
                     value={swapForm.fromAmount}
                     onChange={(e) => setSwapForm({ ...swapForm, fromAmount: e.target.value })}
-                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-neon-blue text-white"
+                    className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-luxe-gold text-white"
                     placeholder="0.00"
                     required
                   />
@@ -552,7 +552,7 @@ export function WalletDashboard({ isOpen, onClose, initialTab }: WalletDashboard
                   <select
                     value={swapForm.toAsset}
                     onChange={(e) => setSwapForm({ ...swapForm, toAsset: e.target.value })}
-                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-neon-blue text-white"
+                    className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-luxe-gold text-white"
                   >
                     {balances.map(balance => (
                       <option key={balance.symbol} value={balance.symbol}>
@@ -564,7 +564,7 @@ export function WalletDashboard({ isOpen, onClose, initialTab }: WalletDashboard
 
                 {quote && (
                   <>
-                    <div className="bg-gray-800 rounded-xl p-4 border border-gray-700">
+                    <div className="luxe-glass rounded-xl p-4 border border-white/10">
                       <h5 className="text-white font-medium mb-2">Swap Quote</h5>
                       <div className="space-y-2 text-sm">
                         <div className="flex justify-between">
@@ -594,7 +594,7 @@ export function WalletDashboard({ isOpen, onClose, initialTab }: WalletDashboard
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full py-4 bg-neon-blue hover:bg-neon-blue/80 disabled:bg-gray-700 text-black font-black rounded-xl transition-colors uppercase"
+                  className="w-full py-4 luxe-btn-primary disabled:opacity-50 text-black font-black rounded-xl transition-colors uppercase"
                 >
                   {isLoading ? 'Processing...' : quote ? 'Execute Swap' : 'Get Quote'}
                 </button>
@@ -615,7 +615,7 @@ export function WalletDashboard({ isOpen, onClose, initialTab }: WalletDashboard
                   </p>
                   <button
                     onClick={() => setActiveTab('connect')}
-                    className="px-8 py-3 bg-neon-blue hover:bg-neon-blue/80 text-black rounded-xl font-black uppercase transition-colors"
+                    className="px-8 py-3 luxe-btn-primary text-black rounded-xl font-black uppercase transition-colors"
                   >
                     Connect Wallet
                   </button>
@@ -657,7 +657,7 @@ export function WalletDashboard({ isOpen, onClose, initialTab }: WalletDashboard
                       <select
                         value={tradeForm.pair}
                         onChange={(e) => setTradeForm({ ...tradeForm, pair: e.target.value })}
-                        className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-neon-blue text-white"
+                        className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-luxe-gold text-white"
                       >
                         <option value="ETH/USDC">ETH/USDC</option>
                         <option value="BTC/USDC">BTC/USDC</option>
@@ -670,7 +670,7 @@ export function WalletDashboard({ isOpen, onClose, initialTab }: WalletDashboard
                       <select
                         value={tradeForm.orderType}
                         onChange={(e) => setTradeForm({ ...tradeForm, orderType: e.target.value as 'market' | 'limit' })}
-                        className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-neon-blue text-white"
+                        className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-luxe-gold text-white"
                       >
                         <option value="market">Market Order</option>
                         <option value="limit">Limit Order</option>
@@ -684,7 +684,7 @@ export function WalletDashboard({ isOpen, onClose, initialTab }: WalletDashboard
                         step="0.000001"
                         value={tradeForm.amount}
                         onChange={(e) => setTradeForm({ ...tradeForm, amount: e.target.value })}
-                        className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-neon-blue text-white"
+                        className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-luxe-gold text-white"
                         placeholder="0.00"
                         required
                       />
@@ -698,7 +698,7 @@ export function WalletDashboard({ isOpen, onClose, initialTab }: WalletDashboard
                           step="0.01"
                           value={tradeForm.price}
                           onChange={(e) => setTradeForm({ ...tradeForm, price: e.target.value })}
-                          className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-neon-blue text-white"
+                          className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-luxe-gold text-white"
                           placeholder="0.00"
                           required
                         />
@@ -708,7 +708,7 @@ export function WalletDashboard({ isOpen, onClose, initialTab }: WalletDashboard
                     <button
                       type="submit"
                       disabled={isLoading}
-                      className="w-full py-4 bg-neon-blue hover:bg-neon-blue/80 disabled:bg-gray-700 text-black font-black rounded-xl transition-colors uppercase"
+                      className="w-full py-4 luxe-btn-primary disabled:opacity-50 text-black font-black rounded-xl transition-colors uppercase"
                     >
                       {isLoading ? 'Placing Order...' : 'Place Buy Order'}
                     </button>
@@ -720,7 +720,7 @@ export function WalletDashboard({ isOpen, onClose, initialTab }: WalletDashboard
                   <h4 className="text-lg font-black text-white mb-4 uppercase">Open Orders</h4>
                   <div className="space-y-3">
                     {orders.filter(order => order.status === 'open').map((order) => (
-                      <div key={order.id} className="bg-gray-800 rounded-xl p-4 border border-gray-700">
+                      <div key={order.id} className="luxe-glass rounded-xl p-4 border border-white/10">
                         <div className="flex items-center justify-between mb-2">
                           <span className="text-white font-medium">{order.pair}</span>
                           <span className={`px-2 py-1 rounded-full text-xs font-medium ${

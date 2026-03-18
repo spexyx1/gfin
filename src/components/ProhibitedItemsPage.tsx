@@ -27,16 +27,16 @@ export function ProhibitedItemsPage({ isOpen, onClose }: ProhibitedItemsPageProp
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-gray-900 rounded-3xl border border-gray-700 w-full max-w-6xl max-h-[90vh] overflow-hidden shadow-2xl flex flex-col my-8">
+      <div className="luxe-glass-strong rounded-3xl border border-white/10 w-full max-w-6xl max-h-[90vh] overflow-hidden shadow-2xl flex flex-col my-8">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-700 bg-gray-900 flex-shrink-0">
+        <div className="flex items-center justify-between p-6 border-b border-white/10 luxe-glass-strong flex-shrink-0">
           <div className="flex items-center space-x-3">
             <Ban className="h-6 w-6 text-red-400" />
             <h2 className="text-2xl font-black text-white uppercase">Prohibited Items Policy</h2>
           </div>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
+            className="p-2 hover:luxe-glass rounded-lg transition-colors"
           >
             <X className="w-6 h-6 text-gray-400" />
           </button>
@@ -67,15 +67,15 @@ export function ProhibitedItemsPage({ isOpen, onClose }: ProhibitedItemsPageProp
               {PROHIBITED_CONTENT.POLICY_STATEMENTS.COMMUNITY_ROLE}
             </p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-              <div className="bg-gray-800 rounded-xl p-4">
+              <div className="luxe-glass rounded-xl p-4">
                 <div className="text-2xl font-black text-green-400 mb-1">5-1000</div>
                 <div className="text-sm text-gray-400 font-bold uppercase">GHETTO Rewards</div>
               </div>
-              <div className="bg-gray-800 rounded-xl p-4">
+              <div className="luxe-glass rounded-xl p-4">
                 <div className="text-2xl font-black text-blue-400 mb-1">24-48h</div>
                 <div className="text-sm text-gray-400 font-bold uppercase">Review Time</div>
               </div>
-              <div className="bg-gray-800 rounded-xl p-4">
+              <div className="luxe-glass rounded-xl p-4">
                 <div className="text-2xl font-black text-yellow-400 mb-1">+10%</div>
                 <div className="text-sm text-gray-400 font-bold uppercase">Accuracy Bonus</div>
               </div>
@@ -119,7 +119,7 @@ export function ProhibitedItemsPage({ isOpen, onClose }: ProhibitedItemsPageProp
                           {category.examples.map((example, idx) => (
                             <span
                               key={idx}
-                              className="px-3 py-1 bg-gray-800 text-gray-300 rounded-lg text-sm font-medium"
+                              className="px-3 py-1 luxe-glass text-gray-300 rounded-lg text-sm font-medium"
                             >
                               {example}
                             </span>
@@ -283,7 +283,7 @@ export function ProhibitedItemsPage({ isOpen, onClose }: ProhibitedItemsPageProp
 
           {/* Legal Disclaimer */}
           <section className="mb-4">
-            <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+            <div className="luxe-glass rounded-2xl p-6 border border-white/10">
               <h3 className="text-lg font-black text-white uppercase mb-3">Legal Disclaimer</h3>
               <p className="text-gray-400 text-sm leading-relaxed">
                 {PROHIBITED_CONTENT.POLICY_STATEMENTS.LEGAL_DISCLAIMER} GHETTO Finance reserves the right to remove any listing at any time for any reason. Violations may result in account suspension, permanent ban, and referral to law enforcement. By using this platform, you agree to comply with all applicable laws and our Terms of Service.

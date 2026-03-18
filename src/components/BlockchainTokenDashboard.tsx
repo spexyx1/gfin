@@ -138,7 +138,7 @@ export function BlockchainTokenDashboard() {
   const recentTransfers = transfers.slice(0, 20);
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white p-6">
+    <div className="min-h-screen luxe-glass-strong text-white p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
@@ -152,7 +152,7 @@ export function BlockchainTokenDashboard() {
           <button
             onClick={refreshData}
             disabled={isLoading}
-            className="px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg flex items-center gap-2 disabled:opacity-50"
+            className="px-4 py-2 luxe-glass hover:luxe-glass rounded-lg flex items-center gap-2 disabled:opacity-50"
           >
             <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
             Refresh
@@ -162,7 +162,7 @@ export function BlockchainTokenDashboard() {
         {/* Stats Cards */}
         {tokenInfo && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <div className="bg-gray-800 rounded-lg p-6">
+            <div className="luxe-glass rounded-lg p-6">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-gray-400 text-sm">Total Supply</span>
                 <Coins className="h-5 w-5 text-blue-500" />
@@ -171,7 +171,7 @@ export function BlockchainTokenDashboard() {
               <p className="text-xs text-gray-500 mt-1">{tokenInfo.decimals} decimals</p>
             </div>
 
-            <div className="bg-gray-800 rounded-lg p-6">
+            <div className="luxe-glass rounded-lg p-6">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-gray-400 text-sm">Token Holders</span>
                 <Users className="h-5 w-5 text-green-500" />
@@ -180,7 +180,7 @@ export function BlockchainTokenDashboard() {
               <p className="text-xs text-gray-500 mt-1">Active wallets</p>
             </div>
 
-            <div className="bg-gray-800 rounded-lg p-6">
+            <div className="luxe-glass rounded-lg p-6">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-gray-400 text-sm">Total Transfers</span>
                 <TrendingUp className="h-5 w-5 text-orange-500" />
@@ -189,7 +189,7 @@ export function BlockchainTokenDashboard() {
               <p className="text-xs text-gray-500 mt-1">All time</p>
             </div>
 
-            <div className="bg-gray-800 rounded-lg p-6">
+            <div className="luxe-glass rounded-lg p-6">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-gray-400 text-sm">Contract Status</span>
                 {tokenInfo.paused ? (
@@ -207,7 +207,7 @@ export function BlockchainTokenDashboard() {
         )}
 
         {/* Action Buttons */}
-        <div className="bg-gray-800 rounded-lg p-6 mb-8">
+        <div className="luxe-glass rounded-lg p-6 mb-8">
           <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
             <Activity className="h-5 w-5 text-orange-500" />
             Quick Actions
@@ -229,14 +229,14 @@ export function BlockchainTokenDashboard() {
             </button>
             <button
               onClick={() => setShowBlacklistModal(true)}
-              className="px-4 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg flex flex-col items-center gap-2 transition-colors"
+              className="px-4 py-3 luxe-glass hover:bg-gray-600 rounded-lg flex flex-col items-center gap-2 transition-colors"
             >
               <Ban className="h-5 w-5" />
               <span className="text-sm">Blacklist</span>
             </button>
             <button
               onClick={() => setShowWhitelistModal(true)}
-              className="px-4 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg flex flex-col items-center gap-2 transition-colors"
+              className="px-4 py-3 luxe-glass hover:bg-gray-600 rounded-lg flex flex-col items-center gap-2 transition-colors"
             >
               <CheckCircle className="h-5 w-5" />
               <span className="text-sm">Whitelist</span>
@@ -271,8 +271,8 @@ export function BlockchainTokenDashboard() {
         </div>
 
         {/* Tabs */}
-        <div className="bg-gray-800 rounded-lg mb-8">
-          <div className="flex border-b border-gray-700">
+        <div className="luxe-glass rounded-lg mb-8">
+          <div className="flex border-b border-white/10">
             <button
               onClick={() => setActiveTab('overview')}
               className={`px-6 py-4 font-medium ${
@@ -337,7 +337,7 @@ export function BlockchainTokenDashboard() {
                   </div>
                 </div>
 
-                <div className="bg-gray-700 rounded-lg p-4 mt-6">
+                <div className="luxe-glass rounded-lg p-4 mt-6">
                   <h3 className="font-bold mb-3 flex items-center gap-2">
                     <Info className="h-4 w-4 text-blue-500" />
                     Security Status
@@ -368,7 +368,7 @@ export function BlockchainTokenDashboard() {
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
-                    <tr className="border-b border-gray-700">
+                    <tr className="border-b border-white/10">
                       <th className="px-4 py-3 text-left text-sm font-medium text-gray-400">Rank</th>
                       <th className="px-4 py-3 text-left text-sm font-medium text-gray-400">Address</th>
                       <th className="px-4 py-3 text-right text-sm font-medium text-gray-400">Balance</th>
@@ -378,7 +378,7 @@ export function BlockchainTokenDashboard() {
                   </thead>
                   <tbody>
                     {topHolders.map((holder, index) => (
-                      <tr key={holder.address} className="border-b border-gray-700 hover:bg-gray-750">
+                      <tr key={holder.address} className="border-b border-white/10 hover:bg-gray-750">
                         <td className="px-4 py-3 text-sm">{index + 1}</td>
                         <td className="px-4 py-3 text-sm font-mono">{holder.address.slice(0, 10)}...{holder.address.slice(-8)}</td>
                         <td className="px-4 py-3 text-sm text-right font-bold">{holder.balance.toLocaleString()}</td>
@@ -402,7 +402,7 @@ export function BlockchainTokenDashboard() {
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
-                    <tr className="border-b border-gray-700">
+                    <tr className="border-b border-white/10">
                       <th className="px-4 py-3 text-left text-sm font-medium text-gray-400">Time</th>
                       <th className="px-4 py-3 text-left text-sm font-medium text-gray-400">From</th>
                       <th className="px-4 py-3 text-left text-sm font-medium text-gray-400">To</th>
@@ -413,7 +413,7 @@ export function BlockchainTokenDashboard() {
                   </thead>
                   <tbody>
                     {recentTransfers.map((transfer) => (
-                      <tr key={`${transfer.txHash}-${transfer.blockNumber}`} className="border-b border-gray-700 hover:bg-gray-750">
+                      <tr key={`${transfer.txHash}-${transfer.blockNumber}`} className="border-b border-white/10 hover:bg-gray-750">
                         <td className="px-4 py-3 text-sm">{new Date(transfer.timestamp).toLocaleTimeString()}</td>
                         <td className="px-4 py-3 text-sm font-mono">{transfer.from.slice(0, 8)}...</td>
                         <td className="px-4 py-3 text-sm font-mono">{transfer.to.slice(0, 8)}...</td>
@@ -460,13 +460,13 @@ export function BlockchainTokenDashboard() {
                 </div>
 
                 <div className="grid gap-4">
-                  <div className="bg-gray-700 rounded-lg p-4">
+                  <div className="luxe-glass rounded-lg p-4">
                     <h4 className="font-bold mb-2">Contract Owner</h4>
                     <p className="text-sm text-gray-400 font-mono break-all">{tokenInfo.owner}</p>
                     <p className="text-xs text-gray-500 mt-1">Only the owner can execute privileged functions</p>
                   </div>
 
-                  <div className="bg-gray-700 rounded-lg p-4">
+                  <div className="luxe-glass rounded-lg p-4">
                     <h4 className="font-bold mb-2">View on Polygon Scan</h4>
                     <a
                       href={`https://polygonscan.com/token/${tokenInfo.contractAddress}`}
@@ -486,7 +486,7 @@ export function BlockchainTokenDashboard() {
         {/* Mint Modal */}
         {showMintModal && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-gray-800 rounded-lg p-6 max-w-md w-full mx-4">
+            <div className="luxe-glass rounded-lg p-6 max-w-md w-full mx-4">
               <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
                 <Plus className="h-5 w-5 text-green-500" />
                 Mint Tokens
@@ -499,7 +499,7 @@ export function BlockchainTokenDashboard() {
                     value={mintAddress}
                     onChange={(e) => setMintAddress(e.target.value)}
                     placeholder="0x..."
-                    className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-orange-500"
+                    className="w-full px-3 py-2 luxe-glass border border-gray-600 rounded-lg focus:outline-none focus:border-orange-500"
                   />
                 </div>
                 <div>
@@ -509,7 +509,7 @@ export function BlockchainTokenDashboard() {
                     value={mintAmount}
                     onChange={(e) => setMintAmount(e.target.value)}
                     placeholder="0.00"
-                    className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-orange-500"
+                    className="w-full px-3 py-2 luxe-glass border border-gray-600 rounded-lg focus:outline-none focus:border-orange-500"
                   />
                 </div>
                 <div className="flex gap-3">
@@ -522,7 +522,7 @@ export function BlockchainTokenDashboard() {
                   </button>
                   <button
                     onClick={() => setShowMintModal(false)}
-                    className="flex-1 px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg font-medium"
+                    className="flex-1 px-4 py-2 luxe-glass hover:bg-gray-600 rounded-lg font-medium"
                   >
                     Cancel
                   </button>
@@ -535,7 +535,7 @@ export function BlockchainTokenDashboard() {
         {/* Burn Modal */}
         {showBurnModal && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-gray-800 rounded-lg p-6 max-w-md w-full mx-4">
+            <div className="luxe-glass rounded-lg p-6 max-w-md w-full mx-4">
               <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
                 <Flame className="h-5 w-5 text-red-500" />
                 Burn Tokens
@@ -548,7 +548,7 @@ export function BlockchainTokenDashboard() {
                     value={burnAmount}
                     onChange={(e) => setBurnAmount(e.target.value)}
                     placeholder="0.00"
-                    className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-orange-500"
+                    className="w-full px-3 py-2 luxe-glass border border-gray-600 rounded-lg focus:outline-none focus:border-orange-500"
                   />
                   <p className="text-xs text-gray-500 mt-1">Tokens will be burned from your wallet</p>
                 </div>
@@ -562,7 +562,7 @@ export function BlockchainTokenDashboard() {
                   </button>
                   <button
                     onClick={() => setShowBurnModal(false)}
-                    className="flex-1 px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg font-medium"
+                    className="flex-1 px-4 py-2 luxe-glass hover:bg-gray-600 rounded-lg font-medium"
                   >
                     Cancel
                   </button>
@@ -575,7 +575,7 @@ export function BlockchainTokenDashboard() {
         {/* Blacklist Modal */}
         {showBlacklistModal && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-gray-800 rounded-lg p-6 max-w-md w-full mx-4">
+            <div className="luxe-glass rounded-lg p-6 max-w-md w-full mx-4">
               <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
                 <Ban className="h-5 w-5 text-red-500" />
                 Manage Blacklist
@@ -588,7 +588,7 @@ export function BlockchainTokenDashboard() {
                     value={blacklistAddress}
                     onChange={(e) => setBlacklistAddress(e.target.value)}
                     placeholder="0x..."
-                    className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-orange-500"
+                    className="w-full px-3 py-2 luxe-glass border border-gray-600 rounded-lg focus:outline-none focus:border-orange-500"
                   />
                 </div>
                 <div className="flex gap-3">
@@ -608,7 +608,7 @@ export function BlockchainTokenDashboard() {
                   </button>
                   <button
                     onClick={() => setShowBlacklistModal(false)}
-                    className="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg font-medium"
+                    className="px-4 py-2 luxe-glass hover:bg-gray-600 rounded-lg font-medium"
                   >
                     Cancel
                   </button>
@@ -621,7 +621,7 @@ export function BlockchainTokenDashboard() {
         {/* Whitelist Modal */}
         {showWhitelistModal && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-gray-800 rounded-lg p-6 max-w-md w-full mx-4">
+            <div className="luxe-glass rounded-lg p-6 max-w-md w-full mx-4">
               <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
                 <CheckCircle className="h-5 w-5 text-green-500" />
                 Manage Contract Whitelist
@@ -634,7 +634,7 @@ export function BlockchainTokenDashboard() {
                     value={whitelistContract}
                     onChange={(e) => setWhitelistContract(e.target.value)}
                     placeholder="0x..."
-                    className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-orange-500"
+                    className="w-full px-3 py-2 luxe-glass border border-gray-600 rounded-lg focus:outline-none focus:border-orange-500"
                   />
                 </div>
                 <div className="flex gap-3">
@@ -654,7 +654,7 @@ export function BlockchainTokenDashboard() {
                   </button>
                   <button
                     onClick={() => setShowWhitelistModal(false)}
-                    className="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg font-medium"
+                    className="px-4 py-2 luxe-glass hover:bg-gray-600 rounded-lg font-medium"
                   >
                     Cancel
                   </button>

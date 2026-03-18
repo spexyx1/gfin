@@ -136,7 +136,7 @@ export function VideoCallModal({ session, onEnd, participantName }: VideoCallMod
 
   return (
     <div className="fixed inset-0 z-[100] bg-gray-950 flex flex-col">
-      <div className="flex items-center justify-between px-6 py-4 bg-gray-900 border-b border-gray-800">
+      <div className="flex items-center justify-between px-6 py-4 luxe-glass-strong border-b border-white/10">
         <div className="flex items-center gap-3">
           <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
           <span className="text-white font-medium">Call with {participantName}</span>
@@ -152,7 +152,7 @@ export function VideoCallModal({ session, onEnd, participantName }: VideoCallMod
       <div className="flex-1 relative">
         {isLoading && (
           <div className="absolute inset-0 flex flex-col items-center justify-center bg-gray-950 z-10">
-            <div className="w-20 h-20 rounded-full bg-gray-800 flex items-center justify-center mb-4">
+            <div className="w-20 h-20 rounded-full luxe-glass flex items-center justify-center mb-4">
               <Loader2 className="w-8 h-8 text-blue-400 animate-spin" />
             </div>
             <p className="text-gray-300 text-lg font-medium">Connecting to {participantName}...</p>
@@ -162,13 +162,13 @@ export function VideoCallModal({ session, onEnd, participantName }: VideoCallMod
         <div ref={jitsiContainerRef} className="w-full h-full" />
       </div>
 
-      <div className="flex items-center justify-center gap-4 px-6 py-5 bg-gray-900 border-t border-gray-800">
+      <div className="flex items-center justify-center gap-4 px-6 py-5 luxe-glass-strong border-t border-white/10">
         <button
           onClick={handleToggleMute}
           className={`w-12 h-12 rounded-full flex items-center justify-center transition-colors ${
             isMuted
               ? 'bg-red-600 hover:bg-red-700 text-white'
-              : 'bg-gray-700 hover:bg-gray-600 text-white'
+              : 'luxe-glass hover:bg-gray-600 text-white'
           }`}
           title={isMuted ? 'Unmute' : 'Mute'}
         >
@@ -180,7 +180,7 @@ export function VideoCallModal({ session, onEnd, participantName }: VideoCallMod
           className={`w-12 h-12 rounded-full flex items-center justify-center transition-colors ${
             isVideoOff
               ? 'bg-red-600 hover:bg-red-700 text-white'
-              : 'bg-gray-700 hover:bg-gray-600 text-white'
+              : 'luxe-glass hover:bg-gray-600 text-white'
           }`}
           title={isVideoOff ? 'Turn on camera' : 'Turn off camera'}
         >

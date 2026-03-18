@@ -85,7 +85,7 @@ export function DeliveryStatus({ order, onConfirmDelivery, onDispute, showAction
       {order.trackingNumber && (
         <div className="space-y-4 mb-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="bg-gray-800/50 rounded-lg p-4">
+            <div className="luxe-glass/50 rounded-lg p-4">
               <div className="flex items-center space-x-2 mb-2">
                 <Package className="w-4 h-4 text-gray-400" />
                 <span className="text-gray-400 text-sm font-medium">Tracking Number</span>
@@ -94,7 +94,7 @@ export function DeliveryStatus({ order, onConfirmDelivery, onDispute, showAction
             </div>
 
             {order.carrier && (
-              <div className="bg-gray-800/50 rounded-lg p-4">
+              <div className="luxe-glass/50 rounded-lg p-4">
                 <div className="flex items-center space-x-2 mb-2">
                   <Truck className="w-4 h-4 text-gray-400" />
                   <span className="text-gray-400 text-sm font-medium">Carrier</span>
@@ -107,7 +107,7 @@ export function DeliveryStatus({ order, onConfirmDelivery, onDispute, showAction
           {/* Delivery Timeline */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {order.shippedAt && (
-              <div className="bg-gray-800/50 rounded-lg p-4">
+              <div className="luxe-glass/50 rounded-lg p-4">
                 <div className="flex items-center space-x-2 mb-2">
                   <Calendar className="w-4 h-4 text-gray-400" />
                   <span className="text-gray-400 text-sm font-medium">Shipped</span>
@@ -119,7 +119,7 @@ export function DeliveryStatus({ order, onConfirmDelivery, onDispute, showAction
             )}
 
             {order.estimatedDelivery && (
-              <div className="bg-gray-800/50 rounded-lg p-4">
+              <div className="luxe-glass/50 rounded-lg p-4">
                 <div className="flex items-center space-x-2 mb-2">
                   <MapPin className="w-4 h-4 text-gray-400" />
                   <span className="text-gray-400 text-sm font-medium">Estimated Delivery</span>

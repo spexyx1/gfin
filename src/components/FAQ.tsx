@@ -566,16 +566,16 @@ export function FAQ({ isOpen, onClose, onContactClick }: FAQProps) {
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-gray-900 rounded-3xl border border-gray-700 w-full max-w-6xl h-[90vh] overflow-hidden shadow-2xl">
+      <div className="luxe-glass-strong rounded-3xl border border-white/10 w-full max-w-6xl h-[90vh] overflow-hidden shadow-2xl">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-700">
+        <div className="flex items-center justify-between p-6 border-b border-white/10">
           <div className="flex items-center space-x-3">
-            <HelpCircle className="h-6 w-6 text-neon-blue" />
+            <HelpCircle className="h-6 w-6 text-luxe-gold" />
             <h2 className="text-2xl font-black text-white uppercase">Frequently Asked Questions</h2>
           </div>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
+            className="p-2 hover:luxe-glass rounded-lg transition-colors"
           >
             <X className="w-6 h-6 text-gray-400" />
           </button>
@@ -583,14 +583,14 @@ export function FAQ({ isOpen, onClose, onContactClick }: FAQProps) {
 
         <div className="flex h-[calc(90vh-120px)]">
           {/* Sidebar */}
-          <div className="w-80 bg-gray-800 border-r border-gray-700 flex flex-col">
-            <div className="p-6 border-b border-gray-700">
+          <div className="w-80 luxe-glass border-r border-white/10 flex flex-col">
+            <div className="p-6 border-b border-white/10">
               <input
                 type="text"
                 placeholder="Search FAQs..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-neon-blue text-white placeholder-gray-400"
+                className="w-full px-4 py-3 luxe-glass border border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-luxe-gold text-white placeholder-gray-400"
               />
             </div>
 
@@ -603,8 +603,8 @@ export function FAQ({ isOpen, onClose, onContactClick }: FAQProps) {
                     onClick={() => setSelectedCategory(category)}
                     className={`w-full text-left px-4 py-3 rounded-xl transition-all duration-200 font-medium ${
                       selectedCategory === category
-                        ? 'bg-neon-blue text-black'
-                        : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                        ? 'bg-luxe-gold text-black'
+                        : 'text-gray-300 hover:luxe-glass hover:text-white'
                     }`}
                   >
                     {category}
@@ -629,13 +629,13 @@ export function FAQ({ isOpen, onClose, onContactClick }: FAQProps) {
                 const isExpanded = expandedItems.has(item.id);
                 
                 return (
-                  <div key={item.id} className="bg-gray-800 rounded-2xl border border-gray-700 overflow-hidden">
+                  <div key={item.id} className="luxe-glass rounded-2xl border border-white/10 overflow-hidden">
                     <button
                       onClick={() => toggleItem(item.id)}
                       className="w-full p-6 text-left hover:bg-gray-750 transition-colors flex items-center justify-between"
                     >
                       <div className="flex items-center space-x-4">
-                        <Icon className="w-5 h-5 text-neon-blue flex-shrink-0" />
+                        <Icon className="w-5 h-5 text-luxe-gold flex-shrink-0" />
                         <h4 className="text-lg font-black text-white">{item.question}</h4>
                       </div>
                       {isExpanded ? (
@@ -666,7 +666,7 @@ export function FAQ({ isOpen, onClose, onContactClick }: FAQProps) {
             )}
 
             {/* Contact Support */}
-            <div className="mt-12 bg-gray-800 rounded-2xl p-6 border border-gray-700">
+            <div className="mt-12 luxe-glass rounded-2xl p-6 border border-white/10">
               <h4 className="text-lg font-black text-white mb-3 uppercase">Still Need Help?</h4>
               <p className="text-gray-400 mb-4">
                 Can't find what you're looking for? Our support team is here to help.
@@ -674,7 +674,7 @@ export function FAQ({ isOpen, onClose, onContactClick }: FAQProps) {
               <div className="flex space-x-4">
                 <button 
                   onClick={onContactClick}
-                  className="px-6 py-3 bg-neon-blue hover:bg-neon-blue/80 text-black rounded-xl transition-colors font-medium"
+                  className="px-6 py-3 bg-luxe-gold hover:bg-luxe-gold/80 text-black rounded-xl transition-colors font-medium"
                 >
                   Contact Support
                 </button>

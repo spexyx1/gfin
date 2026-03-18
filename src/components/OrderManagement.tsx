@@ -184,24 +184,24 @@ export function OrderManagement({ isOpen, onClose }: OrderManagementProps) {
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-gray-900 rounded-2xl border border-gray-700 w-full max-w-4xl max-h-[90vh] overflow-hidden">
-        <div className="flex items-center justify-between p-6 border-b border-gray-700">
+      <div className="luxe-glass-strong rounded-2xl border border-white/10 w-full max-w-4xl max-h-[90vh] overflow-hidden">
+        <div className="flex items-center justify-between p-6 border-b border-white/10">
           <h2 className="text-2xl font-bold text-white">Order Management</h2>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
+            className="p-2 hover:luxe-glass rounded-lg transition-colors"
           >
             <X className="w-6 h-6 text-gray-400" />
           </button>
         </div>
 
-        <div className="flex border-b border-gray-700">
+        <div className="flex border-b border-white/10">
           <button
             onClick={() => setActiveTab('buyer')}
             className={`flex-1 px-6 py-4 font-medium transition-colors ${
               activeTab === 'buyer'
-                ? 'text-blue-400 border-b-2 border-blue-400 bg-gray-800/50'
-                : 'text-gray-400 hover:text-white hover:bg-gray-800/30'
+                ? 'text-blue-400 border-b-2 border-blue-400 luxe-glass/50'
+                : 'text-gray-400 hover:text-white hover:luxe-glass/30'
             }`}
           >
             My Purchases ({buyerOrders.length})
@@ -210,8 +210,8 @@ export function OrderManagement({ isOpen, onClose }: OrderManagementProps) {
             onClick={() => setActiveTab('seller')}
             className={`flex-1 px-6 py-4 font-medium transition-colors ${
               activeTab === 'seller'
-                ? 'text-blue-400 border-b-2 border-blue-400 bg-gray-800/50'
-                : 'text-gray-400 hover:text-white hover:bg-gray-800/30'
+                ? 'text-blue-400 border-b-2 border-blue-400 luxe-glass/50'
+                : 'text-gray-400 hover:text-white hover:luxe-glass/30'
             }`}
           >
             My Sales ({sellerOrders.length})
@@ -229,7 +229,7 @@ export function OrderManagement({ isOpen, onClose }: OrderManagementProps) {
                 </div>
               ) : (
                 buyerOrders.map((order) => (
-                  <div key={order.id} className="bg-gray-800 rounded-xl p-6 border border-gray-700">
+                  <div key={order.id} className="luxe-glass rounded-xl p-6 border border-white/10">
                     <div className="flex items-start justify-between mb-4">
                       <div>
                         <h3 className="text-lg font-semibold text-white mb-2">Order #{order.id}</h3>
@@ -286,7 +286,7 @@ export function OrderManagement({ isOpen, onClose }: OrderManagementProps) {
 
                     {/* Tracking Information for Buyers */}
                     {order.status === 'shipped' && order.trackingNumber && (
-                      <div className="bg-gray-800/50 rounded-xl p-4 mb-4 border border-gray-700">
+                      <div className="luxe-glass/50 rounded-xl p-4 mb-4 border border-white/10">
                         <div className="flex items-center space-x-2 mb-3">
                           <Truck className="w-5 h-5 text-blue-400" />
                           <h5 className="text-white font-medium">Tracking Information</h5>
@@ -409,7 +409,7 @@ export function OrderManagement({ isOpen, onClose }: OrderManagementProps) {
                 </div>
               ) : (
                 <>
-                  <div className="bg-gray-800 rounded-xl p-4 border border-gray-700 mb-6">
+                  <div className="luxe-glass rounded-xl p-4 border border-white/10 mb-6">
                     <div className="flex items-center justify-between">
                       <div>
                         <h3 className="text-lg font-semibold text-white">Seller Balance</h3>
@@ -430,7 +430,7 @@ export function OrderManagement({ isOpen, onClose }: OrderManagementProps) {
                   </div>
 
                   {sellerOrders.map((order) => (
-                    <div key={order.id} className="bg-gray-800 rounded-xl p-6 border border-gray-700">
+                    <div key={order.id} className="luxe-glass rounded-xl p-6 border border-white/10">
                       <div className="flex items-start justify-between mb-4">
                         <div>
                           <h3 className="text-lg font-semibold text-white mb-2">Order #{order.id}</h3>
@@ -494,7 +494,7 @@ export function OrderManagement({ isOpen, onClose }: OrderManagementProps) {
 
                       {/* Tracking Information for Sellers */}
                       {(order.status === 'shipped' || order.status === 'delivered' || order.status === 'completed') && order.trackingNumber && (
-                        <div className="bg-gray-800/50 rounded-xl p-4 mb-4 border border-gray-700">
+                        <div className="luxe-glass/50 rounded-xl p-4 mb-4 border border-white/10">
                           <div className="flex items-center justify-between mb-3">
                             <div className="flex items-center space-x-2">
                               <Truck className="w-5 h-5 text-blue-400" />
@@ -510,7 +510,7 @@ export function OrderManagement({ isOpen, onClose }: OrderManagementProps) {
                                   });
                                   setShowTrackingForm(order.id);
                                 }}
-                                className="p-1 hover:bg-gray-700 rounded text-gray-400 hover:text-white transition-colors"
+                                className="p-1 hover:luxe-glass rounded text-gray-400 hover:text-white transition-colors"
                                 title="Edit tracking info"
                               >
                                 <Edit3 className="w-4 h-4" />
@@ -605,8 +605,8 @@ export function OrderManagement({ isOpen, onClose }: OrderManagementProps) {
         {/* Dispute Form Modal */}
         {showDisputeForm && (
           <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-60 flex items-center justify-center p-4">
-            <div className="bg-gray-900 rounded-2xl border border-gray-700 w-full max-w-md">
-              <div className="p-6 border-b border-gray-700">
+            <div className="luxe-glass-strong rounded-2xl border border-white/10 w-full max-w-md">
+              <div className="p-6 border-b border-white/10">
                 <div className="flex items-center justify-between">
                   <h3 className="text-xl font-black text-white uppercase">Dispute Order</h3>
                   <button
@@ -614,7 +614,7 @@ export function OrderManagement({ isOpen, onClose }: OrderManagementProps) {
                       setShowDisputeForm(null);
                       setDisputeReason('');
                     }}
-                    className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
+                    className="p-2 hover:luxe-glass rounded-lg transition-colors"
                   >
                     <X className="w-5 h-5 text-gray-400" />
                   </button>
@@ -638,7 +638,7 @@ export function OrderManagement({ isOpen, onClose }: OrderManagementProps) {
                     value={disputeReason}
                     onChange={(e) => setDisputeReason(e.target.value)}
                     rows={4}
-                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 text-white resize-none"
+                    className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 text-white resize-none"
                     placeholder="Describe the issue with your order..."
                     required
                   />
@@ -657,7 +657,7 @@ export function OrderManagement({ isOpen, onClose }: OrderManagementProps) {
                       setShowDisputeForm(null);
                       setDisputeReason('');
                     }}
-                    className="px-6 py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors"
+                    className="px-6 py-3 luxe-glass hover:bg-gray-600 text-white rounded-lg transition-colors"
                   >
                     Cancel
                   </button>
@@ -670,13 +670,13 @@ export function OrderManagement({ isOpen, onClose }: OrderManagementProps) {
         {/* Shipping Form Modal */}
         {showShippingForm && (
           <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-60 flex items-center justify-center p-4">
-            <div className="bg-gray-900 rounded-2xl border border-gray-700 w-full max-w-md">
-              <div className="p-6 border-b border-gray-700">
+            <div className="luxe-glass-strong rounded-2xl border border-white/10 w-full max-w-md">
+              <div className="p-6 border-b border-white/10">
                 <div className="flex items-center justify-between">
                   <h3 className="text-xl font-black text-white uppercase">Ship Order</h3>
                   <button
                     onClick={() => setShowShippingForm(null)}
-                    className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
+                    className="p-2 hover:luxe-glass rounded-lg transition-colors"
                   >
                     <X className="w-5 h-5 text-gray-400" />
                   </button>
@@ -690,7 +690,7 @@ export function OrderManagement({ isOpen, onClose }: OrderManagementProps) {
                     type="text"
                     value={shippingData.trackingNumber}
                     onChange={(e) => setShippingData({ ...shippingData, trackingNumber: e.target.value })}
-                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-white"
+                    className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-white"
                     placeholder="Enter tracking number"
                   />
                 </div>
@@ -699,7 +699,7 @@ export function OrderManagement({ isOpen, onClose }: OrderManagementProps) {
                   <select
                     value={shippingData.carrier}
                     onChange={(e) => setShippingData({ ...shippingData, carrier: e.target.value })}
-                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-white"
+                    className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-white"
                   >
                     <option value="">Select carrier</option>
                     {carriers.map(carrier => (
@@ -714,10 +714,10 @@ export function OrderManagement({ isOpen, onClose }: OrderManagementProps) {
                     value={shippingData.estimatedDelivery}
                     onChange={(e) => setShippingData({ ...shippingData, estimatedDelivery: e.target.value })}
                     min={new Date().toISOString().split('T')[0]}
-                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-white"
+                    className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-white"
                   />
                 </div>
-                <div className="bg-gray-800/50 rounded-lg p-4 border border-gray-700">
+                <div className="luxe-glass/50 rounded-lg p-4 border border-white/10">
                   <p className="text-gray-400 text-sm">
                     Adding tracking information helps buyers track their packages and builds trust. 
                     You can also add or update this information later.
@@ -732,7 +732,7 @@ export function OrderManagement({ isOpen, onClose }: OrderManagementProps) {
                   </button>
                   <button
                     onClick={() => setShowShippingForm(null)}
-                    className="px-6 py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors"
+                    className="px-6 py-3 luxe-glass hover:bg-gray-600 text-white rounded-lg transition-colors"
                   >
                     Cancel
                   </button>
@@ -745,13 +745,13 @@ export function OrderManagement({ isOpen, onClose }: OrderManagementProps) {
         {/* Update Tracking Form Modal */}
         {showTrackingForm && (
           <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-60 flex items-center justify-center p-4">
-            <div className="bg-gray-900 rounded-2xl border border-gray-700 w-full max-w-md">
-              <div className="p-6 border-b border-gray-700">
+            <div className="luxe-glass-strong rounded-2xl border border-white/10 w-full max-w-md">
+              <div className="p-6 border-b border-white/10">
                 <div className="flex items-center justify-between">
                   <h3 className="text-xl font-black text-white uppercase">Update Tracking</h3>
                   <button
                     onClick={() => setShowTrackingForm(null)}
-                    className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
+                    className="p-2 hover:luxe-glass rounded-lg transition-colors"
                   >
                     <X className="w-5 h-5 text-gray-400" />
                   </button>
@@ -765,7 +765,7 @@ export function OrderManagement({ isOpen, onClose }: OrderManagementProps) {
                     type="text"
                     value={shippingData.trackingNumber}
                     onChange={(e) => setShippingData({ ...shippingData, trackingNumber: e.target.value })}
-                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
+                    className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
                     placeholder="Enter tracking number"
                     required
                   />
@@ -775,7 +775,7 @@ export function OrderManagement({ isOpen, onClose }: OrderManagementProps) {
                   <select
                     value={shippingData.carrier}
                     onChange={(e) => setShippingData({ ...shippingData, carrier: e.target.value })}
-                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
+                    className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
                   >
                     <option value="">Select carrier</option>
                     {carriers.map(carrier => (
@@ -790,7 +790,7 @@ export function OrderManagement({ isOpen, onClose }: OrderManagementProps) {
                     value={shippingData.estimatedDelivery}
                     onChange={(e) => setShippingData({ ...shippingData, estimatedDelivery: e.target.value })}
                     min={new Date().toISOString().split('T')[0]}
-                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
+                    className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
                   />
                 </div>
                 <div className="flex space-x-3">
@@ -802,7 +802,7 @@ export function OrderManagement({ isOpen, onClose }: OrderManagementProps) {
                   </button>
                   <button
                     onClick={() => setShowTrackingForm(null)}
-                    className="px-6 py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors"
+                    className="px-6 py-3 luxe-glass hover:bg-gray-600 text-white rounded-lg transition-colors"
                   >
                     Cancel
                   </button>

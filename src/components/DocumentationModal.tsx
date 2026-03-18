@@ -16,7 +16,7 @@ interface Section {
 function Accordion({ title, children, defaultOpen = false }: { title: string; children: React.ReactNode; defaultOpen?: boolean }) {
   const [open, setOpen] = useState(defaultOpen);
   return (
-    <div className="rounded-xl border border-white/8 bg-gray-800/30 overflow-hidden">
+    <div className="rounded-xl border border-white/8 luxe-glass/30 overflow-hidden">
       <button
         onClick={() => setOpen(!open)}
         className="w-full flex items-center justify-between p-4 text-left hover:bg-white/5 transition-colors"
@@ -87,7 +87,7 @@ export function DocumentationModal({ isOpen, onClose }: DocumentationModalProps)
 
   return (
     <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-gray-900 border border-white/10 rounded-3xl w-full max-w-5xl max-h-[92vh] flex flex-col overflow-hidden">
+      <div className="luxe-glass-strong border border-white/10 rounded-3xl w-full max-w-5xl max-h-[92vh] flex flex-col overflow-hidden">
 
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-white/10 shrink-0">
@@ -127,7 +127,7 @@ export function DocumentationModal({ isOpen, onClose }: DocumentationModalProps)
           </nav>
 
           {/* Mobile tab bar */}
-          <div className="md:hidden w-full absolute top-[88px] left-0 overflow-x-auto flex border-b border-white/10 bg-gray-900 z-10">
+          <div className="md:hidden w-full absolute top-[88px] left-0 overflow-x-auto flex border-b border-white/10 luxe-glass-strong z-10">
             {NAV_ITEMS.map(item => (
               <button
                 key={item.id}
@@ -159,7 +159,7 @@ export function DocumentationModal({ isOpen, onClose }: DocumentationModalProps)
                     { icon: Users, title: 'P2P Trading', desc: 'Direct buyer-to-seller transactions with no intermediaries taking cuts beyond the platform fee.' },
                     { icon: Globe, title: 'Multi-Currency', desc: 'Pay with GHETTO tokens (discounted fees) or any supported ERC20 token.' },
                   ].map(item => (
-                    <div key={item.title} className="rounded-xl bg-gray-800/40 border border-white/5 p-4 flex items-start gap-3">
+                    <div key={item.title} className="rounded-xl luxe-glass/40 border border-white/5 p-4 flex items-start gap-3">
                       <item.icon className="w-5 h-5 text-orange-400 shrink-0 mt-0.5" />
                       <div>
                         <p className="text-white font-black text-sm">{item.title}</p>
@@ -258,7 +258,7 @@ export function DocumentationModal({ isOpen, onClose }: DocumentationModalProps)
             {activeSection === 'escrow' && (
               <div className="space-y-5">
                 <h3 className="text-xl font-black text-white">Escrow System</h3>
-                <p className="text-gray-300">The GHETTO Finance escrow system is powered by the <code className="text-orange-300 bg-gray-800 px-1 rounded text-xs">CryptoMarketplaceEscrow</code> smart contract on Polygon. It is fully non-custodial — no human can unilaterally move funds outside of the dispute resolution process.</p>
+                <p className="text-gray-300">The GHETTO Finance escrow system is powered by the <code className="text-orange-300 luxe-glass px-1 rounded text-xs">CryptoMarketplaceEscrow</code> smart contract on Polygon. It is fully non-custodial — no human can unilaterally move funds outside of the dispute resolution process.</p>
 
                 <div>
                   <h4 className="text-white font-black text-sm mb-3">Order Lifecycle</h4>
@@ -272,7 +272,7 @@ export function DocumentationModal({ isOpen, onClose }: DocumentationModalProps)
                       { status: 'Disputed', desc: 'Either party raised a dispute. Mediator review pending.' },
                       { status: 'Cancelled', desc: 'Order cancelled. Buyer refunded (if funded).' },
                     ].map(item => (
-                      <div key={item.status} className="flex items-center gap-3 bg-gray-800/30 rounded-lg p-3 border border-white/5">
+                      <div key={item.status} className="flex items-center gap-3 luxe-glass/30 rounded-lg p-3 border border-white/5">
                         <span className="text-xs font-black text-orange-400 w-20 shrink-0">{item.status}</span>
                         <ArrowRight className="w-3 h-3 text-gray-600 shrink-0" />
                         <span className="text-sm text-gray-300">{item.desc}</span>
@@ -304,7 +304,7 @@ export function DocumentationModal({ isOpen, onClose }: DocumentationModalProps)
               <div className="space-y-5">
                 <h3 className="text-xl font-black text-white">Wallet & Tokens</h3>
 
-                <div className="rounded-xl bg-gray-800/40 border border-white/5 p-4 space-y-2">
+                <div className="rounded-xl luxe-glass/40 border border-white/5 p-4 space-y-2">
                   <div className="flex items-center gap-2 mb-1">
                     <Zap className="w-4 h-4 text-orange-400" />
                     <h4 className="text-white font-black text-sm">GHETTO Token (GHETTO)</h4>
@@ -348,7 +348,7 @@ export function DocumentationModal({ isOpen, onClose }: DocumentationModalProps)
             {activeSection === 'swaps' && (
               <div className="space-y-5">
                 <h3 className="text-xl font-black text-white">Atomic Swaps</h3>
-                <p className="text-gray-300">The Atomic Swap feature allows you to exchange tokens directly with another user in a completely trustless manner. The <code className="text-orange-300 bg-gray-800 px-1 rounded text-xs">AtomicSwap</code> contract ensures both parties either complete the exchange or both get their tokens back — there is no way for one party to take the other's tokens.</p>
+                <p className="text-gray-300">The Atomic Swap feature allows you to exchange tokens directly with another user in a completely trustless manner. The <code className="text-orange-300 luxe-glass px-1 rounded text-xs">AtomicSwap</code> contract ensures both parties either complete the exchange or both get their tokens back — there is no way for one party to take the other's tokens.</p>
 
                 <div className="space-y-3">
                   <h4 className="text-white font-black text-sm">How to Create a Swap</h4>
@@ -388,7 +388,7 @@ export function DocumentationModal({ isOpen, onClose }: DocumentationModalProps)
                     { icon: Package, title: 'Post Listings', desc: 'Share your listings on the social feed for increased visibility.' },
                     { icon: CheckCircle, title: 'Reputation System', desc: 'Reputation is earned through completed trades, dispute outcomes, and community ratings.' },
                   ].map(item => (
-                    <div key={item.title} className="rounded-xl bg-gray-800/40 border border-white/5 p-3 flex items-start gap-3">
+                    <div key={item.title} className="rounded-xl luxe-glass/40 border border-white/5 p-3 flex items-start gap-3">
                       <item.icon className="w-4 h-4 text-orange-400 shrink-0 mt-0.5" />
                       <div>
                         <p className="text-white font-black text-sm">{item.title}</p>
@@ -414,7 +414,7 @@ export function DocumentationModal({ isOpen, onClose }: DocumentationModalProps)
                 <h3 className="text-xl font-black text-white">Merchant API</h3>
                 <p className="text-gray-300">The GHETTO Finance Merchant API allows businesses and developers to integrate our escrow payment system into their own platforms and applications.</p>
 
-                <div className="rounded-xl bg-gray-800/40 border border-white/5 p-4 space-y-3">
+                <div className="rounded-xl luxe-glass/40 border border-white/5 p-4 space-y-3">
                   <h4 className="text-white font-black text-sm">Getting API Access</h4>
                   <div className="space-y-2">
                     <Step n={1} title="Register as a Merchant">Create a GHETTO Finance account and navigate to Merchant Dashboard → API Settings.</Step>
@@ -424,7 +424,7 @@ export function DocumentationModal({ isOpen, onClose }: DocumentationModalProps)
                 </div>
 
                 <Accordion title="Authentication">
-                  <p>All API requests require a Bearer token in the Authorization header, obtained by calling the <code className="text-orange-300 bg-gray-800 px-1 rounded text-xs">POST /merchant-auth</code> endpoint with your API key and secret. Tokens expire after 24 hours.</p>
+                  <p>All API requests require a Bearer token in the Authorization header, obtained by calling the <code className="text-orange-300 luxe-glass px-1 rounded text-xs">POST /merchant-auth</code> endpoint with your API key and secret. Tokens expire after 24 hours.</p>
                 </Accordion>
 
                 <Accordion title="Available Endpoints">
@@ -436,7 +436,7 @@ export function DocumentationModal({ isOpen, onClose }: DocumentationModalProps)
                       { method: 'POST', path: '/merchant-api-orders', desc: 'Create a new order via API' },
                       { method: 'POST', path: '/merchant-api-disputes', desc: 'Submit or manage disputes programmatically' },
                     ].map(ep => (
-                      <div key={ep.path} className="flex items-center gap-2 bg-gray-900/50 rounded-lg p-2">
+                      <div key={ep.path} className="flex items-center gap-2 luxe-glass-strong/50 rounded-lg p-2">
                         <span className={`text-xs font-black w-10 ${ep.method === 'GET' ? 'text-emerald-400' : 'text-orange-400'}`}>{ep.method}</span>
                         <code className="text-xs text-blue-300 font-mono">{ep.path}</code>
                         <span className="text-xs text-gray-400 ml-1">{ep.desc}</span>
@@ -470,7 +470,7 @@ export function DocumentationModal({ isOpen, onClose }: DocumentationModalProps)
                     { icon: Zap, title: 'No Custodial Risk', desc: 'Escrow funds are held in smart contracts, not in any centralized wallet controlled by GHETTO Finance.' },
                     { icon: AlertTriangle, title: 'Dispute Resolution', desc: 'Multi-party mediator system for contested transactions with evidence submission.' },
                   ].map(item => (
-                    <div key={item.title} className="rounded-xl bg-gray-800/40 border border-white/5 p-4 flex items-start gap-3">
+                    <div key={item.title} className="rounded-xl luxe-glass/40 border border-white/5 p-4 flex items-start gap-3">
                       <item.icon className="w-5 h-5 text-orange-400 shrink-0 mt-0.5" />
                       <div>
                         <p className="text-white font-black text-sm">{item.title}</p>
@@ -506,7 +506,7 @@ export function DocumentationModal({ isOpen, onClose }: DocumentationModalProps)
               <div className="space-y-5">
                 <h3 className="text-xl font-black text-white">Fee Structure</h3>
 
-                <div className="rounded-xl bg-gray-800/40 border border-white/5 overflow-hidden">
+                <div className="rounded-xl luxe-glass/40 border border-white/5 overflow-hidden">
                   <table className="w-full text-sm">
                     <thead>
                       <tr className="border-b border-white/10">
@@ -573,7 +573,7 @@ export function DocumentationModal({ isOpen, onClose }: DocumentationModalProps)
                       methods: ['createSwap', 'depositInitiatorTokens', 'depositRecipientTokens', 'cancelSwap'],
                     },
                   ].map(c => (
-                    <div key={c.name} className="rounded-xl bg-gray-800/40 border border-white/5 p-4">
+                    <div key={c.name} className="rounded-xl luxe-glass/40 border border-white/5 p-4">
                       <div className="flex items-start justify-between mb-2">
                         <div>
                           <p className="text-white font-black">{c.name}</p>
@@ -583,7 +583,7 @@ export function DocumentationModal({ isOpen, onClose }: DocumentationModalProps)
                       <p className="text-sm text-gray-300 mb-3">{c.role}</p>
                       <div className="flex flex-wrap gap-1">
                         {c.methods.map(m => (
-                          <code key={m} className="text-xs bg-gray-900/50 text-blue-300 px-2 py-0.5 rounded font-mono border border-white/5">{m}()</code>
+                          <code key={m} className="text-xs luxe-glass-strong/50 text-blue-300 px-2 py-0.5 rounded font-mono border border-white/5">{m}()</code>
                         ))}
                       </div>
                     </div>
@@ -600,7 +600,7 @@ export function DocumentationModal({ isOpen, onClose }: DocumentationModalProps)
                 </Accordion>
 
                 <Accordion title="Contract Interactions via Web3">
-                  <p>All contract ABIs are available in <code className="text-orange-300 bg-gray-800 px-1 rounded text-xs">src/config/contractAbis.ts</code>. Contract addresses are managed in <code className="text-orange-300 bg-gray-800 px-1 rounded text-xs">src/config/constants.ts</code> and can be updated via the ContractDeploymentAdmin interface for multi-network support.</p>
+                  <p>All contract ABIs are available in <code className="text-orange-300 luxe-glass px-1 rounded text-xs">src/config/contractAbis.ts</code>. Contract addresses are managed in <code className="text-orange-300 luxe-glass px-1 rounded text-xs">src/config/constants.ts</code> and can be updated via the ContractDeploymentAdmin interface for multi-network support.</p>
                 </Accordion>
               </div>
             )}

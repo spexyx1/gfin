@@ -35,7 +35,7 @@ export function OfflineBanner({ cacheAge, onRefresh }: OfflineBannerProps) {
           <button
             onClick={onRefresh}
             disabled
-            className="px-3 py-2 bg-gray-700 text-gray-400 rounded-lg text-sm font-medium cursor-not-allowed flex items-center space-x-2"
+            className="px-3 py-2 luxe-glass text-gray-400 rounded-lg text-sm font-medium cursor-not-allowed flex items-center space-x-2"
           >
             <RefreshCw className="w-4 h-4" />
             <span>Refresh</span>

@@ -281,7 +281,7 @@ function App() {
           </div>
 
           {/* How It Works */}
-          <div className="glass-morphism rounded-apple p-6 max-w-4xl mx-auto">
+          <div className="luxe-glass rounded-xl p-6 max-w-4xl mx-auto">
             <div className="text-center mb-6">
               <p className="text-sm apple-font text-apple-gray-400 uppercase tracking-wider mb-2">How It Works</p>
             </div>
@@ -291,7 +291,7 @@ function App() {
                 <div className="w-10 h-10 bg-yellow-500/20 rounded-full flex items-center justify-center mx-auto mb-3 border-2 border-yellow-500/50">
                   <span className="text-lg apple-title text-yellow-400">1</span>
                 </div>
-                <h4 className="text-sm apple-title text-neon-yellow mb-1">Browse</h4>
+                <h4 className="text-sm apple-title text-luxe-gold mb-1">Browse</h4>
                 <p className="text-xs text-apple-gray-400 apple-font leading-relaxed">
                   Find what you want and place an order
                 </p>
@@ -301,7 +301,7 @@ function App() {
                 <div className="w-10 h-10 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-3 border-2 border-green-500/50">
                   <span className="text-lg apple-title text-green-400">2</span>
                 </div>
-                <h4 className="text-sm apple-title text-neon-yellow mb-1">Pay</h4>
+                <h4 className="text-sm apple-title text-luxe-gold mb-1">Pay</h4>
                 <p className="text-xs text-apple-gray-400 apple-font leading-relaxed">
                   Send crypto — funds go straight into escrow
                 </p>
@@ -311,7 +311,7 @@ function App() {
                 <div className="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-3 border-2 border-blue-500/50">
                   <span className="text-lg apple-title text-blue-400">3</span>
                 </div>
-                <h4 className="text-sm apple-title text-neon-yellow mb-1">Receive</h4>
+                <h4 className="text-sm apple-title text-luxe-gold mb-1">Receive</h4>
                 <p className="text-xs text-apple-gray-400 apple-font leading-relaxed">
                   Seller ships the item with tracking
                 </p>
@@ -321,7 +321,7 @@ function App() {
                 <div className="w-10 h-10 bg-orange-500/20 rounded-full flex items-center justify-center mx-auto mb-3 border-2 border-orange-500/50">
                   <span className="text-lg apple-title text-orange-400">4</span>
                 </div>
-                <h4 className="text-sm apple-title text-neon-yellow mb-1">Confirm</h4>
+                <h4 className="text-sm apple-title text-luxe-gold mb-1">Confirm</h4>
                 <p className="text-xs text-apple-gray-400 apple-font leading-relaxed">
                   Approve delivery and funds release to seller
                 </p>
@@ -343,14 +343,14 @@ function App() {
           {productsLoading ? (
             <div className="flex items-center justify-center py-16">
               <div className="w-8 h-8 border-2 border-neon-blue border-t-transparent rounded-full animate-spin"></div>
-              <span className="ml-3 text-neon-yellow apple-font">Loading products...</span>
+              <span className="ml-3 text-luxe-gold apple-font">Loading products...</span>
             </div>
           ) : filteredProducts.length === 0 ? (
             <div className="text-center py-16">
               <div className="w-24 h-24 bg-gray-800/50 rounded-full flex items-center justify-center mb-6 mx-auto">
                 <Package className="w-12 h-12 text-gray-400" />
               </div>
-              <h3 className="text-xl apple-title text-neon-yellow mb-2">No products found</h3>
+              <h3 className="text-xl apple-title text-luxe-gold mb-2">No products found</h3>
               <p className="text-neon-orange apple-font max-w-md mx-auto">
                 {searchTerm || searchFilters.query 
                   ? 'Try adjusting your search terms or filters'
@@ -374,7 +374,7 @@ function App() {
                       tags: [],
                     });
                   }}
-                  className="mt-4 btn-apple-primary px-6 py-3"
+                  className="mt-4 luxe-btn-primary px-6 py-3"
                 >
                   Clear Filters
                 </button>
@@ -383,7 +383,7 @@ function App() {
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-6xl">
               {filteredProducts.map((product) => (
-                <div key={product.id} className="glass-morphism rounded-apple overflow-hidden apple-card group">
+                <div key={product.id} className="luxe-glass rounded-xl overflow-hidden apple-card group">
                   <div className="relative">
                     <img
                       src={product.image}
@@ -391,7 +391,7 @@ function App() {
                       className="w-full h-56 object-cover transition-transform duration-300"
                     />
                     <div className="absolute top-3 right-3">
-                      <span className="glass-morphism px-3 py-1 rounded-full text-xs font-medium text-apple-blue">
+                      <span className="luxe-glass px-3 py-1 rounded-full text-xs font-medium text-apple-blue">
                         {product.category}
                       </span>
                     </div>
@@ -399,7 +399,7 @@ function App() {
                   
                   <div className="p-6">
                     <div className="flex items-start justify-between mb-3">
-                      <h3 className="text-lg apple-font text-neon-yellow transition-colors line-clamp-2 text-center w-full font-medium">
+                      <h3 className="text-lg apple-font text-luxe-gold transition-colors line-clamp-2 text-center w-full font-medium">
                         {product.title}
                       </h3>
                     </div>
@@ -410,7 +410,7 @@ function App() {
                     
                     <div className="flex items-center justify-center mb-4">
                       <div className="flex items-center justify-center space-x-2">
-                        <span className="text-2xl apple-title text-neon-yellow text-center font-semibold">
+                        <span className="text-2xl apple-title text-luxe-gold text-center font-semibold">
                           {product.price} GHETTO
                         </span>
                       </div>
@@ -432,7 +432,7 @@ function App() {
                     <div className="space-y-2">
                       <button 
                         onClick={() => handleAddToCart(product)}
-                        className="btn-apple-primary w-full py-3 flex items-center justify-center space-x-2 apple-font text-center"
+                        className="luxe-btn-primary w-full py-3 flex items-center justify-center space-x-2 apple-font text-center"
                       >
                         <ShoppingCart className="w-4 h-4" />
                         <span>Add to Cart</span>
@@ -440,7 +440,7 @@ function App() {
                       
                       <button 
                         onClick={() => handleContactSeller(product.seller.id)}
-                        className="btn-apple-secondary w-full py-2 flex items-center justify-center space-x-2 text-sm apple-font text-center"
+                        className="luxe-btn-secondary w-full py-2 flex items-center justify-center space-x-2 text-sm apple-font text-center"
                       >
                         <MessageCircle className="w-4 h-4" />
                         <span>Contact Seller</span>
@@ -628,7 +628,7 @@ function App() {
       </ErrorBoundary>
 
       {/* Global Footer */}
-      <footer className="glass-morphism mt-16 border-t border-white/10 bg-gradient-to-b from-transparent to-gray-900/50">
+      <footer className="luxe-glass mt-16 border-t border-white/10 bg-gradient-to-b from-transparent to-gray-900/50">
         <div className="max-w-7xl mx-auto px-6 py-10">
           <div className="grid grid-cols-1 md:grid-cols-5 gap-8 mb-8">
             {/* About Section */}

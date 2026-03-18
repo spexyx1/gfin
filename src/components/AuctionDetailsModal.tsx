@@ -64,15 +64,15 @@ export function AuctionDetailsModal({ isOpen, onClose, auction, onPlaceBid }: Au
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto">
-      <div className="bg-gray-900 rounded-3xl border border-gray-700 w-full max-w-4xl my-8 shadow-2xl">
-        <div className="flex items-center justify-between p-6 border-b border-gray-700">
+      <div className="luxe-glass-strong rounded-3xl border border-white/10 w-full max-w-4xl my-8 shadow-2xl">
+        <div className="flex items-center justify-between p-6 border-b border-white/10">
           <div className="flex items-center space-x-2">
-            <Gavel className="h-5 w-5 text-neon-blue" />
+            <Gavel className="h-5 w-5 text-luxe-gold" />
             <h2 className="text-xl font-black text-gray-200 uppercase">AUCTION DETAILS</h2>
           </div>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
+            className="p-2 hover:luxe-glass rounded-lg transition-colors"
           >
             <X className="w-6 h-6 text-gray-400" />
           </button>
@@ -104,19 +104,19 @@ export function AuctionDetailsModal({ isOpen, onClose, auction, onPlaceBid }: Au
                   {auction.seller?.name}
                 </span>
                 {auction.seller?.verified && (
-                  <ShieldCheck className="w-4 h-4 text-neon-blue" />
+                  <ShieldCheck className="w-4 h-4 text-luxe-gold" />
                 )}
               </div>
 
               <div className="grid grid-cols-2 gap-4">
-                <div className="bg-gray-800 rounded-xl p-4 border border-gray-700">
+                <div className="luxe-glass rounded-xl p-4 border border-white/10">
                   <div className="text-gray-400 text-xs font-bold uppercase mb-1">CURRENT BID</div>
-                  <div className="text-2xl font-black text-neon-blue uppercase">
+                  <div className="text-2xl font-black text-luxe-gold uppercase">
                     ${auction.currentPrice.toFixed(2)}
                   </div>
                 </div>
 
-                <div className="bg-gray-800 rounded-xl p-4 border border-gray-700">
+                <div className="luxe-glass rounded-xl p-4 border border-white/10">
                   <div className="text-gray-400 text-xs font-bold uppercase mb-1">TIME LEFT</div>
                   <div className="text-2xl font-black text-yellow-400 uppercase">
                     {timeRemaining}
@@ -138,7 +138,7 @@ export function AuctionDetailsModal({ isOpen, onClose, auction, onPlaceBid }: Au
               {auction.status === 'active' && (
                 <button
                   onClick={onPlaceBid}
-                  className="w-full py-4 bg-neon-blue hover:shadow-neon-blue text-black font-black rounded-2xl transition-all duration-200 flex items-center justify-center space-x-2 uppercase active:btn-neon-active"
+                  className="w-full py-4 bg-luxe-gold hover:shadow-neon-blue text-black font-black rounded-2xl transition-all duration-200 flex items-center justify-center space-x-2 uppercase active:btn-neon-active"
                 >
                   <Gavel className="h-4 w-4" />
                   <span>PLACE BID</span>
@@ -147,9 +147,9 @@ export function AuctionDetailsModal({ isOpen, onClose, auction, onPlaceBid }: Au
             </div>
           </div>
 
-          <div className="border-t border-gray-700 pt-6">
+          <div className="border-t border-white/10 pt-6">
             <h4 className="text-lg font-black text-gray-200 uppercase mb-4 flex items-center space-x-2">
-              <TrendingUp className="w-5 h-5 text-neon-blue" />
+              <TrendingUp className="w-5 h-5 text-luxe-gold" />
               <span>BID HISTORY ({bids.length})</span>
             </h4>
 
@@ -164,14 +164,14 @@ export function AuctionDetailsModal({ isOpen, onClose, auction, onPlaceBid }: Au
                     key={bid.id}
                     className={`p-4 rounded-xl border ${
                       bid.isWinning
-                        ? 'bg-neon-blue/10 border-neon-blue/50'
-                        : 'bg-gray-800/50 border-gray-700'
+                        ? 'bg-luxe-gold/10 border-luxe-gold/50'
+                        : 'luxe-glass/50 border-white/10'
                     }`}
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-3">
                         <div className={`w-8 h-8 rounded-full flex items-center justify-center font-black text-sm ${
-                          bid.isWinning ? 'bg-neon-blue text-black' : 'bg-gray-700 text-gray-400'
+                          bid.isWinning ? 'bg-luxe-gold text-black' : 'luxe-glass text-gray-400'
                         }`}>
                           #{index + 1}
                         </div>
@@ -181,10 +181,10 @@ export function AuctionDetailsModal({ isOpen, onClose, auction, onPlaceBid }: Au
                               {bid.bidder?.name || 'Anonymous'}
                             </span>
                             {bid.bidder?.verified && (
-                              <ShieldCheck className="w-3 h-3 text-neon-blue" />
+                              <ShieldCheck className="w-3 h-3 text-luxe-gold" />
                             )}
                             {bid.isWinning && (
-                              <span className="px-2 py-0.5 bg-neon-blue text-black text-xs font-black rounded uppercase">
+                              <span className="px-2 py-0.5 bg-luxe-gold text-black text-xs font-black rounded uppercase">
                                 WINNING
                               </span>
                             )}
@@ -195,7 +195,7 @@ export function AuctionDetailsModal({ isOpen, onClose, auction, onPlaceBid }: Au
                         </div>
                       </div>
                       <div className="text-right">
-                        <div className="text-xl font-black text-neon-blue uppercase">
+                        <div className="text-xl font-black text-luxe-gold uppercase">
                           ${bid.amount.toFixed(2)}
                         </div>
                         {bid.bidType === 'auto' && (
@@ -209,7 +209,7 @@ export function AuctionDetailsModal({ isOpen, onClose, auction, onPlaceBid }: Au
             )}
           </div>
 
-          <div className="border-t border-gray-700 pt-6 mt-6 grid grid-cols-2 gap-4 text-sm">
+          <div className="border-t border-white/10 pt-6 mt-6 grid grid-cols-2 gap-4 text-sm">
             <div>
               <div className="text-gray-400 font-bold uppercase mb-1">AUCTION TYPE</div>
               <div className="font-black text-gray-200 uppercase">{auction.auctionType}</div>

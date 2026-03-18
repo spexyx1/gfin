@@ -179,7 +179,7 @@ export function MessagingCenter({ isOpen, onClose, initialConversationId, onStar
                         className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
                           activeCallConversationId === selectedConversationId
                             ? 'bg-green-100 text-green-700 cursor-default'
-                            : 'bg-black text-white hover:bg-gray-800'
+                            : 'bg-black text-white hover:luxe-glass'
                         }`}
                         title="Start video call"
                       >
@@ -294,7 +294,7 @@ export function MessagingCenter({ isOpen, onClose, initialConversationId, onStar
                   <button
                     onClick={handleSendMessage}
                     disabled={!newMessage.trim()}
-                    className="px-6 py-3 bg-black hover:bg-gray-800 disabled:bg-gray-300 text-white rounded-2xl transition-all duration-200 flex items-center space-x-2 self-end"
+                    className="px-6 py-3 bg-black hover:luxe-glass disabled:bg-gray-300 text-white rounded-2xl transition-all duration-200 flex items-center space-x-2 self-end"
                   >
                     <Send className="w-4 h-4" />
                     <span>Send</span>

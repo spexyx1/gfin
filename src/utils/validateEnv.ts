@@ -53,11 +53,10 @@ export function logEnvironmentStatus(): void {
   }
 
   if (result.warnings.length > 0) {
-    console.warn('Environment validation warnings:');
-    result.warnings.forEach(warning => console.warn(`  - ${warning}`));
+    logger.warn('Environment validation warnings', 'validateEnv', { warnings: result.warnings });
   }
 
   if (result.valid && result.warnings.length === 0) {
-    console.log('Environment validation passed');
+    logger.debug('Environment validation passed', 'validateEnv');
   }
 }

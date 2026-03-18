@@ -8,9 +8,9 @@ export function BlockchainManagement() {
   const [activeView, setActiveView] = useState<'token' | 'escrow' | 'contracts' | 'analytics'>('token');
 
   return (
-    <div className="min-h-screen bg-gray-900">
+    <div className="min-h-screen luxe-glass-strong">
       {/* Navigation */}
-      <div className="bg-gray-800 border-b border-gray-700">
+      <div className="luxe-glass border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-6 py-4">
             <button
@@ -18,7 +18,7 @@ export function BlockchainManagement() {
               className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${
                 activeView === 'token'
                   ? 'bg-orange-600 text-white'
-                  : 'text-gray-400 hover:text-white hover:bg-gray-700'
+                  : 'text-gray-400 hover:text-white hover:luxe-glass'
               }`}
             >
               <Coins className="h-5 w-5" />
@@ -29,7 +29,7 @@ export function BlockchainManagement() {
               className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${
                 activeView === 'escrow'
                   ? 'bg-orange-600 text-white'
-                  : 'text-gray-400 hover:text-white hover:bg-gray-700'
+                  : 'text-gray-400 hover:text-white hover:luxe-glass'
               }`}
             >
               <Shield className="h-5 w-5" />
@@ -40,7 +40,7 @@ export function BlockchainManagement() {
               className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${
                 activeView === 'contracts'
                   ? 'bg-orange-600 text-white'
-                  : 'text-gray-400 hover:text-white hover:bg-gray-700'
+                  : 'text-gray-400 hover:text-white hover:luxe-glass'
               }`}
             >
               <Settings className="h-5 w-5" />
@@ -51,7 +51,7 @@ export function BlockchainManagement() {
               className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${
                 activeView === 'analytics'
                   ? 'bg-orange-600 text-white'
-                  : 'text-gray-400 hover:text-white hover:bg-gray-700'
+                  : 'text-gray-400 hover:text-white hover:luxe-glass'
               }`}
               disabled
             >

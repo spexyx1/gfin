@@ -120,16 +120,16 @@ export function SponsorshipMarketplace({ isOpen, onClose }: SponsorshipMarketpla
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-gray-900 rounded-3xl border border-gray-700 w-full max-w-7xl h-[90vh] overflow-hidden shadow-2xl">
+      <div className="luxe-glass-strong rounded-3xl border border-white/10 w-full max-w-7xl h-[90vh] overflow-hidden shadow-2xl">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-700">
+        <div className="flex items-center justify-between p-6 border-b border-white/10">
           <div className="flex items-center space-x-3">
-            <TrendingUp className="h-6 w-6 text-neon-green" />
+            <TrendingUp className="h-6 w-6 text-luxe-green" />
             <h2 className="text-2xl font-black text-white uppercase">Sponsorship Marketplace</h2>
           </div>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
+            className="p-2 hover:luxe-glass rounded-lg transition-colors"
           >
             <X className="w-6 h-6 text-gray-400" />
           </button>
@@ -137,12 +137,12 @@ export function SponsorshipMarketplace({ isOpen, onClose }: SponsorshipMarketpla
 
         <div className="flex h-[calc(90vh-88px)]">
           {/* Sidebar Navigation */}
-          <div className="w-64 bg-gray-800 border-r border-gray-700 p-6">
+          <div className="w-64 luxe-glass border-r border-white/10 p-6">
             <nav className="space-y-2">
               <button
                 onClick={() => setViewMode('browse')}
                 className={`w-full text-left px-4 py-3 rounded-xl transition-all duration-200 flex items-center space-x-3 ${
-                  viewMode === 'browse' ? 'bg-neon-green text-black' : 'text-gray-300 hover:bg-gray-700'
+                  viewMode === 'browse' ? 'bg-luxe-green text-black' : 'text-gray-300 hover:luxe-glass'
                 }`}
               >
                 <Search className="w-5 h-5" />
@@ -152,7 +152,7 @@ export function SponsorshipMarketplace({ isOpen, onClose }: SponsorshipMarketpla
               <button
                 onClick={() => setViewMode('my-investments')}
                 className={`w-full text-left px-4 py-3 rounded-xl transition-all duration-200 flex items-center space-x-3 ${
-                  viewMode === 'my-investments' ? 'bg-neon-green text-black' : 'text-gray-300 hover:bg-gray-700'
+                  viewMode === 'my-investments' ? 'bg-luxe-green text-black' : 'text-gray-300 hover:luxe-glass'
                 }`}
               >
                 <DollarSign className="w-5 h-5" />
@@ -162,7 +162,7 @@ export function SponsorshipMarketplace({ isOpen, onClose }: SponsorshipMarketpla
               <button
                 onClick={() => setViewMode('my-requests')}
                 className={`w-full text-left px-4 py-3 rounded-xl transition-all duration-200 flex items-center space-x-3 ${
-                  viewMode === 'my-requests' ? 'bg-neon-green text-black' : 'text-gray-300 hover:bg-gray-700'
+                  viewMode === 'my-requests' ? 'bg-luxe-green text-black' : 'text-gray-300 hover:luxe-glass'
                 }`}
               >
                 <Package className="w-5 h-5" />
@@ -172,7 +172,7 @@ export function SponsorshipMarketplace({ isOpen, onClose }: SponsorshipMarketpla
               <button
                 onClick={() => setViewMode('create-request')}
                 className={`w-full text-left px-4 py-3 rounded-xl transition-all duration-200 flex items-center space-x-3 ${
-                  viewMode === 'create-request' ? 'bg-neon-blue text-black' : 'text-gray-300 hover:bg-gray-700'
+                  viewMode === 'create-request' ? 'bg-luxe-gold text-black' : 'text-gray-300 hover:luxe-glass'
                 }`}
               >
                 <Plus className="w-5 h-5" />
@@ -182,14 +182,14 @@ export function SponsorshipMarketplace({ isOpen, onClose }: SponsorshipMarketpla
 
             {/* Quick Stats */}
             <div className="mt-8 space-y-4">
-              <div className="bg-gray-700 rounded-xl p-4">
+              <div className="luxe-glass rounded-xl p-4">
                 <div className="text-gray-400 text-sm mb-1">Active Requests</div>
                 <div className="text-2xl font-black text-white">{requests.length}</div>
               </div>
 
-              <div className="bg-gray-700 rounded-xl p-4">
+              <div className="luxe-glass rounded-xl p-4">
                 <div className="text-gray-400 text-sm mb-1">My Investments</div>
-                <div className="text-2xl font-black text-neon-green">{myInvestments.length}</div>
+                <div className="text-2xl font-black text-luxe-green">{myInvestments.length}</div>
               </div>
             </div>
           </div>
@@ -214,13 +214,13 @@ export function SponsorshipMarketplace({ isOpen, onClose }: SponsorshipMarketpla
                         placeholder="Search sponsorship requests..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="w-full pl-10 pr-4 py-3 bg-gray-800 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-neon-green text-white"
+                        className="w-full pl-10 pr-4 py-3 luxe-glass border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-neon-green text-white"
                       />
                     </div>
                     <select
                       value={selectedCategory}
                       onChange={(e) => setSelectedCategory(e.target.value)}
-                      className="px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-neon-green text-white"
+                      className="px-4 py-3 luxe-glass border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-neon-green text-white"
                     >
                       {categories.map(cat => (
                         <option key={cat} value={cat}>{cat.charAt(0).toUpperCase() + cat.slice(1)}</option>
@@ -235,18 +235,18 @@ export function SponsorshipMarketplace({ isOpen, onClose }: SponsorshipMarketpla
                     const fundingPercentage = calculateFundingPercentage(request);
 
                     return (
-                      <div key={request.id} className="bg-gray-800 rounded-2xl border border-gray-700 p-6 hover:border-neon-green transition-colors">
+                      <div key={request.id} className="luxe-glass rounded-2xl border border-white/10 p-6 hover:border-luxe-green transition-colors">
                         <div className="flex items-start justify-between mb-4">
                           <div>
                             <h4 className="text-xl font-black text-white mb-1">{request.title}</h4>
                             <div className="flex items-center space-x-2 text-sm text-gray-400">
                               <Users className="w-4 h-4" />
                               <span>@{request.seller?.username || 'Seller'}</span>
-                              <Award className="w-4 h-4 ml-2 text-neon-yellow" />
+                              <Award className="w-4 h-4 ml-2 text-luxe-gold" />
                               <span>{request.seller?.reputation_score || 0} rep</span>
                             </div>
                           </div>
-                          <div className="bg-neon-green/20 text-neon-green px-3 py-1 rounded-lg text-sm font-bold">
+                          <div className="bg-luxe-green/20 text-luxe-green px-3 py-1 rounded-lg text-sm font-bold">
                             {request.revenue_percentage}% Revenue
                           </div>
                         </div>
@@ -270,9 +270,9 @@ export function SponsorshipMarketplace({ isOpen, onClose }: SponsorshipMarketpla
                             <span className="text-gray-400">Funding Progress</span>
                             <span className="text-white font-bold">{fundingPercentage.toFixed(1)}%</span>
                           </div>
-                          <div className="w-full h-2 bg-gray-700 rounded-full overflow-hidden">
+                          <div className="w-full h-2 luxe-glass rounded-full overflow-hidden">
                             <div
-                              className="h-full bg-neon-green transition-all duration-300"
+                              className="h-full bg-luxe-green transition-all duration-300"
                               style={{ width: `${Math.min(fundingPercentage, 100)}%` }}
                             />
                           </div>
@@ -286,7 +286,7 @@ export function SponsorshipMarketplace({ isOpen, onClose }: SponsorshipMarketpla
                             setSelectedRequest(request);
                             setViewMode('invest');
                           }}
-                          className="w-full px-4 py-3 bg-neon-green hover:bg-neon-green/80 text-black rounded-xl transition-colors font-bold"
+                          className="w-full px-4 py-3 bg-luxe-green hover:bg-luxe-green/80 text-black rounded-xl transition-colors font-bold"
                         >
                           Invest Now
                         </button>
@@ -311,7 +311,7 @@ export function SponsorshipMarketplace({ isOpen, onClose }: SponsorshipMarketpla
 
                 <div className="space-y-4">
                   {myInvestments.map((investment) => (
-                    <div key={investment.id} className="bg-gray-800 rounded-2xl border border-gray-700 p-6">
+                    <div key={investment.id} className="luxe-glass rounded-2xl border border-white/10 p-6">
                       <div className="flex items-start justify-between mb-4">
                         <div>
                           <h4 className="text-lg font-black text-white mb-1">{investment.request?.title}</h4>
@@ -320,7 +320,7 @@ export function SponsorshipMarketplace({ isOpen, onClose }: SponsorshipMarketpla
                           </div>
                         </div>
                         <div className="text-right">
-                          <div className="text-neon-green text-2xl font-black">
+                          <div className="text-luxe-green text-2xl font-black">
                             {investment.revenue_earned.toLocaleString()} GHETTO
                           </div>
                           <div className="text-sm text-gray-400">Revenue Earned</div>
@@ -334,11 +334,11 @@ export function SponsorshipMarketplace({ isOpen, onClose }: SponsorshipMarketpla
                         </div>
                         <div>
                           <div className="text-gray-400 text-xs mb-1">Status</div>
-                          <div className="text-neon-green font-bold capitalize">{investment.status}</div>
+                          <div className="text-luxe-green font-bold capitalize">{investment.status}</div>
                         </div>
                         <div>
                           <div className="text-gray-400 text-xs mb-1">ROI</div>
-                          <div className="text-neon-yellow font-bold">
+                          <div className="text-luxe-gold font-bold">
                             {((investment.revenue_earned / investment.amount - 1) * 100).toFixed(2)}%
                           </div>
                         </div>
@@ -353,7 +353,7 @@ export function SponsorshipMarketplace({ isOpen, onClose }: SponsorshipMarketpla
                     <p className="text-gray-400 text-lg mb-2">No investments yet</p>
                     <button
                       onClick={() => setViewMode('browse')}
-                      className="px-6 py-3 bg-neon-green text-black rounded-xl font-bold hover:bg-neon-green/80 transition-colors"
+                      className="px-6 py-3 bg-luxe-green text-black rounded-xl font-bold hover:bg-luxe-green/80 transition-colors"
                     >
                       Browse Opportunities
                     </button>
@@ -372,16 +372,16 @@ export function SponsorshipMarketplace({ isOpen, onClose }: SponsorshipMarketpla
                     const fundingPercentage = calculateFundingPercentage(request);
 
                     return (
-                      <div key={request.id} className="bg-gray-800 rounded-2xl border border-gray-700 p-6">
+                      <div key={request.id} className="luxe-glass rounded-2xl border border-white/10 p-6">
                         <div className="flex items-start justify-between mb-4">
                           <div>
                             <h4 className="text-lg font-black text-white mb-1">{request.title}</h4>
                             <p className="text-sm text-gray-400">{request.description}</p>
                           </div>
                           <div className={`px-3 py-1 rounded-lg text-sm font-bold ${
-                            request.status === 'funded' ? 'bg-neon-green/20 text-neon-green' :
-                            request.status === 'active' ? 'bg-neon-blue/20 text-neon-blue' :
-                            'bg-gray-700 text-gray-400'
+                            request.status === 'funded' ? 'bg-luxe-green/20 text-luxe-green' :
+                            request.status === 'active' ? 'bg-luxe-gold/20 text-luxe-gold' :
+                            'luxe-glass text-gray-400'
                           }`}>
                             {request.status.toUpperCase()}
                           </div>
@@ -394,7 +394,7 @@ export function SponsorshipMarketplace({ isOpen, onClose }: SponsorshipMarketpla
                           </div>
                           <div>
                             <div className="text-gray-400 text-xs mb-1">Funded</div>
-                            <div className="text-neon-green font-bold">{request.amount_funded.toLocaleString()} GHETTO</div>
+                            <div className="text-luxe-green font-bold">{request.amount_funded.toLocaleString()} GHETTO</div>
                           </div>
                           <div>
                             <div className="text-gray-400 text-xs mb-1">Revenue Share</div>
@@ -412,9 +412,9 @@ export function SponsorshipMarketplace({ isOpen, onClose }: SponsorshipMarketpla
                             <span className="text-gray-400">Funding Progress</span>
                             <span className="text-white font-bold">{fundingPercentage.toFixed(1)}%</span>
                           </div>
-                          <div className="w-full h-2 bg-gray-700 rounded-full overflow-hidden">
+                          <div className="w-full h-2 luxe-glass rounded-full overflow-hidden">
                             <div
-                              className="h-full bg-neon-green transition-all duration-300"
+                              className="h-full bg-luxe-green transition-all duration-300"
                               style={{ width: `${Math.min(fundingPercentage, 100)}%` }}
                             />
                           </div>
@@ -439,7 +439,7 @@ export function SponsorshipMarketplace({ isOpen, onClose }: SponsorshipMarketpla
                     <p className="text-gray-400 text-lg mb-2">No requests created yet</p>
                     <button
                       onClick={() => setViewMode('create-request')}
-                      className="px-6 py-3 bg-neon-blue text-black rounded-xl font-bold hover:bg-neon-blue/80 transition-colors"
+                      className="px-6 py-3 bg-luxe-gold text-black rounded-xl font-bold hover:bg-luxe-gold/80 transition-colors"
                     >
                       Create Request
                     </button>
@@ -453,7 +453,7 @@ export function SponsorshipMarketplace({ isOpen, onClose }: SponsorshipMarketpla
               <div className="max-w-3xl mx-auto">
                 <h3 className="text-2xl font-black text-white mb-6 uppercase">Create Sponsorship Request</h3>
 
-                <div className="bg-gray-800 rounded-2xl border border-gray-700 p-6 space-y-6">
+                <div className="luxe-glass rounded-2xl border border-white/10 p-6 space-y-6">
                   <div>
                     <label className="block text-sm font-bold text-gray-300 mb-2">Request Title</label>
                     <input
@@ -461,7 +461,7 @@ export function SponsorshipMarketplace({ isOpen, onClose }: SponsorshipMarketpla
                       value={newRequest.title}
                       onChange={(e) => setNewRequest({ ...newRequest, title: e.target.value })}
                       placeholder="e.g., Premium Electronics Inventory Expansion"
-                      className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-neon-blue text-white"
+                      className="w-full px-4 py-3 luxe-glass border border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-luxe-gold text-white"
                     />
                   </div>
 
@@ -472,7 +472,7 @@ export function SponsorshipMarketplace({ isOpen, onClose }: SponsorshipMarketpla
                       onChange={(e) => setNewRequest({ ...newRequest, description: e.target.value })}
                       placeholder="Describe what you'll use the funds for and why sponsors should invest..."
                       rows={4}
-                      className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-neon-blue text-white resize-none"
+                      className="w-full px-4 py-3 luxe-glass border border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-luxe-gold text-white resize-none"
                     />
                   </div>
 
@@ -485,7 +485,7 @@ export function SponsorshipMarketplace({ isOpen, onClose }: SponsorshipMarketpla
                         onChange={(e) => setNewRequest({ ...newRequest, amount_requested: e.target.value })}
                         placeholder="Minimum 100"
                         min="100"
-                        className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-neon-blue text-white"
+                        className="w-full px-4 py-3 luxe-glass border border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-luxe-gold text-white"
                       />
                     </div>
 
@@ -498,7 +498,7 @@ export function SponsorshipMarketplace({ isOpen, onClose }: SponsorshipMarketpla
                         placeholder="1-50"
                         min="1"
                         max="50"
-                        className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-neon-blue text-white"
+                        className="w-full px-4 py-3 luxe-glass border border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-luxe-gold text-white"
                       />
                     </div>
                   </div>
@@ -509,7 +509,7 @@ export function SponsorshipMarketplace({ isOpen, onClose }: SponsorshipMarketpla
                       <select
                         value={newRequest.duration_days}
                         onChange={(e) => setNewRequest({ ...newRequest, duration_days: e.target.value })}
-                        className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-neon-blue text-white"
+                        className="w-full px-4 py-3 luxe-glass border border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-luxe-gold text-white"
                       >
                         <option value="30">30 days</option>
                         <option value="60">60 days</option>
@@ -524,7 +524,7 @@ export function SponsorshipMarketplace({ isOpen, onClose }: SponsorshipMarketpla
                       <select
                         value={newRequest.category}
                         onChange={(e) => setNewRequest({ ...newRequest, category: e.target.value })}
-                        className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-neon-blue text-white"
+                        className="w-full px-4 py-3 luxe-glass border border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-luxe-gold text-white"
                       >
                         <option value="electronics">Electronics</option>
                         <option value="fashion">Fashion</option>
@@ -536,11 +536,11 @@ export function SponsorshipMarketplace({ isOpen, onClose }: SponsorshipMarketpla
                     </div>
                   </div>
 
-                  <div className="bg-neon-blue/10 border border-neon-blue/30 rounded-xl p-4">
+                  <div className="bg-luxe-gold/10 border border-luxe-gold/30 rounded-xl p-4">
                     <div className="flex items-start space-x-3">
-                      <AlertCircle className="w-5 h-5 text-neon-blue flex-shrink-0 mt-0.5" />
+                      <AlertCircle className="w-5 h-5 text-luxe-gold flex-shrink-0 mt-0.5" />
                       <div className="text-sm text-gray-300">
-                        <p className="font-bold text-neon-blue mb-1">How It Works:</p>
+                        <p className="font-bold text-luxe-gold mb-1">How It Works:</p>
                         <ul className="list-disc list-inside space-y-1 text-gray-400">
                           <li>Sponsors stake GHETTO tokens to fund your request</li>
                           <li>Funded amount increases your selling limit by 2:1</li>
@@ -555,13 +555,13 @@ export function SponsorshipMarketplace({ isOpen, onClose }: SponsorshipMarketpla
                     <button
                       onClick={handleCreateRequest}
                       disabled={!newRequest.title || !newRequest.description || !newRequest.amount_requested || !newRequest.revenue_percentage}
-                      className="flex-1 px-6 py-3 bg-neon-blue hover:bg-neon-blue/80 text-black rounded-xl transition-colors font-bold disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="flex-1 px-6 py-3 bg-luxe-gold hover:bg-luxe-gold/80 text-black rounded-xl transition-colors font-bold disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       Create Request
                     </button>
                     <button
                       onClick={() => setViewMode('browse')}
-                      className="px-6 py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-xl transition-colors font-bold"
+                      className="px-6 py-3 luxe-glass hover:bg-gray-600 text-white rounded-xl transition-colors font-bold"
                     >
                       Cancel
                     </button>
@@ -582,18 +582,18 @@ export function SponsorshipMarketplace({ isOpen, onClose }: SponsorshipMarketpla
 
                 <h3 className="text-2xl font-black text-white mb-6 uppercase">Invest in Sponsorship</h3>
 
-                <div className="bg-gray-800 rounded-2xl border border-gray-700 p-6 space-y-6">
+                <div className="luxe-glass rounded-2xl border border-white/10 p-6 space-y-6">
                   <div>
                     <h4 className="text-xl font-black text-white mb-2">{selectedRequest.title}</h4>
                     <p className="text-gray-300">{selectedRequest.description}</p>
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
-                    <div className="bg-gray-700 rounded-xl p-4">
+                    <div className="luxe-glass rounded-xl p-4">
                       <div className="text-gray-400 text-sm mb-1">Revenue Share</div>
-                      <div className="text-2xl font-black text-neon-green">{selectedRequest.revenue_percentage}%</div>
+                      <div className="text-2xl font-black text-luxe-green">{selectedRequest.revenue_percentage}%</div>
                     </div>
-                    <div className="bg-gray-700 rounded-xl p-4">
+                    <div className="luxe-glass rounded-xl p-4">
                       <div className="text-gray-400 text-sm mb-1">Duration</div>
                       <div className="text-2xl font-black text-white">{selectedRequest.duration_days} days</div>
                     </div>
@@ -608,7 +608,7 @@ export function SponsorshipMarketplace({ isOpen, onClose }: SponsorshipMarketpla
                       placeholder="Enter amount to invest"
                       min="1"
                       max={selectedRequest.amount_requested - selectedRequest.amount_funded}
-                      className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-neon-green text-white"
+                      className="w-full px-4 py-3 luxe-glass border border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-neon-green text-white"
                     />
                     <div className="text-sm text-gray-400 mt-1">
                       Available to fund: {(selectedRequest.amount_requested - selectedRequest.amount_funded).toLocaleString()} GHETTO
@@ -616,8 +616,8 @@ export function SponsorshipMarketplace({ isOpen, onClose }: SponsorshipMarketpla
                   </div>
 
                   {investmentAmount && parseFloat(investmentAmount) > 0 && (
-                    <div className="bg-neon-green/10 border border-neon-green/30 rounded-xl p-4">
-                      <div className="text-sm font-bold text-neon-green mb-2">Investment Summary</div>
+                    <div className="bg-luxe-green/10 border border-luxe-green/30 rounded-xl p-4">
+                      <div className="text-sm font-bold text-luxe-green mb-2">Investment Summary</div>
                       <div className="space-y-2 text-sm text-gray-300">
                         <div className="flex justify-between">
                           <span>Your Investment:</span>
@@ -631,7 +631,7 @@ export function SponsorshipMarketplace({ isOpen, onClose }: SponsorshipMarketpla
                         </div>
                         <div className="flex justify-between">
                           <span>Estimated ROI:</span>
-                          <span className="font-bold text-neon-yellow">
+                          <span className="font-bold text-luxe-gold">
                             {calculateROI(selectedRequest, parseFloat(investmentAmount))}%
                           </span>
                         </div>
@@ -642,7 +642,7 @@ export function SponsorshipMarketplace({ isOpen, onClose }: SponsorshipMarketpla
                   <button
                     onClick={handleInvest}
                     disabled={!investmentAmount || parseFloat(investmentAmount) <= 0}
-                    className="w-full px-6 py-3 bg-neon-green hover:bg-neon-green/80 text-black rounded-xl transition-colors font-bold disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full px-6 py-3 bg-luxe-green hover:bg-luxe-green/80 text-black rounded-xl transition-colors font-bold disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     Confirm Investment
                   </button>

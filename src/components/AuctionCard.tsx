@@ -54,7 +54,7 @@ export function AuctionCard({ auction, onClick, onQuickBid }: AuctionCardProps) 
       case 'warning':
         return 'text-yellow-400 border-yellow-500/50 bg-yellow-500/10';
       default:
-        return 'text-neon-blue border-neon-blue/50 bg-neon-blue/10';
+        return 'text-luxe-gold border-luxe-gold/50 bg-luxe-gold/10';
     }
   };
 
@@ -74,7 +74,7 @@ export function AuctionCard({ auction, onClick, onQuickBid }: AuctionCardProps) 
   return (
     <div
       onClick={onClick}
-      className="bg-gray-800/50 rounded-2xl border border-gray-700 overflow-hidden hover:border-neon-blue/50 transition-all duration-300 cursor-pointer group hover:shadow-lg hover:shadow-neon-blue/20"
+      className="luxe-glass/50 rounded-2xl border border-white/10 overflow-hidden hover:border-luxe-gold/50 transition-all duration-300 cursor-pointer group hover:shadow-lg hover:shadow-neon-blue/20"
     >
       <div className="relative">
         <img
@@ -115,7 +115,7 @@ export function AuctionCard({ auction, onClick, onQuickBid }: AuctionCardProps) 
       </div>
 
       <div className="p-4">
-        <h3 className="text-lg font-black text-gray-200 uppercase mb-2 line-clamp-2 group-hover:text-neon-blue transition-colors">
+        <h3 className="text-lg font-black text-gray-200 uppercase mb-2 line-clamp-2 group-hover:text-luxe-gold transition-colors">
           {auction.product?.title || 'Auction Item'}
         </h3>
 
@@ -126,7 +126,7 @@ export function AuctionCard({ auction, onClick, onQuickBid }: AuctionCardProps) 
               {auction.seller?.name || 'Unknown'}
             </span>
             {auction.seller?.verified && (
-              <ShieldCheck className="w-3 h-3 text-neon-blue" />
+              <ShieldCheck className="w-3 h-3 text-luxe-gold" />
             )}
           </div>
         </div>
@@ -135,7 +135,7 @@ export function AuctionCard({ auction, onClick, onQuickBid }: AuctionCardProps) 
           <div className="flex items-baseline justify-between">
             <span className="text-xs font-bold text-gray-400 uppercase">CURRENT BID</span>
             <div className="text-right">
-              <div className="text-2xl font-black text-neon-blue uppercase">
+              <div className="text-2xl font-black text-luxe-gold uppercase">
                 ${auction.currentPrice.toFixed(2)}
               </div>
             </div>
@@ -148,7 +148,7 @@ export function AuctionCard({ auction, onClick, onQuickBid }: AuctionCardProps) 
           )}
 
           {auction.buyNowPrice && (
-            <div className="flex items-baseline justify-between pt-1 border-t border-gray-700">
+            <div className="flex items-baseline justify-between pt-1 border-t border-white/10">
               <span className="text-xs font-bold text-gray-500 uppercase">BUY NOW</span>
               <span className="text-sm font-black text-yellow-400 uppercase">
                 ${auction.buyNowPrice.toFixed(2)}
@@ -163,7 +163,7 @@ export function AuctionCard({ auction, onClick, onQuickBid }: AuctionCardProps) 
               e.stopPropagation();
               onQuickBid();
             }}
-            className="w-full mt-4 py-3 bg-neon-blue hover:shadow-neon-blue text-black font-black rounded-xl transition-all duration-200 flex items-center justify-center space-x-2 uppercase active:btn-neon-active"
+            className="w-full mt-4 py-3 bg-luxe-gold hover:shadow-neon-blue text-black font-black rounded-xl transition-all duration-200 flex items-center justify-center space-x-2 uppercase active:btn-neon-active"
           >
             <Gavel className="w-4 h-4" />
             <span>PLACE BID</span>
@@ -171,7 +171,7 @@ export function AuctionCard({ auction, onClick, onQuickBid }: AuctionCardProps) 
         )}
 
         {auction.status === 'ended' && (
-          <div className="mt-4 py-3 bg-gray-700 text-gray-400 font-black rounded-xl text-center uppercase">
+          <div className="mt-4 py-3 luxe-glass text-gray-400 font-black rounded-xl text-center uppercase">
             AUCTION ENDED
           </div>
         )}

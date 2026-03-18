@@ -12,16 +12,16 @@ export function LegalPage({ isOpen, onClose }: LegalPageProps) {
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-gray-900 rounded-3xl border border-gray-700 w-full max-w-6xl h-[90vh] overflow-hidden shadow-2xl">
+      <div className="luxe-glass-strong rounded-3xl border border-white/10 w-full max-w-6xl h-[90vh] overflow-hidden shadow-2xl">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-700">
+        <div className="flex items-center justify-between p-6 border-b border-white/10">
           <div className="flex items-center space-x-3">
-            <Scale className="h-6 w-6 text-neon-blue" />
+            <Scale className="h-6 w-6 text-luxe-gold" />
             <h2 className="text-2xl font-black text-white uppercase">Legal Terms & Compliance</h2>
           </div>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
+            className="p-2 hover:luxe-glass rounded-lg transition-colors"
           >
             <X className="w-6 h-6 text-gray-400" />
           </button>
@@ -38,7 +38,7 @@ export function LegalPage({ isOpen, onClose }: LegalPageProps) {
               <p className="text-gray-300 leading-relaxed font-bold">
                 {PROHIBITED_CONTENT.POLICY_STATEMENTS.ZERO_TOLERANCE}
               </p>
-              <div className="bg-gray-800 rounded-xl p-4">
+              <div className="luxe-glass rounded-xl p-4">
                 <h4 className="text-white font-black mb-3 uppercase text-sm">Strictly Prohibited:</h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                   {Object.values(PROHIBITED_CONTENT.CATEGORIES).slice(0, 6).map((cat) => (
@@ -69,7 +69,7 @@ export function LegalPage({ isOpen, onClose }: LegalPageProps) {
           {/* Terms of Service */}
           <section className="mb-12">
             <div className="flex items-center space-x-3 mb-6">
-              <FileText className="h-6 w-6 text-neon-blue" />
+              <FileText className="h-6 w-6 text-luxe-gold" />
               <h3 className="text-2xl font-black text-white uppercase">Terms of Service</h3>
             </div>
 
@@ -263,7 +263,7 @@ export function LegalPage({ isOpen, onClose }: LegalPageProps) {
           {/* Privacy Policy */}
           <section className="mb-12">
             <div className="flex items-center space-x-3 mb-6">
-              <Lock className="h-6 w-6 text-neon-blue" />
+              <Lock className="h-6 w-6 text-luxe-gold" />
               <h3 className="text-2xl font-black text-white uppercase">Privacy Policy</h3>
             </div>
 
@@ -299,7 +299,7 @@ export function LegalPage({ isOpen, onClose }: LegalPageProps) {
           {/* Regulatory Compliance */}
           <section className="mb-12">
             <div className="flex items-center space-x-3 mb-6">
-              <Globe className="h-6 w-6 text-neon-blue" />
+              <Globe className="h-6 w-6 text-luxe-gold" />
               <h3 className="text-2xl font-black text-white uppercase">Regulatory Compliance</h3>
             </div>
 
@@ -338,7 +338,7 @@ export function LegalPage({ isOpen, onClose }: LegalPageProps) {
           {/* Dispute Resolution */}
           <section className="mb-12">
             <div className="flex items-center space-x-3 mb-6">
-              <Users className="h-6 w-6 text-neon-blue" />
+              <Users className="h-6 w-6 text-luxe-gold" />
               <h3 className="text-2xl font-black text-white uppercase">Dispute Resolution</h3>
             </div>
 
@@ -362,12 +362,12 @@ export function LegalPage({ isOpen, onClose }: LegalPageProps) {
           {/* Card Program */}
           <section className="mb-12">
             <div className="flex items-center space-x-3 mb-6">
-              <CreditCard className="h-6 w-6 text-neon-blue" />
+              <CreditCard className="h-6 w-6 text-luxe-gold" />
               <h3 className="text-2xl font-black text-white uppercase">Card Program</h3>
             </div>
 
             <div className="space-y-6">
-              <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+              <div className="luxe-glass rounded-2xl p-6 border border-white/10">
                 <h4 className="text-lg font-black text-white mb-3 uppercase">Cardholder Agreement</h4>
                 <div className="space-y-3 text-gray-300 text-sm leading-relaxed">
                   <p>The GHETTO Finance Debit Card is issued by the BIN sponsor bank disclosed in your cardholder welcome materials. By activating and using your card you agree to these terms and the full cardholder agreement provided at account opening.</p>
@@ -378,17 +378,17 @@ export function LegalPage({ isOpen, onClose }: LegalPageProps) {
                 </div>
               </div>
 
-              <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+              <div className="luxe-glass rounded-2xl p-6 border border-white/10">
                 <h4 className="text-lg font-black text-white mb-3 uppercase">Dispute Rights — Regulation E</h4>
                 <div className="space-y-3 text-gray-300 text-sm leading-relaxed">
-                  <p>If you believe an electronic funds transfer has been made without your permission, contact us immediately at <strong className="text-neon-blue">cards@ghetto.finance</strong> or through the Disputes section in your account.</p>
+                  <p>If you believe an electronic funds transfer has been made without your permission, contact us immediately at <strong className="text-luxe-gold">cards@ghetto.finance</strong> or through the Disputes section in your account.</p>
                   <p><strong className="text-white">Error Resolution Timeframe:</strong> You must notify us of a suspected error within 60 days after we send you the first statement on which the error appeared. Regulation E provides specific rights depending on how quickly you notify us.</p>
                   <p><strong className="text-white">Investigation Period:</strong> We will investigate your dispute within 10 business days of receiving your report. For new accounts (open less than 30 days) or point-of-sale transactions, this may extend to 20 business days. We will provisionally credit your account during extended investigations.</p>
                   <p><strong className="text-white">Resolution:</strong> If we determine an error occurred, we will correct it within one business day of our determination. If we determine no error occurred, we will send you written notice of our findings.</p>
                 </div>
               </div>
 
-              <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+              <div className="luxe-glass rounded-2xl p-6 border border-white/10">
                 <h4 className="text-lg font-black text-white mb-3 uppercase">Merchant Processing Agreement</h4>
                 <div className="space-y-3 text-gray-300 text-sm leading-relaxed">
                   <p>Merchants enrolled in the GHETTO Finance card acceptance network agree to the following terms as a condition of acceptance.</p>
@@ -399,7 +399,7 @@ export function LegalPage({ isOpen, onClose }: LegalPageProps) {
                 </div>
               </div>
 
-              <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+              <div className="luxe-glass rounded-2xl p-6 border border-white/10">
                 <h4 className="text-lg font-black text-white mb-3 uppercase">BIN Sponsor Bank Disclosure</h4>
                 <div className="space-y-3 text-gray-300 text-sm leading-relaxed">
                   <p>The GHETTO Finance Debit Card is issued by our BIN sponsor bank pursuant to a license from Visa U.S.A. Inc. or Mastercard International Incorporated. GHETTO Finance is not a bank and does not hold a banking license. Your card account is held at the issuing bank and is subject to the terms and conditions of that bank's cardholder agreement.</p>
@@ -407,14 +407,14 @@ export function LegalPage({ isOpen, onClose }: LegalPageProps) {
                 </div>
               </div>
 
-              <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+              <div className="luxe-glass rounded-2xl p-6 border border-white/10">
                 <h4 className="text-lg font-black text-white mb-3 uppercase">Card Transaction Data — Privacy Addendum</h4>
                 <div className="space-y-3 text-gray-300 text-sm leading-relaxed">
                   <p>Card transaction data including merchant name, merchant category code (MCC), transaction amount, location, and timestamp is collected and stored to provide card services, detect fraud, resolve disputes, and comply with applicable law.</p>
                   <p><strong className="text-white">Data Shared with Third Parties:</strong> We share transaction data with our BIN sponsor bank, card processor, and fraud detection services as necessary to operate the card program. We do not sell your transaction data to advertisers or data brokers.</p>
                   <p><strong className="text-white">KYC Data:</strong> Identity verification data submitted for the card program is processed by our KYC provider and is subject to their privacy policy. GHETTO Finance stores only your verification status and a reference ID — not the underlying documents.</p>
                   <p><strong className="text-white">Retention:</strong> Transaction records are retained for a minimum of 5 years to comply with Bank Secrecy Act and anti-money laundering requirements.</p>
-                  <p>For card-related privacy inquiries, contact: <strong className="text-neon-blue">cards@ghetto.finance</strong></p>
+                  <p>For card-related privacy inquiries, contact: <strong className="text-luxe-gold">cards@ghetto.finance</strong></p>
                 </div>
               </div>
             </div>
@@ -423,11 +423,11 @@ export function LegalPage({ isOpen, onClose }: LegalPageProps) {
           {/* Contact Information */}
           <section className="mb-8">
             <div className="flex items-center space-x-3 mb-6">
-              <Shield className="h-6 w-6 text-neon-blue" />
+              <Shield className="h-6 w-6 text-luxe-gold" />
               <h3 className="text-2xl font-black text-white uppercase">Legal Contact</h3>
             </div>
 
-            <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+            <div className="luxe-glass rounded-2xl p-6 border border-white/10">
               <p className="text-gray-300 leading-relaxed mb-4">
                 For legal inquiries, compliance questions, or to exercise your privacy rights, contact:
               </p>
@@ -441,7 +441,7 @@ export function LegalPage({ isOpen, onClose }: LegalPageProps) {
           </section>
 
           {/* Last Updated */}
-          <div className="text-center text-gray-500 text-sm border-t border-gray-700 pt-6">
+          <div className="text-center text-gray-500 text-sm border-t border-white/10 pt-6">
             <p>Last Updated: {LEGAL_CONSTANTS.TERMS_OF_SERVICE.LAST_UPDATED}</p>
             <p>Version {LEGAL_CONSTANTS.TERMS_OF_SERVICE.VERSION} • Effective: {LEGAL_CONSTANTS.TERMS_OF_SERVICE.EFFECTIVE_DATE}</p>
             <p className="mt-2">These terms are subject to change. Users will be notified of material changes.</p>

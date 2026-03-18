@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Trash2, Edit2, Save, X, CheckCircle, AlertCircle } from 'lucide-react';
+import { Plus, Trash2, CreditCard as Edit2, Save, X, CheckCircle, AlertCircle } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { logger } from '../utils/logger';
 
@@ -167,10 +167,10 @@ export function SitemasterSwapControls() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-black text-neon-yellow uppercase">Swap Token Management</h2>
+        <h2 className="text-2xl font-black text-luxe-gold uppercase">Swap Token Management</h2>
         <button
           onClick={() => setShowAddToken(!showAddToken)}
-          className="px-4 py-2 bg-neon-blue hover:bg-neon-blue/80 text-black rounded-lg transition-colors font-bold flex items-center space-x-2"
+          className="px-4 py-2 bg-luxe-gold hover:bg-luxe-gold/80 text-black rounded-lg transition-colors font-bold flex items-center space-x-2"
         >
           {showAddToken ? <X className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
           <span>{showAddToken ? 'Cancel' : 'Add Token'}</span>
@@ -179,7 +179,7 @@ export function SitemasterSwapControls() {
 
       {/* Add Token Form */}
       {showAddToken && (
-        <div className="glass-morphism rounded-2xl p-6 border border-white/10">
+        <div className="luxe-glass rounded-2xl p-6 border border-white/10">
           <h3 className="text-lg font-bold text-white mb-4">Add New Token</h3>
           <div className="grid grid-cols-2 gap-4">
             <div>
@@ -194,7 +194,7 @@ export function SitemasterSwapControls() {
                     chain_name: chain?.name || ''
                   });
                 }}
-                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white"
+                className="w-full luxe-glass border border-white/10 rounded-lg px-4 py-2 text-white"
               >
                 <option value="">Select Chain</option>
                 {commonChains.map(chain => (
@@ -210,7 +210,7 @@ export function SitemasterSwapControls() {
                 value={formData.token_symbol}
                 onChange={(e) => setFormData({ ...formData, token_symbol: e.target.value })}
                 placeholder="USDC"
-                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white"
+                className="w-full luxe-glass border border-white/10 rounded-lg px-4 py-2 text-white"
               />
             </div>
 
@@ -221,7 +221,7 @@ export function SitemasterSwapControls() {
                 value={formData.token_name}
                 onChange={(e) => setFormData({ ...formData, token_name: e.target.value })}
                 placeholder="USD Coin"
-                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white"
+                className="w-full luxe-glass border border-white/10 rounded-lg px-4 py-2 text-white"
               />
             </div>
 
@@ -232,7 +232,7 @@ export function SitemasterSwapControls() {
                 value={formData.token_address}
                 onChange={(e) => setFormData({ ...formData, token_address: e.target.value })}
                 placeholder="0x..."
-                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white"
+                className="w-full luxe-glass border border-white/10 rounded-lg px-4 py-2 text-white"
               />
             </div>
 
@@ -242,7 +242,7 @@ export function SitemasterSwapControls() {
                 type="number"
                 value={formData.token_decimals}
                 onChange={(e) => setFormData({ ...formData, token_decimals: e.target.value })}
-                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white"
+                className="w-full luxe-glass border border-white/10 rounded-lg px-4 py-2 text-white"
               />
             </div>
 
@@ -253,7 +253,7 @@ export function SitemasterSwapControls() {
                 value={formData.icon_url}
                 onChange={(e) => setFormData({ ...formData, icon_url: e.target.value })}
                 placeholder="https://..."
-                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white"
+                className="w-full luxe-glass border border-white/10 rounded-lg px-4 py-2 text-white"
               />
             </div>
 
@@ -263,7 +263,7 @@ export function SitemasterSwapControls() {
                   type="checkbox"
                   checked={formData.is_gasless_enabled}
                   onChange={(e) => setFormData({ ...formData, is_gasless_enabled: e.target.checked })}
-                  className="w-4 h-4 rounded border-gray-700"
+                  className="w-4 h-4 rounded border-white/10"
                 />
                 <span className="text-sm text-white">Enable Gasless Transactions</span>
               </label>
@@ -273,7 +273,7 @@ export function SitemasterSwapControls() {
                   type="checkbox"
                   checked={formData.is_active}
                   onChange={(e) => setFormData({ ...formData, is_active: e.target.checked })}
-                  className="w-4 h-4 rounded border-gray-700"
+                  className="w-4 h-4 rounded border-white/10"
                 />
                 <span className="text-sm text-white">Active</span>
               </label>
@@ -290,7 +290,7 @@ export function SitemasterSwapControls() {
       )}
 
       {/* Tokens List */}
-      <div className="glass-morphism rounded-2xl p-6 border border-white/10">
+      <div className="luxe-glass rounded-2xl p-6 border border-white/10">
         <h3 className="text-lg font-bold text-white mb-4">Approved Tokens</h3>
 
         {loading ? (
@@ -309,7 +309,7 @@ export function SitemasterSwapControls() {
                     <div className="flex items-center space-x-3 mb-2">
                       <h4 className="text-white font-bold">{token.token_symbol}</h4>
                       <span className="text-sm text-gray-400">{token.token_name}</span>
-                      <span className="text-xs px-2 py-1 bg-gray-700 rounded">{token.chain_name}</span>
+                      <span className="text-xs px-2 py-1 luxe-glass rounded">{token.chain_name}</span>
                       {token.is_gasless_enabled && (
                         <span className="text-xs px-2 py-1 bg-green-500/20 text-green-400 rounded flex items-center space-x-1">
                           <CheckCircle className="w-3 h-3" />
@@ -337,7 +337,7 @@ export function SitemasterSwapControls() {
                         </button>
                         <button
                           onClick={() => setEditingToken(null)}
-                          className="p-2 bg-gray-600 hover:bg-gray-700 rounded-lg transition-colors"
+                          className="p-2 bg-gray-600 hover:luxe-glass rounded-lg transition-colors"
                         >
                           <X className="w-4 h-4 text-white" />
                         </button>
@@ -346,7 +346,7 @@ export function SitemasterSwapControls() {
                       <>
                         <button
                           onClick={() => setEditingToken(token.id)}
-                          className="p-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors"
+                          className="p-2 luxe-glass hover:bg-gray-600 rounded-lg transition-colors"
                         >
                           <Edit2 className="w-4 h-4 text-white" />
                         </button>
@@ -368,7 +368,7 @@ export function SitemasterSwapControls() {
                         type="checkbox"
                         checked={token.is_gasless_enabled}
                         onChange={() => toggleGasless(token.id)}
-                        className="w-4 h-4 rounded border-gray-700"
+                        className="w-4 h-4 rounded border-white/10"
                       />
                       <span className="text-sm text-white">Gasless</span>
                     </label>
@@ -378,7 +378,7 @@ export function SitemasterSwapControls() {
                         type="checkbox"
                         checked={token.is_active}
                         onChange={() => toggleTokenActive(token.id)}
-                        className="w-4 h-4 rounded border-gray-700"
+                        className="w-4 h-4 rounded border-white/10"
                       />
                       <span className="text-sm text-white">Active</span>
                     </label>

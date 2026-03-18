@@ -116,15 +116,15 @@ export function CreateAuctionModal({ isOpen, onClose, product, onCreateAuction }
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto">
-      <div className="bg-gray-900 rounded-3xl border border-gray-700 w-full max-w-2xl my-8 shadow-2xl">
-        <div className="flex items-center justify-between p-6 border-b border-gray-700">
+      <div className="luxe-glass-strong rounded-3xl border border-white/10 w-full max-w-2xl my-8 shadow-2xl">
+        <div className="flex items-center justify-between p-6 border-b border-white/10">
           <div className="flex items-center space-x-2">
-            <Gavel className="h-5 w-5 text-neon-blue" />
+            <Gavel className="h-5 w-5 text-luxe-gold" />
             <h2 className="text-xl font-black text-gray-200 uppercase">CREATE AUCTION</h2>
           </div>
           <button
             onClick={handleClose}
-            className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
+            className="p-2 hover:luxe-glass rounded-lg transition-colors"
           >
             <X className="w-6 h-6 text-gray-400" />
           </button>
@@ -139,12 +139,12 @@ export function CreateAuctionModal({ isOpen, onClose, product, onCreateAuction }
             </div>
           ) : (
             <>
-              <div className="bg-gray-800 rounded-2xl p-4 mb-6 border border-gray-700">
+              <div className="luxe-glass rounded-2xl p-4 mb-6 border border-white/10">
                 <div className="flex items-start space-x-4">
                   <img
                     src={product.images[0]?.url || ''}
                     alt={product.title}
-                    className="w-20 h-20 object-cover rounded-xl bg-gray-800"
+                    className="w-20 h-20 object-cover rounded-xl luxe-glass"
                   />
                   <div className="flex-1">
                     <h3 className="text-gray-200 font-black uppercase mb-1">{product.title}</h3>
@@ -164,11 +164,11 @@ export function CreateAuctionModal({ isOpen, onClose, product, onCreateAuction }
                       onClick={() => setAuctionType('english')}
                       className={`p-4 rounded-xl border-2 transition-all ${
                         auctionType === 'english'
-                          ? 'border-neon-blue bg-neon-blue/10'
-                          : 'border-gray-700 hover:border-gray-600'
+                          ? 'border-luxe-gold bg-luxe-gold/10'
+                          : 'border-white/10 hover:border-gray-600'
                       }`}
                     >
-                      <TrendingUp className={`w-8 h-8 mx-auto mb-2 ${auctionType === 'english' ? 'text-neon-blue' : 'text-gray-400'}`} />
+                      <TrendingUp className={`w-8 h-8 mx-auto mb-2 ${auctionType === 'english' ? 'text-luxe-gold' : 'text-gray-400'}`} />
                       <div className="text-center">
                         <div className="font-black text-gray-200 uppercase">ENGLISH</div>
                         <div className="text-xs text-gray-400 font-bold uppercase mt-1">Ascending Bids</div>
@@ -180,11 +180,11 @@ export function CreateAuctionModal({ isOpen, onClose, product, onCreateAuction }
                       onClick={() => setAuctionType('dutch')}
                       className={`p-4 rounded-xl border-2 transition-all ${
                         auctionType === 'dutch'
-                          ? 'border-neon-blue bg-neon-blue/10'
-                          : 'border-gray-700 hover:border-gray-600'
+                          ? 'border-luxe-gold bg-luxe-gold/10'
+                          : 'border-white/10 hover:border-gray-600'
                       }`}
                     >
-                      <TrendingDown className={`w-8 h-8 mx-auto mb-2 ${auctionType === 'dutch' ? 'text-neon-blue' : 'text-gray-400'}`} />
+                      <TrendingDown className={`w-8 h-8 mx-auto mb-2 ${auctionType === 'dutch' ? 'text-luxe-gold' : 'text-gray-400'}`} />
                       <div className="text-center">
                         <div className="font-black text-gray-200 uppercase">DUTCH</div>
                         <div className="text-xs text-gray-400 font-bold uppercase mt-1">Descending Price</div>
@@ -205,7 +205,7 @@ export function CreateAuctionModal({ isOpen, onClose, product, onCreateAuction }
                         step="0.01"
                         value={startPrice}
                         onChange={(e) => setStartPrice(e.target.value)}
-                        className="w-full pl-10 pr-4 py-3 bg-gray-800 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-neon-blue focus:border-transparent text-gray-200 font-bold"
+                        className="w-full pl-10 pr-4 py-3 luxe-glass border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-luxe-gold focus:border-transparent text-gray-200 font-bold"
                         placeholder="100.00"
                         required
                       />
@@ -221,7 +221,7 @@ export function CreateAuctionModal({ isOpen, onClose, product, onCreateAuction }
                         step="0.01"
                         value={reservePrice}
                         onChange={(e) => setReservePrice(e.target.value)}
-                        className="w-full pl-10 pr-4 py-3 bg-gray-800 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-neon-blue focus:border-transparent text-gray-200 font-bold"
+                        className="w-full pl-10 pr-4 py-3 luxe-glass border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-luxe-gold focus:border-transparent text-gray-200 font-bold"
                         placeholder="150.00"
                       />
                     </div>
@@ -237,7 +237,7 @@ export function CreateAuctionModal({ isOpen, onClose, product, onCreateAuction }
                       step="0.01"
                       value={buyNowPrice}
                       onChange={(e) => setBuyNowPrice(e.target.value)}
-                      className="w-full pl-10 pr-4 py-3 bg-gray-800 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-neon-blue focus:border-transparent text-gray-200 font-bold"
+                      className="w-full pl-10 pr-4 py-3 luxe-glass border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-luxe-gold focus:border-transparent text-gray-200 font-bold"
                       placeholder="200.00"
                     />
                   </div>
@@ -256,7 +256,7 @@ export function CreateAuctionModal({ isOpen, onClose, product, onCreateAuction }
                           max="30"
                           value={durationDays}
                           onChange={(e) => setDurationDays(e.target.value)}
-                          className="w-full pl-10 pr-4 py-3 bg-gray-800 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-neon-blue focus:border-transparent text-gray-200 font-bold"
+                          className="w-full pl-10 pr-4 py-3 luxe-glass border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-luxe-gold focus:border-transparent text-gray-200 font-bold"
                         />
                       </div>
                       <p className="text-gray-500 text-xs mt-1 font-bold uppercase text-center">Days</p>
@@ -268,7 +268,7 @@ export function CreateAuctionModal({ isOpen, onClose, product, onCreateAuction }
                         max="23"
                         value={durationHours}
                         onChange={(e) => setDurationHours(e.target.value)}
-                        className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-neon-blue focus:border-transparent text-gray-200 font-bold"
+                        className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-luxe-gold focus:border-transparent text-gray-200 font-bold"
                       />
                       <p className="text-gray-500 text-xs mt-1 font-bold uppercase text-center">Hours</p>
                     </div>
@@ -276,7 +276,7 @@ export function CreateAuctionModal({ isOpen, onClose, product, onCreateAuction }
                 </div>
 
                 {auctionType === 'dutch' && (
-                  <div className="grid grid-cols-2 gap-4 p-4 bg-gray-800/50 rounded-xl border border-gray-700">
+                  <div className="grid grid-cols-2 gap-4 p-4 luxe-glass/50 rounded-xl border border-white/10">
                     <div>
                       <label className="block text-gray-200 font-black mb-2 uppercase text-sm">Price Drop Every</label>
                       <input
@@ -285,7 +285,7 @@ export function CreateAuctionModal({ isOpen, onClose, product, onCreateAuction }
                         max="168"
                         value={dutchDecrementHours}
                         onChange={(e) => setDutchDecrementHours(e.target.value)}
-                        className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-neon-blue focus:border-transparent text-gray-200 font-bold"
+                        className="w-full px-4 py-2 luxe-glass border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-luxe-gold focus:border-transparent text-gray-200 font-bold"
                       />
                       <p className="text-gray-500 text-xs mt-1 font-bold uppercase">Hours</p>
                     </div>
@@ -297,7 +297,7 @@ export function CreateAuctionModal({ isOpen, onClose, product, onCreateAuction }
                         max="50"
                         value={dutchDecrementPercent}
                         onChange={(e) => setDutchDecrementPercent(e.target.value)}
-                        className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-neon-blue focus:border-transparent text-gray-200 font-bold"
+                        className="w-full px-4 py-2 luxe-glass border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-luxe-gold focus:border-transparent text-gray-200 font-bold"
                       />
                       <p className="text-gray-500 text-xs mt-1 font-bold uppercase">Percent</p>
                     </div>
@@ -311,7 +311,7 @@ export function CreateAuctionModal({ isOpen, onClose, product, onCreateAuction }
                   </div>
                 )}
 
-                <div className="bg-gray-800/50 rounded-xl p-4 border border-gray-700">
+                <div className="luxe-glass/50 rounded-xl p-4 border border-white/10">
                   <h4 className="text-gray-200 font-black mb-2 uppercase text-sm">Auction Details:</h4>
                   <ul className="space-y-1 text-gray-400 text-xs font-bold uppercase">
                     <li>• 5-MINUTE AUTO-EXTENSION IF BID IN LAST 5 MINUTES</li>
@@ -324,7 +324,7 @@ export function CreateAuctionModal({ isOpen, onClose, product, onCreateAuction }
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full py-4 bg-neon-blue hover:shadow-neon-blue disabled:bg-gray-700 text-black font-black rounded-2xl transition-all duration-200 flex items-center justify-center space-x-2 uppercase active:btn-neon-active"
+                  className="w-full py-4 bg-luxe-gold hover:shadow-neon-blue disabled:luxe-glass text-black font-black rounded-2xl transition-all duration-200 flex items-center justify-center space-x-2 uppercase active:btn-neon-active"
                 >
                   {isSubmitting ? (
                     <div className="w-5 h-5 border-2 border-black/30 border-t-black rounded-full animate-spin" />

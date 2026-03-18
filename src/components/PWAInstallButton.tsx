@@ -115,7 +115,7 @@ export function PWAInstallButton() {
     <>
       {showMobileBanner && isMobile && !isInstalled && !installDismissed && (
         <div className="fixed bottom-0 left-0 right-0 z-50 animate-slide-up">
-          <div className="bg-gradient-to-r from-gray-900 via-black to-gray-900 border-t-2 border-neon-yellow p-4 shadow-2xl">
+          <div className="bg-gradient-to-r from-gray-900 via-black to-gray-900 border-t-2 border-luxe-gold p-4 shadow-2xl">
             <div className="max-w-md mx-auto flex items-center space-x-4">
               <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-neon-yellow via-neon-orange to-neon-yellow rounded-2xl flex items-center justify-center shadow-lg">
                 <Zap className="w-6 h-6 text-black" />
@@ -127,7 +127,7 @@ export function PWAInstallButton() {
               <div className="flex items-center space-x-2">
                 <button
                   onClick={handleInstallClick}
-                  className="px-4 py-2 bg-neon-yellow hover:bg-neon-orange text-black rounded-lg font-bold text-sm transition-colors"
+                  className="px-4 py-2 bg-luxe-gold hover:bg-luxe-gold text-black rounded-lg font-bold text-sm transition-colors"
                 >
                   Install
                 </button>
@@ -160,56 +160,56 @@ export function PWAInstallButton() {
 
       {showIOSInstructions && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-gray-900 rounded-3xl border border-gray-700 w-full max-w-md shadow-2xl">
-            <div className="flex items-center justify-between p-6 border-b border-gray-700">
+          <div className="luxe-glass-strong rounded-3xl border border-white/10 w-full max-w-md shadow-2xl">
+            <div className="flex items-center justify-between p-6 border-b border-white/10">
               <div className="flex items-center space-x-3">
-                {isIOS ? <Apple className="h-6 w-6 text-neon-yellow" /> : <Chrome className="h-6 w-6 text-neon-yellow" />}
+                {isIOS ? <Apple className="h-6 w-6 text-luxe-gold" /> : <Chrome className="h-6 w-6 text-luxe-gold" />}
                 <h2 className="text-xl font-black text-white uppercase">
                   {isIOS ? 'Install on iPhone' : 'Install App'}
                 </h2>
               </div>
               <button
                 onClick={() => setShowIOSInstructions(false)}
-                className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
+                className="p-2 hover:luxe-glass rounded-lg transition-colors"
               >
                 <X className="w-5 h-5 text-gray-400" />
               </button>
             </div>
 
             <div className="p-6 space-y-6">
-              <div className="bg-gray-800 rounded-xl p-4 border border-gray-700">
+              <div className="luxe-glass rounded-xl p-4 border border-white/10">
                 {isIOS ? (
                   <>
-                    <p className="text-neon-orange font-medium mb-4 text-sm">
+                    <p className="text-luxe-gold font-medium mb-4 text-sm">
                       Follow these steps to install GHETTO FINANCE on your iPhone:
                     </p>
                     <ol className="space-y-4 text-sm text-gray-300">
                       <li className="flex items-start space-x-3">
-                        <span className="flex-shrink-0 w-6 h-6 bg-neon-yellow text-black rounded-full flex items-center justify-center font-black text-xs">
+                        <span className="flex-shrink-0 w-6 h-6 bg-luxe-gold text-black rounded-full flex items-center justify-center font-black text-xs">
                           1
                         </span>
                         <span>
-                          Tap the <strong className="text-neon-blue">Share button</strong> at the bottom of Safari (square with arrow pointing up)
+                          Tap the <strong className="text-luxe-gold">Share button</strong> at the bottom of Safari (square with arrow pointing up)
                         </span>
                       </li>
                       <li className="flex items-start space-x-3">
-                        <span className="flex-shrink-0 w-6 h-6 bg-neon-yellow text-black rounded-full flex items-center justify-center font-black text-xs">
+                        <span className="flex-shrink-0 w-6 h-6 bg-luxe-gold text-black rounded-full flex items-center justify-center font-black text-xs">
                           2
                         </span>
                         <span>
-                          Scroll down and tap <strong className="text-neon-blue">"Add to Home Screen"</strong>
+                          Scroll down and tap <strong className="text-luxe-gold">"Add to Home Screen"</strong>
                         </span>
                       </li>
                       <li className="flex items-start space-x-3">
-                        <span className="flex-shrink-0 w-6 h-6 bg-neon-yellow text-black rounded-full flex items-center justify-center font-black text-xs">
+                        <span className="flex-shrink-0 w-6 h-6 bg-luxe-gold text-black rounded-full flex items-center justify-center font-black text-xs">
                           3
                         </span>
                         <span>
-                          Tap <strong className="text-neon-blue">"Add"</strong> in the top right corner
+                          Tap <strong className="text-luxe-gold">"Add"</strong> in the top right corner
                         </span>
                       </li>
                       <li className="flex items-start space-x-3">
-                        <span className="flex-shrink-0 w-6 h-6 bg-neon-yellow text-black rounded-full flex items-center justify-center font-black text-xs">
+                        <span className="flex-shrink-0 w-6 h-6 bg-luxe-gold text-black rounded-full flex items-center justify-center font-black text-xs">
                           4
                         </span>
                         <span>
@@ -220,36 +220,36 @@ export function PWAInstallButton() {
                   </>
                 ) : (
                   <>
-                    <p className="text-neon-orange font-medium mb-4 text-sm">
+                    <p className="text-luxe-gold font-medium mb-4 text-sm">
                       To install GHETTO FINANCE as an app on Chrome/Android:
                     </p>
                     <ol className="space-y-4 text-sm text-gray-300">
                       <li className="flex items-start space-x-3">
-                        <span className="flex-shrink-0 w-6 h-6 bg-neon-yellow text-black rounded-full flex items-center justify-center font-black text-xs">
+                        <span className="flex-shrink-0 w-6 h-6 bg-luxe-gold text-black rounded-full flex items-center justify-center font-black text-xs">
                           1
                         </span>
                         <span>
-                          Open this site in <strong className="text-neon-blue">Chrome browser</strong> on Android
+                          Open this site in <strong className="text-luxe-gold">Chrome browser</strong> on Android
                         </span>
                       </li>
                       <li className="flex items-start space-x-3">
-                        <span className="flex-shrink-0 w-6 h-6 bg-neon-yellow text-black rounded-full flex items-center justify-center font-black text-xs">
+                        <span className="flex-shrink-0 w-6 h-6 bg-luxe-gold text-black rounded-full flex items-center justify-center font-black text-xs">
                           2
                         </span>
                         <span>
-                          Look for an <strong className="text-neon-blue">"Install"</strong> banner at the top or bottom of the screen
+                          Look for an <strong className="text-luxe-gold">"Install"</strong> banner at the top or bottom of the screen
                         </span>
                       </li>
                       <li className="flex items-start space-x-3">
-                        <span className="flex-shrink-0 w-6 h-6 bg-neon-yellow text-black rounded-full flex items-center justify-center font-black text-xs">
+                        <span className="flex-shrink-0 w-6 h-6 bg-luxe-gold text-black rounded-full flex items-center justify-center font-black text-xs">
                           3
                         </span>
                         <span>
-                          Or tap the <strong className="text-neon-blue">3-dot menu</strong> and select "Install app" or "Add to Home screen"
+                          Or tap the <strong className="text-luxe-gold">3-dot menu</strong> and select "Install app" or "Add to Home screen"
                         </span>
                       </li>
                       <li className="flex items-start space-x-3">
-                        <span className="flex-shrink-0 w-6 h-6 bg-neon-yellow text-black rounded-full flex items-center justify-center font-black text-xs">
+                        <span className="flex-shrink-0 w-6 h-6 bg-luxe-gold text-black rounded-full flex items-center justify-center font-black text-xs">
                           4
                         </span>
                         <span>
@@ -271,7 +271,7 @@ export function PWAInstallButton() {
 
               <button
                 onClick={() => setShowIOSInstructions(false)}
-                className="w-full px-6 py-3 bg-neon-blue hover:bg-neon-blue/80 text-black rounded-xl transition-colors font-black uppercase"
+                className="w-full px-6 py-3 bg-luxe-gold hover:bg-luxe-gold/80 text-black rounded-xl transition-colors font-black uppercase"
               >
                 Got It
               </button>

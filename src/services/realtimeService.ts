@@ -179,13 +179,13 @@ class RealtimeService {
     channel
       .on('presence', { event: 'sync' }, () => {
         const state = channel.presenceState();
-        console.log('Presence state:', state);
+        logger.debug('Presence state', 'RealtimeService', { state });
       })
       .on('presence', { event: 'join' }, ({ key, newPresences }) => {
-        console.log('User joined:', key, newPresences);
+        logger.debug('User joined', 'RealtimeService', { key, newPresences });
       })
       .on('presence', { event: 'leave' }, ({ key, leftPresences }) => {
-        console.log('User left:', key, leftPresences);
+        logger.debug('User left', 'RealtimeService', { key, leftPresences });
       })
       .subscribe(async (status) => {
         if (status === 'SUBSCRIBED') {

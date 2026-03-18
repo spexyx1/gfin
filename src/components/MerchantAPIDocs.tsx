@@ -89,7 +89,7 @@ export default function MerchantAPIDocs() {
                   in the request headers:
                 </p>
 
-                <div className="bg-gray-900 text-gray-100 p-4 rounded-lg">
+                <div className="luxe-glass-strong text-gray-100 p-4 rounded-lg">
                   <pre className="text-sm overflow-x-auto">
 {`X-API-Key: mk_test_your_api_key_here`}
                   </pre>
@@ -112,7 +112,7 @@ export default function MerchantAPIDocs() {
                 </ul>
 
                 <h3>Error Responses</h3>
-                <div className="bg-gray-900 text-gray-100 p-4 rounded-lg">
+                <div className="luxe-glass-strong text-gray-100 p-4 rounded-lg">
                   <pre className="text-sm overflow-x-auto">
 {`{
   "error": "Invalid API key",
@@ -129,7 +129,7 @@ export default function MerchantAPIDocs() {
 
                 <h3>Create Order</h3>
                 <p>Create a new order with escrow protection.</p>
-                <div className="bg-gray-900 text-gray-100 p-4 rounded-lg mb-4">
+                <div className="luxe-glass-strong text-gray-100 p-4 rounded-lg mb-4">
                   <pre className="text-sm overflow-x-auto">
 {`POST ${baseUrl}/merchant-api-orders
 
@@ -153,21 +153,21 @@ export default function MerchantAPIDocs() {
                 </div>
 
                 <h3>Get Order</h3>
-                <div className="bg-gray-900 text-gray-100 p-4 rounded-lg mb-4">
+                <div className="luxe-glass-strong text-gray-100 p-4 rounded-lg mb-4">
                   <pre className="text-sm overflow-x-auto">
 {`GET ${baseUrl}/merchant-api-orders/:order_id`}
                   </pre>
                 </div>
 
                 <h3>List Orders</h3>
-                <div className="bg-gray-900 text-gray-100 p-4 rounded-lg mb-4">
+                <div className="luxe-glass-strong text-gray-100 p-4 rounded-lg mb-4">
                   <pre className="text-sm overflow-x-auto">
 {`GET ${baseUrl}/merchant-api-orders?status=pending&limit=50&offset=0`}
                   </pre>
                 </div>
 
                 <h3>Mark Order Shipped</h3>
-                <div className="bg-gray-900 text-gray-100 p-4 rounded-lg mb-4">
+                <div className="luxe-glass-strong text-gray-100 p-4 rounded-lg mb-4">
                   <pre className="text-sm overflow-x-auto">
 {`POST ${baseUrl}/merchant-api-orders/:order_id/ship
 
@@ -180,7 +180,7 @@ export default function MerchantAPIDocs() {
                 </div>
 
                 <h3>Update Tracking</h3>
-                <div className="bg-gray-900 text-gray-100 p-4 rounded-lg mb-4">
+                <div className="luxe-glass-strong text-gray-100 p-4 rounded-lg mb-4">
                   <pre className="text-sm overflow-x-auto">
 {`PATCH ${baseUrl}/merchant-api-orders/:order_id/tracking
 
@@ -214,7 +214,7 @@ export default function MerchantAPIDocs() {
                 </ul>
 
                 <h3>Webhook Payload</h3>
-                <div className="bg-gray-900 text-gray-100 p-4 rounded-lg mb-4">
+                <div className="luxe-glass-strong text-gray-100 p-4 rounded-lg mb-4">
                   <pre className="text-sm overflow-x-auto">
 {`{
   "event_type": "order.created",
@@ -236,7 +236,7 @@ export default function MerchantAPIDocs() {
                   All webhooks include an <code>X-Webhook-Signature</code> header with an
                   HMAC-SHA256 signature. Verify this signature to ensure the webhook is authentic.
                 </p>
-                <div className="bg-gray-900 text-gray-100 p-4 rounded-lg">
+                <div className="luxe-glass-strong text-gray-100 p-4 rounded-lg">
                   <pre className="text-sm overflow-x-auto">
 {`const crypto = require('crypto');
 
@@ -265,28 +265,28 @@ function verifyWebhook(payload, signature, secret) {
                 <h2>Disputes API</h2>
 
                 <h3>Get Order Disputes</h3>
-                <div className="bg-gray-900 text-gray-100 p-4 rounded-lg mb-4">
+                <div className="luxe-glass-strong text-gray-100 p-4 rounded-lg mb-4">
                   <pre className="text-sm overflow-x-auto">
 {`GET ${baseUrl}/merchant-api-disputes/orders/:order_id`}
                   </pre>
                 </div>
 
                 <h3>Get Dispute Details</h3>
-                <div className="bg-gray-900 text-gray-100 p-4 rounded-lg mb-4">
+                <div className="luxe-glass-strong text-gray-100 p-4 rounded-lg mb-4">
                   <pre className="text-sm overflow-x-auto">
 {`GET ${baseUrl}/merchant-api-disputes/disputes/:dispute_id`}
                   </pre>
                 </div>
 
                 <h3>List All Disputes</h3>
-                <div className="bg-gray-900 text-gray-100 p-4 rounded-lg mb-4">
+                <div className="luxe-glass-strong text-gray-100 p-4 rounded-lg mb-4">
                   <pre className="text-sm overflow-x-auto">
 {`GET ${baseUrl}/merchant-api-disputes?status=open&limit=50`}
                   </pre>
                 </div>
 
                 <h3>Add Evidence</h3>
-                <div className="bg-gray-900 text-gray-100 p-4 rounded-lg mb-4">
+                <div className="luxe-glass-strong text-gray-100 p-4 rounded-lg mb-4">
                   <pre className="text-sm overflow-x-auto">
 {`POST ${baseUrl}/merchant-api-disputes/disputes/:dispute_id/evidence
 
@@ -299,7 +299,7 @@ function verifyWebhook(payload, signature, secret) {
                 </div>
 
                 <h3>Add Comment</h3>
-                <div className="bg-gray-900 text-gray-100 p-4 rounded-lg mb-4">
+                <div className="luxe-glass-strong text-gray-100 p-4 rounded-lg mb-4">
                   <pre className="text-sm overflow-x-auto">
 {`POST ${baseUrl}/merchant-api-disputes/disputes/:dispute_id/comments
 
@@ -319,7 +319,7 @@ function verifyWebhook(payload, signature, secret) {
                 </p>
 
                 <h3>Installation</h3>
-                <div className="bg-gray-900 text-gray-100 p-4 rounded-lg mb-4">
+                <div className="luxe-glass-strong text-gray-100 p-4 rounded-lg mb-4">
                   <pre className="text-sm overflow-x-auto">
 {`import MerchantSDK from './lib/merchantSDK';
 
@@ -331,7 +331,7 @@ const sdk = new MerchantSDK({
                 </div>
 
                 <h3>Create Order</h3>
-                <div className="bg-gray-900 text-gray-100 p-4 rounded-lg mb-4">
+                <div className="luxe-glass-strong text-gray-100 p-4 rounded-lg mb-4">
                   <pre className="text-sm overflow-x-auto">
 {`const order = await sdk.createOrder({
   merchant_reference_id: 'order-12345',
@@ -346,7 +346,7 @@ console.log('Order created:', order.id);`}
                 </div>
 
                 <h3>Get Order</h3>
-                <div className="bg-gray-900 text-gray-100 p-4 rounded-lg mb-4">
+                <div className="luxe-glass-strong text-gray-100 p-4 rounded-lg mb-4">
                   <pre className="text-sm overflow-x-auto">
 {`const order = await sdk.getOrder('order-uuid');
 console.log('Order status:', order.status);`}
@@ -354,7 +354,7 @@ console.log('Order status:', order.status);`}
                 </div>
 
                 <h3>Mark Shipped</h3>
-                <div className="bg-gray-900 text-gray-100 p-4 rounded-lg mb-4">
+                <div className="luxe-glass-strong text-gray-100 p-4 rounded-lg mb-4">
                   <pre className="text-sm overflow-x-auto">
 {`await sdk.markOrderShipped('order-uuid', {
   tracking_number: '1Z999AA10123456784',
@@ -365,7 +365,7 @@ console.log('Order status:', order.status);`}
                 </div>
 
                 <h3>Error Handling</h3>
-                <div className="bg-gray-900 text-gray-100 p-4 rounded-lg mb-4">
+                <div className="luxe-glass-strong text-gray-100 p-4 rounded-lg mb-4">
                   <pre className="text-sm overflow-x-auto">
 {`try {
   const order = await sdk.createOrder({...});

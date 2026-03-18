@@ -106,15 +106,15 @@ export function PlaceBidModal({ isOpen, onClose, auction, onPlaceBid, calculateM
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-gray-900 rounded-3xl border border-gray-700 w-full max-w-md overflow-hidden shadow-2xl">
-        <div className="flex items-center justify-between p-6 border-b border-gray-700">
+      <div className="luxe-glass-strong rounded-3xl border border-white/10 w-full max-w-md overflow-hidden shadow-2xl">
+        <div className="flex items-center justify-between p-6 border-b border-white/10">
           <div className="flex items-center space-x-2">
-            <Gavel className="h-5 w-5 text-neon-blue" />
+            <Gavel className="h-5 w-5 text-luxe-gold" />
             <h2 className="text-xl font-black text-gray-200 uppercase">PLACE BID</h2>
           </div>
           <button
             onClick={handleClose}
-            className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
+            className="p-2 hover:luxe-glass rounded-lg transition-colors"
           >
             <X className="w-6 h-6 text-gray-400" />
           </button>
@@ -129,7 +129,7 @@ export function PlaceBidModal({ isOpen, onClose, auction, onPlaceBid, calculateM
             </div>
           ) : (
             <>
-              <div className="bg-gray-800 rounded-2xl p-4 mb-6 border border-gray-700">
+              <div className="luxe-glass rounded-2xl p-4 mb-6 border border-white/10">
                 <div className="flex items-start space-x-4">
                   <img
                     src={auction.product?.image || ''}
@@ -144,7 +144,7 @@ export function PlaceBidModal({ isOpen, onClose, auction, onPlaceBid, calculateM
                       <span className="text-gray-400 text-sm font-bold uppercase">
                         CURRENT BID
                       </span>
-                      <span className="text-xl font-black text-neon-blue uppercase">
+                      <span className="text-xl font-black text-luxe-gold uppercase">
                         ${auction.currentPrice.toFixed(2)}
                       </span>
                     </div>
@@ -163,7 +163,7 @@ export function PlaceBidModal({ isOpen, onClose, auction, onPlaceBid, calculateM
                       min={minBid}
                       value={bidAmount}
                       onChange={(e) => setBidAmount(e.target.value)}
-                      className="w-full pl-10 pr-4 py-3 bg-gray-800 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-neon-blue focus:border-transparent text-gray-200 font-bold text-center text-xl"
+                      className="w-full pl-10 pr-4 py-3 luxe-glass border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-luxe-gold focus:border-transparent text-gray-200 font-bold text-center text-xl"
                       placeholder={minBid.toFixed(2)}
                       required
                     />
@@ -175,20 +175,20 @@ export function PlaceBidModal({ isOpen, onClose, auction, onPlaceBid, calculateM
                     <button
                       type="button"
                       onClick={handleQuickBid}
-                      className="text-xs font-bold text-neon-blue hover:text-neon-blue/80 uppercase"
+                      className="text-xs font-bold text-luxe-gold hover:text-luxe-gold/80 uppercase"
                     >
                       SET TO MIN
                     </button>
                   </div>
                 </div>
 
-                <div className="bg-gray-800/50 rounded-xl p-4 border border-gray-700">
+                <div className="luxe-glass/50 rounded-xl p-4 border border-white/10">
                   <label className="flex items-center space-x-2 cursor-pointer">
                     <input
                       type="checkbox"
                       checked={useAutoBid}
                       onChange={(e) => setUseAutoBid(e.target.checked)}
-                      className="w-4 h-4 rounded border-gray-600 text-neon-blue focus:ring-neon-blue"
+                      className="w-4 h-4 rounded border-gray-600 text-luxe-gold focus:ring-luxe-gold"
                     />
                     <span className="text-gray-200 font-black uppercase text-sm">ENABLE AUTO-BID</span>
                   </label>
@@ -208,7 +208,7 @@ export function PlaceBidModal({ isOpen, onClose, auction, onPlaceBid, calculateM
                           step="0.01"
                           value={autoBidMax}
                           onChange={(e) => setAutoBidMax(e.target.value)}
-                          className="w-full pl-10 pr-4 py-2 bg-gray-800 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-neon-blue focus:border-transparent text-gray-200 font-bold"
+                          className="w-full pl-10 pr-4 py-2 luxe-glass border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-luxe-gold focus:border-transparent text-gray-200 font-bold"
                           placeholder={(minBid * 1.5).toFixed(2)}
                         />
                       </div>
@@ -239,7 +239,7 @@ export function PlaceBidModal({ isOpen, onClose, auction, onPlaceBid, calculateM
                   </div>
                 )}
 
-                <div className="bg-gray-800/50 rounded-xl p-4 border border-gray-700">
+                <div className="luxe-glass/50 rounded-xl p-4 border border-white/10">
                   <h4 className="text-gray-200 font-black mb-2 uppercase text-sm">Bid Details:</h4>
                   <ul className="space-y-1 text-gray-400 text-xs font-bold uppercase">
                     <li>• MINIMUM INCREMENT: 5% OF CURRENT PRICE</li>
@@ -251,7 +251,7 @@ export function PlaceBidModal({ isOpen, onClose, auction, onPlaceBid, calculateM
                 <button
                   type="submit"
                   disabled={isSubmitting || !user}
-                  className="w-full py-4 bg-neon-blue hover:shadow-neon-blue disabled:bg-gray-700 text-black font-black rounded-2xl transition-all duration-200 flex items-center justify-center space-x-2 uppercase active:btn-neon-active"
+                  className="w-full py-4 bg-luxe-gold hover:shadow-neon-blue disabled:luxe-glass text-black font-black rounded-2xl transition-all duration-200 flex items-center justify-center space-x-2 uppercase active:btn-neon-active"
                 >
                   {isSubmitting ? (
                     <div className="w-5 h-5 border-2 border-black/30 border-t-black rounded-full animate-spin" />

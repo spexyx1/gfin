@@ -368,7 +368,7 @@ export function SecurityAuditModal({ isOpen, onClose }: SecurityAuditModalProps)
 
   return (
     <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-gray-900 border border-white/10 rounded-3xl w-full max-w-4xl max-h-[92vh] flex flex-col overflow-hidden">
+      <div className="luxe-glass-strong border border-white/10 rounded-3xl w-full max-w-4xl max-h-[92vh] flex flex-col overflow-hidden">
 
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-white/10 shrink-0">
@@ -451,7 +451,7 @@ export function SecurityAuditModal({ isOpen, onClose }: SecurityAuditModalProps)
                     const passes = c.findings.filter(f => f.severity === 'PASS').length;
                     const issues = c.findings.filter(f => !['PASS', 'INFO'].includes(f.severity)).length;
                     return (
-                      <div key={c.name} className="rounded-xl bg-gray-800/40 border border-white/5 p-4">
+                      <div key={c.name} className="rounded-xl luxe-glass/40 border border-white/5 p-4">
                         <div className="flex items-start justify-between gap-4">
                           <div className="flex items-start gap-3">
                             <Code className="w-5 h-5 text-orange-400 shrink-0 mt-0.5" />
@@ -484,7 +484,7 @@ export function SecurityAuditModal({ isOpen, onClose }: SecurityAuditModalProps)
                     { icon: AlertTriangle, title: 'Access Control', desc: 'OpenZeppelin Ownable restricts admin functions to authorized addresses' },
                     { icon: CheckCircle, title: 'Event Logging', desc: 'All state changes emit events for off-chain monitoring and auditability' },
                   ].map(item => (
-                    <div key={item.title} className="flex items-start gap-3 bg-gray-800/30 rounded-xl border border-white/5 p-3">
+                    <div key={item.title} className="flex items-start gap-3 luxe-glass/30 rounded-xl border border-white/5 p-3">
                       <item.icon className="w-4 h-4 text-orange-400 shrink-0 mt-0.5" />
                       <div>
                         <p className="text-white font-black text-sm">{item.title}</p>
@@ -509,7 +509,7 @@ export function SecurityAuditModal({ isOpen, onClose }: SecurityAuditModalProps)
           {/* CONTRACT-SPECIFIC TABS */}
           {activeTab === 'escrow' && (
             <div className="space-y-4">
-              <div className="rounded-xl bg-gray-800/40 border border-white/5 p-4">
+              <div className="rounded-xl luxe-glass/40 border border-white/5 p-4">
                 <div className="flex items-center gap-3 mb-2">
                   <FileText className="w-5 h-5 text-orange-400" />
                   <h3 className="text-white font-black">CryptoMarketplaceEscrow</h3>
@@ -527,7 +527,7 @@ export function SecurityAuditModal({ isOpen, onClose }: SecurityAuditModalProps)
 
           {activeTab === 'token' && (
             <div className="space-y-4">
-              <div className="rounded-xl bg-gray-800/40 border border-white/5 p-4">
+              <div className="rounded-xl luxe-glass/40 border border-white/5 p-4">
                 <div className="flex items-center gap-3 mb-2">
                   <FileText className="w-5 h-5 text-orange-400" />
                   <h3 className="text-white font-black">GhettoToken (GHETTO)</h3>
@@ -545,7 +545,7 @@ export function SecurityAuditModal({ isOpen, onClose }: SecurityAuditModalProps)
 
           {activeTab === 'swap' && (
             <div className="space-y-4">
-              <div className="rounded-xl bg-gray-800/40 border border-white/5 p-4">
+              <div className="rounded-xl luxe-glass/40 border border-white/5 p-4">
                 <div className="flex items-center gap-3 mb-2">
                   <FileText className="w-5 h-5 text-orange-400" />
                   <h3 className="text-white font-black">AtomicSwap</h3>

@@ -341,7 +341,7 @@ export function TreasurerDashboard() {
                           <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
                             op.operation_type === 'mint' ? 'bg-green-100 text-green-800' :
                             op.operation_type === 'burn' ? 'bg-red-100 text-red-800' :
-                            op.operation_type === 'blacklist' ? 'bg-gray-800 text-white' :
+                            op.operation_type === 'blacklist' ? 'luxe-glass text-white' :
                             'bg-blue-100 text-blue-800'
                           }`}>
                             {op.operation_type.toUpperCase()}

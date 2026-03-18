@@ -2,7 +2,7 @@ import { Shield, Clock, CheckCircle, AlertTriangle, Lock } from 'lucide-react';
 
 export function EscrowInfo() {
   return (
-    <div className="bg-gray-800 rounded-lg p-6 border border-gray-700 mb-6">
+    <div className="luxe-glass rounded-lg p-6 border border-white/10 mb-6">
       <div className="flex items-center space-x-2 mb-4">
         <Shield className="h-6 w-6 text-green-400" />
         <h3 className="text-xl font-bold text-white">Escrow Protection</h3>

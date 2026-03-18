@@ -90,15 +90,15 @@ export function SwapInterface({ userAddress }: SwapInterfaceProps) {
   return (
     <div className="space-y-6">
       {/* GHETTO Token Info */}
-      <div className="bg-gradient-to-r from-neon-blue/10 to-neon-yellow/10 rounded-2xl p-6 border border-neon-blue/30">
+      <div className="bg-gradient-to-r from-neon-blue/10 to-neon-yellow/10 rounded-2xl p-6 border border-luxe-gold/30">
         <div className="flex items-start space-x-4">
-          <div className="p-3 bg-neon-blue/20 rounded-xl">
-            <Zap className="w-6 h-6 text-neon-blue" />
+          <div className="p-3 bg-luxe-gold/20 rounded-xl">
+            <Zap className="w-6 h-6 text-luxe-gold" />
           </div>
           <div className="flex-1">
             <h3 className="text-lg font-black text-white mb-2 uppercase">GHETTO Token Swaps</h3>
             <p className="text-gray-300 text-sm mb-3">
-              GHETTO is deployed on <span className="text-neon-blue font-bold">Polygon Network</span> and can be swapped with multiple tokens including USDC, ETH, BTC, BNB, SOL, and XRP across different chains.
+              GHETTO is deployed on <span className="text-luxe-gold font-bold">Polygon Network</span> and can be swapped with multiple tokens including USDC, ETH, BTC, BNB, SOL, and XRP across different chains.
             </p>
             <div className="flex items-start space-x-2 text-xs text-gray-400">
               <Info className="w-4 h-4 mt-0.5 flex-shrink-0" />
@@ -111,15 +111,15 @@ export function SwapInterface({ userAddress }: SwapInterfaceProps) {
       </div>
 
       {/* Create Swap Section */}
-      <div className="glass-morphism rounded-2xl p-6 border border-white/10">
+      <div className="luxe-glass rounded-2xl p-6 border border-white/10">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h3 className="text-2xl font-black text-neon-yellow uppercase">Peer-to-Peer Swap</h3>
+            <h3 className="text-2xl font-black text-luxe-gold uppercase">Peer-to-Peer Swap</h3>
             <p className="text-xs text-gray-400 mt-1">Trustless token exchange with another user</p>
           </div>
           <button
             onClick={() => setShowCreateSwap(!showCreateSwap)}
-            className="px-4 py-2 bg-neon-blue hover:bg-neon-blue/80 text-black rounded-lg transition-colors font-bold"
+            className="px-4 py-2 bg-luxe-gold hover:bg-luxe-gold/80 text-black rounded-lg transition-colors font-bold"
           >
             {showCreateSwap ? 'Cancel' : 'New Swap'}
           </button>
@@ -137,7 +137,7 @@ export function SwapInterface({ userAddress }: SwapInterfaceProps) {
                     const token = supportedTokens.find(t => t.id === e.target.value);
                     setFromToken(token);
                   }}
-                  className="flex-1 bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white"
+                  className="flex-1 luxe-glass border border-white/10 rounded-lg px-4 py-3 text-white"
                 >
                   <option value="">Select Token</option>
                   {supportedTokens.map(token => (
@@ -152,7 +152,7 @@ export function SwapInterface({ userAddress }: SwapInterfaceProps) {
                   value={fromAmount}
                   onChange={(e) => setFromAmount(e.target.value)}
                   placeholder="0.00"
-                  className="w-32 bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white text-right"
+                  className="w-32 luxe-glass border border-white/10 rounded-lg px-4 py-3 text-white text-right"
                 />
               </div>
               {fromToken?.is_gasless_enabled && (
@@ -167,9 +167,9 @@ export function SwapInterface({ userAddress }: SwapInterfaceProps) {
             <div className="flex justify-center">
               <button
                 onClick={handleFlipTokens}
-                className="p-2 bg-gray-800 hover:bg-gray-700 rounded-full transition-colors border border-white/10"
+                className="p-2 luxe-glass hover:luxe-glass rounded-full transition-colors border border-white/10"
               >
-                <ArrowDownUp className="w-5 h-5 text-neon-yellow" />
+                <ArrowDownUp className="w-5 h-5 text-luxe-gold" />
               </button>
             </div>
 
@@ -183,7 +183,7 @@ export function SwapInterface({ userAddress }: SwapInterfaceProps) {
                     const token = supportedTokens.find(t => t.id === e.target.value);
                     setToToken(token);
                   }}
-                  className="flex-1 bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white"
+                  className="flex-1 luxe-glass border border-white/10 rounded-lg px-4 py-3 text-white"
                 >
                   <option value="">Select Token</option>
                   {supportedTokens.map(token => (
@@ -198,7 +198,7 @@ export function SwapInterface({ userAddress }: SwapInterfaceProps) {
                   value={toAmount}
                   onChange={(e) => setToAmount(e.target.value)}
                   placeholder="0.00"
-                  className="w-32 bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white text-right"
+                  className="w-32 luxe-glass border border-white/10 rounded-lg px-4 py-3 text-white text-right"
                 />
               </div>
               {toToken?.is_gasless_enabled && (
@@ -217,7 +217,7 @@ export function SwapInterface({ userAddress }: SwapInterfaceProps) {
                 value={recipientAddress}
                 onChange={(e) => setRecipientAddress(e.target.value)}
                 placeholder="0x..."
-                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white"
+                className="w-full luxe-glass border border-white/10 rounded-lg px-4 py-3 text-white"
               />
             </div>
 
@@ -246,12 +246,12 @@ export function SwapInterface({ userAddress }: SwapInterfaceProps) {
       </div>
 
       {/* User Swaps */}
-      <div className="glass-morphism rounded-2xl p-6 border border-white/10">
+      <div className="luxe-glass rounded-2xl p-6 border border-white/10">
         <h3 className="text-xl font-black text-white uppercase mb-4">Your Swaps</h3>
 
         {loading ? (
           <div className="flex items-center justify-center py-12">
-            <Loader className="w-8 h-8 text-neon-yellow animate-spin" />
+            <Loader className="w-8 h-8 text-luxe-gold animate-spin" />
           </div>
         ) : userSwaps.length === 0 ? (
           <div className="text-center py-12 text-gray-400">
@@ -305,7 +305,7 @@ export function SwapInterface({ userAddress }: SwapInterfaceProps) {
                   <div className="mt-4 flex space-x-2">
                     <button
                       onClick={() => depositTokens(swap.id, swap.initiator_id === userAddress)}
-                      className="flex-1 px-4 py-2 bg-neon-blue hover:bg-neon-blue/80 text-black rounded-lg transition-colors font-bold text-sm"
+                      className="flex-1 px-4 py-2 bg-luxe-gold hover:bg-luxe-gold/80 text-black rounded-lg transition-colors font-bold text-sm"
                     >
                       Deposit Tokens
                     </button>

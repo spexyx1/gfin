@@ -129,13 +129,13 @@ export function BlockchainEscrowDashboard() {
       case 'delivered': return 'bg-teal-900 text-teal-200';
       case 'completed': return 'bg-green-900 text-green-200';
       case 'disputed': return 'bg-red-900 text-red-200';
-      case 'cancelled': return 'bg-gray-700 text-gray-300';
-      default: return 'bg-gray-700 text-gray-300';
+      case 'cancelled': return 'luxe-glass text-gray-300';
+      default: return 'luxe-glass text-gray-300';
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white p-6">
+    <div className="min-h-screen luxe-glass-strong text-white p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
@@ -149,7 +149,7 @@ export function BlockchainEscrowDashboard() {
           <button
             onClick={refreshData}
             disabled={isLoading}
-            className="px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg flex items-center gap-2 disabled:opacity-50"
+            className="px-4 py-2 luxe-glass hover:luxe-glass rounded-lg flex items-center gap-2 disabled:opacity-50"
           >
             <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
             Refresh
@@ -159,7 +159,7 @@ export function BlockchainEscrowDashboard() {
         {/* Stats Cards */}
         {stats && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <div className="bg-gray-800 rounded-lg p-6">
+            <div className="luxe-glass rounded-lg p-6">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-gray-400 text-sm">Total Deals</span>
                 <Package className="h-5 w-5 text-blue-500" />
@@ -168,7 +168,7 @@ export function BlockchainEscrowDashboard() {
               <p className="text-xs text-gray-500 mt-1">All time</p>
             </div>
 
-            <div className="bg-gray-800 rounded-lg p-6">
+            <div className="luxe-glass rounded-lg p-6">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-gray-400 text-sm">Active Deals</span>
                 <Clock className="h-5 w-5 text-orange-500" />
@@ -177,7 +177,7 @@ export function BlockchainEscrowDashboard() {
               <p className="text-xs text-gray-500 mt-1">In progress</p>
             </div>
 
-            <div className="bg-gray-800 rounded-lg p-6">
+            <div className="luxe-glass rounded-lg p-6">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-gray-400 text-sm">Total Volume</span>
                 <TrendingUp className="h-5 w-5 text-green-500" />
@@ -186,7 +186,7 @@ export function BlockchainEscrowDashboard() {
               <p className="text-xs text-gray-500 mt-1">USD equivalent</p>
             </div>
 
-            <div className="bg-gray-800 rounded-lg p-6">
+            <div className="luxe-glass rounded-lg p-6">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-gray-400 text-sm">Fees Collected</span>
                 <DollarSign className="h-5 w-5 text-purple-500" />
@@ -198,7 +198,7 @@ export function BlockchainEscrowDashboard() {
         )}
 
         {/* Quick Actions */}
-        <div className="bg-gray-800 rounded-lg p-6 mb-8">
+        <div className="luxe-glass rounded-lg p-6 mb-8">
           <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
             <Settings className="h-5 w-5 text-orange-500" />
             Quick Actions
@@ -220,7 +220,7 @@ export function BlockchainEscrowDashboard() {
             </button>
             <button
               onClick={refreshData}
-              className="px-4 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg flex flex-col items-center gap-2 transition-colors"
+              className="px-4 py-3 luxe-glass hover:bg-gray-600 rounded-lg flex flex-col items-center gap-2 transition-colors"
             >
               <RefreshCw className="h-5 w-5" />
               <span className="text-sm">Sync State</span>
@@ -229,8 +229,8 @@ export function BlockchainEscrowDashboard() {
         </div>
 
         {/* Tabs */}
-        <div className="bg-gray-800 rounded-lg mb-8">
-          <div className="flex border-b border-gray-700">
+        <div className="luxe-glass rounded-lg mb-8">
+          <div className="flex border-b border-white/10">
             <button
               onClick={() => setActiveTab('overview')}
               className={`px-6 py-4 font-medium ${
@@ -267,7 +267,7 @@ export function BlockchainEscrowDashboard() {
             {activeTab === 'overview' && escrowSettings && (
               <div className="space-y-6">
                 <div className="grid grid-cols-2 gap-6">
-                  <div className="bg-gray-700 rounded-lg p-4">
+                  <div className="luxe-glass rounded-lg p-4">
                     <h3 className="font-bold mb-3">Fee Structure</h3>
                     <div className="space-y-2 text-sm">
                       <div className="flex justify-between">
@@ -285,7 +285,7 @@ export function BlockchainEscrowDashboard() {
                     </div>
                   </div>
 
-                  <div className="bg-gray-700 rounded-lg p-4">
+                  <div className="luxe-glass rounded-lg p-4">
                     <h3 className="font-bold mb-3">Contract Info</h3>
                     <div className="space-y-2 text-sm">
                       <div>
@@ -300,7 +300,7 @@ export function BlockchainEscrowDashboard() {
                   </div>
                 </div>
 
-                <div className="bg-gray-700 rounded-lg p-4">
+                <div className="luxe-glass rounded-lg p-4">
                   <h3 className="font-bold mb-3">Deal Statistics</h3>
                   <div className="grid grid-cols-4 gap-4 text-center">
                     <div>
@@ -341,7 +341,7 @@ export function BlockchainEscrowDashboard() {
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
-                    <tr className="border-b border-gray-700">
+                    <tr className="border-b border-white/10">
                       <th className="px-4 py-3 text-left text-sm font-medium text-gray-400">Order ID</th>
                       <th className="px-4 py-3 text-left text-sm font-medium text-gray-400">Buyer</th>
                       <th className="px-4 py-3 text-left text-sm font-medium text-gray-400">Seller</th>
@@ -353,7 +353,7 @@ export function BlockchainEscrowDashboard() {
                   </thead>
                   <tbody>
                     {deals.map((deal) => (
-                      <tr key={deal.orderId} className="border-b border-gray-700 hover:bg-gray-750">
+                      <tr key={deal.orderId} className="border-b border-white/10 hover:bg-gray-750">
                         <td className="px-4 py-3 text-sm font-mono">{deal.orderId.slice(0, 8)}...</td>
                         <td className="px-4 py-3 text-sm font-mono">{deal.buyerAddress.slice(0, 8)}...</td>
                         <td className="px-4 py-3 text-sm font-mono">{deal.sellerAddress.slice(0, 8)}...</td>
@@ -436,7 +436,7 @@ export function BlockchainEscrowDashboard() {
                   </div>
                 </div>
 
-                <div className="bg-gray-700 rounded-lg p-4">
+                <div className="luxe-glass rounded-lg p-4">
                   <h4 className="font-bold mb-2">Contract Address</h4>
                   <p className="text-sm text-gray-400 font-mono break-all mb-3">{escrowSettings.contractAddress}</p>
                   <a
@@ -450,19 +450,19 @@ export function BlockchainEscrowDashboard() {
                 </div>
 
                 <div className="grid gap-4">
-                  <div className="bg-gray-700 rounded-lg p-4">
+                  <div className="luxe-glass rounded-lg p-4">
                     <h4 className="font-bold mb-2">Current Platform Fee (GHETTO)</h4>
                     <p className="text-2xl font-bold text-orange-500 mb-2">{escrowSettings.platformFeePercent}%</p>
                     <p className="text-sm text-gray-400">Fee charged on deals paid with GHETTO token</p>
                   </div>
 
-                  <div className="bg-gray-700 rounded-lg p-4">
+                  <div className="luxe-glass rounded-lg p-4">
                     <h4 className="font-bold mb-2">Non-GHETTO Fee Addition</h4>
                     <p className="text-2xl font-bold text-orange-500 mb-2">+{escrowSettings.nonGhettoFeeAddition}%</p>
                     <p className="text-sm text-gray-400">Additional fee for non-GHETTO payments (USDC, etc.)</p>
                   </div>
 
-                  <div className="bg-gray-700 rounded-lg p-4">
+                  <div className="luxe-glass rounded-lg p-4">
                     <h4 className="font-bold mb-2">Seller Hold Percent</h4>
                     <p className="text-2xl font-bold text-orange-500 mb-2">{escrowSettings.sellerHoldPercent}%</p>
                     <p className="text-sm text-gray-400">Percentage of GHETTO collateral held during deal</p>
@@ -476,7 +476,7 @@ export function BlockchainEscrowDashboard() {
         {/* Settings Modal */}
         {showSettingsModal && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-gray-800 rounded-lg p-6 max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div className="luxe-glass rounded-lg p-6 max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto">
               <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
                 <Settings className="h-5 w-5 text-blue-500" />
                 Update Contract Settings
@@ -492,7 +492,7 @@ export function BlockchainEscrowDashboard() {
                     value={newPlatformFee}
                     onChange={(e) => setNewPlatformFee(e.target.value)}
                     placeholder="2.5"
-                    className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-orange-500 mb-2"
+                    className="w-full px-3 py-2 luxe-glass border border-gray-600 rounded-lg focus:outline-none focus:border-orange-500 mb-2"
                   />
                   <button
                     onClick={handleUpdatePlatformFee}
@@ -513,7 +513,7 @@ export function BlockchainEscrowDashboard() {
                     value={newNonGhettoFee}
                     onChange={(e) => setNewNonGhettoFee(e.target.value)}
                     placeholder="1.25"
-                    className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-orange-500 mb-2"
+                    className="w-full px-3 py-2 luxe-glass border border-gray-600 rounded-lg focus:outline-none focus:border-orange-500 mb-2"
                   />
                   <button
                     onClick={handleUpdateNonGhettoFee}
@@ -534,7 +534,7 @@ export function BlockchainEscrowDashboard() {
                     value={newSellerHold}
                     onChange={(e) => setNewSellerHold(e.target.value)}
                     placeholder="10"
-                    className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-orange-500 mb-2"
+                    className="w-full px-3 py-2 luxe-glass border border-gray-600 rounded-lg focus:outline-none focus:border-orange-500 mb-2"
                   />
                   <button
                     onClick={handleUpdateSellerHold}
@@ -547,7 +547,7 @@ export function BlockchainEscrowDashboard() {
 
                 <button
                   onClick={() => setShowSettingsModal(false)}
-                  className="w-full px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg font-medium"
+                  className="w-full px-4 py-2 luxe-glass hover:bg-gray-600 rounded-lg font-medium"
                 >
                   Close
                 </button>

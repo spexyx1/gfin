@@ -273,7 +273,7 @@ export function CardProgramTab() {
     return (
       <div className="flex items-center justify-center py-24">
         <div className="text-center">
-          <RefreshCw className="w-10 h-10 text-neon-blue animate-spin mx-auto mb-4" />
+          <RefreshCw className="w-10 h-10 text-luxe-gold animate-spin mx-auto mb-4" />
           <p className="text-gray-400">Loading card program...</p>
         </div>
       </div>
@@ -286,8 +286,8 @@ export function CardProgramTab() {
         {view === 'no_application' && (
           <>
             <div className="text-center mb-10">
-              <div className="w-20 h-20 bg-neon-blue/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                <CreditCard className="w-10 h-10 text-neon-blue" />
+              <div className="w-20 h-20 bg-luxe-gold/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                <CreditCard className="w-10 h-10 text-luxe-gold" />
               </div>
               <h3 className="text-2xl font-black text-white mb-3 uppercase">GHETTO Finance Debit Card</h3>
               <p className="text-gray-400 max-w-md mx-auto">
@@ -301,8 +301,8 @@ export function CardProgramTab() {
                 { icon: CreditCard, title: 'Max 1.5% Fees', desc: 'Capped merchant processing rate' },
                 { icon: CheckCircle, title: 'Gas Station Network', desc: '0.9% rate at enrolled gas stations' },
               ].map(({ icon: Icon, title, desc }) => (
-                <div key={title} className="bg-gray-800 rounded-2xl p-5 border border-gray-700 text-center">
-                  <Icon className="w-7 h-7 text-neon-blue mx-auto mb-3" />
+                <div key={title} className="luxe-glass rounded-2xl p-5 border border-white/10 text-center">
+                  <Icon className="w-7 h-7 text-luxe-gold mx-auto mb-3" />
                   <h4 className="text-white font-bold text-sm mb-1">{title}</h4>
                   <p className="text-gray-400 text-xs">{desc}</p>
                 </div>
@@ -311,7 +311,7 @@ export function CardProgramTab() {
 
             <button
               onClick={() => setView('kyc_form')}
-              className="w-full py-4 bg-neon-blue hover:bg-neon-blue/80 text-black font-black rounded-2xl uppercase transition-colors flex items-center justify-center gap-2"
+              className="w-full py-4 bg-luxe-gold hover:bg-luxe-gold/80 text-black font-black rounded-2xl uppercase transition-colors flex items-center justify-center gap-2"
             >
               Apply Now <ChevronRight className="w-5 h-5" />
             </button>
@@ -334,9 +334,9 @@ export function CardProgramTab() {
             </button>
             <h3 className="text-xl font-black text-white mb-6 uppercase">Identity Verification</h3>
 
-            <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700 mb-6">
+            <div className="luxe-glass rounded-2xl p-6 border border-white/10 mb-6">
               <div className="flex items-start gap-3 mb-4">
-                <Lock className="w-5 h-5 text-neon-blue mt-0.5 shrink-0" />
+                <Lock className="w-5 h-5 text-luxe-gold mt-0.5 shrink-0" />
                 <div>
                   <p className="text-white font-medium text-sm mb-1">Your data is secure</p>
                   <p className="text-gray-400 text-xs">
@@ -353,7 +353,7 @@ export function CardProgramTab() {
                 <select
                   value={kycForm.document_type}
                   onChange={(e) => setKycForm({ ...kycForm, document_type: e.target.value })}
-                  className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-neon-blue text-white"
+                  className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-luxe-gold text-white"
                 >
                   <option value="government_id">Government ID</option>
                   <option value="passport">Passport</option>
@@ -361,7 +361,7 @@ export function CardProgramTab() {
                 </select>
               </div>
 
-              <div className="bg-gray-800 border border-dashed border-gray-600 rounded-2xl p-8 text-center">
+              <div className="luxe-glass border border-dashed border-gray-600 rounded-2xl p-8 text-center">
                 <Upload className="w-8 h-8 text-gray-500 mx-auto mb-3" />
                 <p className="text-gray-400 text-sm mb-1">Document upload handled securely by KYC provider</p>
                 <p className="text-gray-500 text-xs">You will be redirected to complete verification</p>
@@ -370,7 +370,7 @@ export function CardProgramTab() {
               <button
                 onClick={handleKycSubmit}
                 disabled={actionLoading}
-                className="w-full py-4 bg-neon-blue hover:bg-neon-blue/80 disabled:bg-gray-700 text-black font-black rounded-2xl uppercase transition-colors"
+                className="w-full py-4 bg-luxe-gold hover:bg-luxe-gold/80 disabled:luxe-glass text-black font-black rounded-2xl uppercase transition-colors"
               >
                 {actionLoading ? 'Submitting...' : 'Submit Verification'}
               </button>
@@ -399,11 +399,11 @@ export function CardProgramTab() {
         <p className="text-gray-400 text-sm mb-10">Typically completes within 1–2 business days.</p>
 
         <div className="flex items-start justify-between relative mb-10">
-          <div className="absolute top-4 left-0 right-0 h-0.5 bg-gray-700" />
+          <div className="absolute top-4 left-0 right-0 h-0.5 luxe-glass" />
           {steps.map((step, i) => (
             <div key={i} className="relative flex flex-col items-center flex-1">
               <div className={`w-8 h-8 rounded-full flex items-center justify-center z-10 transition-colors ${
-                step.done ? 'bg-neon-blue' : step.active ? 'bg-yellow-500' : 'bg-gray-700'
+                step.done ? 'bg-luxe-gold' : step.active ? 'bg-yellow-500' : 'luxe-glass'
               }`}>
                 {step.done
                   ? <CheckCircle className="w-4 h-4 text-black" />
@@ -413,7 +413,7 @@ export function CardProgramTab() {
                 }
               </div>
               <p className={`mt-2 text-xs text-center leading-tight ${
-                step.done ? 'text-neon-blue' : step.active ? 'text-yellow-400' : 'text-gray-500'
+                step.done ? 'text-luxe-gold' : step.active ? 'text-yellow-400' : 'text-gray-500'
               }`}>{step.label}</p>
             </div>
           ))}
@@ -440,14 +440,14 @@ export function CardProgramTab() {
             <div className={`relative rounded-3xl p-6 h-48 overflow-hidden transition-all ${
               isFrozen
                 ? 'bg-gradient-to-br from-gray-700 to-gray-900 border border-gray-600'
-                : 'bg-gradient-to-br from-gray-900 via-gray-800 to-black border border-neon-blue/30'
+                : 'bg-gradient-to-br from-gray-900 via-gray-800 to-black border border-luxe-gold/30'
             }`}>
               <div className="absolute inset-0 opacity-5">
-                <div className="absolute top-0 right-0 w-64 h-64 rounded-full bg-neon-blue transform translate-x-16 -translate-y-16" />
+                <div className="absolute top-0 right-0 w-64 h-64 rounded-full bg-luxe-gold transform translate-x-16 -translate-y-16" />
               </div>
 
               {isFrozen && (
-                <div className="absolute inset-0 flex items-center justify-center bg-gray-900/60 rounded-3xl z-10">
+                <div className="absolute inset-0 flex items-center justify-center luxe-glass-strong/60 rounded-3xl z-10">
                   <div className="text-center">
                     <Snowflake className="w-10 h-10 text-sky-400 mx-auto mb-1" />
                     <p className="text-sky-400 font-bold text-sm">Card Frozen</p>
@@ -483,7 +483,7 @@ export function CardProgramTab() {
                     )}
                     <div className="text-right">
                       <p className="text-gray-500 text-xs">TIER</p>
-                      <p className="text-neon-blue text-xs font-bold uppercase">{card.card_program_tier}</p>
+                      <p className="text-luxe-gold text-xs font-bold uppercase">{card.card_program_tier}</p>
                     </div>
                   </div>
                 </div>
@@ -493,7 +493,7 @@ export function CardProgramTab() {
             <div className="flex gap-3 mt-4">
               <button
                 onClick={handleShowPan}
-                className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white text-sm rounded-xl transition-colors"
+                className="flex-1 flex items-center justify-center gap-2 py-2.5 luxe-glass hover:luxe-glass border border-white/10 text-white text-sm rounded-xl transition-colors"
               >
                 {showPan ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 {showPan ? 'Hide Details' : 'Show Details'}
@@ -504,7 +504,7 @@ export function CardProgramTab() {
                 className={`flex-1 flex items-center justify-center gap-2 py-2.5 border text-sm rounded-xl transition-colors ${
                   isFrozen
                     ? 'bg-sky-500/10 hover:bg-sky-500/20 border-sky-500/30 text-sky-400'
-                    : 'bg-gray-800 hover:bg-gray-700 border-gray-700 text-white'
+                    : 'luxe-glass hover:luxe-glass border-white/10 text-white'
                 }`}
               >
                 <Snowflake className="w-4 h-4" />
@@ -515,7 +515,7 @@ export function CardProgramTab() {
 
           {/* Balance & Actions */}
           <div className="space-y-4">
-            <div className="bg-gray-800 rounded-2xl p-5 border border-gray-700">
+            <div className="luxe-glass rounded-2xl p-5 border border-white/10">
               <p className="text-gray-400 text-xs mb-1 uppercase tracking-wide">Available Balance</p>
               <p className="text-3xl font-black text-white">${Number(account.available_balance).toFixed(2)}</p>
               {account.pending_balance > 0 && (
@@ -526,19 +526,19 @@ export function CardProgramTab() {
             <div className="grid grid-cols-2 gap-3">
               <button
                 onClick={() => setShowLoadModal(true)}
-                className="flex items-center justify-center gap-2 py-3 bg-neon-blue hover:bg-neon-blue/80 text-black font-bold text-sm rounded-xl transition-colors"
+                className="flex items-center justify-center gap-2 py-3 bg-luxe-gold hover:bg-luxe-gold/80 text-black font-bold text-sm rounded-xl transition-colors"
               >
                 <Plus className="w-4 h-4" /> Load Card
               </button>
               {card.physical_card_fulfillment_status === 'not_requested' ? (
                 <button
                   onClick={() => setShowPhysicalModal(true)}
-                  className="flex items-center justify-center gap-2 py-3 bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white text-sm rounded-xl transition-colors"
+                  className="flex items-center justify-center gap-2 py-3 luxe-glass hover:luxe-glass border border-white/10 text-white text-sm rounded-xl transition-colors"
                 >
                   <CreditCard className="w-4 h-4" /> Physical Card
                 </button>
               ) : (
-                <div className="flex items-center justify-center gap-2 py-3 bg-gray-800 border border-gray-700 text-gray-400 text-sm rounded-xl">
+                <div className="flex items-center justify-center gap-2 py-3 luxe-glass border border-white/10 text-gray-400 text-sm rounded-xl">
                   <CheckCircle className="w-4 h-4 text-green-400" />
                   <span className="capitalize">{card.physical_card_fulfillment_status}</span>
                 </div>
@@ -563,17 +563,17 @@ export function CardProgramTab() {
         <div>
           <h4 className="text-white font-black uppercase text-sm mb-3">Recent Transactions</h4>
           {transactions.length === 0 ? (
-            <div className="bg-gray-800 rounded-2xl p-8 border border-gray-700 text-center">
+            <div className="luxe-glass rounded-2xl p-8 border border-white/10 text-center">
               <CreditCard className="w-10 h-10 text-gray-600 mx-auto mb-3" />
               <p className="text-gray-400 text-sm">No transactions yet</p>
             </div>
           ) : (
             <div className="space-y-2">
               {transactions.map((tx) => (
-                <div key={tx.id} className="flex items-center justify-between bg-gray-800 rounded-xl px-4 py-3 border border-gray-700">
+                <div key={tx.id} className="flex items-center justify-between luxe-glass rounded-xl px-4 py-3 border border-white/10">
                   <div className="flex items-center gap-3">
                     <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-xs ${
-                      tx.is_gas_station ? 'bg-green-500/20' : 'bg-gray-700'
+                      tx.is_gas_station ? 'bg-green-500/20' : 'luxe-glass'
                     }`}>
                       {tx.is_gas_station ? '⛽' : '🛒'}
                     </div>
@@ -600,7 +600,7 @@ export function CardProgramTab() {
             <h4 className="text-white font-black uppercase text-sm mb-3">Recent Loads</h4>
             <div className="space-y-2">
               {loads.map((load) => (
-                <div key={load.id} className="flex items-center justify-between bg-gray-800 rounded-xl px-4 py-3 border border-gray-700">
+                <div key={load.id} className="flex items-center justify-between luxe-glass rounded-xl px-4 py-3 border border-white/10">
                   <div>
                     <p className="text-white text-sm font-medium capitalize">{load.source_type.replace('_', ' ')}</p>
                     <p className="text-gray-500 text-xs">{new Date(load.created_at).toLocaleDateString()}</p>
@@ -618,7 +618,7 @@ export function CardProgramTab() {
         {/* Load Modal */}
         {showLoadModal && (
           <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
-            <div className="bg-gray-900 rounded-2xl border border-gray-700 w-full max-w-md p-6">
+            <div className="luxe-glass-strong rounded-2xl border border-white/10 w-full max-w-md p-6">
               <h3 className="text-lg font-black text-white mb-5 uppercase">Load Card</h3>
               <div className="space-y-4">
                 <div>
@@ -626,7 +626,7 @@ export function CardProgramTab() {
                   <select
                     value={loadForm.source_type}
                     onChange={(e) => setLoadForm({ ...loadForm, source_type: e.target.value })}
-                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
+                    className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-luxe-gold"
                   >
                     <option value="crypto_wallet">Crypto Wallet</option>
                     <option value="bank_transfer">Bank Transfer (ACH)</option>
@@ -639,7 +639,7 @@ export function CardProgramTab() {
                     <select
                       value={loadForm.source_asset}
                       onChange={(e) => setLoadForm({ ...loadForm, source_asset: e.target.value })}
-                      className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
+                      className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-luxe-gold"
                     >
                       <option value="USDC">USDC</option>
                       <option value="ETH">ETH</option>
@@ -656,7 +656,7 @@ export function CardProgramTab() {
                     step="0.01"
                     value={loadForm.usd_amount}
                     onChange={(e) => setLoadForm({ ...loadForm, usd_amount: e.target.value })}
-                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
+                    className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-luxe-gold"
                     placeholder="50.00"
                   />
                 </div>
@@ -664,14 +664,14 @@ export function CardProgramTab() {
                 <div className="flex gap-3 pt-2">
                   <button
                     onClick={() => setShowLoadModal(false)}
-                    className="flex-1 py-3 bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white rounded-xl transition-colors"
+                    className="flex-1 py-3 luxe-glass hover:luxe-glass border border-white/10 text-white rounded-xl transition-colors"
                   >
                     Cancel
                   </button>
                   <button
                     onClick={handleLoadCard}
                     disabled={actionLoading || !loadForm.usd_amount}
-                    className="flex-1 py-3 bg-neon-blue hover:bg-neon-blue/80 disabled:bg-gray-700 text-black font-bold rounded-xl transition-colors"
+                    className="flex-1 py-3 bg-luxe-gold hover:bg-luxe-gold/80 disabled:luxe-glass text-black font-bold rounded-xl transition-colors"
                   >
                     {actionLoading ? 'Loading...' : 'Load Funds'}
                   </button>
@@ -684,7 +684,7 @@ export function CardProgramTab() {
         {/* Physical Card Modal */}
         {showPhysicalModal && (
           <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
-            <div className="bg-gray-900 rounded-2xl border border-gray-700 w-full max-w-md p-6">
+            <div className="luxe-glass-strong rounded-2xl border border-white/10 w-full max-w-md p-6">
               <h3 className="text-lg font-black text-white mb-1 uppercase">Request Physical Card</h3>
               <p className="text-gray-400 text-sm mb-5">Estimated delivery: 7–10 business days</p>
               <div className="space-y-3">
@@ -693,14 +693,14 @@ export function CardProgramTab() {
                   value={physicalForm.line1}
                   onChange={(e) => setPhysicalForm({ ...physicalForm, line1: e.target.value })}
                   placeholder="Address Line 1"
-                  className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
+                  className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-luxe-gold"
                 />
                 <input
                   type="text"
                   value={physicalForm.line2}
                   onChange={(e) => setPhysicalForm({ ...physicalForm, line2: e.target.value })}
                   placeholder="Address Line 2 (optional)"
-                  className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
+                  className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-luxe-gold"
                 />
                 <div className="grid grid-cols-2 gap-3">
                   <input
@@ -708,14 +708,14 @@ export function CardProgramTab() {
                     value={physicalForm.city}
                     onChange={(e) => setPhysicalForm({ ...physicalForm, city: e.target.value })}
                     placeholder="City"
-                    className="px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
+                    className="px-4 py-3 luxe-glass border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-luxe-gold"
                   />
                   <input
                     type="text"
                     value={physicalForm.state}
                     onChange={(e) => setPhysicalForm({ ...physicalForm, state: e.target.value })}
                     placeholder="State"
-                    className="px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
+                    className="px-4 py-3 luxe-glass border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-luxe-gold"
                   />
                 </div>
                 <input
@@ -723,19 +723,19 @@ export function CardProgramTab() {
                   value={physicalForm.zip}
                   onChange={(e) => setPhysicalForm({ ...physicalForm, zip: e.target.value })}
                   placeholder="ZIP Code"
-                  className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-neon-blue"
+                  className="w-full px-4 py-3 luxe-glass border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-luxe-gold"
                 />
                 <div className="flex gap-3 pt-2">
                   <button
                     onClick={() => setShowPhysicalModal(false)}
-                    className="flex-1 py-3 bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white rounded-xl transition-colors"
+                    className="flex-1 py-3 luxe-glass hover:luxe-glass border border-white/10 text-white rounded-xl transition-colors"
                   >
                     Cancel
                   </button>
                   <button
                     onClick={handleRequestPhysical}
                     disabled={actionLoading || !physicalForm.line1 || !physicalForm.city}
-                    className="flex-1 py-3 bg-neon-blue hover:bg-neon-blue/80 disabled:bg-gray-700 text-black font-bold rounded-xl transition-colors"
+                    className="flex-1 py-3 bg-luxe-gold hover:bg-luxe-gold/80 disabled:luxe-glass text-black font-bold rounded-xl transition-colors"
                   >
                     {actionLoading ? 'Ordering...' : 'Order Card'}
                   </button>
