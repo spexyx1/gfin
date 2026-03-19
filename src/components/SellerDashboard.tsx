@@ -770,7 +770,7 @@ export function SellerDashboard({ isOpen, onClose }: SellerDashboardProps) {
                       </div>
                       <button
                         onClick={() => setShowCollateralDeposit(true)}
-                        className="w-full px-6 py-3 bg-gradient-to-r from-luxe-gold to-yellow-400 hover:from-yellow-400 hover:to-luxe-gold text-black font-bold rounded-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center space-x-2"
+                        className="w-full px-6 py-3 bg-gradient-to-r from-luxe-gold via-yellow-400 to-luxe-gold hover:from-yellow-400 hover:via-luxe-gold hover:to-yellow-400 text-black font-bold rounded-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center space-x-2 shadow-lg shadow-luxe-gold/30"
                       >
                         <Shield className="w-5 h-5" />
                         <span>Deposit GHETTO</span>
@@ -1075,7 +1075,7 @@ export function SellerDashboard({ isOpen, onClose }: SellerDashboardProps) {
                   <button
                     onClick={handleDepositCollateral}
                     disabled={isLoading || parseFloat(depositAmount) < 100}
-                    className="flex-1 py-3 bg-luxe-gold hover:bg-luxe-gold/80 disabled:bg-gray-600 text-black rounded-lg transition-colors font-bold"
+                    className="flex-1 py-3 bg-gradient-to-r from-luxe-gold via-yellow-400 to-luxe-gold hover:from-yellow-400 hover:via-luxe-gold hover:to-yellow-400 disabled:from-gray-600 disabled:via-gray-600 disabled:to-gray-600 text-black font-bold rounded-lg transition-all duration-300 transform hover:scale-105 disabled:hover:scale-100 shadow-lg shadow-luxe-gold/30 disabled:shadow-none"
                   >
                     {isLoading ? 'Depositing...' : 'Deposit GHETTO'}
                   </button>
