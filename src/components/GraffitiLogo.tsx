@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
+import { Sparkles } from 'lucide-react';
 
 interface GraffitiLogoProps {
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
@@ -60,12 +61,12 @@ export function GraffitiLogo({ size = 'md', className = '', animated = true }: G
     if (!animated) return;
 
     const generateParticle = () => {
-      const colors = ['#ff0080', '#ff8c00', '#40e0d0', '#9d4edd', '#ff1744', '#00e5ff'];
+      const colors = ['#00e5ff', '#40e0d0', '#ff6b6b', '#ff1744', '#ffeb3b', '#ffc107', '#ff9800', '#ff5722', '#9c27b0', '#e91e63'];
       return {
         id: Math.random(),
         x: Math.random() * 100,
         y: Math.random() * 100,
-        size: Math.random() * 8 + 2,
+        size: Math.random() * 12 + 3,
         color: colors[Math.floor(Math.random() * colors.length)],
         duration: Math.random() * 2 + 1,
       };
@@ -280,13 +281,28 @@ export function GraffitiLogo({ size = 'md', className = '', animated = true }: G
 
         .graffiti-text {
           position: relative;
-          color: #ffffff;
-          -webkit-text-stroke: 3px #000000;
-          text-stroke: 3px #000000;
+          -webkit-text-stroke: 4px #000000;
+          text-stroke: 4px #000000;
           paint-order: stroke fill;
-          animation: neon-glow-shift 4s ease-in-out infinite;
-          filter: drop-shadow(3px 3px 0px rgba(0, 0, 0, 0.5))
-                  drop-shadow(-1px -1px 0px rgba(255, 255, 255, 0.2));
+          filter: drop-shadow(4px 4px 0px rgba(0, 0, 0, 0.8))
+                  drop-shadow(-1px -1px 0px rgba(255, 255, 255, 0.3))
+                  drop-shadow(0 0 20px rgba(0, 0, 0, 0.5));
+          font-style: italic;
+          letter-spacing: 0.05em;
+        }
+
+        .graffiti-ghetto {
+          background: linear-gradient(180deg, #00e5ff 0%, #40e0d0 30%, #ff6b6b 70%, #ff1744 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        }
+
+        .graffiti-finance {
+          background: linear-gradient(180deg, #ffeb3b 0%, #ffc107 30%, #ff9800 70%, #ff5722 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
         }
 
         .spray-mist {
@@ -334,29 +350,38 @@ export function GraffitiLogo({ size = 'md', className = '', animated = true }: G
       {/* Multiple spray mist layers */}
       {animated && (
         <>
-          {[...Array(5)].map((_, i) => (
-            <motion.div
-              key={`mist-${i}`}
-              className="absolute inset-0 pointer-events-none"
-              style={{
-                background: `radial-gradient(circle at ${30 + i * 10}% ${40 + i * 5}%,
-                  rgba(255, 0, 128, ${0.08 - i * 0.01}) 0%,
-                  rgba(64, 224, 208, ${0.06 - i * 0.01}) 40%,
-                  transparent 70%)`,
-                filter: 'blur(15px)',
-              }}
-              animate={{
-                opacity: [0.3, 0.6, 0.3],
-                scale: [1, 1.1, 1],
-              }}
-              transition={{
-                duration: 3 + i * 0.5,
-                repeat: Infinity,
-                ease: 'easeInOut',
-                delay: i * 0.3,
-              }}
-            />
-          ))}
+          {[...Array(6)].map((_, i) => {
+            const gradients = [
+              'rgba(0, 229, 255, 0.12), rgba(64, 224, 208, 0.08)',
+              'rgba(255, 235, 59, 0.1), rgba(255, 193, 7, 0.07)',
+              'rgba(255, 107, 107, 0.09), rgba(255, 23, 68, 0.06)',
+              'rgba(255, 152, 0, 0.11), rgba(255, 87, 34, 0.08)',
+              'rgba(156, 39, 176, 0.08), rgba(233, 30, 99, 0.06)',
+              'rgba(64, 224, 208, 0.1), rgba(0, 229, 255, 0.07)',
+            ];
+            return (
+              <motion.div
+                key={`mist-${i}`}
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                  background: `radial-gradient(circle at ${25 + i * 12}% ${35 + i * 8}%,
+                    ${gradients[i]} 0%,
+                    transparent 65%)`,
+                  filter: 'blur(20px)',
+                }}
+                animate={{
+                  opacity: [0.4, 0.7, 0.4],
+                  scale: [1, 1.15, 1],
+                }}
+                transition={{
+                  duration: 3.5 + i * 0.4,
+                  repeat: Infinity,
+                  ease: 'easeInOut',
+                  delay: i * 0.4,
+                }}
+              />
+            );
+          })}
         </>
       )}
 
@@ -411,17 +436,17 @@ export function GraffitiLogo({ size = 'md', className = '', animated = true }: G
           animate={animated ? 'animate' : {}}
         >
           <MotionDiv
-            className={`${config.fontSize} font-bold tracking-tight select-none graffiti-text relative`}
+            className={`${config.fontSize} font-bold tracking-tight select-none graffiti-text graffiti-ghetto relative`}
             style={{
-              fontFamily: "'Brush Script MT', 'Segoe Script', 'Comic Sans MS', cursive",
-              letterSpacing: '-0.02em',
+              fontFamily: "'Impact', 'Arial Black', 'Haettenschweiler', sans-serif",
+              letterSpacing: '0.05em',
               fontWeight: 900,
-              transform: 'rotate(-2deg)',
+              transform: 'rotate(-3deg) skewY(-2deg)',
+              textTransform: 'uppercase',
             }}
             {...containerProps}
           >
             {animated ? splitText('GHETTO', 0) : 'GHETTO'}
-            {/* Shimmer effect */}
             {animated && <div className="shimmer-effect" />}
           </MotionDiv>
         </motion.div>
@@ -432,17 +457,17 @@ export function GraffitiLogo({ size = 'md', className = '', animated = true }: G
           animate={animated ? 'animate' : {}}
         >
           <MotionDiv
-            className={`${config.fontSize} font-bold tracking-tight select-none graffiti-text ${config.gap} relative`}
+            className={`${config.fontSize} font-bold tracking-tight select-none graffiti-text graffiti-finance ${config.gap} relative`}
             style={{
-              fontFamily: "'Brush Script MT', 'Segoe Script', 'Comic Sans MS', cursive",
-              letterSpacing: '-0.02em',
+              fontFamily: "'Impact', 'Arial Black', 'Haettenschweiler', sans-serif",
+              letterSpacing: '0.05em',
               fontWeight: 900,
-              transform: 'rotate(1deg)',
+              transform: 'rotate(2deg) skewY(1deg)',
+              textTransform: 'uppercase',
             }}
             {...containerProps}
           >
             {animated ? splitText('FINANCE', 6) : 'FINANCE'}
-            {/* Shimmer effect */}
             {animated && (
               <div
                 className="shimmer-effect"
@@ -509,6 +534,48 @@ export function GraffitiLogo({ size = 'md', className = '', animated = true }: G
             ease: 'easeInOut',
           }}
         />
+      )}
+
+      {/* Spray paint can icon */}
+      {animated && size !== 'xs' && (
+        <motion.div
+          className="absolute -right-8 top-0"
+          initial={{ opacity: 0, x: -20, rotate: -45 }}
+          animate={{
+            opacity: [0, 1, 1, 0],
+            x: [-20, 0, 0, 20],
+            rotate: [-45, -30, -30, -15],
+            y: [0, -5, 5, 10]
+          }}
+          transition={{
+            duration: 4,
+            repeat: Infinity,
+            repeatDelay: 2,
+            ease: 'easeInOut',
+          }}
+        >
+          <div className="relative">
+            <Sparkles
+              className="w-8 h-8 text-cyan-400"
+              style={{
+                filter: 'drop-shadow(0 0 8px rgba(0, 229, 255, 0.8))',
+              }}
+            />
+            <motion.div
+              className="absolute -bottom-2 left-1/2 w-1 h-3 bg-gradient-to-b from-cyan-400 to-transparent rounded-full"
+              style={{ marginLeft: '-2px' }}
+              animate={{
+                scaleY: [0, 1, 0],
+                opacity: [0, 0.8, 0],
+              }}
+              transition={{
+                duration: 1,
+                repeat: Infinity,
+                ease: 'easeOut',
+              }}
+            />
+          </div>
+        </motion.div>
       )}
     </div>
   );
