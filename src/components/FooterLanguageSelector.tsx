@@ -68,7 +68,7 @@ export function FooterLanguageSelector() {
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg mx-4 z-[101]"
+              className="fixed bottom-20 right-4 md:right-8 w-full max-w-sm md:max-w-md z-[101]"
             >
               <div className="luxe-glass-strong border border-white/10 rounded-xl overflow-hidden shadow-2xl">
                 <div className="flex items-center justify-between p-4 border-b border-white/10">
