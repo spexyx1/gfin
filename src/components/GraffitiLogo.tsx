@@ -219,22 +219,57 @@ export function GraffitiLogo({ size = 'md', className = '', animated = true }: G
           100% { opacity: 0; transform: scale(1.5); }
         }
 
-        @keyframes gradient-shift {
-          0% { background-position: 0% 50%; }
-          25% { background-position: 100% 50%; }
-          50% { background-position: 100% 100%; }
-          75% { background-position: 0% 100%; }
-          100% { background-position: 0% 50%; }
+        @keyframes neon-glow-shift {
+          0% {
+            text-shadow:
+              0 0 5px rgba(255, 255, 255, 1),
+              0 0 10px rgba(255, 0, 128, 1),
+              0 0 20px rgba(255, 0, 128, 0.8),
+              0 0 30px rgba(255, 0, 128, 0.6),
+              0 0 40px rgba(255, 0, 128, 0.4),
+              2px 2px 3px rgba(0, 0, 0, 0.8);
+          }
+          25% {
+            text-shadow:
+              0 0 5px rgba(255, 255, 255, 1),
+              0 0 10px rgba(255, 140, 0, 1),
+              0 0 20px rgba(255, 215, 0, 0.8),
+              0 0 30px rgba(255, 215, 0, 0.6),
+              0 0 40px rgba(255, 140, 0, 0.4),
+              2px 2px 3px rgba(0, 0, 0, 0.8);
+          }
+          50% {
+            text-shadow:
+              0 0 5px rgba(255, 255, 255, 1),
+              0 0 10px rgba(0, 229, 255, 1),
+              0 0 20px rgba(64, 224, 208, 0.8),
+              0 0 30px rgba(0, 229, 255, 0.6),
+              0 0 40px rgba(64, 224, 208, 0.4),
+              2px 2px 3px rgba(0, 0, 0, 0.8);
+          }
+          75% {
+            text-shadow:
+              0 0 5px rgba(255, 255, 255, 1),
+              0 0 10px rgba(157, 78, 221, 1),
+              0 0 20px rgba(157, 78, 221, 0.8),
+              0 0 30px rgba(157, 78, 221, 0.6),
+              0 0 40px rgba(157, 78, 221, 0.4),
+              2px 2px 3px rgba(0, 0, 0, 0.8);
+          }
+          100% {
+            text-shadow:
+              0 0 5px rgba(255, 255, 255, 1),
+              0 0 10px rgba(255, 0, 128, 1),
+              0 0 20px rgba(255, 0, 128, 0.8),
+              0 0 30px rgba(255, 0, 128, 0.6),
+              0 0 40px rgba(255, 0, 128, 0.4),
+              2px 2px 3px rgba(0, 0, 0, 0.8);
+          }
         }
 
         @keyframes shimmer {
           0% { transform: translateX(-100%); }
           100% { transform: translateX(100%); }
-        }
-
-        @keyframes color-pulse {
-          0%, 100% { filter: hue-rotate(0deg) brightness(1); }
-          50% { filter: hue-rotate(20deg) brightness(1.2); }
         }
 
         @keyframes wiggle {
@@ -245,24 +280,13 @@ export function GraffitiLogo({ size = 'md', className = '', animated = true }: G
 
         .graffiti-text {
           position: relative;
-          background: linear-gradient(135deg,
-            #ff0080 0%,
-            #ff8c00 15%,
-            #ffd700 30%,
-            #40e0d0 45%,
-            #00e5ff 60%,
-            #9d4edd 75%,
-            #ff1744 90%,
-            #ff0080 100%);
-          background-size: 300% 300%;
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-          animation: gradient-shift 6s ease infinite, color-pulse 3s ease-in-out infinite;
-          filter: drop-shadow(0 0 15px rgba(255, 0, 128, 0.6))
-                  drop-shadow(0 0 30px rgba(64, 224, 208, 0.4))
-                  drop-shadow(3px 3px 0px rgba(0, 0, 0, 0.4))
-                  drop-shadow(-1px -1px 0px rgba(255, 255, 255, 0.1));
+          color: #ffffff;
+          -webkit-text-stroke: 3px #000000;
+          text-stroke: 3px #000000;
+          paint-order: stroke fill;
+          animation: neon-glow-shift 4s ease-in-out infinite;
+          filter: drop-shadow(3px 3px 0px rgba(0, 0, 0, 0.5))
+                  drop-shadow(-1px -1px 0px rgba(255, 255, 255, 0.2));
         }
 
         .spray-mist {
