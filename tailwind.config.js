@@ -12,6 +12,7 @@ export default {
         'neon-orange': '#FF8C00',
         'bright-yellow': '#FFEA00',
         'electric-orange': '#FF6B00',
+        'luxe-gold': '#FFD700',
         'luxe-dark': {
           50: '#2a2a2a',
           100: '#1e1e1e',
