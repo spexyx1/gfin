@@ -281,21 +281,17 @@ export function GraffitiLogo({ size = 'md', className = '', animated = true }: G
 
         .graffiti-text {
           position: relative;
+          -webkit-text-stroke: 4px #000000;
+          text-stroke: 4px #000000;
+          paint-order: stroke fill;
+          filter: drop-shadow(4px 4px 0px rgba(0, 0, 0, 0.8))
+                  drop-shadow(-1px -1px 0px rgba(255, 255, 255, 0.3))
+                  drop-shadow(0 0 20px rgba(0, 0, 0, 0.5));
           font-style: italic;
           letter-spacing: 0.05em;
         }
 
         .graffiti-ghetto {
-          color: #00e5ff;
-          text-shadow:
-            -3px -3px 0 #000,
-            3px -3px 0 #000,
-            -3px 3px 0 #000,
-            3px 3px 0 #000,
-            0 0 20px rgba(0, 229, 255, 0.8),
-            0 0 40px rgba(0, 229, 255, 0.6),
-            0 0 60px rgba(0, 229, 255, 0.4),
-            4px 4px 8px rgba(0, 0, 0, 0.8);
           background: linear-gradient(180deg, #00e5ff 0%, #40e0d0 30%, #ff6b6b 70%, #ff1744 100%);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
@@ -303,16 +299,6 @@ export function GraffitiLogo({ size = 'md', className = '', animated = true }: G
         }
 
         .graffiti-finance {
-          color: #ffeb3b;
-          text-shadow:
-            -3px -3px 0 #000,
-            3px -3px 0 #000,
-            -3px 3px 0 #000,
-            3px 3px 0 #000,
-            0 0 20px rgba(255, 235, 59, 0.8),
-            0 0 40px rgba(255, 193, 7, 0.6),
-            0 0 60px rgba(255, 152, 0, 0.4),
-            4px 4px 8px rgba(0, 0, 0, 0.8);
           background: linear-gradient(180deg, #ffeb3b 0%, #ffc107 30%, #ff9800 70%, #ff5722 100%);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
