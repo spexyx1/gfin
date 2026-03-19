@@ -20,6 +20,7 @@ import { OfflineBanner } from './OfflineBanner';
 import { VideoCallModal } from './VideoCallModal';
 import { IncomingCallNotification } from './IncomingCallNotification';
 import { CacheManagement } from './CacheManagement';
+import { LanguageSelector } from './LanguageSelector';
 
 interface UserDashboardProps {
   isOpen: boolean;
@@ -644,6 +645,10 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
       <div>
         <h2 className="text-3xl font-black text-white mb-2">Account Settings</h2>
         <p className="text-gray-400">Manage your preferences and account information</p>
+      </div>
+
+      <div className="luxe-glass rounded-2xl p-6 border border-white/10">
+        <LanguageSelector />
       </div>
 
       <div className="luxe-glass rounded-2xl p-6 border border-white/10">

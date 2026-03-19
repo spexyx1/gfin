@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { X, Lock, Eye, EyeOff, UserPlus, LogIn, AlertCircle, CheckCircle, AtSign } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../hooks/useAuth';
 
 interface AuthModalProps {
@@ -9,6 +10,7 @@ interface AuthModalProps {
 }
 
 export function AuthModal({ isOpen, onClose, initialMode = 'login' }: AuthModalProps) {
+  const { t } = useTranslation();
   const [mode, setMode] = useState<'login' | 'signup'>(initialMode);
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -47,17 +49,17 @@ export function AuthModal({ isOpen, onClose, initialMode = 'login' }: AuthModalP
       if (mode === 'signup') {
         // Validation
         if (!formData.username.trim()) {
-          throw new Error('Username is required');
+          throw new Error(t('auth.usernameRequired'));
         }
         if (formData.password.length < 6) {
-          throw new Error('Password must be at least 6 characters');
+          throw new Error(t('auth.passwordMinLength'));
         }
         if (formData.password !== formData.confirmPassword) {
-          throw new Error('Passwords do not match');
+          throw new Error(t('auth.passwordsNoMatch'));
         }
 
         await signup(formData.username, formData.password);
-        setSuccess('Account created successfully! Welcome to GHETTO FINANCE!');
+        setSuccess(t('auth.accountCreated'));
         setTimeout(() => {
           onClose();
           resetForm();
@@ -65,14 +67,14 @@ export function AuthModal({ isOpen, onClose, initialMode = 'login' }: AuthModalP
       } else {
         // Login validation
         if (!formData.username.trim()) {
-          throw new Error('Username is required');
+          throw new Error(t('auth.usernameRequired'));
         }
         if (!formData.password) {
-          throw new Error('Password is required');
+          throw new Error(t('auth.passwordRequired'));
         }
 
         await login(formData.username.trim(), formData.password);
-        setSuccess('Login successful! Welcome back!');
+        setSuccess(t('auth.loginSuccess'));
         setTimeout(() => {
           onClose();
           resetForm();
@@ -97,7 +99,7 @@ export function AuthModal({ isOpen, onClose, initialMode = 'login' }: AuthModalP
         {/* Header */}
         <div className="flex items-center justify-between p-4 sm:p-6 border-b border-white/10">
           <h2 className="text-xl sm:text-2xl luxe-title text-white text-center flex-1">
-            {mode === 'login' ? 'Login' : 'Create Account'}
+            {mode === 'login' ? t('auth.login') : t('auth.signup')}
           </h2>
           <button
             onClick={onClose}
@@ -126,7 +128,7 @@ export function AuthModal({ isOpen, onClose, initialMode = 'login' }: AuthModalP
           <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
             {/* Username field for both login and signup */}
             <div>
-              <label className="block text-white luxe-subtitle mb-2 text-xs sm:text-sm">Username</label>
+              <label className="block text-white luxe-subtitle mb-2 text-xs sm:text-sm">{t('auth.username')}</label>
               <div className="relative">
                 <AtSign className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 text-gray-500 w-4 h-4 sm:w-5 sm:h-5" />
                 <input
@@ -147,7 +149,7 @@ export function AuthModal({ isOpen, onClose, initialMode = 'login' }: AuthModalP
             </div>
 
             <div>
-              <label className="block text-white luxe-subtitle mb-2 text-xs sm:text-sm">Password</label>
+              <label className="block text-white luxe-subtitle mb-2 text-xs sm:text-sm">{t('auth.password')}</label>
               <div className="relative">
                 <Lock className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 text-gray-500 w-4 h-4 sm:w-5 sm:h-5" />
                 <input
@@ -170,7 +172,7 @@ export function AuthModal({ isOpen, onClose, initialMode = 'login' }: AuthModalP
 
             {mode === 'signup' && (
               <div>
-                <label className="block text-white luxe-subtitle mb-2 text-xs sm:text-sm">Confirm Password</label>
+                <label className="block text-white luxe-subtitle mb-2 text-xs sm:text-sm">{t('auth.confirmPassword')}</label>
                 <div className="relative">
                   <Lock className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 text-gray-500 w-4 h-4 sm:w-5 sm:h-5" />
                   <input
@@ -195,7 +197,7 @@ export function AuthModal({ isOpen, onClose, initialMode = 'login' }: AuthModalP
               ) : (
                 <>
                   {mode === 'login' ? <LogIn className="w-5 h-5" /> : <UserPlus className="w-5 h-5" />}
-                  <span>{mode === 'login' ? 'Login' : 'Create Account'}</span>
+                  <span>{mode === 'login' ? t('auth.login') : t('auth.signup')}</span>
                 </>
               )}
             </button>
@@ -205,13 +207,13 @@ export function AuthModal({ isOpen, onClose, initialMode = 'login' }: AuthModalP
           {/* Mode Switch */}
           <div className="mt-6 text-center">
             <p className="text-gray-400 text-sm matrix-font">
-              {mode === 'login' ? "Don't have an account?" : 'Already have an account?'}
+              {mode === 'login' ? t('auth.noAccount') : t('auth.haveAccount')}
             </p>
             <button
               onClick={() => handleModeSwitch(mode === 'login' ? 'signup' : 'login')}
               className="mt-2 text-red-400 hover:text-red-400 hover:shadow-neon-red matrix-font transition-all duration-300 neon-red-text"
             >
-              {mode === 'login' ? 'CREATE ACCOUNT' : 'LOGIN'}
+              {mode === 'login' ? t('auth.signupNow').toUpperCase() : t('auth.loginNow').toUpperCase()}
             </button>
           </div>
 

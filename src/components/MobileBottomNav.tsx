@@ -1,5 +1,6 @@
 import React from 'react';
 import { Home, ShoppingCart, Wallet, MessageCircle, User } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface MobileBottomNavProps {
   activeView: string;
@@ -9,12 +10,13 @@ interface MobileBottomNavProps {
 }
 
 export function MobileBottomNav({ activeView, onNavigate, cartItemCount = 0, unreadMessages = 0 }: MobileBottomNavProps) {
+  const { t } = useTranslation();
   const navItems = [
-    { id: 'home', icon: Home, label: 'Home' },
-    { id: 'cart', icon: ShoppingCart, label: 'Cart', badge: cartItemCount },
-    { id: 'wallet', icon: Wallet, label: 'Wallet' },
-    { id: 'messages', icon: MessageCircle, label: 'Messages', badge: unreadMessages },
-    { id: 'profile', icon: User, label: 'Profile' },
+    { id: 'home', icon: Home, label: t('nav.home') },
+    { id: 'cart', icon: ShoppingCart, label: t('nav.cart'), badge: cartItemCount },
+    { id: 'wallet', icon: Wallet, label: t('nav.wallet') },
+    { id: 'messages', icon: MessageCircle, label: t('nav.messages'), badge: unreadMessages },
+    { id: 'profile', icon: User, label: t('nav.profile') },
   ];
 
   return (

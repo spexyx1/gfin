@@ -3,6 +3,8 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App.tsx';
 import { AuthProvider } from './components/AuthProvider.tsx';
+import { LanguageProvider } from './contexts/LanguageContext.tsx';
+import './i18n';
 import './config/reownConfig';
 import './lib/supabase.ts';
 import { logEnvironmentStatus } from './utils/validateEnv';
@@ -14,7 +16,9 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
       <AuthProvider>
-        <App />
+        <LanguageProvider>
+          <App />
+        </LanguageProvider>
       </AuthProvider>
     </BrowserRouter>
   </StrictMode>
