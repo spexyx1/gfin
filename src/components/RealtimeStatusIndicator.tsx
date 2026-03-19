@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Wifi, WifiOff, AlertCircle } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { motion, AnimatePresence } from 'framer-motion';
+import { logger } from '../utils/logger';
 
 type ConnectionStatus = 'connected' | 'connecting' | 'disconnected' | 'error';
 

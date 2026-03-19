@@ -11,6 +11,7 @@ import { ErrorBoundary } from './components/ErrorBoundary';
 import { RealtimeNotificationSystem } from './components/RealtimeNotificationSystem';
 import { RealtimeStatusIndicator } from './components/RealtimeStatusIndicator';
 import { MobileBottomNav } from './components/MobileBottomNav';
+import { FooterLanguageSelector } from './components/FooterLanguageSelector';
 import { getCopyrightNotice } from './config/legalConstants';
 const SecurityAuditModal = lazy(() => import('./components/SecurityAuditModal').then(m => ({ default: m.SecurityAuditModal })));
 const DocumentationModal = lazy(() => import('./components/DocumentationModal').then(m => ({ default: m.DocumentationModal })));
@@ -840,10 +841,7 @@ function App() {
                   <DollarSign className="w-3 h-3 text-gray-300" style={{filter: 'drop-shadow(0 0 8px rgba(255,255,255,0.4))'}} />
                   <span className="font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent">Multi-Crypto</span>
                 </span>
-                <span className="flex items-center space-x-1.5">
-                  <Globe className="w-3 h-3 text-gray-300" style={{filter: 'drop-shadow(0 0 8px rgba(255,255,255,0.4))'}} />
-                  <span className="font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent">Global</span>
-                </span>
+                <FooterLanguageSelector />
               </div>
             </div>
           </div>
