@@ -335,39 +335,47 @@ export function GraffitiLogo({ size = 'md', className = '', animated = true }: G
         }
 
         .graffiti-ghetto {
-          background: linear-gradient(180deg,
-            #00ffff 0%,
-            #00e5ff 15%,
-            #40e0d0 30%,
-            #ff6b6b 60%,
-            #ff4444 75%,
-            #ff1744 100%
+          background: linear-gradient(160deg,
+            #00FFFF 0%,
+            #00E5FF 12%,
+            #40E0D0 25%,
+            #FFD700 40%,
+            #FF6B6B 60%,
+            #FF1493 75%,
+            #FF0080 85%,
+            #8B00FF 100%
           ) !important;
           -webkit-background-clip: text !important;
           -webkit-text-fill-color: transparent !important;
           background-clip: text !important;
           color: transparent !important;
           position: relative;
-          filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3))
-                  drop-shadow(0 0 10px rgba(0, 255, 255, 0.4));
+          filter: drop-shadow(3px 3px 0px rgba(0, 0, 0, 0.8))
+                  drop-shadow(-1px -1px 0px rgba(255, 255, 255, 0.3))
+                  drop-shadow(0 0 15px rgba(0, 255, 255, 0.5))
+                  drop-shadow(0 0 25px rgba(255, 20, 147, 0.4));
         }
 
         .graffiti-finance {
-          background: linear-gradient(180deg,
-            #ffeb3b 0%,
-            #ffd700 20%,
-            #ffc107 35%,
-            #ff9800 60%,
-            #ff6b35 80%,
-            #ff5722 100%
+          background: linear-gradient(160deg,
+            #FFEB3B 0%,
+            #FFD700 15%,
+            #FFA500 30%,
+            #FF8C00 45%,
+            #FF6B35 60%,
+            #FF5722 75%,
+            #FF1744 90%,
+            #FF00AA 100%
           ) !important;
           -webkit-background-clip: text !important;
           -webkit-text-fill-color: transparent !important;
           background-clip: text !important;
           color: transparent !important;
           position: relative;
-          filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3))
-                  drop-shadow(0 0 10px rgba(255, 215, 0, 0.4));
+          filter: drop-shadow(3px 3px 0px rgba(0, 0, 0, 0.8))
+                  drop-shadow(-1px -1px 0px rgba(255, 255, 255, 0.3))
+                  drop-shadow(0 0 15px rgba(255, 215, 0, 0.5))
+                  drop-shadow(0 0 25px rgba(255, 87, 34, 0.4));
         }
 
         .graffiti-letter {
@@ -381,8 +389,8 @@ export function GraffitiLogo({ size = 'md', className = '', animated = true }: G
           top: 0;
           left: 0;
           z-index: -1;
-          -webkit-text-stroke: 3px rgba(0, 0, 0, 0.5);
-          text-stroke: 3px rgba(0, 0, 0, 0.5);
+          -webkit-text-stroke: 4px rgba(0, 0, 0, 0.9);
+          text-stroke: 4px rgba(0, 0, 0, 0.9);
           color: transparent;
         }
 
@@ -556,10 +564,10 @@ export function GraffitiLogo({ size = 'md', className = '', animated = true }: G
           <MotionDiv
             className={`${config.fontSize} font-bold tracking-tight select-none graffiti-text graffiti-ghetto relative`}
             style={{
-              fontFamily: "'Impact', 'Arial Black', 'Haettenschweiler', sans-serif",
-              letterSpacing: '0.03em',
+              fontFamily: "'Bungee Shade', 'Impact', 'Arial Black', sans-serif",
+              letterSpacing: '0.08em',
               fontWeight: 900,
-              transform: 'rotate(-2deg)',
+              transform: 'rotate(-3deg) skewX(-5deg)',
               textTransform: 'uppercase',
             }}
             {...containerProps}
@@ -577,10 +585,10 @@ export function GraffitiLogo({ size = 'md', className = '', animated = true }: G
           <MotionDiv
             className={`${config.fontSize} font-bold tracking-tight select-none graffiti-text graffiti-finance relative`}
             style={{
-              fontFamily: "'Impact', 'Arial Black', 'Haettenschweiler', sans-serif",
-              letterSpacing: '0.03em',
+              fontFamily: "'Bungee Shade', 'Impact', 'Arial Black', sans-serif",
+              letterSpacing: '0.08em',
               fontWeight: 900,
-              transform: 'rotate(1deg)',
+              transform: 'rotate(2deg) skewX(5deg)',
               textTransform: 'uppercase',
             }}
             {...containerProps}
