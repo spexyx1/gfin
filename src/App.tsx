@@ -202,7 +202,7 @@ function App() {
               </span>
               <br />
               <span className="text-white inline-block relative">
-                Anythin<span className="relative inline-block">g<sup className="absolute -top-3 -right-2 text-white text-base sm:text-lg">*</sup></span> With Crypto
+                Anythin<span className="relative inline-block">g<sup className="absolute -top-1 -right-2 text-white text-base sm:text-lg">*</sup></span> With Crypto
               </span>
             </h1>
             <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-300 font-light max-w-3xl mx-auto leading-relaxed px-2">
@@ -454,11 +454,35 @@ function App() {
       }`}>
         <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
           <div className="flex items-center justify-between py-2 sm:py-3 lg:py-0 lg:h-16 gap-2 sm:gap-3 lg:gap-0">
-            {/* Logo - Compact on mobile, full on desktop */}
-            <div className="flex items-center flex-shrink-0 lg:w-48">
-              <Link to="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
+            {/* Logo with GHETTO FINANCE text */}
+            <div className="flex items-center flex-shrink-0 lg:-ml-24">
+              <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
                 <GraffitiLogo size="xs" className="lg:hidden" />
                 <GraffitiLogo size="sm" className="hidden lg:block" />
+                <div className="hidden lg:flex flex-col leading-none">
+                  <span className="text-xl font-black tracking-wider" style={{
+                    fontFamily: "'Impact', 'Arial Black', sans-serif",
+                    background: 'linear-gradient(135deg, #FF3300 0%, #00CCFF 20%, #FFD700 40%, #00E676 60%, #FF1493 80%, #AA00FF 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                    textShadow: '2px 2px 4px rgba(0,0,0,0.3)',
+                    filter: 'drop-shadow(0 0 8px rgba(255,255,255,0.3))'
+                  }}>
+                    GHETTO
+                  </span>
+                  <span className="text-lg font-black tracking-wider -mt-1" style={{
+                    fontFamily: "'Impact', 'Arial Black', sans-serif",
+                    background: 'linear-gradient(135deg, #FFEA00 0%, #FF6B00 25%, #E91E63 50%, #00BCD4 75%, #76FF03 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                    textShadow: '2px 2px 4px rgba(0,0,0,0.3)',
+                    filter: 'drop-shadow(0 0 8px rgba(255,255,255,0.3))'
+                  }}>
+                    FINANCE
+                  </span>
+                </div>
               </Link>
             </div>
 
