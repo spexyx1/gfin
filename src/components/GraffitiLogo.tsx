@@ -330,12 +330,6 @@ export function GraffitiLogo({ size = 'md', className = '', animated = true }: G
 
         .graffiti-text {
           position: relative;
-          -webkit-text-stroke: 5px #000000;
-          text-stroke: 5px #000000;
-          paint-order: stroke fill;
-          filter: drop-shadow(5px 5px 0px rgba(0, 0, 0, 1))
-                  drop-shadow(-2px -2px 0px rgba(255, 255, 255, 0.4))
-                  drop-shadow(0 0 30px rgba(0, 0, 0, 0.7));
           letter-spacing: 0.02em;
           font-weight: 900;
         }
@@ -353,6 +347,8 @@ export function GraffitiLogo({ size = 'md', className = '', animated = true }: G
           -webkit-text-fill-color: transparent;
           background-clip: text;
           position: relative;
+          filter: drop-shadow(4px 4px 0px rgba(0, 0, 0, 1))
+                  drop-shadow(-1px -1px 0px rgba(255, 255, 255, 0.3));
         }
 
         .graffiti-finance {
@@ -368,21 +364,16 @@ export function GraffitiLogo({ size = 'md', className = '', animated = true }: G
           -webkit-text-fill-color: transparent;
           background-clip: text;
           position: relative;
+          filter: drop-shadow(4px 4px 0px rgba(0, 0, 0, 1))
+                  drop-shadow(-1px -1px 0px rgba(255, 255, 255, 0.3));
         }
 
         .graffiti-letter {
           position: relative;
           display: inline-block;
-        }
-
-        .graffiti-letter::before {
-          content: attr(data-char);
-          position: absolute;
-          top: 0;
-          left: 0;
-          -webkit-text-stroke: 5px #000000;
-          text-stroke: 5px #000000;
-          z-index: -1;
+          -webkit-text-stroke: 3px #000000;
+          text-stroke: 3px #000000;
+          paint-order: stroke fill;
         }
 
         .shine-spot {
