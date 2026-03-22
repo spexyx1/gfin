@@ -61,23 +61,28 @@ export function GraffitiLogo({ size = 'md', className = '', animated = true }: G
     if (!animated) return;
 
     const generateParticle = () => {
-      const colors = ['#00e5ff', '#40e0d0', '#ff6b6b', '#ff1744', '#ffeb3b', '#ffc107', '#ff9800', '#ff5722', '#9c27b0', '#e91e63'];
+      const colors = [
+        '#00e5ff', '#40e0d0', '#00ffff',
+        '#ff6b6b', '#ff1744', '#ff4444',
+        '#ffeb3b', '#ffc107', '#ff9800', '#ff5722',
+        '#9c27b0', '#e91e63', '#ffd700'
+      ];
       return {
         id: Math.random(),
         x: Math.random() * 100,
         y: Math.random() * 100,
-        size: Math.random() * 12 + 3,
+        size: Math.random() * 18 + 5,
         color: colors[Math.floor(Math.random() * colors.length)],
-        duration: Math.random() * 2 + 1,
+        duration: Math.random() * 2.5 + 1.5,
       };
     };
 
     const interval = setInterval(() => {
       setParticles((prev) => {
         const newParticles = [...prev, generateParticle()];
-        return newParticles.slice(-15); // Keep last 15 particles
+        return newParticles.slice(-20);
       });
-    }, 500);
+    }, 400);
 
     return () => clearInterval(interval);
   }, [animated]);
@@ -167,40 +172,84 @@ export function GraffitiLogo({ size = 'md', className = '', animated = true }: G
     },
   };
 
-  const splitText = (text: string, startIndex: number = 0) =>
-    text.split('').map((char, index) => (
-      <motion.span
-        key={`${char}-${index}`}
-        custom={startIndex + index}
-        variants={animated ? letterVariants : {}}
-        whileHover={animated ? 'hover' : {}}
-        className="inline-block cursor-default relative"
-        style={{
-          display: 'inline-block',
-          position: 'relative',
-        }}
-      >
-        {char}
-        {/* Individual letter drip effect */}
-        {animated && Math.random() > 0.7 && (
-          <motion.div
-            className="absolute left-1/2 top-full w-1 bg-gradient-to-b from-current to-transparent"
-            style={{ height: '8px', marginLeft: '-2px' }}
-            initial={{ scaleY: 0, opacity: 0 }}
-            animate={{
-              scaleY: [0, 1, 1, 0],
-              opacity: [0, 1, 1, 0],
-            }}
-            transition={{
-              duration: 2,
-              repeat: Infinity,
-              delay: Math.random() * 3,
-              repeatDelay: Math.random() * 5 + 3,
-            }}
-          />
-        )}
-      </motion.span>
-    ));
+  const splitText = (text: string, startIndex: number = 0, colorClass: string) =>
+    text.split('').map((char, index) => {
+      const shouldDrip = Math.random() > 0.6;
+      const dripColor = colorClass.includes('ghetto')
+        ? ['#00e5ff', '#40e0d0', '#ff6b6b', '#ff1744'][Math.floor(Math.random() * 4)]
+        : ['#ffeb3b', '#ffc107', '#ff9800', '#ff5722'][Math.floor(Math.random() * 4)];
+
+      return (
+        <motion.span
+          key={`${char}-${index}`}
+          custom={startIndex + index}
+          variants={animated ? letterVariants : {}}
+          whileHover={animated ? 'hover' : {}}
+          className="graffiti-letter cursor-default"
+          data-char={char}
+          style={{
+            display: 'inline-block',
+            position: 'relative',
+          }}
+        >
+          {char}
+          {/* Highlight shine spots */}
+          {animated && (
+            <div className="shine-spot" style={{ opacity: 0.6 }} />
+          )}
+          {/* Individual letter drip effect */}
+          {animated && shouldDrip && (
+            <>
+              <motion.div
+                className="absolute left-1/2 top-full rounded-b-full"
+                style={{
+                  width: '5px',
+                  height: '12px',
+                  marginLeft: '-2.5px',
+                  background: `linear-gradient(to bottom, ${dripColor} 0%, transparent 100%)`,
+                  filter: 'drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.6))',
+                }}
+                initial={{ scaleY: 0, opacity: 0 }}
+                animate={{
+                  scaleY: [0, 1, 1, 0.8],
+                  opacity: [0, 1, 1, 0],
+                  height: ['0px', '12px', '15px', '18px'],
+                }}
+                transition={{
+                  duration: 2.5,
+                  repeat: Infinity,
+                  delay: Math.random() * 3,
+                  repeatDelay: Math.random() * 5 + 3,
+                }}
+              />
+              <motion.div
+                className="absolute left-1/2 rounded-full"
+                style={{
+                  width: '8px',
+                  height: '8px',
+                  top: 'calc(100% + 15px)',
+                  marginLeft: '-4px',
+                  backgroundColor: dripColor,
+                  filter: 'drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.6))',
+                }}
+                initial={{ scale: 0, opacity: 0, y: 0 }}
+                animate={{
+                  scale: [0, 1, 0.8, 0],
+                  opacity: [0, 1, 0.8, 0],
+                  y: [0, 0, 5, 10],
+                }}
+                transition={{
+                  duration: 2.5,
+                  repeat: Infinity,
+                  delay: (Math.random() * 3) + 1,
+                  repeatDelay: Math.random() * 5 + 3,
+                }}
+              />
+            </>
+          )}
+        </motion.span>
+      );
+    });
 
   const MotionDiv = animated ? motion.div : 'div';
   const containerProps = animated
@@ -281,28 +330,71 @@ export function GraffitiLogo({ size = 'md', className = '', animated = true }: G
 
         .graffiti-text {
           position: relative;
-          -webkit-text-stroke: 4px #000000;
-          text-stroke: 4px #000000;
+          -webkit-text-stroke: 5px #000000;
+          text-stroke: 5px #000000;
           paint-order: stroke fill;
-          filter: drop-shadow(4px 4px 0px rgba(0, 0, 0, 0.8))
-                  drop-shadow(-1px -1px 0px rgba(255, 255, 255, 0.3))
-                  drop-shadow(0 0 20px rgba(0, 0, 0, 0.5));
-          font-style: italic;
-          letter-spacing: 0.05em;
+          filter: drop-shadow(5px 5px 0px rgba(0, 0, 0, 1))
+                  drop-shadow(-2px -2px 0px rgba(255, 255, 255, 0.4))
+                  drop-shadow(0 0 30px rgba(0, 0, 0, 0.7));
+          letter-spacing: 0.02em;
+          font-weight: 900;
         }
 
         .graffiti-ghetto {
-          background: linear-gradient(180deg, #00e5ff 0%, #40e0d0 30%, #ff6b6b 70%, #ff1744 100%);
+          background: linear-gradient(180deg,
+            #00ffff 0%,
+            #00e5ff 15%,
+            #40e0d0 30%,
+            #ff6b6b 60%,
+            #ff4444 75%,
+            #ff1744 100%
+          );
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           background-clip: text;
+          position: relative;
         }
 
         .graffiti-finance {
-          background: linear-gradient(180deg, #ffeb3b 0%, #ffc107 30%, #ff9800 70%, #ff5722 100%);
+          background: linear-gradient(180deg,
+            #ffeb3b 0%,
+            #ffd700 20%,
+            #ffc107 35%,
+            #ff9800 60%,
+            #ff6b35 80%,
+            #ff5722 100%
+          );
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           background-clip: text;
+          position: relative;
+        }
+
+        .graffiti-letter {
+          position: relative;
+          display: inline-block;
+        }
+
+        .graffiti-letter::before {
+          content: attr(data-char);
+          position: absolute;
+          top: 0;
+          left: 0;
+          -webkit-text-stroke: 5px #000000;
+          text-stroke: 5px #000000;
+          z-index: -1;
+        }
+
+        .shine-spot {
+          position: absolute;
+          width: 40%;
+          height: 40%;
+          background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 0%, transparent 70%);
+          border-radius: 50%;
+          top: 15%;
+          left: 20%;
+          pointer-events: none;
+          mix-blend-mode: overlay;
         }
 
         .spray-mist {
@@ -390,19 +482,44 @@ export function GraffitiLogo({ size = 'md', className = '', animated = true }: G
         particles.map((particle) => (
           <motion.div
             key={particle.id}
-            className="absolute rounded-full spray-mist"
+            className="absolute"
             style={{
               left: `${particle.x}%`,
               top: `${particle.y}%`,
-              width: `${particle.size}px`,
-              height: `${particle.size}px`,
-              backgroundColor: particle.color,
-              opacity: 0.4,
             }}
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: [0, 1.5, 0], opacity: [0, 0.6, 0] }}
-            transition={{ duration: particle.duration }}
-          />
+          >
+            <motion.div
+              className="rounded-full"
+              style={{
+                width: `${particle.size}px`,
+                height: `${particle.size}px`,
+                backgroundColor: particle.color,
+                boxShadow: `0 0 ${particle.size * 0.5}px ${particle.color}`,
+                filter: 'blur(1px)',
+              }}
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: [0, 1.2, 1], opacity: [0, 0.8, 0.5, 0] }}
+              transition={{ duration: particle.duration }}
+            />
+            {/* Small satellite splatter dots */}
+            {[...Array(3)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="absolute rounded-full"
+                style={{
+                  width: `${particle.size * 0.3}px`,
+                  height: `${particle.size * 0.3}px`,
+                  backgroundColor: particle.color,
+                  left: `${Math.cos(i * 2) * particle.size}px`,
+                  top: `${Math.sin(i * 2) * particle.size}px`,
+                  filter: 'blur(0.5px)',
+                }}
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: [0, 1, 0.8], opacity: [0, 0.7, 0] }}
+                transition={{ duration: particle.duration, delay: 0.1 }}
+              />
+            ))}
+          </motion.div>
         ))}
 
       {/* Radial burst effect */}
@@ -439,14 +556,14 @@ export function GraffitiLogo({ size = 'md', className = '', animated = true }: G
             className={`${config.fontSize} font-bold tracking-tight select-none graffiti-text graffiti-ghetto relative`}
             style={{
               fontFamily: "'Impact', 'Arial Black', 'Haettenschweiler', sans-serif",
-              letterSpacing: '0.05em',
+              letterSpacing: '0.03em',
               fontWeight: 900,
-              transform: 'rotate(-3deg) skewY(-2deg)',
+              transform: 'rotate(-2deg)',
               textTransform: 'uppercase',
             }}
             {...containerProps}
           >
-            {animated ? splitText('GHETTO', 0) : 'GHETTO'}
+            {animated ? splitText('GHETTO', 0, 'graffiti-ghetto') : 'GHETTO'}
             {animated && <div className="shimmer-effect" />}
           </MotionDiv>
         </motion.div>
@@ -460,14 +577,14 @@ export function GraffitiLogo({ size = 'md', className = '', animated = true }: G
             className={`${config.fontSize} font-bold tracking-tight select-none graffiti-text graffiti-finance ${config.gap} relative`}
             style={{
               fontFamily: "'Impact', 'Arial Black', 'Haettenschweiler', sans-serif",
-              letterSpacing: '0.05em',
+              letterSpacing: '0.03em',
               fontWeight: 900,
-              transform: 'rotate(2deg) skewY(1deg)',
+              transform: 'rotate(1deg)',
               textTransform: 'uppercase',
             }}
             {...containerProps}
           >
-            {animated ? splitText('FINANCE', 6) : 'FINANCE'}
+            {animated ? splitText('FINANCE', 6, 'graffiti-finance') : 'FINANCE'}
             {animated && (
               <div
                 className="shimmer-effect"
