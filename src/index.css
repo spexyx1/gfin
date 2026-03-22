@@ -12,20 +12,22 @@
 
   /* Graffiti Logo Styles */
   .graffiti-ghetto {
-    background: linear-gradient(135deg, #00ffff 0%, #40E0D0 25%, #FF1493 75%, #ff0080 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow: none;
+    background: linear-gradient(135deg, #00ffff 0%, #40E0D0 25%, #FF1493 75%, #ff0080 100%) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    color: transparent !important;
+    text-shadow: none !important;
     filter: drop-shadow(0 0 8px rgba(0, 255, 255, 0.5)) drop-shadow(0 0 15px rgba(255, 20, 147, 0.3));
   }
 
   .graffiti-finance {
-    background: linear-gradient(135deg, #FFD700 0%, #FFA500 40%, #FF8C00 70%, #FF6347 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow: none;
+    background: linear-gradient(135deg, #FFD700 0%, #FFA500 40%, #FF8C00 70%, #FF6347 100%) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    color: transparent !important;
+    text-shadow: none !important;
     filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.5)) drop-shadow(0 0 15px rgba(255, 165, 0, 0.3));
   }
 

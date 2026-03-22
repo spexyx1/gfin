@@ -342,13 +342,14 @@ export function GraffitiLogo({ size = 'md', className = '', animated = true }: G
             #ff6b6b 60%,
             #ff4444 75%,
             #ff1744 100%
-          );
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
+          ) !important;
+          -webkit-background-clip: text !important;
+          -webkit-text-fill-color: transparent !important;
+          background-clip: text !important;
+          color: transparent !important;
           position: relative;
-          filter: drop-shadow(4px 4px 0px rgba(0, 0, 0, 1))
-                  drop-shadow(-1px -1px 0px rgba(255, 255, 255, 0.3));
+          filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3))
+                  drop-shadow(0 0 10px rgba(0, 255, 255, 0.4));
         }
 
         .graffiti-finance {
@@ -359,13 +360,14 @@ export function GraffitiLogo({ size = 'md', className = '', animated = true }: G
             #ff9800 60%,
             #ff6b35 80%,
             #ff5722 100%
-          );
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
+          ) !important;
+          -webkit-background-clip: text !important;
+          -webkit-text-fill-color: transparent !important;
+          background-clip: text !important;
+          color: transparent !important;
           position: relative;
-          filter: drop-shadow(4px 4px 0px rgba(0, 0, 0, 1))
-                  drop-shadow(-1px -1px 0px rgba(255, 255, 255, 0.3));
+          filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3))
+                  drop-shadow(0 0 10px rgba(255, 215, 0, 0.4));
         }
 
         .graffiti-letter {
@@ -379,8 +381,8 @@ export function GraffitiLogo({ size = 'md', className = '', animated = true }: G
           top: 0;
           left: 0;
           z-index: -1;
-          -webkit-text-stroke: 4px #000000;
-          text-stroke: 4px #000000;
+          -webkit-text-stroke: 3px rgba(0, 0, 0, 0.5);
+          text-stroke: 3px rgba(0, 0, 0, 0.5);
           color: transparent;
         }
 
