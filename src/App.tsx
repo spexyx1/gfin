@@ -201,36 +201,11 @@ function App() {
                 Buy & Sell
               </span>
               <br />
-              <span className="text-white">Anything With Crypto</span>
+              <span className="text-white">Anything<sup className="text-[#FFD700] text-lg sm:text-xl">*</sup> With Crypto</span>
             </h1>
             <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-300 font-light max-w-3xl mx-auto leading-relaxed px-2">
               Escrow-protected trades. Moderated disputes. Built-in privacy. No middleman.
             </p>
-          </div>
-
-          {/* Legal Items Warning Banner */}
-          <div className="max-w-4xl mx-auto mb-6 sm:mb-10">
-            <div className="luxe-card border-[#FFD700]/20 p-4 sm:p-6">
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
-                <div className="flex items-start space-x-3 sm:space-x-4 flex-1">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-[#FFEA00] to-[#FF8C00] rounded-lg flex items-center justify-center flex-shrink-0 luxe-glow-neon">
-                    <Shield className="w-5 h-5 sm:w-6 sm:h-6 text-black" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-sm sm:text-base luxe-subtitle luxe-text-neon mb-1">Legal Items Only</h3>
-                    <p className="text-xs sm:text-sm text-gray-400 font-light leading-relaxed">
-                      All illegal goods are strictly prohibited. Community moderation rewards users who help keep the marketplace safe.
-                    </p>
-                  </div>
-                </div>
-                <button
-                  onClick={() => openModal('prohibitedItems')}
-                  className="luxe-btn-neon px-4 sm:px-6 py-2 sm:py-2.5 text-xs sm:text-sm w-full sm:w-auto"
-                >
-                  View Policy
-                </button>
-              </div>
-            </div>
           </div>
 
           {/* Why Trade Here */}
@@ -687,6 +662,35 @@ function App() {
         cartItemCount={getItemCount()}
         unreadMessages={unreadMessageCount}
       />
+
+      {/* Legal Items Notice - Above Footer */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 mb-8 sm:mb-12">
+        <div className="max-w-4xl mx-auto">
+          <div className="luxe-card border-[#FFD700]/20 p-4 sm:p-6">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
+              <div className="flex items-start space-x-3 sm:space-x-4 flex-1">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-[#FFEA00] to-[#FF8C00] rounded-lg flex items-center justify-center flex-shrink-0 luxe-glow-neon">
+                  <Shield className="w-5 h-5 sm:w-6 sm:h-6 text-black" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-sm sm:text-base luxe-subtitle luxe-text-neon mb-1">
+                    <sup className="text-[#FFD700] mr-1">*</sup>Legal Items Only
+                  </h3>
+                  <p className="text-xs sm:text-sm text-gray-400 font-light leading-relaxed">
+                    All illegal goods are strictly prohibited. Community moderation rewards users who help keep the marketplace safe.
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => openModal('prohibitedItems')}
+                className="luxe-btn-neon px-4 sm:px-6 py-2 sm:py-2.5 text-xs sm:text-sm w-full sm:w-auto"
+              >
+                View Policy
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
 
       {/* Global Footer */}
       <footer className="luxe-glass mt-8 sm:mt-12 lg:mt-16 border-t border-white/10 bg-gradient-to-b from-transparent to-gray-900/50 pb-20 lg:pb-0">

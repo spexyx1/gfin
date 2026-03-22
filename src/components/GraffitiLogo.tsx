@@ -151,10 +151,11 @@ export function GraffitiLogo({ size = 'md', className = '', animated = true }: G
   const baseY = 68;
 
   return (
-    <div className={`${className} relative inline-flex items-center justify-center ${height}`}>
+    <div className={`${className} relative flex items-center justify-center ${height} w-full`}>
       <motion.svg
         viewBox={`0 0 ${vw} ${vh}`}
-        style={{ width: `${vw * scale}px`, height: `${vh * scale}px`, overflow: 'visible' }}
+        className="mx-auto"
+        style={{ width: `${vw * scale}px`, height: `${vh * scale}px`, overflow: 'visible', display: 'block' }}
         animate={animated ? controls : undefined}
       >
         <defs>
@@ -213,7 +214,7 @@ export function GraffitiLogo({ size = 'md', className = '', animated = true }: G
               y={baseY + l.y}
               style={{
                 fontSize: `${fontSize}px`,
-                fontFamily: "'Bungee Shade', 'Impact', 'Arial Black', sans-serif",
+                fontFamily: "'Impact', 'Arial Black', sans-serif",
                 fontWeight: 900,
                 stroke: '#000',
                 strokeWidth: 9,
@@ -233,7 +234,7 @@ export function GraffitiLogo({ size = 'md', className = '', animated = true }: G
               y={baseY + l.y}
               style={{
                 fontSize: `${finFontSize}px`,
-                fontFamily: "'Bungee Shade', 'Impact', 'Arial Black', sans-serif",
+                fontFamily: "'Impact', 'Arial Black', sans-serif",
                 fontWeight: 900,
                 stroke: '#000',
                 strokeWidth: 8,
