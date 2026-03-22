@@ -335,47 +335,49 @@ export function GraffitiLogo({ size = 'md', className = '', animated = true }: G
         }
 
         .graffiti-ghetto {
-          background: linear-gradient(160deg,
-            #00FFFF 0%,
-            #00E5FF 12%,
-            #40E0D0 25%,
-            #FFD700 40%,
-            #FF6B6B 60%,
+          background: linear-gradient(155deg,
+            #FF6B00 0%,
+            #FF9500 10%,
+            #FFA500 18%,
+            #00D4FF 32%,
+            #00BFFF 45%,
+            #40E0D0 58%,
             #FF1493 75%,
-            #FF0080 85%,
-            #8B00FF 100%
+            #E91E63 88%,
+            #FF0066 100%
           ) !important;
           -webkit-background-clip: text !important;
           -webkit-text-fill-color: transparent !important;
           background-clip: text !important;
           color: transparent !important;
           position: relative;
-          filter: drop-shadow(3px 3px 0px rgba(0, 0, 0, 0.8))
-                  drop-shadow(-1px -1px 0px rgba(255, 255, 255, 0.3))
-                  drop-shadow(0 0 15px rgba(0, 255, 255, 0.5))
-                  drop-shadow(0 0 25px rgba(255, 20, 147, 0.4));
+          filter: drop-shadow(5px 5px 0px rgba(0, 0, 0, 1))
+                  drop-shadow(-2px -2px 0px rgba(255, 255, 255, 0.5))
+                  drop-shadow(0 0 25px rgba(255, 107, 0, 0.7))
+                  drop-shadow(0 0 35px rgba(0, 212, 255, 0.6));
         }
 
         .graffiti-finance {
-          background: linear-gradient(160deg,
-            #FFEB3B 0%,
-            #FFD700 15%,
-            #FFA500 30%,
-            #FF8C00 45%,
-            #FF6B35 60%,
-            #FF5722 75%,
-            #FF1744 90%,
-            #FF00AA 100%
+          background: linear-gradient(155deg,
+            #FFD700 0%,
+            #FFED4E 12%,
+            #FFFF00 22%,
+            #00FF88 38%,
+            #00E676 50%,
+            #00D4AA 62%,
+            #9C27B0 76%,
+            #E91E63 88%,
+            #FF0066 100%
           ) !important;
           -webkit-background-clip: text !important;
           -webkit-text-fill-color: transparent !important;
           background-clip: text !important;
           color: transparent !important;
           position: relative;
-          filter: drop-shadow(3px 3px 0px rgba(0, 0, 0, 0.8))
-                  drop-shadow(-1px -1px 0px rgba(255, 255, 255, 0.3))
-                  drop-shadow(0 0 15px rgba(255, 215, 0, 0.5))
-                  drop-shadow(0 0 25px rgba(255, 87, 34, 0.4));
+          filter: drop-shadow(5px 5px 0px rgba(0, 0, 0, 1))
+                  drop-shadow(-2px -2px 0px rgba(255, 255, 255, 0.5))
+                  drop-shadow(0 0 25px rgba(255, 237, 78, 0.7))
+                  drop-shadow(0 0 35px rgba(0, 230, 118, 0.6));
         }
 
         .graffiti-letter {
@@ -565,9 +567,9 @@ export function GraffitiLogo({ size = 'md', className = '', animated = true }: G
             className={`${config.fontSize} font-bold tracking-tight select-none graffiti-text graffiti-ghetto relative`}
             style={{
               fontFamily: "'Bungee Shade', 'Impact', 'Arial Black', sans-serif",
-              letterSpacing: '0.08em',
+              letterSpacing: '0.1em',
               fontWeight: 900,
-              transform: 'rotate(-3deg) skewX(-5deg)',
+              transform: 'rotate(-4deg) skewX(-8deg)',
               textTransform: 'uppercase',
             }}
             {...containerProps}
@@ -586,9 +588,9 @@ export function GraffitiLogo({ size = 'md', className = '', animated = true }: G
             className={`${config.fontSize} font-bold tracking-tight select-none graffiti-text graffiti-finance relative`}
             style={{
               fontFamily: "'Bungee Shade', 'Impact', 'Arial Black', sans-serif",
-              letterSpacing: '0.08em',
+              letterSpacing: '0.1em',
               fontWeight: 900,
-              transform: 'rotate(2deg) skewX(5deg)',
+              transform: 'rotate(3deg) skewX(8deg)',
               textTransform: 'uppercase',
             }}
             {...containerProps}
