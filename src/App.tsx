@@ -202,7 +202,7 @@ function App() {
               </span>
               <br />
               <span className="text-white inline-block relative">
-                Anythin<span className="relative inline-block">g<sup className="absolute -top-1 -right-2 text-white text-base sm:text-lg">*</sup></span> With Crypto
+                Anythin<span className="relative inline-block">g<sup className="absolute top-1 -right-2 text-white text-base sm:text-lg">*</sup></span> With Crypto
               </span>
             </h1>
             <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-300 font-light max-w-3xl mx-auto leading-relaxed px-2">
