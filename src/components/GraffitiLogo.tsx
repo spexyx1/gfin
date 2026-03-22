@@ -261,7 +261,7 @@ export function GraffitiLogo({ size = 'md', className = '', animated = true }: G
     : {};
 
   return (
-    <div className={`${className} relative inline-flex flex-col items-center justify-center ${config.height}`}>
+    <div className={`${className} relative inline-flex flex-row items-center justify-center ${config.height} gap-4`}>
       <style>{`
         @keyframes spray-mist {
           0% { opacity: 0; transform: scale(0.8); }
@@ -371,9 +371,17 @@ export function GraffitiLogo({ size = 'md', className = '', animated = true }: G
         .graffiti-letter {
           position: relative;
           display: inline-block;
-          -webkit-text-stroke: 3px #000000;
-          text-stroke: 3px #000000;
-          paint-order: stroke fill;
+        }
+
+        .graffiti-letter::before {
+          content: attr(data-char);
+          position: absolute;
+          top: 0;
+          left: 0;
+          z-index: -1;
+          -webkit-text-stroke: 4px #000000;
+          text-stroke: 4px #000000;
+          color: transparent;
         }
 
         .shine-spot {
@@ -565,7 +573,7 @@ export function GraffitiLogo({ size = 'md', className = '', animated = true }: G
           animate={animated ? 'animate' : {}}
         >
           <MotionDiv
-            className={`${config.fontSize} font-bold tracking-tight select-none graffiti-text graffiti-finance ${config.gap} relative`}
+            className={`${config.fontSize} font-bold tracking-tight select-none graffiti-text graffiti-finance relative`}
             style={{
               fontFamily: "'Impact', 'Arial Black', 'Haettenschweiler', sans-serif",
               letterSpacing: '0.03em',
