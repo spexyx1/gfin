@@ -189,26 +189,80 @@ export function GraffitiLogo({ size = 'md', className = '', animated = true }: G
         </defs>
 
         {animated && [
-          { cx: 90, cy: 40, c: 'rgba(255,51,0,0.09)', r: 55 },
-          { cx: 250, cy: 35, c: 'rgba(0,204,255,0.08)', r: 65 },
-          { cx: 420, cy: 40, c: 'rgba(255,215,0,0.09)', r: 50 },
-          { cx: 580, cy: 35, c: 'rgba(0,230,118,0.08)', r: 58 },
-          { cx: 160, cy: 45, c: 'rgba(255,20,147,0.07)', r: 45 },
-          { cx: 650, cy: 38, c: 'rgba(170,0,255,0.06)', r: 48 },
+          { cx: 90, cy: 40, c: 'rgba(255,51,0,0.12)', r: 55 },
+          { cx: 250, cy: 35, c: 'rgba(0,204,255,0.11)', r: 65 },
+          { cx: 420, cy: 40, c: 'rgba(255,215,0,0.12)', r: 50 },
+          { cx: 580, cy: 35, c: 'rgba(0,230,118,0.11)', r: 58 },
+          { cx: 160, cy: 45, c: 'rgba(255,20,147,0.10)', r: 45 },
+          { cx: 650, cy: 38, c: 'rgba(170,0,255,0.09)', r: 48 },
+          { cx: 320, cy: 50, c: 'rgba(255,100,0,0.10)', r: 52 },
+          { cx: 500, cy: 30, c: 'rgba(0,255,200,0.09)', r: 48 },
+          { cx: 120, cy: 25, c: 'rgba(255,150,50,0.08)', r: 42 },
+          { cx: 680, cy: 55, c: 'rgba(100,200,255,0.10)', r: 50 },
         ].map((m, i) => (
           <motion.circle
             key={`mist${i}`} cx={m.cx} cy={m.cy} r={m.r}
             fill={m.c} filter="url(#gf-blur)"
-            animate={{ r: [m.r, m.r * 1.25, m.r], opacity: [0.5, 0.85, 0.5] }}
-            transition={{ duration: 3.5 + i * 0.4, repeat: Infinity, ease: 'easeInOut', delay: i * 0.35 }}
+            animate={{
+              r: [m.r, m.r * 1.35, m.r],
+              opacity: [0.4, 0.9, 0.4],
+              cx: [m.cx, m.cx + (i % 2 ? 10 : -10), m.cx]
+            }}
+            transition={{ duration: 3 + i * 0.3, repeat: Infinity, ease: 'easeInOut', delay: i * 0.25 }}
           />
         ))}
 
         {splats.map((s, i) => <Splat key={`sp${i}`} s={s} animated={animated} />)}
 
+        {/* Background shadow layer for depth */}
+        {GHETTO_LETTERS.map((l, i) => (
+          <motion.text
+            key={`gh-shadow${i}`}
+            x={ghStartX + i * ghLetterW + 3}
+            y={baseY + l.y + 3}
+            style={{
+              fontSize: `${fontSize}px`,
+              fontFamily: "'Impact', 'Arial Black', sans-serif",
+              fontWeight: 900,
+              fill: 'rgba(0,0,0,0.3)',
+              filter: 'blur(4px)',
+            }}
+            animate={animated ? {
+              y: [baseY + l.y + 3, baseY + l.y + 4, baseY + l.y + 3],
+              opacity: [0.3, 0.4, 0.3]
+            } : undefined}
+            transition={{ duration: 2 + i * 0.2, repeat: Infinity, ease: 'easeInOut' }}
+          >
+            {l.char}
+          </motion.text>
+        ))}
+
+        {FINANCE_LETTERS.map((l, i) => (
+          <motion.text
+            key={`fn-shadow${i}`}
+            x={finStartX + i * finLetterW + 2}
+            y={baseY + l.y + 2}
+            style={{
+              fontSize: `${finFontSize}px`,
+              fontFamily: "'Impact', 'Arial Black', sans-serif",
+              fontWeight: 900,
+              fill: 'rgba(0,0,0,0.3)',
+              filter: 'blur(4px)',
+            }}
+            animate={animated ? {
+              y: [baseY + l.y + 2, baseY + l.y + 3, baseY + l.y + 2],
+              opacity: [0.3, 0.4, 0.3]
+            } : undefined}
+            transition={{ duration: 2.2 + i * 0.2, repeat: Infinity, ease: 'easeInOut' }}
+          >
+            {l.char}
+          </motion.text>
+        ))}
+
+        {/* Main letters with spray paint effect */}
         <g filter="url(#gf-glow)">
           {GHETTO_LETTERS.map((l, i) => (
-            <text
+            <motion.text
               key={`gh${i}`}
               x={ghStartX + i * ghLetterW}
               y={baseY + l.y}
@@ -216,19 +270,25 @@ export function GraffitiLogo({ size = 'md', className = '', animated = true }: G
                 fontSize: `${fontSize}px`,
                 fontFamily: "'Impact', 'Arial Black', sans-serif",
                 fontWeight: 900,
-                stroke: '#000',
-                strokeWidth: 9,
-                strokeLinejoin: 'round',
                 fill: `url(#gg${i})`,
-                paintOrder: 'stroke',
+                filter: 'drop-shadow(0 0 8px rgba(255,255,255,0.4))',
               }}
+              animate={animated ? {
+                y: [baseY + l.y, baseY + l.y - 2, baseY + l.y],
+                filter: [
+                  'drop-shadow(0 0 8px rgba(255,255,255,0.4))',
+                  'drop-shadow(0 0 12px rgba(255,255,255,0.6))',
+                  'drop-shadow(0 0 8px rgba(255,255,255,0.4))'
+                ]
+              } : undefined}
+              transition={{ duration: 2 + i * 0.3, repeat: Infinity, ease: 'easeInOut', delay: i * 0.1 }}
             >
               {l.char}
-            </text>
+            </motion.text>
           ))}
 
           {FINANCE_LETTERS.map((l, i) => (
-            <text
+            <motion.text
               key={`fn${i}`}
               x={finStartX + i * finLetterW}
               y={baseY + l.y}
@@ -236,15 +296,21 @@ export function GraffitiLogo({ size = 'md', className = '', animated = true }: G
                 fontSize: `${finFontSize}px`,
                 fontFamily: "'Impact', 'Arial Black', sans-serif",
                 fontWeight: 900,
-                stroke: '#000',
-                strokeWidth: 8,
-                strokeLinejoin: 'round',
                 fill: `url(#gf${i})`,
-                paintOrder: 'stroke',
+                filter: 'drop-shadow(0 0 8px rgba(255,255,255,0.4))',
               }}
+              animate={animated ? {
+                y: [baseY + l.y, baseY + l.y - 2, baseY + l.y],
+                filter: [
+                  'drop-shadow(0 0 8px rgba(255,255,255,0.4))',
+                  'drop-shadow(0 0 12px rgba(255,255,255,0.6))',
+                  'drop-shadow(0 0 8px rgba(255,255,255,0.4))'
+                ]
+              } : undefined}
+              transition={{ duration: 2.2 + i * 0.3, repeat: Infinity, ease: 'easeInOut', delay: i * 0.1 }}
             >
               {l.char}
-            </text>
+            </motion.text>
           ))}
         </g>
 

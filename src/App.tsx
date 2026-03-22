@@ -201,7 +201,9 @@ function App() {
                 Buy & Sell
               </span>
               <br />
-              <span className="text-white">Anything<sup className="text-[#FFD700] text-lg sm:text-xl">*</sup> With Crypto</span>
+              <span className="text-white inline-block relative">
+                Anythin<span className="relative inline-block">g<sup className="absolute -top-3 -right-2 text-white text-base sm:text-lg">*</sup></span> With Crypto
+              </span>
             </h1>
             <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-300 font-light max-w-3xl mx-auto leading-relaxed px-2">
               Escrow-protected trades. Moderated disputes. Built-in privacy. No middleman.
