@@ -542,7 +542,7 @@ export function GraffitiLogo({ size = 'md', className = '', animated = true }: G
 
       {/* Main container with floating animation */}
       <motion.div
-        className="relative wiggle-container"
+        className="relative wiggle-container flex flex-row items-center gap-3"
         variants={animated ? floatingVariants : {}}
         animate={animated ? 'animate' : {}}
       >
