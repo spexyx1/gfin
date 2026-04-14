@@ -454,10 +454,10 @@ function App() {
       }`}>
         <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
           <div className="flex items-center justify-between py-2 sm:py-3 lg:py-0 lg:h-16 gap-2 sm:gap-3 lg:gap-0">
-            <div className="flex items-center flex-shrink-0 lg:-ml-24">
-              <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
+            <div className="flex items-center flex-shrink-0">
+              <Link to="/" className="flex items-center hover:opacity-90 transition-opacity">
                 <GraffitiLogo size="xs" className="lg:hidden" />
-                <GraffitiLogo size="sm" className="hidden lg:block" />
+                <GraffitiLogo size="header" className="hidden lg:block" />
               </Link>
             </div>
 
