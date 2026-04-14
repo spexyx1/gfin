@@ -19,32 +19,32 @@ export function GraffitiLogo({ className = '', animated = true }: GraffitiLogoPr
 
   return (
     <motion.svg
-      viewBox="0 0 480 50"
+      viewBox="0 0 600 100"
       className={`h-8 w-auto ${className}`}
       animate={animated ? controls : undefined}
     >
       <defs>
         <linearGradient id="pearlGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#000000" />
-          <stop offset="40%" stopColor="#000000" />
+          <stop offset="0%" stopColor="#1a1a1a" />
+          <stop offset="35%" stopColor="#1a1a1a" />
           <stop offset="50%" stopColor="#ffffff" />
-          <stop offset="60%" stopColor="#000000" />
-          <stop offset="100%" stopColor="#000000" />
+          <stop offset="65%" stopColor="#1a1a1a" />
+          <stop offset="100%" stopColor="#1a1a1a" />
         </linearGradient>
         <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#b8860b" />
+          <stop offset="0%" stopColor="#8b7000" />
           <stop offset="50%" stopColor="#ffd700" />
-          <stop offset="100%" stopColor="#daa520" />
+          <stop offset="100%" stopColor="#b8860b" />
         </linearGradient>
       </defs>
 
       <text
-        x="8"
-        y="36"
-        fontSize="44"
-        fontWeight="bold"
+        x="20"
+        y="75"
+        fontSize="80"
+        fontWeight="900"
         fontFamily="Arial Black, sans-serif"
-        letterSpacing="1"
+        letterSpacing="4"
         fill="url(#pearlGrad)"
         textAnchor="start"
       >
@@ -52,12 +52,12 @@ export function GraffitiLogo({ className = '', animated = true }: GraffitiLogoPr
       </text>
 
       <text
-        x="265"
-        y="36"
-        fontSize="44"
-        fontWeight="bold"
+        x="350"
+        y="75"
+        fontSize="80"
+        fontWeight="900"
         fontFamily="Arial Black, sans-serif"
-        letterSpacing="1"
+        letterSpacing="4"
         fill="url(#goldGrad)"
         textAnchor="start"
       >
