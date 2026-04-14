@@ -25,39 +25,41 @@ export function GraffitiLogo({ className = '', animated = true }: GraffitiLogoPr
     >
       <defs>
         <linearGradient id="pearlGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#1a1a1a" />
-          <stop offset="35%" stopColor="#1a1a1a" />
-          <stop offset="50%" stopColor="#e8e8e8" stopOpacity="0.6" />
-          <stop offset="65%" stopColor="#1a1a1a" />
-          <stop offset="100%" stopColor="#1a1a1a" />
+          <stop offset="0%" stopColor="#000000" />
+          <stop offset="40%" stopColor="#000000" />
+          <stop offset="50%" stopColor="#ffffff" />
+          <stop offset="60%" stopColor="#000000" />
+          <stop offset="100%" stopColor="#000000" />
         </linearGradient>
         <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#d4af37" />
-          <stop offset="50%" stopColor="#f5deb3" stopOpacity="0.4" />
-          <stop offset="100%" stopColor="#b8860b" />
+          <stop offset="0%" stopColor="#b8860b" />
+          <stop offset="50%" stopColor="#ffd700" />
+          <stop offset="100%" stopColor="#daa520" />
         </linearGradient>
       </defs>
 
       <text
         x="8"
-        y="38"
-        fontSize="42"
-        fontWeight="900"
-        fontFamily="Arial, sans-serif"
-        letterSpacing="2"
+        y="36"
+        fontSize="44"
+        fontWeight="bold"
+        fontFamily="Arial Black, sans-serif"
+        letterSpacing="1"
         fill="url(#pearlGrad)"
+        textAnchor="start"
       >
         GHETTO
       </text>
 
       <text
-        x="280"
-        y="38"
-        fontSize="42"
-        fontWeight="900"
-        fontFamily="Arial, sans-serif"
-        letterSpacing="2"
+        x="265"
+        y="36"
+        fontSize="44"
+        fontWeight="bold"
+        fontFamily="Arial Black, sans-serif"
+        letterSpacing="1"
         fill="url(#goldGrad)"
+        textAnchor="start"
       >
         FINANCE
       </text>
