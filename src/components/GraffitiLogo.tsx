@@ -24,17 +24,15 @@ export function GraffitiLogo({ className = '', animated = true }: GraffitiLogoPr
       animate={animated ? controls : undefined}
     >
       <defs>
-        <linearGradient id="pearlGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#1a1a1a" />
-          <stop offset="35%" stopColor="#1a1a1a" />
-          <stop offset="50%" stopColor="#ffffff" />
-          <stop offset="65%" stopColor="#1a1a1a" />
-          <stop offset="100%" stopColor="#1a1a1a" />
+        <linearGradient id="pearlWhiteGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stopColor="#f5f5f0" />
+          <stop offset="50%" stopColor="#e8e8e0" />
+          <stop offset="100%" stopColor="#f5f5f0" />
         </linearGradient>
-        <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#8b7000" />
-          <stop offset="50%" stopColor="#ffd700" />
-          <stop offset="100%" stopColor="#b8860b" />
+        <linearGradient id="pearlGoldGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stopColor="#e6d5a8" />
+          <stop offset="50%" stopColor="#d4af37" />
+          <stop offset="100%" stopColor="#e6d5a8" />
         </linearGradient>
       </defs>
 
@@ -45,7 +43,7 @@ export function GraffitiLogo({ className = '', animated = true }: GraffitiLogoPr
         fontWeight="900"
         fontFamily="Arial Black, sans-serif"
         letterSpacing="4"
-        fill="url(#pearlGrad)"
+        fill="url(#pearlWhiteGrad)"
         textAnchor="start"
       >
         GHETTO
@@ -58,7 +56,7 @@ export function GraffitiLogo({ className = '', animated = true }: GraffitiLogoPr
         fontWeight="900"
         fontFamily="Arial Black, sans-serif"
         letterSpacing="4"
-        fill="url(#goldGrad)"
+        fill="url(#pearlGoldGrad)"
         textAnchor="start"
       >
         FINANCE
