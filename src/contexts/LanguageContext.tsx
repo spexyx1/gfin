@@ -1,7 +1,7 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { supabase } from '../lib/supabase';
-import i18n, { loadLocaleData } from '../i18n';
+import i18n, { ensureLocaleLoaded } from '../i18n';
 import { SUPPORTED_LANGUAGES, Language, isRTLLanguage } from '../i18n/languages';
 import { logger } from '../utils/logger';
 
@@ -17,16 +17,76 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 
 const STORAGE_KEY = 'i18nextLng';
 
+function resolveInitialLanguage(): string {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      const base = stored.split('-')[0];
+      if (SUPPORTED_LANGUAGES.find(l => l.code === stored)) return stored;
+      if (SUPPORTED_LANGUAGES.find(l => l.code === base)) return base;
+    }
+    const nav = (typeof navigator !== 'undefined' ? navigator.language : 'en').split('-')[0];
+    if (SUPPORTED_LANGUAGES.find(l => l.code === nav)) return nav;
+  } catch {
+    // ignore
+  }
+  return 'en';
+}
+
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const { user } = useAuth();
-  const [currentLanguage, setCurrentLanguage] = useState<string>('en');
-  const [isRTL, setIsRTL] = useState<boolean>(false);
+  const [currentLanguage, setCurrentLanguage] = useState<string>(() => resolveInitialLanguage());
+  const [isRTL, setIsRTL] = useState<boolean>(() => isRTLLanguage(resolveInitialLanguage()));
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
+  const applyLanguage = useCallback(async (languageCode: string, persistToDb: boolean) => {
+    const normalized = SUPPORTED_LANGUAGES.find(l => l.code === languageCode)
+      ? languageCode
+      : 'en';
+
+    await ensureLocaleLoaded(normalized);
+    await i18n.changeLanguage(normalized);
+
+    const rtl = isRTLLanguage(normalized);
+    setCurrentLanguage(normalized);
+    setIsRTL(rtl);
+
+    if (typeof document !== 'undefined') {
+      document.documentElement.dir = rtl ? 'rtl' : 'ltr';
+      document.documentElement.lang = normalized;
+    }
+
+    try {
+      localStorage.setItem(STORAGE_KEY, normalized);
+    } catch {
+      // ignore storage errors
+    }
+
+    if (persistToDb && user) {
+      const { error } = await supabase
+        .from('profiles')
+        .update({ preferred_language: normalized })
+        .eq('id', user.id);
+      if (error) {
+        logger.error('Failed to save preferred language', 'LanguageContext', error);
+      }
+    }
+  }, [user]);
+
+  const changeLanguage = useCallback(async (languageCode: string) => {
+    try {
+      await applyLanguage(languageCode, true);
+    } catch (error) {
+      logger.error('Failed to change language', 'LanguageContext', error);
+      throw error;
+    }
+  }, [applyLanguage]);
+
   useEffect(() => {
+    let cancelled = false;
     const initializeLanguage = async () => {
       try {
-        let languageToUse = 'en';
+        let languageToUse = resolveInitialLanguage();
 
         if (user) {
           const { data: profile, error } = await supabase
@@ -37,73 +97,24 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 
           if (!error && profile?.preferred_language) {
             languageToUse = profile.preferred_language;
-            logger.debug(`Loaded user preferred language: ${languageToUse}`, 'LanguageContext');
           }
         }
 
-        if (languageToUse === 'en') {
-          const storedLanguage = localStorage.getItem(STORAGE_KEY);
-          if (storedLanguage && SUPPORTED_LANGUAGES.find(l => l.code === storedLanguage)) {
-            languageToUse = storedLanguage;
-            logger.debug(`Using stored language: ${languageToUse}`, 'LanguageContext');
-          } else {
-            const browserLanguage = navigator.language.split('-')[0];
-            if (SUPPORTED_LANGUAGES.find(l => l.code === browserLanguage)) {
-              languageToUse = browserLanguage;
-              logger.debug(`Using browser language: ${languageToUse}`, 'LanguageContext');
-            }
-          }
-        }
-
-        await changeLanguage(languageToUse);
+        if (cancelled) return;
+        await applyLanguage(languageToUse, false);
       } catch (error) {
         logger.error('Failed to initialize language', 'LanguageContext', error);
-        await changeLanguage('en');
+        if (!cancelled) await applyLanguage('en', false);
       } finally {
-        setIsLoading(false);
+        if (!cancelled) setIsLoading(false);
       }
     };
 
     initializeLanguage();
-  }, [user?.id]);
-
-  const changeLanguage = async (languageCode: string) => {
-    try {
-      logger.debug(`Changing language to: ${languageCode}`, 'LanguageContext');
-
-      const localeData = await loadLocaleData(languageCode);
-      i18n.addResourceBundle(languageCode, 'translation', localeData, true, true);
-
-      await i18n.changeLanguage(languageCode);
-
-      setCurrentLanguage(languageCode);
-
-      const rtl = isRTLLanguage(languageCode);
-      setIsRTL(rtl);
-      document.documentElement.dir = rtl ? 'rtl' : 'ltr';
-      document.documentElement.lang = languageCode;
-
-      localStorage.setItem(STORAGE_KEY, languageCode);
-
-      if (user) {
-        const { error } = await supabase
-          .from('profiles')
-          .update({ preferred_language: languageCode })
-          .eq('id', user.id);
-
-        if (error) {
-          logger.error('Failed to update preferred language in database', 'LanguageContext', error);
-        } else {
-          logger.debug(`Updated preferred language in database: ${languageCode}`, 'LanguageContext');
-        }
-      }
-
-      logger.debug(`Language changed successfully to ${languageCode}`, 'LanguageContext');
-    } catch (error) {
-      logger.error('Failed to change language', 'LanguageContext', error);
-      throw error;
-    }
-  };
+    return () => {
+      cancelled = true;
+    };
+  }, [user?.id, applyLanguage]);
 
   const value: LanguageContextType = {
     currentLanguage,
