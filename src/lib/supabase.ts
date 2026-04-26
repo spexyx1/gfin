@@ -1,5 +1,4 @@
 import { createClient } from '@supabase/supabase-js';
-import { logger } from '../utils/logger';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
@@ -35,7 +34,7 @@ export const requireSupabase = () => {
 
 // Helper function to handle Supabase errors
 export const handleSupabaseError = (error: any) => {
-  logger.error('Supabase error', 'supabase', error);
+  console.error('Supabase error:', error);
   if (error?.message) {
     throw new Error(error.message);
   }

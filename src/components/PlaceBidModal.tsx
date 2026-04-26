@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { X, Gavel, DollarSign, TrendingUp, Zap, AlertCircle, CheckCircle, Clock } from 'lucide-react';
 import { Auction } from '../types';
 import { useAuth } from '../hooks/useAuth';
-import { useTerms } from '../hooks/useTerms';
 
 interface PlaceBidModalProps {
   isOpen: boolean;
@@ -19,8 +18,7 @@ export function PlaceBidModal({ isOpen, onClose, auction, onPlaceBid, calculateM
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
-  const { user } = useAuth();
-  const { needsTermsAcceptance } = useTerms();
+  const { user, needsTermsAcceptance } = useAuth();
 
   useEffect(() => {
     if (auction) {

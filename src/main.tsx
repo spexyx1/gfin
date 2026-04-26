@@ -3,9 +3,6 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App.tsx';
 import { AuthProvider } from './components/AuthProvider.tsx';
-import { CartProvider } from './contexts/CartContext.tsx';
-import { ModalProvider } from './contexts/ModalContext.tsx';
-import { ProductsProvider } from './contexts/ProductsContext.tsx';
 import { LanguageProvider } from './contexts/LanguageContext.tsx';
 import './i18n';
 import './config/reownConfig';
@@ -19,15 +16,9 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
       <AuthProvider>
-        <CartProvider>
-          <ModalProvider>
-            <ProductsProvider>
-              <LanguageProvider>
-                <App />
-              </LanguageProvider>
-            </ProductsProvider>
-          </ModalProvider>
-        </CartProvider>
+        <LanguageProvider>
+          <App />
+        </LanguageProvider>
       </AuthProvider>
     </BrowserRouter>
   </StrictMode>

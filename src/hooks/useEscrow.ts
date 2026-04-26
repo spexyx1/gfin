@@ -772,21 +772,25 @@ export function useEscrow() {
           : o
       ));
 
-      // Auto-complete immediately after release
-      try {
-        const { error: completeError } = await supabaseClient
-          .from('orders')
-          .update({ status: 'completed' })
-          .eq('id', orderId);
+      // Auto-complete after release
+      setTimeout(async () => {
+        try {
+          const { error: completeError } = await supabaseClient
+            .from('orders')
+            .update({ status: 'completed' })
+            .eq('id', orderId);
 
-        if (!completeError) {
-          setOrders(prev => prev.map(o =>
-            o.id === orderId ? { ...o, status: 'completed' as const } : o
-          ));
+          if (!completeError) {
+            setOrders(prev => prev.map(o =>
+              o.id === orderId
+                ? { ...o, status: 'completed' as const }
+                : o
+            ));
+          }
+        } catch (error) {
+          logger.error('Failed to auto-complete order', 'useEscrow', error);
         }
-      } catch (error) {
-        logger.error('Failed to auto-complete order', 'useEscrow', error);
-      }
+      }, 1000);
 
       // Send notification to seller
       try {

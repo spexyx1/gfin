@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { logger } from '../utils/logger';
-import { hasAdminRole } from '../utils/adminRoles';
 
 export interface UserFlag {
   id: string;
@@ -65,7 +64,41 @@ export function useEnhancedSitemaster() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const isSitemaster = () => hasAdminRole('sitemaster');
+  const isSitemaster = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        logger.debug('[useEnhancedSitemaster] No authenticated user', 'useEnhancedSitemaster');
+        return false;
+      }
+
+      logger.debug('[useEnhancedSitemaster] Checking sitemaster role for user', 'useEnhancedSitemaster', user.id);
+      const { data, error } = await supabase
+        .from('user_admin_roles')
+        .select('*')
+        .eq('user_id', user.id)
+        .eq('role_type', 'sitemaster')
+        .eq('active', true)
+        .maybeSingle();
+
+      if (error) {
+        logger.error('[useEnhancedSitemaster] Database error', 'useEnhancedSitemaster', error);
+        return false;
+      }
+
+      const hasSitemasterRole = !!data;
+      logger.debug('[useEnhancedSitemaster] Role check result', 'useEnhancedSitemaster', { hasSitemasterRole, data });
+
+      if (hasSitemasterRole) {
+        logger.debug('[useEnhancedSitemaster] SITEMASTER ACCESS GRANTED', 'useEnhancedSitemaster');
+      }
+
+      return hasSitemasterRole;
+    } catch (error) {
+      logger.error('[useEnhancedSitemaster] Exception', 'useEnhancedSitemaster', error);
+      return false;
+    }
+  };
 
   const flagUser = async (userId: string, flagType: string, reason: string, evidence: any = {}) => {
     const { data: { user } } = await supabase.auth.getUser();
@@ -687,25 +720,9 @@ export function useEnhancedSitemaster() {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) throw new Error('Not authenticated');
 
-    // Batch content_moderation records and run content deletions in parallel
-    const moderationRows = contentIds.map(contentId => ({
-      content_type: contentType,
-      content_id: contentId,
-      action: 'delete',
-      moderator_id: user.id,
-      reason,
-      metadata: {}
-    }));
-    await supabase.from('content_moderation').insert(moderationRows);
-
-    await Promise.all(contentIds.map(contentId => {
-      if (contentType === 'product') {
-        return supabase.from('products').delete().eq('id', contentId);
-      } else if (contentType === 'post') {
-        return supabase.from('social_posts').update({ deleted: true }).eq('id', contentId);
-      }
-      return Promise.resolve();
-    }));
+    for (const contentId of contentIds) {
+      await deleteContent(contentType, contentId, reason);
+    }
 
     await supabase.from('activity_logs').insert({
       user_id: user.id,

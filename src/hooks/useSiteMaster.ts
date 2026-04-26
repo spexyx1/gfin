@@ -6,7 +6,6 @@ import { supabase, requireSupabase, handleSupabaseError } from '../lib/supabase'
 import { ethers } from 'ethers';
 import { logger } from '../utils/logger';
 import { ESCROW_ABI, GHETTO_TOKEN_ABI } from '../config/contractAbis';
-import { hasAdminRole } from '../utils/adminRoles';
 
 const ESCROW_CONTRACT_ADDRESS = import.meta.env.VITE_ESCROW_CONTRACT_ADDRESS;
 const GHETTO_CONTRACT_ADDRESS = import.meta.env.VITE_GHETTO_TOKEN_ADDRESS;
@@ -155,8 +154,41 @@ export function useSiteMaster() {
   const [issitemaster, setIssitemaster] = useState(false);
 
   useEffect(() => {
-    if (!user) { setIssitemaster(false); return; }
-    hasAdminRole('sitemaster').then(setIssitemaster);
+    const checkSitemasterRole = async () => {
+      if (!user) {
+        setIssitemaster(false);
+        return;
+      }
+
+      if (!supabase) {
+        logger.error('Supabase client not available', 'useSiteMaster');
+        setIssitemaster(false);
+        return;
+      }
+
+      try {
+        const { data, error } = await supabase
+          .from('user_admin_roles')
+          .select('*')
+          .eq('user_id', user.id)
+          .eq('role_type', 'sitemaster')
+          .eq('active', true)
+          .maybeSingle();
+
+        if (error) {
+          logger.error('Database query error', 'useSiteMaster', error);
+          setIssitemaster(false);
+          return;
+        }
+
+        setIssitemaster(!!data);
+      } catch (error) {
+        logger.error('Exception during role check', 'useSiteMaster', error);
+        setIssitemaster(false);
+      }
+    };
+
+    checkSitemasterRole();
   }, [user]);
 
   const getContracts = async () => {
@@ -830,13 +862,11 @@ export function useSiteMaster() {
         updates.push({ key: 'referral_max_redeem_ghetto', value: settings.maxRedeemGhetto.toString() });
       }
 
-      if (updates.length > 0) {
+      for (const update of updates) {
         const { error } = await supabaseClient
           .from('platform_settings')
-          .upsert(
-            updates.map(u => ({ key: u.key, value: u.value })),
-            { onConflict: 'key' }
-          );
+          .upsert({ key: update.key, value: update.value }, { onConflict: 'key' });
+
         if (error) throw error;
       }
 
