@@ -66,19 +66,22 @@ export function ModalProvider({ children }: { children: React.ReactNode }) {
 
   const isOpen = useCallback((name: ModalName) => modals[name] ?? false, [modals]);
 
-  const getData = useCallback(<T = unknown>(name: ModalName): T | undefined =>
-    modalData[name] as T | undefined,
-  [modalData]);
+  const getData = useCallback(
+    <T = unknown>(name: ModalName): T | undefined => modalData[name] as T | undefined,
+    [modalData]
+  );
 
   return (
-    <ModalContext.Provider value={{ openModal, closeModal, toggleModal, closeAll, isOpen, getData }}>
+    <ModalContext.Provider
+      value={{ openModal, closeModal, toggleModal, closeAll, isOpen, getData }}
+    >
       {children}
     </ModalContext.Provider>
   );
 }
 
 export function useModal() {
-  }
+    }
   )
   const ctx = useContext(ModalContext);
   if (!ctx) throw new Error('useModal must be used within ModalProvider');
