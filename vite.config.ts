@@ -11,8 +11,17 @@ export default defineConfig({
     sourcemap: false,
     rollupOptions: {
       output: {
-        manualChunks: undefined,
+        manualChunks: {
+          'vendor-react':   ['react', 'react-dom', 'react-router-dom'],
+          'vendor-web3':    ['ethers', 'web3', '@metamask/detect-provider'],
+          'vendor-reown':   ['@reown/appkit', '@reown/appkit-adapter-ethers'],
+          'vendor-ui':      ['recharts', 'framer-motion'],
+          'vendor-i18n':    ['i18next', 'i18next-browser-languagedetector', 'react-i18next'],
+          'vendor-supabase':['@supabase/supabase-js'],
+          'vendor-utils':   ['date-fns', 'lucide-react'],
+        },
       },
     },
+    chunkSizeWarningLimit: 800,
   },
 });

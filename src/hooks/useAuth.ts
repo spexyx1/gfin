@@ -23,7 +23,8 @@ export function useAuthContext() {
   return context;
 }
 
-export function useAuth() {
+/** Internal hook — used only by AuthProvider. All other code should call useAuth(). */
+export function useAuthState() {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const authStateProcessingRef = useRef(false);
@@ -363,4 +364,9 @@ export function useAuth() {
     logout,
     updateProfile,
   };
+}
+
+/** Consume the shared AuthContext. Throws if called outside AuthProvider. */
+export function useAuth() {
+  return useAuthContext();
 }
