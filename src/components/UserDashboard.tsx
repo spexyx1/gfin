@@ -260,7 +260,7 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
             <Star className="w-8 h-8 text-orange-400" />
             <span className="text-xs bg-orange-500/20 text-orange-400 px-2 py-1 rounded-full">Rating</span>
           </div>
-          <p className="text-3xl font-black text-white mb-1">{user.rating || 0}</p>
+          <p className="text-3xl font-black text-white mb-1">{(user as any).rating || 0}</p>
           <p className="text-gray-400 text-sm">User Rating</p>
         </div>
       </div>

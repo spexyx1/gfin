@@ -160,7 +160,7 @@ export function useAtomicSwap() {
         return false;
       }
 
-      const provider = new ethers.BrowserProvider(window.ethereum);
+      const provider = new ethers.BrowserProvider(window.ethereum as any);
       const signer = await provider.getSigner();
 
       const db = requireSupabase();

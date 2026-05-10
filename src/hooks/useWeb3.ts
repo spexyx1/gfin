@@ -66,7 +66,7 @@ export const useWeb3 = () => {
 
   useEffect(() => {
     if (chainId) {
-      checkNetwork(chainId);
+      checkNetwork(Number(chainId));
     }
   }, [chainId, checkNetwork]);
 

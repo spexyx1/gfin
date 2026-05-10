@@ -57,7 +57,7 @@ interface Community {
 
 export function SocialPlatform({ searchTerm, setSearchTerm }: SocialPlatformProps) {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<'feed' | 'communities' | 'deals' | 'classifieds'>('feed');
+  const [activeTab, setActiveTab] = useState<'feed' | 'communities' | 'deals' | 'classifieds' | 'housing-nfts'>('feed');
   const [selectedCommunity, setSelectedCommunity] = useState<string | null>(null);
   const [showCreatePost, setShowCreatePost] = useState(false);
   const [showCreateCommunity, setShowCreateCommunity] = useState(false);

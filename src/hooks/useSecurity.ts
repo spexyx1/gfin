@@ -242,8 +242,8 @@ export function useSecurity() {
     const device: TrustedDevice = {
       id: `device_${Date.now()}`,
       name,
-      userAgent: securitySettings.deviceFingerprinting ? navigator.userAgent : 'Hidden',
-      ipAddress: securitySettings.ipTracking ? '192.168.1.1' : 'Hidden', // In real app, get actual IP
+      userAgent: (securitySettings as any).deviceFingerprinting ? navigator.userAgent : 'Hidden',
+      ipAddress: (securitySettings as any).ipTracking ? '192.168.1.1' : 'Hidden', // In real app, get actual IP
       lastUsed: new Date(),
       trusted: true,
     };

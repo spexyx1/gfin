@@ -199,7 +199,7 @@ export function MessagingCenter({ isOpen, onClose, initialConversationId, onStar
                       </button>
                     )}
                     <button
-                      onClick={() => deleteConversation(selectedConversationId)}
+                      onClick={() => selectedConversationId && deleteConversation(selectedConversationId)}
                       className="p-2 text-gray-400 hover:text-black hover:bg-gray-100 rounded-lg transition-colors"
                       title="Delete conversation"
                     >

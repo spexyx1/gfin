@@ -1,6 +1,7 @@
 import { RealtimeChannel, RealtimePostgresChangesPayload } from '@supabase/supabase-js';
 import { requireSupabase } from '../lib/supabase';
 import { Product, Order, Message } from '../types';
+import { logger } from '../utils/logger';
 
 export type RealtimeEvent = 'INSERT' | 'UPDATE' | 'DELETE';
 

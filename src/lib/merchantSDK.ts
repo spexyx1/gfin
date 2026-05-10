@@ -383,7 +383,7 @@ export class MerchantSDK {
     payload: string,
     signature: string,
     secret: string
-  ): boolean {
+  ): boolean | Promise<boolean> {
     const crypto = window.crypto || (globalThis as any).crypto;
     if (!crypto) return false;
 

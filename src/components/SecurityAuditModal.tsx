@@ -428,12 +428,12 @@ export function SecurityAuditModal({ isOpen, onClose }: SecurityAuditModalProps)
                 <h3 className="text-white font-black text-sm uppercase tracking-wider mb-3">Finding Summary</h3>
                 <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
                   {[
-                    { label: 'Critical', count: criticalCount, ...SEVERITY_CONFIG.CRITICAL },
-                    { label: 'High', count: highCount, ...SEVERITY_CONFIG.HIGH },
-                    { label: 'Medium', count: mediumCount, ...SEVERITY_CONFIG.MEDIUM },
-                    { label: 'Low', count: lowCount, ...SEVERITY_CONFIG.LOW },
-                    { label: 'Info', count: infoCount, ...SEVERITY_CONFIG.INFO },
-                    { label: 'Pass', count: passCount, ...SEVERITY_CONFIG.PASS },
+                    { ...SEVERITY_CONFIG.CRITICAL, label: 'Critical', count: criticalCount },
+                    { ...SEVERITY_CONFIG.HIGH, label: 'High', count: highCount },
+                    { ...SEVERITY_CONFIG.MEDIUM, label: 'Medium', count: mediumCount },
+                    { ...SEVERITY_CONFIG.LOW, label: 'Low', count: lowCount },
+                    { ...SEVERITY_CONFIG.INFO, label: 'Info', count: infoCount },
+                    { ...SEVERITY_CONFIG.PASS, label: 'Pass', count: passCount },
                   ].map(item => (
                     <div key={item.label} className={`rounded-xl border ${item.border} ${item.bg} p-3 text-center`}>
                       <div className={`text-2xl font-black ${item.color}`}>{item.count}</div>
