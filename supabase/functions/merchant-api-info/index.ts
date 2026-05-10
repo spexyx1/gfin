@@ -1,11 +1,18 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "npm:@supabase/supabase-js@2";
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "GET, OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Client-Info, Apikey, X-API-Key",
-};
+const ALLOWED_ORIGIN = Deno.env.get("ALLOWED_ORIGIN") ?? "https://ghetto.finance";
+
+function getCorsHeaders(req: Request): Record<string, string> {
+  const origin = req.headers.get("Origin") ?? "";
+  const allowedOrigin = origin === ALLOWED_ORIGIN ? origin : ALLOWED_ORIGIN;
+  return {
+    "Access-Control-Allow-Origin": allowedOrigin,
+    "Access-Control-Allow-Methods": "GET, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Client-Info, Apikey, X-API-Key",
+    "Vary": "Origin",
+  };
+}
 
 const SUPPORTED_TOKENS = [
   {
@@ -42,6 +49,8 @@ const SUPPORTED_TOKENS = [
 ];
 
 Deno.serve(async (req: Request) => {
+  const corsHeaders = getCorsHeaders(req);
+
   if (req.method === "OPTIONS") {
     return new Response(null, { status: 200, headers: corsHeaders });
   }
@@ -67,19 +76,19 @@ Deno.serve(async (req: Request) => {
     const pathParts = url.pathname.split('/').filter(Boolean);
 
     if (pathParts.includes("payment-tokens")) {
-      return await getPaymentTokens();
+      return await getPaymentTokens(corsHeaders);
     }
 
     if (pathParts.includes("fees")) {
-      return await calculateFees(url, auth);
+      return await calculateFees(url, auth, corsHeaders);
     }
 
     if (pathParts.includes("settlements")) {
-      return await getSettlements(url, supabase, auth);
+      return await getSettlements(url, supabase, auth, corsHeaders);
     }
 
     if (pathParts.includes("usage")) {
-      return await getUsageStats(url, supabase, auth);
+      return await getUsageStats(url, supabase, auth, corsHeaders);
     }
 
     return new Response(
@@ -99,7 +108,7 @@ Deno.serve(async (req: Request) => {
       }),
       {
         status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" }
+        headers: { ...getCorsHeaders(req), "Content-Type": "application/json" }
       }
     );
   }
@@ -116,7 +125,8 @@ async function authenticateMerchant(req: Request, supabase: any) {
     method: "POST",
     headers: {
       "X-API-Key": apiKey,
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")}`,
     }
   });
 
@@ -133,7 +143,7 @@ async function authenticateMerchant(req: Request, supabase: any) {
   };
 }
 
-async function getPaymentTokens() {
+async function getPaymentTokens(corsHeaders: Record<string, string>) {
   return new Response(
     JSON.stringify({
       success: true,
@@ -151,7 +161,7 @@ async function getPaymentTokens() {
   );
 }
 
-async function calculateFees(url: URL, auth: any) {
+async function calculateFees(url: URL, auth: any, corsHeaders: Record<string, string>) {
   const amount = parseFloat(url.searchParams.get("amount") || "0");
   const token = url.searchParams.get("token") || "ETH";
 
@@ -190,7 +200,7 @@ async function calculateFees(url: URL, auth: any) {
   );
 }
 
-async function getSettlements(url: URL, supabase: any, auth: any) {
+async function getSettlements(url: URL, supabase: any, auth: any, corsHeaders: Record<string, string>) {
   const startDate = url.searchParams.get("start_date");
   const endDate = url.searchParams.get("end_date");
   const status = url.searchParams.get("status");
@@ -225,7 +235,7 @@ async function getSettlements(url: URL, supabase: any, auth: any) {
     );
   }
 
-  const summary = transactions.reduce((acc, tx) => {
+  const summary = transactions.reduce((acc: any, tx: any) => {
     acc.total_order_amount += parseFloat(tx.order_amount || 0);
     acc.total_fee_amount += parseFloat(tx.fee_amount || 0);
     acc.total_seller_payout += parseFloat(tx.seller_payout || 0);
@@ -251,7 +261,7 @@ async function getSettlements(url: URL, supabase: any, auth: any) {
   );
 }
 
-async function getUsageStats(url: URL, supabase: any, auth: any) {
+async function getUsageStats(url: URL, supabase: any, auth: any, corsHeaders: Record<string, string>) {
   const days = parseInt(url.searchParams.get("days") || "7");
   const startDate = new Date();
   startDate.setDate(startDate.getDate() - days);
@@ -276,7 +286,7 @@ async function getUsageStats(url: URL, supabase: any, auth: any) {
     );
   }
 
-  const summary = usage.reduce((acc, u) => {
+  const summary = usage.reduce((acc: any, u: any) => {
     acc.total_requests += u.request_count || 0;
     acc.successful_requests += u.success_count || 0;
     acc.failed_requests += u.error_count || 0;

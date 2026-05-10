@@ -1,11 +1,18 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "npm:@supabase/supabase-js@2";
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Client-Info, Apikey",
-};
+const ALLOWED_ORIGIN = Deno.env.get("ALLOWED_ORIGIN") ?? "https://ghetto.finance";
+
+function getCorsHeaders(req: Request): Record<string, string> {
+  const origin = req.headers.get("Origin") ?? "";
+  const allowedOrigin = origin === ALLOWED_ORIGIN ? origin : ALLOWED_ORIGIN;
+  return {
+    "Access-Control-Allow-Origin": allowedOrigin,
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Client-Info, Apikey",
+    "Vary": "Origin",
+  };
+}
 
 const GAS_STATION_MCCS = ["5541", "5542", "5983"];
 
@@ -31,6 +38,8 @@ interface FraudRule {
 }
 
 Deno.serve(async (req: Request) => {
+  const corsHeaders = getCorsHeaders(req);
+
   if (req.method === "OPTIONS") {
     return new Response(null, { status: 200, headers: corsHeaders });
   }
@@ -124,7 +133,13 @@ Deno.serve(async (req: Request) => {
             rule_id: rule.id,
             rule_name: rule.rule_name,
             action_taken: rule.action,
-            event_details: { auth_payload: authPayload, reason: triggerResult.reason },
+            event_details: {
+              merchant_name: authPayload.merchant_name,
+              merchant_mcc: authPayload.merchant_mcc,
+              amount: authPayload.amount,
+              currency: authPayload.currency,
+              reason: triggerResult.reason,
+            },
           });
 
           if (rule.action === "decline") {
@@ -183,14 +198,10 @@ Deno.serve(async (req: Request) => {
       .select("id")
       .single();
 
-    await supabase
-      .from("card_accounts")
-      .update({
-        available_balance: account.available_balance - amount,
-        pending_balance: account.available_balance - amount,
-        updated_at: now.toISOString(),
-      })
-      .eq("id", account.id);
+    await supabase.rpc("decrement_card_balance", {
+      p_account_id: account.id,
+      p_amount: amount,
+    });
 
     return new Response(JSON.stringify({
       decision: "approve",
@@ -203,7 +214,7 @@ Deno.serve(async (req: Request) => {
     const message = err instanceof Error ? err.message : "Internal server error";
     return new Response(JSON.stringify({ decision: "decline", error: message }), {
       status: 500,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
+      headers: { ...getCorsHeaders(req), "Content-Type": "application/json" },
     });
   }
 });

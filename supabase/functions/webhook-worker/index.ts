@@ -1,16 +1,65 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "npm:@supabase/supabase-js@2";
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Client-Info, Apikey",
-};
+const ALLOWED_ORIGIN = Deno.env.get("ALLOWED_ORIGIN") ?? "https://ghetto.finance";
+
+function getCorsHeaders(req: Request): Record<string, string> {
+  const origin = req.headers.get("Origin") ?? "";
+  const allowedOrigin = origin === ALLOWED_ORIGIN ? origin : ALLOWED_ORIGIN;
+  return {
+    "Access-Control-Allow-Origin": allowedOrigin,
+    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Client-Info, Apikey",
+    "Vary": "Origin",
+  };
+}
 
 const MAX_RETRIES = 5;
 const RETRY_DELAYS = [60, 300, 900, 3600, 7200];
 
+function isSafeUrl(urlString: string): boolean {
+  let url: URL;
+  try {
+    url = new URL(urlString);
+  } catch {
+    return false;
+  }
+
+  if (url.protocol !== "https:") return false;
+
+  const hostname = url.hostname.toLowerCase();
+
+  // Block loopback
+  if (hostname === "localhost" || hostname === "127.0.0.1" || hostname === "::1") return false;
+
+  // Block link-local
+  if (hostname === "169.254.169.254") return false;
+
+  // Block private IPv4 ranges
+  const privateRanges = [
+    /^10\./,
+    /^172\.(1[6-9]|2\d|3[01])\./,
+    /^192\.168\./,
+    /^0\./,
+  ];
+  for (const range of privateRanges) {
+    if (range.test(hostname)) return false;
+  }
+
+  // Block cloud metadata endpoints
+  const blockedHosts = [
+    "metadata.google.internal",
+    "169.254.169.254",
+    "fd00:ec2::254",
+  ];
+  if (blockedHosts.includes(hostname)) return false;
+
+  return true;
+}
+
 Deno.serve(async (req: Request) => {
+  const corsHeaders = getCorsHeaders(req);
+
   if (req.method === "OPTIONS") {
     return new Response(null, { status: 200, headers: corsHeaders });
   }
@@ -73,7 +122,7 @@ Deno.serve(async (req: Request) => {
       }),
       {
         status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" }
+        headers: { ...getCorsHeaders(req), "Content-Type": "application/json" }
       }
     );
   }
@@ -81,6 +130,18 @@ Deno.serve(async (req: Request) => {
 
 async function processWebhook(supabase: any, delivery: any) {
   const startTime = Date.now();
+
+  if (!isSafeUrl(delivery.endpoint_url)) {
+    await supabase
+      .from("webhook_deliveries")
+      .update({
+        delivery_status: "failed",
+        error_message: "Endpoint URL is not permitted",
+        delivered_at: new Date().toISOString()
+      })
+      .eq("id", delivery.id);
+    return;
+  }
 
   try {
     const { data: webhook } = await supabase
