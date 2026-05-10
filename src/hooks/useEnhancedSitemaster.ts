@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '../lib/supabase';
+import { requireSupabase } from '../lib/supabase';
 import { logger } from '../utils/logger';
 
 export interface UserFlag {
@@ -66,14 +66,15 @@ export function useEnhancedSitemaster() {
 
   const isSitemaster = async () => {
     try {
-      const { data: { user } } = await supabase.auth.getUser();
+      const db = requireSupabase();
+      const { data: { user } } = await db.auth.getUser();
       if (!user) {
         logger.debug('[useEnhancedSitemaster] No authenticated user', 'useEnhancedSitemaster');
         return false;
       }
 
       logger.debug('[useEnhancedSitemaster] Checking sitemaster role for user', 'useEnhancedSitemaster', user.id);
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from('user_admin_roles')
         .select('*')
         .eq('user_id', user.id)
@@ -101,10 +102,11 @@ export function useEnhancedSitemaster() {
   };
 
   const flagUser = async (userId: string, flagType: string, reason: string, evidence: any = {}) => {
-    const { data: { user } } = await supabase.auth.getUser();
+    const db = requireSupabase();
+    const { data: { user } } = await db.auth.getUser();
     if (!user) throw new Error('Not authenticated');
 
-    const { data, error } = await supabase
+    const { data, error } = await db
       .from('user_flags')
       .insert({
         user_id: userId,
@@ -122,10 +124,11 @@ export function useEnhancedSitemaster() {
   };
 
   const resolveFlag = async (flagId: string) => {
-    const { data: { user } } = await supabase.auth.getUser();
+    const db = requireSupabase();
+    const { data: { user } } = await db.auth.getUser();
     if (!user) throw new Error('Not authenticated');
 
-    const { error } = await supabase
+    const { error } = await db
       .from('user_flags')
       .update({
         status: 'resolved',
@@ -139,14 +142,15 @@ export function useEnhancedSitemaster() {
   };
 
   const suspendUser = async (userId: string, reason: string, durationHours?: number) => {
-    const { data: { user } } = await supabase.auth.getUser();
+    const db = requireSupabase();
+    const { data: { user } } = await db.auth.getUser();
     if (!user) throw new Error('Not authenticated');
 
     const expiresAt = durationHours
       ? new Date(Date.now() + durationHours * 60 * 60 * 1000).toISOString()
       : undefined;
 
-    const { data, error } = await supabase
+    const { data, error } = await db
       .from('user_suspensions')
       .insert({
         user_id: userId,
@@ -164,7 +168,7 @@ export function useEnhancedSitemaster() {
   };
 
   const liftSuspension = async (suspensionId: string) => {
-    const { error } = await supabase
+    const { error } = await requireSupabase()
       .from('user_suspensions')
       .update({ active: false })
       .eq('id', suspensionId);
@@ -174,10 +178,11 @@ export function useEnhancedSitemaster() {
   };
 
   const deleteContent = async (contentType: string, contentId: string, reason: string) => {
-    const { data: { user } } = await supabase.auth.getUser();
+    const db = requireSupabase();
+    const { data: { user } } = await db.auth.getUser();
     if (!user) throw new Error('Not authenticated');
 
-    await supabase.from('content_moderation').insert({
+    await db.from('content_moderation').insert({
       content_type: contentType,
       content_id: contentId,
       action: 'delete',
@@ -187,17 +192,18 @@ export function useEnhancedSitemaster() {
     });
 
     if (contentType === 'product') {
-      await supabase.from('products').delete().eq('id', contentId);
+      await db.from('products').delete().eq('id', contentId);
     } else if (contentType === 'post') {
-      await supabase.from('social_posts').update({ deleted: true }).eq('id', contentId);
+      await db.from('social_posts').update({ deleted: true }).eq('id', contentId);
     }
   };
 
   const sendAdminMessage = async (recipientId: string, subject: string, message: string, priority: string = 'normal') => {
-    const { data: { user } } = await supabase.auth.getUser();
+    const db = requireSupabase();
+    const { data: { user } } = await db.auth.getUser();
     if (!user) throw new Error('Not authenticated');
 
-    const { data, error } = await supabase
+    const { data, error } = await db
       .from('admin_messages')
       .insert({
         recipient_id: recipientId,
@@ -214,7 +220,7 @@ export function useEnhancedSitemaster() {
   };
 
   const searchUsers = async (query: string) => {
-    const { data, error } = await supabase
+    const { data, error } = await requireSupabase()
       .from('profiles')
       .select('*')
       .or(`username.ilike.%${query}%,full_name.ilike.%${query}%`)
@@ -225,7 +231,7 @@ export function useEnhancedSitemaster() {
   };
 
   const searchListings = async (query: string) => {
-    const { data, error } = await supabase
+    const { data, error } = await requireSupabase()
       .from('products')
       .select('*')
       .or(`name.ilike.%${query}%,description.ilike.%${query}%`)
@@ -236,7 +242,7 @@ export function useEnhancedSitemaster() {
   };
 
   const getUserActivity = async (userId: string, limit: number = 50) => {
-    const { data, error } = await supabase
+    const { data, error } = await requireSupabase()
       .from('activity_logs')
       .select('*')
       .eq('user_id', userId)
@@ -248,11 +254,12 @@ export function useEnhancedSitemaster() {
   };
 
   const getPlatformStats = async () => {
+    const db = requireSupabase();
     const [users, products, orders, activeSuspensions] = await Promise.all([
-      supabase.from('profiles').select('id', { count: 'exact', head: true }),
-      supabase.from('products').select('id', { count: 'exact', head: true }),
-      supabase.from('orders').select('id', { count: 'exact', head: true }),
-      supabase.from('user_suspensions').select('id', { count: 'exact', head: true }).eq('active', true)
+      db.from('profiles').select('id', { count: 'exact', head: true }),
+      db.from('products').select('id', { count: 'exact', head: true }),
+      db.from('orders').select('id', { count: 'exact', head: true }),
+      db.from('user_suspensions').select('id', { count: 'exact', head: true }).eq('active', true)
     ]);
 
     return {
@@ -264,7 +271,7 @@ export function useEnhancedSitemaster() {
   };
 
   const getSetting = async (key: string) => {
-    const { data, error } = await supabase
+    const { data, error } = await requireSupabase()
       .from('platform_settings')
       .select('*')
       .eq('setting_key', key)
@@ -275,10 +282,11 @@ export function useEnhancedSitemaster() {
   };
 
   const updateSetting = async (key: string, value: any, category: string, description?: string) => {
-    const { data: { user } } = await supabase.auth.getUser();
+    const db = requireSupabase();
+    const { data: { user } } = await db.auth.getUser();
     if (!user) throw new Error('Not authenticated');
 
-    const { data, error } = await supabase
+    const { data, error } = await db
       .from('platform_settings')
       .upsert({
         setting_key: key,
@@ -296,7 +304,7 @@ export function useEnhancedSitemaster() {
   };
 
   const getSettingsByCategory = async (category: string) => {
-    const { data, error } = await supabase
+    const { data, error } = await requireSupabase()
       .from('platform_settings')
       .select('*')
       .eq('category', category)
@@ -308,7 +316,7 @@ export function useEnhancedSitemaster() {
 
   // Feature Toggle Management
   const getFeatureToggles = async () => {
-    const { data, error } = await supabase
+    const { data, error } = await requireSupabase()
       .from('feature_toggles')
       .select('*')
       .order('feature_name');
@@ -318,10 +326,11 @@ export function useEnhancedSitemaster() {
   };
 
   const toggleFeature = async (featureName: string, enabled: boolean) => {
-    const { data: { user } } = await supabase.auth.getUser();
+    const db = requireSupabase();
+    const { data: { user } } = await db.auth.getUser();
     if (!user) throw new Error('Not authenticated');
 
-    const { data, error } = await supabase
+    const { data, error } = await db
       .from('feature_toggles')
       .update({
         enabled,
@@ -338,7 +347,7 @@ export function useEnhancedSitemaster() {
 
   // Rate Configuration Management
   const getRateConfigurations = async () => {
-    const { data, error } = await supabase
+    const { data, error } = await requireSupabase()
       .from('rate_configurations')
       .select('*')
       .eq('active', true)
@@ -349,10 +358,11 @@ export function useEnhancedSitemaster() {
   };
 
   const updateRate = async (rateName: string, newValue: number) => {
-    const { data: { user } } = await supabase.auth.getUser();
+    const db = requireSupabase();
+    const { data: { user } } = await db.auth.getUser();
     if (!user) throw new Error('Not authenticated');
 
-    const { data, error } = await supabase
+    const { data, error } = await db
       .from('rate_configurations')
       .update({
         rate_value: newValue,
@@ -369,7 +379,7 @@ export function useEnhancedSitemaster() {
 
   // Escrow Management
   const getEscrowOrders = async (status?: string) => {
-    let query = supabase
+    let query = requireSupabase()
       .from('orders')
       .select('*, buyer:profiles!buyer_id(username), seller:profiles!seller_id(username)')
       .order('created_at', { ascending: false });
@@ -384,11 +394,12 @@ export function useEnhancedSitemaster() {
   };
 
   const cancelEscrowOrder = async (orderId: string, reason: string) => {
-    const { data: { user } } = await supabase.auth.getUser();
+    const db = requireSupabase();
+    const { data: { user } } = await db.auth.getUser();
     if (!user) throw new Error('Not authenticated');
 
     // Update order status
-    const { error: orderError } = await supabase
+    const { error: orderError } = await db
       .from('orders')
       .update({
         status: 'cancelled',
@@ -399,7 +410,7 @@ export function useEnhancedSitemaster() {
     if (orderError) throw orderError;
 
     // Log the cancellation
-    await supabase.from('activity_logs').insert({
+    await db.from('activity_logs').insert({
       user_id: user.id,
       activity_type: 'sitemaster_cancel_order',
       details: { order_id: orderId, reason }
@@ -407,10 +418,11 @@ export function useEnhancedSitemaster() {
   };
 
   const forceReleaseEscrow = async (orderId: string, reason: string) => {
-    const { data: { user } } = await supabase.auth.getUser();
+    const db = requireSupabase();
+    const { data: { user } } = await db.auth.getUser();
     if (!user) throw new Error('Not authenticated');
 
-    const { error } = await supabase
+    const { error } = await db
       .from('orders')
       .update({
         status: 'funds_released',
@@ -422,7 +434,7 @@ export function useEnhancedSitemaster() {
     if (error) throw error;
 
     // Log the action
-    await supabase.from('activity_logs').insert({
+    await db.from('activity_logs').insert({
       user_id: user.id,
       activity_type: 'sitemaster_force_release',
       details: { order_id: orderId, reason }
@@ -431,7 +443,7 @@ export function useEnhancedSitemaster() {
 
   // Transaction Search and Management
   const searchTransactions = async (query: string) => {
-    const { data, error } = await supabase
+    const { data, error } = await requireSupabase()
       .from('orders')
       .select('*, buyer:profiles!buyer_id(username), seller:profiles!seller_id(username)')
       .or(`id.ilike.%${query}%,description.ilike.%${query}%`)
@@ -442,7 +454,7 @@ export function useEnhancedSitemaster() {
   };
 
   const getAllMessages = async (limit: number = 100) => {
-    const { data, error } = await supabase
+    const { data, error } = await requireSupabase()
       .from('messages')
       .select('*, sender:profiles!sender_id(username), receiver:profiles!receiver_id(username)')
       .order('created_at', { ascending: false })
@@ -454,7 +466,7 @@ export function useEnhancedSitemaster() {
 
   // View all platform data
   const getAllPosts = async (limit: number = 100) => {
-    const { data, error } = await supabase
+    const { data, error } = await requireSupabase()
       .from('social_posts')
       .select('*, author:profiles(username)')
       .eq('deleted', false)
@@ -466,7 +478,7 @@ export function useEnhancedSitemaster() {
   };
 
   const getAllProducts = async (limit: number = 100) => {
-    const { data, error } = await supabase
+    const { data, error } = await requireSupabase()
       .from('products')
       .select('*, seller:profiles!seller_id(username)')
       .order('created_at', { ascending: false })
@@ -478,7 +490,7 @@ export function useEnhancedSitemaster() {
 
   // Advanced User Management
   const getAllUsers = async (limit: number = 100, offset: number = 0) => {
-    const { data, error } = await supabase
+    const { data, error } = await requireSupabase()
       .from('profiles')
       .select('*')
       .order('username', { ascending: true })
@@ -489,7 +501,8 @@ export function useEnhancedSitemaster() {
   };
 
   const getUserDetails = async (userId: string) => {
-    const { data: profile, error: profileError } = await supabase
+    const db = requireSupabase();
+    const { data: profile, error: profileError } = await db
       .from('profiles')
       .select('*')
       .eq('id', userId)
@@ -498,7 +511,7 @@ export function useEnhancedSitemaster() {
     if (profileError) throw profileError;
 
     // Get user's orders
-    const { data: orders } = await supabase
+    const { data: orders } = await db
       .from('orders')
       .select('*')
       .or(`buyer_id.eq.${userId},seller_id.eq.${userId}`)
@@ -506,7 +519,7 @@ export function useEnhancedSitemaster() {
       .limit(20);
 
     // Get user's products if seller
-    const { data: products } = await supabase
+    const { data: products } = await db
       .from('products')
       .select('*')
       .eq('seller_id', userId)
@@ -514,13 +527,13 @@ export function useEnhancedSitemaster() {
       .limit(20);
 
     // Get user's flags
-    const { data: flags } = await supabase
+    const { data: flags } = await db
       .from('user_flags')
       .select('*')
       .eq('user_id', userId);
 
     // Get user's suspensions
-    const { data: suspensions } = await supabase
+    const { data: suspensions } = await db
       .from('user_suspensions')
       .select('*')
       .eq('user_id', userId);
@@ -535,7 +548,7 @@ export function useEnhancedSitemaster() {
   };
 
   const updateUserProfile = async (userId: string, updates: any) => {
-    const { data, error } = await supabase
+    const { data, error } = await requireSupabase()
       .from('profiles')
       .update(updates)
       .eq('id', userId)
@@ -547,18 +560,19 @@ export function useEnhancedSitemaster() {
   };
 
   const deleteUser = async (userId: string, reason: string) => {
-    const { data: { user } } = await supabase.auth.getUser();
+    const db = requireSupabase();
+    const { data: { user } } = await db.auth.getUser();
     if (!user) throw new Error('Not authenticated');
 
     // Log the deletion
-    await supabase.from('activity_logs').insert({
+    await db.from('activity_logs').insert({
       user_id: user.id,
       activity_type: 'sitemaster_delete_user',
       details: { deleted_user_id: userId, reason }
     });
 
     // Soft delete by deactivating profile
-    const { error } = await supabase
+    const { error } = await db
       .from('profiles')
       .update({
         username: `deleted_${userId.substring(0, 8)}`,
@@ -574,7 +588,7 @@ export function useEnhancedSitemaster() {
 
   // Advanced Transaction Management
   const getAllTransactions = async (limit: number = 100, offset: number = 0) => {
-    const { data, error } = await supabase
+    const { data, error } = await requireSupabase()
       .from('orders')
       .select('*, buyer:profiles!buyer_id(username, display_name), seller:profiles!seller_id(username, display_name), product:products(name)')
       .order('created_at', { ascending: false })
@@ -585,7 +599,7 @@ export function useEnhancedSitemaster() {
   };
 
   const getTransactionDetails = async (orderId: string) => {
-    const { data, error } = await supabase
+    const { data, error } = await requireSupabase()
       .from('orders')
       .select('*, buyer:profiles!buyer_id(*), seller:profiles!seller_id(*), product:products(*)')
       .eq('id', orderId)
@@ -596,10 +610,11 @@ export function useEnhancedSitemaster() {
   };
 
   const refundTransaction = async (orderId: string, reason: string) => {
-    const { data: { user } } = await supabase.auth.getUser();
+    const db = requireSupabase();
+    const { data: { user } } = await db.auth.getUser();
     if (!user) throw new Error('Not authenticated');
 
-    const { error } = await supabase
+    const { error } = await db
       .from('orders')
       .update({
         status: 'refunded',
@@ -609,7 +624,7 @@ export function useEnhancedSitemaster() {
 
     if (error) throw error;
 
-    await supabase.from('activity_logs').insert({
+    await db.from('activity_logs').insert({
       user_id: user.id,
       activity_type: 'sitemaster_refund_transaction',
       details: { order_id: orderId, reason }
@@ -618,17 +633,18 @@ export function useEnhancedSitemaster() {
 
   // Advanced Escrow Management
   const getEscrowStatistics = async () => {
-    const { data: total } = await supabase
+    const db = requireSupabase();
+    const { data: total } = await db
       .from('orders')
       .select('amount', { count: 'exact' })
       .in('status', ['funded', 'in_progress']);
 
-    const { data: disputed } = await supabase
+    const { data: disputed } = await db
       .from('orders')
       .select('amount', { count: 'exact' })
       .eq('status', 'disputed');
 
-    const { data: completed } = await supabase
+    const { data: completed } = await db
       .from('orders')
       .select('amount', { count: 'exact' })
       .eq('status', 'completed');
@@ -647,11 +663,12 @@ export function useEnhancedSitemaster() {
 
   // Advanced Analytics
   const getPlatformAnalytics = async () => {
+    const db = requireSupabase();
     const [users, products, orders, revenue] = await Promise.all([
-      supabase.from('profiles').select('id, created_at', { count: 'exact' }),
-      supabase.from('products').select('id, created_at', { count: 'exact' }),
-      supabase.from('orders').select('id, amount, created_at', { count: 'exact' }),
-      supabase.from('orders').select('amount').eq('status', 'completed')
+      db.from('profiles').select('id, created_at', { count: 'exact' }),
+      db.from('products').select('id, created_at', { count: 'exact' }),
+      db.from('orders').select('id, amount, created_at', { count: 'exact' }),
+      db.from('orders').select('amount').eq('status', 'completed')
     ]);
 
     const totalRevenue = revenue.data?.reduce((sum, order) => sum + (order.amount || 0), 0) || 0;
@@ -660,17 +677,17 @@ export function useEnhancedSitemaster() {
     const thirtyDaysAgo = new Date();
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
-    const { count: newUsers } = await supabase
+    const { count: newUsers } = await db
       .from('profiles')
       .select('id', { count: 'exact', head: true })
       .gte('created_at', thirtyDaysAgo.toISOString());
 
-    const { count: newProducts } = await supabase
+    const { count: newProducts } = await db
       .from('products')
       .select('id', { count: 'exact', head: true })
       .gte('created_at', thirtyDaysAgo.toISOString());
 
-    const { count: newOrders } = await supabase
+    const { count: newOrders } = await db
       .from('orders')
       .select('id', { count: 'exact', head: true })
       .gte('created_at', thirtyDaysAgo.toISOString());
@@ -688,7 +705,8 @@ export function useEnhancedSitemaster() {
 
   // Bulk Operations
   const bulkSuspendUsers = async (userIds: string[], reason: string, durationHours?: number) => {
-    const { data: { user } } = await supabase.auth.getUser();
+    const db = requireSupabase();
+    const { data: { user } } = await db.auth.getUser();
     if (!user) throw new Error('Not authenticated');
 
     const expiresAt = durationHours
@@ -703,13 +721,13 @@ export function useEnhancedSitemaster() {
       expires_at: expiresAt
     }));
 
-    const { error } = await supabase
+    const { error } = await db
       .from('user_suspensions')
       .insert(suspensions);
 
     if (error) throw error;
 
-    await supabase.from('activity_logs').insert({
+    await db.from('activity_logs').insert({
       user_id: user.id,
       activity_type: 'sitemaster_bulk_suspend',
       details: { user_ids: userIds, reason, count: userIds.length }
@@ -717,14 +735,15 @@ export function useEnhancedSitemaster() {
   };
 
   const bulkDeleteContent = async (contentType: string, contentIds: string[], reason: string) => {
-    const { data: { user } } = await supabase.auth.getUser();
+    const db = requireSupabase();
+    const { data: { user } } = await db.auth.getUser();
     if (!user) throw new Error('Not authenticated');
 
     for (const contentId of contentIds) {
       await deleteContent(contentType, contentId, reason);
     }
 
-    await supabase.from('activity_logs').insert({
+    await db.from('activity_logs').insert({
       user_id: user.id,
       activity_type: 'sitemaster_bulk_delete_content',
       details: { content_type: contentType, content_ids: contentIds, reason, count: contentIds.length }
@@ -733,10 +752,11 @@ export function useEnhancedSitemaster() {
 
   // Search and Filter
   const advancedSearch = async (query: string, type: 'all' | 'users' | 'products' | 'orders' | 'messages') => {
+    const db = requireSupabase();
     const results: any = {};
 
     if (type === 'all' || type === 'users') {
-      const { data: users } = await supabase
+      const { data: users } = await db
         .from('profiles')
         .select('*')
         .or(`username.ilike.%${query}%,display_name.ilike.%${query}%,bio.ilike.%${query}%`)
@@ -745,7 +765,7 @@ export function useEnhancedSitemaster() {
     }
 
     if (type === 'all' || type === 'products') {
-      const { data: products } = await supabase
+      const { data: products } = await db
         .from('products')
         .select('*, seller:profiles!seller_id(username)')
         .or(`name.ilike.%${query}%,description.ilike.%${query}%`)
@@ -754,7 +774,7 @@ export function useEnhancedSitemaster() {
     }
 
     if (type === 'all' || type === 'orders') {
-      const { data: orders } = await supabase
+      const { data: orders } = await db
         .from('orders')
         .select('*, buyer:profiles!buyer_id(username), seller:profiles!seller_id(username)')
         .ilike('id', `%${query}%`)
@@ -763,7 +783,7 @@ export function useEnhancedSitemaster() {
     }
 
     if (type === 'all' || type === 'messages') {
-      const { data: messages } = await supabase
+      const { data: messages } = await db
         .from('messages')
         .select('*, sender:profiles!sender_id(username), receiver:profiles!receiver_id(username)')
         .or(`content.ilike.%${query}%,message.ilike.%${query}%`)
@@ -775,7 +795,7 @@ export function useEnhancedSitemaster() {
   };
 
   const fetchFlags = async () => {
-    const { data, error } = await supabase
+    const { data, error } = await requireSupabase()
       .from('user_flags')
       .select('*')
       .eq('status', 'active')
@@ -789,7 +809,7 @@ export function useEnhancedSitemaster() {
   };
 
   const fetchSuspensions = async () => {
-    const { data, error } = await supabase
+    const { data, error } = await requireSupabase()
       .from('user_suspensions')
       .select('*')
       .eq('active', true)
@@ -803,7 +823,7 @@ export function useEnhancedSitemaster() {
   };
 
   const fetchActivityLogs = async (limit: number = 100) => {
-    const { data, error } = await supabase
+    const { data, error } = await requireSupabase()
       .from('activity_logs')
       .select('*')
       .order('created_at', { ascending: false })

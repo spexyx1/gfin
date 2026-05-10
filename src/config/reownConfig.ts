@@ -19,7 +19,7 @@ const metadata = {
 };
 
 const networkEnv = import.meta.env.VITE_NETWORK_ENV || 'mainnet';
-const networks = networkEnv === 'testnet' ? [polygonAmoy] : [polygon];
+const networks = (networkEnv === 'testnet' ? [polygonAmoy] : [polygon]) as [typeof polygon];
 
 export const SUPPORTED_CHAIN_IDS = networks.map(n => n.id);
 export const DEFAULT_CHAIN_ID = networks[0].id;

@@ -6,7 +6,7 @@ import { useEscrow } from '../hooks/useEscrow';
 import { useContractAddresses } from '../hooks/useContractAddresses';
 import { useState, useMemo } from 'react';
 import { PaymentOption } from '../types';
-import { supabase } from '../lib/supabase';
+import { requireSupabase } from '../lib/supabase';
 import { logger } from '../utils/logger';
 
 interface CartProps {
@@ -62,8 +62,9 @@ export function Cart({ isOpen, onClose }: CartProps) {
 
     // Check inventory for all products
     const outOfStockItems: string[] = [];
+    const db = requireSupabase();
     for (const item of items) {
-      const { data: product } = await supabase
+      const { data: product } = await db
         .from('products')
         .select('in_stock, quantity')
         .eq('id', item.product.id)
@@ -93,7 +94,7 @@ export function Cart({ isOpen, onClose }: CartProps) {
       // Create escrow orders for each item
       for (const item of items) {
         const orderId = await createEscrow(
-          item.product.seller,
+          item.product.seller.id,
           item.product.price * item.quantity,
           `Order for ${item.product.title} (Qty: ${item.quantity})`,
           tokenAddress,
@@ -172,7 +173,7 @@ export function Cart({ isOpen, onClose }: CartProps) {
                     <div className="flex items-start space-x-4">
                       <img
                         src={item.product.image}
-                        alt={item.product.name}
+                        alt={item.product.title}
                         className="w-16 h-16 object-cover rounded-xl"
                       />
                       <div className="flex-1 min-w-0">

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '../lib/supabase';
+import { requireSupabase } from '../lib/supabase';
 import { logger } from '../utils/logger';
 import type { HousingProject, HousingNFT, TenantPartnership, ProjectUpdate } from '../types/housing';
 
@@ -16,7 +16,8 @@ export function useHousingMarketplace() {
 
   const fetchProjects = async () => {
     try {
-      const { data, error } = await supabase
+      const db = requireSupabase();
+      const { data, error } = await db
         .from('housing_projects')
         .select('*')
         .order('created_at', { ascending: false });
@@ -32,10 +33,11 @@ export function useHousingMarketplace() {
 
   const fetchMyNFTs = async () => {
     try {
-      const { data: { user } } = await supabase.auth.getUser();
+      const db = requireSupabase();
+      const { data: { user } } = await db.auth.getUser();
       if (!user) return;
 
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from('housing_nfts')
         .select('*')
         .eq('owner_id', user.id)
@@ -50,7 +52,8 @@ export function useHousingMarketplace() {
 
   const purchaseNFT = async (projectId: string, price: number): Promise<boolean> => {
     try {
-      const { data: { user } } = await supabase.auth.getUser();
+      const db = requireSupabase();
+      const { data: { user } } = await db.auth.getUser();
       if (!user) throw new Error('Must be logged in to purchase');
 
       const project = projects.find(p => p.id === projectId);
@@ -58,7 +61,7 @@ export function useHousingMarketplace() {
 
       const ownershipPercentage = (1 / project.total_nft_supply) * 100;
 
-      const { error } = await supabase
+      const { error } = await db
         .from('housing_nfts')
         .insert({
           project_id: projectId,
@@ -80,10 +83,11 @@ export function useHousingMarketplace() {
 
   const createProject = async (projectData: Partial<HousingProject>): Promise<boolean> => {
     try {
-      const { data: { user } } = await supabase.auth.getUser();
+      const db = requireSupabase();
+      const { data: { user } } = await db.auth.getUser();
       if (!user) throw new Error('Must be logged in');
 
-      const { error } = await supabase
+      const { error } = await db
         .from('housing_projects')
         .insert({
           ...projectData,
@@ -102,7 +106,8 @@ export function useHousingMarketplace() {
 
   const getProjectUpdates = async (projectId: string): Promise<ProjectUpdate[]> => {
     try {
-      const { data, error } = await supabase
+      const db = requireSupabase();
+      const { data, error } = await db
         .from('project_updates')
         .select('*')
         .eq('project_id', projectId)
@@ -118,7 +123,8 @@ export function useHousingMarketplace() {
 
   const getProjectPartnerships = async (projectId: string): Promise<TenantPartnership[]> => {
     try {
-      const { data, error } = await supabase
+      const db = requireSupabase();
+      const { data, error } = await db
         .from('tenant_partnerships')
         .select('*')
         .eq('project_id', projectId)

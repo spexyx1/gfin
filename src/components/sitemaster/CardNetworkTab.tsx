@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { Fuel, CreditCard, Plus, Edit2, AlertTriangle, CheckCircle, Package, Truck, MapPin, X } from 'lucide-react';
-import { supabase } from '../../lib/supabase';
+import { useState, useEffect } from 'react';
+import { Fuel, CreditCard, Plus, CreditCard as Edit2, AlertTriangle, CheckCircle, Package, Truck, MapPin, X } from 'lucide-react';
+import { requireSupabase } from '../../lib/supabase';
 import { useAuth } from '../../hooks/useAuth';
 
 interface Merchant {
@@ -78,13 +78,14 @@ export function CardNetworkTab() {
 
   const fetchData = async () => {
     setLoading(true);
-    const { data: merchantData } = await supabase
+    const db = requireSupabase();
+    const { data: merchantData } = await db
       .from('merchant_card_enrollment')
       .select('*')
       .order('enrolled_at', { ascending: false });
     setMerchants((merchantData ?? []) as Merchant[]);
 
-    const { data: configData } = await supabase
+    const { data: configData } = await db
       .from('card_program_config')
       .select('*')
       .limit(1)
@@ -107,8 +108,9 @@ export function CardNetworkTab() {
       const rate = parseFloat(merchantForm.negotiated_rate || '0.015');
       const cappedRate = Math.min(rate, 0.015);
 
+      const db = requireSupabase();
       if (editingMerchant) {
-        await supabase
+        await db
           .from('merchant_card_enrollment')
           .update({
             business_name: merchantForm.business_name,
@@ -130,7 +132,7 @@ export function CardNetworkTab() {
           })
           .eq('id', editingMerchant.id);
       } else {
-        await supabase
+        await db
           .from('merchant_card_enrollment')
           .insert({
             business_name: merchantForm.business_name,
@@ -161,7 +163,7 @@ export function CardNetworkTab() {
   };
 
   const handleDecalUpdate = async (id: string, status: string) => {
-    await supabase
+    await requireSupabase()
       .from('merchant_card_enrollment')
       .update({ decal_fulfillment_status: status, updated_at: new Date().toISOString() })
       .eq('id', id);
@@ -169,7 +171,7 @@ export function CardNetworkTab() {
   };
 
   const handleSuspend = async (id: string, currentStatus: string) => {
-    await supabase
+    await requireSupabase()
       .from('merchant_card_enrollment')
       .update({ acceptance_status: currentStatus === 'active' ? 'suspended' : 'active', updated_at: new Date().toISOString() })
       .eq('id', id);
@@ -180,7 +182,7 @@ export function CardNetworkTab() {
     if (!configForm) return;
     setSaving(true);
     const cappedFee = Math.min(Number(configForm.merchant_fee_cap ?? 0.015), 0.015);
-    await supabase
+    await requireSupabase()
       .from('card_program_config')
       .update({
         ...configForm,
@@ -405,7 +407,7 @@ export function CardNetworkTab() {
                         <td className="px-4 py-3">
                           <div className="flex items-center gap-2">
                             {needsDecalReminder(m) && (
-                              <AlertTriangle className="h-3.5 w-3.5 text-yellow-500 shrink-0" title="Decal not sent — 7+ days active" />
+                              <span title="Decal not sent — 7+ days active"><AlertTriangle className="h-3.5 w-3.5 text-yellow-500 shrink-0" /></span>
                             )}
                             <div>
                               <p className="font-medium text-gray-900">{m.business_name}</p>

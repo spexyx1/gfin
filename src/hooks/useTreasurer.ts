@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '../lib/supabase';
+import { requireSupabase } from '../lib/supabase';
 
 export interface TokenOperation {
   id: string;
@@ -43,10 +43,11 @@ export function useTreasurer() {
   const [error, setError] = useState<string | null>(null);
 
   const isTreasurer = async () => {
-    const { data: { user } } = await supabase.auth.getUser();
+    const db = requireSupabase();
+    const { data: { user } } = await db.auth.getUser();
     if (!user) return false;
 
-    const { data } = await supabase
+    const { data } = await db
       .from('user_admin_roles')
       .select('*')
       .eq('user_id', user.id)
@@ -61,10 +62,11 @@ export function useTreasurer() {
     operationType: string,
     data: Partial<TokenOperation>
   ) => {
-    const { data: { user } } = await supabase.auth.getUser();
+    const db = requireSupabase();
+    const { data: { user } } = await db.auth.getUser();
     if (!user) throw new Error('Not authenticated');
 
-    const { data: operation, error } = await supabase
+    const { data: operation, error } = await db
       .from('ghetto_token_operations')
       .insert({
         operation_type: operationType,
@@ -79,10 +81,11 @@ export function useTreasurer() {
   };
 
   const blacklistWallet = async (walletAddress: string, reason: string, evidence: any = {}) => {
-    const { data: { user } } = await supabase.auth.getUser();
+    const db = requireSupabase();
+    const { data: { user } } = await db.auth.getUser();
     if (!user) throw new Error('Not authenticated');
 
-    const { data, error } = await supabase
+    const { data, error } = await db
       .from('wallet_blacklist')
       .insert({
         wallet_address: walletAddress,
@@ -99,7 +102,8 @@ export function useTreasurer() {
   };
 
   const unblacklistWallet = async (walletId: string) => {
-    const { error } = await supabase
+    const db = requireSupabase();
+    const { error } = await db
       .from('wallet_blacklist')
       .update({ active: false })
       .eq('id', walletId);
@@ -109,10 +113,11 @@ export function useTreasurer() {
   };
 
   const blacklistToken = async (tokenId: string, reason: string, orderId?: string, evidence: any = {}) => {
-    const { data: { user } } = await supabase.auth.getUser();
+    const db = requireSupabase();
+    const { data: { user } } = await db.auth.getUser();
     if (!user) throw new Error('Not authenticated');
 
-    const { data, error } = await supabase
+    const { data, error } = await db
       .from('token_blacklist')
       .insert({
         token_id: tokenId,
@@ -130,7 +135,8 @@ export function useTreasurer() {
   };
 
   const unblacklistToken = async (tokenBlacklistId: string) => {
-    const { error } = await supabase
+    const db = requireSupabase();
+    const { error } = await db
       .from('token_blacklist')
       .update({ active: false })
       .eq('id', tokenBlacklistId);
@@ -140,7 +146,8 @@ export function useTreasurer() {
   };
 
   const fetchOperations = async () => {
-    const { data, error } = await supabase
+    const db = requireSupabase();
+    const { data, error } = await db
       .from('ghetto_token_operations')
       .select('*')
       .order('created_at', { ascending: false })
@@ -154,7 +161,8 @@ export function useTreasurer() {
   };
 
   const fetchBlacklistedWallets = async () => {
-    const { data, error } = await supabase
+    const db = requireSupabase();
+    const { data, error } = await db
       .from('wallet_blacklist')
       .select('*')
       .eq('active', true)
@@ -168,7 +176,8 @@ export function useTreasurer() {
   };
 
   const fetchBlacklistedTokens = async () => {
-    const { data, error } = await supabase
+    const db = requireSupabase();
+    const { data, error } = await db
       .from('token_blacklist')
       .select('*')
       .eq('active', true)

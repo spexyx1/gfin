@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '../lib/supabase';
+import { requireSupabase } from '../lib/supabase';
 import { useAuth } from './useAuth';
 import { logger } from '../utils/logger';
 
@@ -76,7 +76,8 @@ export function useCommunityModeration() {
 
   const fetchProhibitedCategories = async () => {
     try {
-      const { data, error } = await supabase
+      const db = requireSupabase();
+      const { data, error } = await db
         .from('prohibited_categories')
         .select('*')
         .eq('is_active', true)
@@ -93,7 +94,8 @@ export function useCommunityModeration() {
     if (!user) return;
 
     try {
-      const { data, error } = await supabase
+      const db = requireSupabase();
+      const { data, error } = await db
         .from('community_moderator_reputation')
         .select('*')
         .eq('user_id', user.id)
@@ -112,7 +114,8 @@ export function useCommunityModeration() {
     if (!user) return;
 
     try {
-      const { data, error } = await supabase
+      const db = requireSupabase();
+      const { data, error } = await db
         .from('moderation_rewards')
         .select('*')
         .eq('reporter_id', user.id)
@@ -129,7 +132,8 @@ export function useCommunityModeration() {
     if (!user) return;
 
     try {
-      const { data, error } = await supabase
+      const db = requireSupabase();
+      const { data, error } = await db
         .from('content_flags_queue')
         .select('*')
         .eq('reporter_id', user.id)
@@ -165,7 +169,8 @@ export function useCommunityModeration() {
         reporterAccuracy
       );
 
-      const { data, error } = await supabase
+      const db = requireSupabase();
+      const { data, error } = await db
         .from('content_flags_queue')
         .insert({
           product_id: params.productId,
@@ -195,7 +200,8 @@ export function useCommunityModeration() {
 
   const getReportCountForProduct = async (productId: string): Promise<number> => {
     try {
-      const { count, error } = await supabase
+      const db = requireSupabase();
+      const { count, error } = await db
         .from('content_flags_queue')
         .select('*', { count: 'exact', head: true })
         .eq('product_id', productId);
@@ -262,7 +268,8 @@ export function useCommunityModeration() {
 
   const getLeaderboard = async (limit: number = 10) => {
     try {
-      const { data, error } = await supabase
+      const db = requireSupabase();
+      const { data, error } = await db
         .from('community_moderator_reputation')
         .select('user_id, reputation_tier, reports_validated, accuracy_rate, total_rewards_earned')
         .order('total_rewards_earned', { ascending: false })

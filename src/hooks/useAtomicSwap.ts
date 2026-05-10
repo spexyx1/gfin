@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '../lib/supabase';
+import { requireSupabase } from '../lib/supabase';
 import { ethers } from 'ethers';
 import { logger } from '../utils/logger';
 
@@ -46,7 +46,7 @@ export function useAtomicSwap() {
 
   const loadSupportedTokens = async () => {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await requireSupabase()
         .from('supported_swap_tokens')
         .select('*')
         .eq('is_active', true)
@@ -62,7 +62,7 @@ export function useAtomicSwap() {
 
   const loadUserSwaps = async (userId: string) => {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await requireSupabase()
         .from('atomic_swaps')
         .select(`
           *,
@@ -102,7 +102,8 @@ export function useAtomicSwap() {
   }): Promise<boolean> => {
     setLoading(true);
     try {
-      const { data: session } = await supabase.auth.getSession();
+      const db = requireSupabase();
+      const { data: session } = await db.auth.getSession();
       if (!session.session?.user) {
         throw new Error('Not authenticated');
       }
@@ -116,7 +117,7 @@ export function useAtomicSwap() {
 
       const isGasless = initiatorToken.is_gasless_enabled && recipientToken.is_gasless_enabled;
 
-      const { data: recipientProfile, error: profileError } = await supabase
+      const { data: recipientProfile, error: profileError } = await db
         .from('profiles')
         .select('id')
         .eq('wallet_address', params.recipientAddress)
@@ -124,7 +125,7 @@ export function useAtomicSwap() {
 
       if (profileError) throw profileError;
 
-      const { error } = await supabase
+      const { error } = await db
         .from('atomic_swaps')
         .insert({
           initiator_id: session.session.user.id,
@@ -162,7 +163,8 @@ export function useAtomicSwap() {
       const provider = new ethers.BrowserProvider(window.ethereum);
       const signer = await provider.getSigner();
 
-      const { data: swap, error } = await supabase
+      const db = requireSupabase();
+      const { data: swap, error } = await db
         .from('atomic_swaps')
         .select(`
           *,
@@ -195,7 +197,7 @@ export function useAtomicSwap() {
 
       await tx.wait();
 
-      const { error: updateError } = await supabase
+      const { error: updateError } = await db
         .from('atomic_swaps')
         .update({
           [isInitiator ? 'initiator_signed' : 'recipient_signed']: true,
@@ -218,7 +220,7 @@ export function useAtomicSwap() {
   const cancelSwap = async (swapId: string): Promise<boolean> => {
     setLoading(true);
     try {
-      const { error } = await supabase
+      const { error } = await requireSupabase()
         .from('atomic_swaps')
         .update({ status: 'cancelled' })
         .eq('id', swapId);
@@ -236,7 +238,7 @@ export function useAtomicSwap() {
 
   const expireOldSwaps = async () => {
     try {
-      await supabase.rpc('expire_old_swaps');
+      await requireSupabase().rpc('expire_old_swaps');
     } catch (error) {
       logger.error('Error expiring swaps', 'useAtomicSwap', error);
     }

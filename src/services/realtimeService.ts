@@ -1,5 +1,5 @@
 import { RealtimeChannel, RealtimePostgresChangesPayload } from '@supabase/supabase-js';
-import { supabase } from '../lib/supabase';
+import { requireSupabase } from '../lib/supabase';
 import { Product, Order, Message } from '../types';
 
 export type RealtimeEvent = 'INSERT' | 'UPDATE' | 'DELETE';
@@ -36,7 +36,7 @@ class RealtimeService {
     let channel = this.channels.get(channelName);
 
     if (!channel) {
-      channel = supabase.channel(channelName);
+      channel = requireSupabase().channel(channelName);
       this.channels.set(channelName, channel);
     }
 
@@ -76,7 +76,7 @@ class RealtimeService {
     let channel = this.channels.get(channelName);
 
     if (!channel) {
-      channel = supabase.channel(channelName);
+      channel = requireSupabase().channel(channelName);
       this.channels.set(channelName, channel);
     }
 
@@ -131,7 +131,7 @@ class RealtimeService {
     let channel = this.channels.get(channelName);
 
     if (!channel) {
-      channel = supabase.channel(channelName);
+      channel = requireSupabase().channel(channelName);
       this.channels.set(channelName, channel);
     }
 
@@ -172,7 +172,7 @@ class RealtimeService {
     let channel = this.channels.get(channelName);
 
     if (!channel) {
-      channel = supabase.channel(channelName);
+      channel = requireSupabase().channel(channelName);
       this.channels.set(channelName, channel);
     }
 
@@ -214,7 +214,7 @@ class RealtimeService {
     let channel = this.channels.get(channelName);
 
     if (!channel) {
-      channel = supabase.channel(channelName);
+      channel = requireSupabase().channel(channelName);
       this.channels.set(channelName, channel);
     }
 
@@ -237,7 +237,7 @@ class RealtimeService {
     let channel = this.channels.get(channelName);
 
     if (!channel) {
-      channel = supabase.channel(channelName);
+      channel = requireSupabase().channel(channelName);
       this.channels.set(channelName, channel);
       await channel.subscribe();
     }

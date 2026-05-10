@@ -60,7 +60,7 @@ export function EnhancedSitemasterDashboard() {
   } = useBusinessInquiries();
 
   const [hasAccess, setHasAccess] = useState(true);
-  const [activeTab, setActiveTab] = useState<'overview' | 'users' | 'content' | 'flags' | 'suspensions' | 'activity' | 'reputation' | 'settings' | 'features' | 'rates' | 'escrow' | 'transactions' | 'messages' | 'card_network' | 'inquiries'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'users' | 'content' | 'flags' | 'suspensions' | 'activity' | 'reputation' | 'settings' | 'features' | 'rates' | 'escrow' | 'transactions' | 'messages' | 'card_network' | 'inquiries' | 'swap-tokens'>('overview');
   const [selectedInquiry, setSelectedInquiry] = useState<any>(null);
   const [inquiryResponse, setInquiryResponse] = useState('');
   const [stats, setStats] = useState<any>(null);

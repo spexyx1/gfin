@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useMediator, DisputeCase } from '../hooks/useMediator';
-import { Scale, FileText, MessageSquare, Award, AlertCircle, UserPlus, TrendingUp, TrendingDown, Eye, EyeOff, CreditCard, Clock, CheckCircle, XCircle, ChevronDown, ChevronUp } from 'lucide-react';
-import { supabase } from '../lib/supabase';
+import { Scale, FileText, MessageSquare, Eye, EyeOff, CreditCard, Clock, CheckCircle, XCircle, ChevronDown, ChevronUp } from 'lucide-react';
+import { requireSupabase } from '../lib/supabase';
 
 interface CardDisputeRow {
   id: string;
@@ -63,20 +63,21 @@ export function MediatorDashboard() {
   }, []);
 
   const fetchCardDisputes = async () => {
+    const db = requireSupabase();
     setCardDisputeLoading(true);
-    const { data } = await supabase
+    const { data } = await db
       .from('card_disputes')
       .select('*, card_transactions(merchant_name, authorization_amount, merchant_mcc, authorized_at, authorization_code)')
       .order('opened_at', { ascending: false });
     setCardDisputes((data ?? []) as CardDisputeRow[]);
 
     const sixtyDaysAgo = new Date(Date.now() - 60 * 24 * 60 * 60 * 1000).toISOString();
-    const { count: totalTx } = await supabase
+    const { count: totalTx } = await db
       .from('card_transactions')
       .select('*', { count: 'exact', head: true })
       .eq('transaction_status', 'settled')
       .gte('settled_at', sixtyDaysAgo);
-    const { count: disputedTx } = await supabase
+    const { count: disputedTx } = await db
       .from('card_disputes')
       .select('*', { count: 'exact', head: true })
       .gte('opened_at', sixtyDaysAgo);
@@ -100,7 +101,7 @@ export function MediatorDashboard() {
       updates.resolved_at = new Date().toISOString();
       if (amount) updates.resolution_amount = parseFloat(amount);
     }
-    await supabase.from('card_disputes').update(updates).eq('id', id);
+    await requireSupabase().from('card_disputes').update(updates).eq('id', id);
     setResolutionForm(null);
     fetchCardDisputes();
   };

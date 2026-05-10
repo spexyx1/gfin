@@ -25,7 +25,7 @@ export function RealtimeNotificationSystem() {
         id: `order-${order.id}`,
         type: 'order',
         title: 'New Order Received',
-        message: `Order #${order.id.slice(0, 8)} for $${order.total_amount}`,
+        message: `Order #${order.id.slice(0, 8)} for $${order.total}`,
         timestamp: new Date(),
         read: false,
       });
@@ -62,7 +62,7 @@ export function RealtimeNotificationSystem() {
         id: `product-${product.id}`,
         type: 'product',
         title: 'New Product Listed',
-        message: `${product.name} - $${product.price}`,
+        message: `${product.title} - $${product.price}`,
         timestamp: new Date(),
         read: false,
       });

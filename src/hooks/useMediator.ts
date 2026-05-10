@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '../lib/supabase';
+import { requireSupabase } from '../lib/supabase';
 
 export interface DisputeCase {
   id: string;
@@ -73,10 +73,11 @@ export function useMediator() {
   const [error, setError] = useState<string | null>(null);
 
   const isMediator = async () => {
-    const { data: { user } } = await supabase.auth.getUser();
+    const db = requireSupabase();
+    const { data: { user } } = await db.auth.getUser();
     if (!user) return false;
 
-    const { data } = await supabase
+    const { data } = await db
       .from('user_admin_roles')
       .select('*')
       .eq('user_id', user.id)
@@ -88,9 +89,10 @@ export function useMediator() {
   };
 
   const createCase = async (caseData: Partial<DisputeCase>) => {
+    const db = requireSupabase();
     const caseNumber = `CASE-${Date.now()}`;
 
-    const { data, error } = await supabase
+    const { data, error } = await db
       .from('dispute_cases')
       .insert({
         case_number: caseNumber,
@@ -105,7 +107,8 @@ export function useMediator() {
   };
 
   const updateCase = async (caseId: string, updates: Partial<DisputeCase>) => {
-    const { error } = await supabase
+    const db = requireSupabase();
+    const { error } = await db
       .from('dispute_cases')
       .update({ ...updates, updated_at: new Date().toISOString() })
       .eq('id', caseId);
@@ -115,7 +118,8 @@ export function useMediator() {
   };
 
   const resolveCase = async (caseId: string, resolution: string, awardedTo?: string) => {
-    const { error } = await supabase
+    const db = requireSupabase();
+    const { error } = await db
       .from('dispute_cases')
       .update({
         status: 'resolved',
@@ -130,7 +134,8 @@ export function useMediator() {
   };
 
   const getCaseEvidence = async (caseId: string) => {
-    const { data, error } = await supabase
+    const db = requireSupabase();
+    const { data, error } = await db
       .from('case_evidence')
       .select('*')
       .eq('case_id', caseId)
@@ -141,10 +146,11 @@ export function useMediator() {
   };
 
   const addEvidence = async (caseId: string, evidenceData: Partial<CaseEvidence>) => {
-    const { data: { user } } = await supabase.auth.getUser();
+    const db = requireSupabase();
+    const { data: { user } } = await db.auth.getUser();
     if (!user) throw new Error('Not authenticated');
 
-    const { data, error } = await supabase
+    const { data, error } = await db
       .from('case_evidence')
       .insert({
         case_id: caseId,
@@ -159,7 +165,8 @@ export function useMediator() {
   };
 
   const getCaseComments = async (caseId: string) => {
-    const { data, error } = await supabase
+    const db = requireSupabase();
+    const { data, error } = await db
       .from('case_comments')
       .select('*')
       .eq('case_id', caseId)
@@ -170,10 +177,11 @@ export function useMediator() {
   };
 
   const addComment = async (caseId: string, content: string, isInternal: boolean = false) => {
-    const { data: { user } } = await supabase.auth.getUser();
+    const db = requireSupabase();
+    const { data: { user } } = await db.auth.getUser();
     if (!user) throw new Error('Not authenticated');
 
-    const { data, error } = await supabase
+    const { data, error } = await db
       .from('case_comments')
       .insert({
         case_id: caseId,
@@ -189,10 +197,11 @@ export function useMediator() {
   };
 
   const assignModerator = async (caseId: string, moderatorId: string) => {
-    const { data: { user } } = await supabase.auth.getUser();
+    const db = requireSupabase();
+    const { data: { user } } = await db.auth.getUser();
     if (!user) throw new Error('Not authenticated');
 
-    const { data, error } = await supabase
+    const { data, error } = await db
       .from('moderator_assignments')
       .insert({
         case_id: caseId,
@@ -210,7 +219,8 @@ export function useMediator() {
     userId: string,
     updates: Partial<UserReputation>
   ) => {
-    const { data, error } = await supabase
+    const db = requireSupabase();
+    const { data, error } = await db
       .from('user_reputation')
       .upsert({
         user_id: userId,
@@ -225,10 +235,11 @@ export function useMediator() {
   };
 
   const rewardUser = async (userId: string, amount: number, reason: string) => {
-    const { data: { user } } = await supabase.auth.getUser();
+    const db = requireSupabase();
+    const { data: { user } } = await db.auth.getUser();
     if (!user) throw new Error('Not authenticated');
 
-    await supabase.from('moderation_actions').insert({
+    await db.from('moderation_actions').insert({
       moderator_id: user.id,
       user_id: userId,
       action_type: 'reward',
@@ -236,7 +247,7 @@ export function useMediator() {
       details: JSON.stringify({ reward_amount: amount })
     });
 
-    const { data: reputation } = await supabase
+    const { data: reputation } = await db
       .from('user_reputation')
       .select('*')
       .eq('user_id', userId)
@@ -250,10 +261,11 @@ export function useMediator() {
   };
 
   const fineUser = async (userId: string, amount: number, reason: string) => {
-    const { data: { user } } = await supabase.auth.getUser();
+    const db = requireSupabase();
+    const { data: { user } } = await db.auth.getUser();
     if (!user) throw new Error('Not authenticated');
 
-    await supabase.from('moderation_actions').insert({
+    await db.from('moderation_actions').insert({
       moderator_id: user.id,
       user_id: userId,
       action_type: 'fine',
@@ -261,7 +273,7 @@ export function useMediator() {
       details: JSON.stringify({ fine_amount: amount })
     });
 
-    const { data: reputation } = await supabase
+    const { data: reputation } = await db
       .from('user_reputation')
       .select('*')
       .eq('user_id', userId)
@@ -275,10 +287,11 @@ export function useMediator() {
   };
 
   const reviewAppeal = async (appealId: string, decision: string, approved: boolean) => {
-    const { data: { user } } = await supabase.auth.getUser();
+    const db = requireSupabase();
+    const { data: { user } } = await db.auth.getUser();
     if (!user) throw new Error('Not authenticated');
 
-    const { error } = await supabase
+    const { error } = await db
       .from('case_appeals')
       .update({
         status: approved ? 'approved' : 'denied',
@@ -293,7 +306,8 @@ export function useMediator() {
   };
 
   const fetchCases = async () => {
-    const { data, error } = await supabase
+    const db = requireSupabase();
+    const { data, error } = await db
       .from('dispute_cases')
       .select('*')
       .order('created_at', { ascending: false });
@@ -306,7 +320,8 @@ export function useMediator() {
   };
 
   const fetchAppeals = async () => {
-    const { data, error } = await supabase
+    const db = requireSupabase();
+    const { data, error } = await db
       .from('case_appeals')
       .select('*')
       .eq('status', 'pending')

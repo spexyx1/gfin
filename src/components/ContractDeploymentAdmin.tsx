@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { supabase } from '../lib/supabase';
-import { Shield, CheckCircle, XCircle, ExternalLink, Copy, Plus, Trash2 } from 'lucide-react';
+import { requireSupabase } from '../lib/supabase';
+import { Shield, CheckCircle, ExternalLink, Copy, Plus, Trash2 } from 'lucide-react';
 import { logger } from '../utils/logger';
 
 interface ContractDeployment {
@@ -39,7 +39,8 @@ export const ContractDeploymentAdmin: React.FC = () => {
 
   const fetchDeployments = async () => {
     try {
-      const { data, error } = await supabase
+      const db = requireSupabase();
+      const { data, error } = await db
         .from('contract_deployments')
         .select('*')
         .order('deployed_at', { ascending: false });
@@ -57,7 +58,8 @@ export const ContractDeploymentAdmin: React.FC = () => {
     e.preventDefault();
 
     try {
-      const { error } = await supabase.from('contract_deployments').insert({
+      const db = requireSupabase();
+      const { error } = await db.from('contract_deployments').insert({
         contract_name: formData.contract_name,
         contract_address: formData.contract_address.toLowerCase(),
         network: formData.network,
@@ -92,7 +94,8 @@ export const ContractDeploymentAdmin: React.FC = () => {
 
   const activateDeployment = async (deploymentId: string) => {
     try {
-      const { error } = await supabase.rpc('activate_contract_deployment', {
+      const db = requireSupabase();
+      const { error } = await db.rpc('activate_contract_deployment', {
         p_deployment_id: deploymentId,
       });
 
@@ -110,7 +113,8 @@ export const ContractDeploymentAdmin: React.FC = () => {
     if (!confirm('Are you sure you want to delete this deployment?')) return;
 
     try {
-      const { error } = await supabase
+      const db = requireSupabase();
+      const { error } = await db
         .from('contract_deployments')
         .delete()
         .eq('id', deploymentId);
@@ -307,7 +311,7 @@ export const ContractDeploymentAdmin: React.FC = () => {
                     </span>
                   )}
                   {deployment.verified && (
-                    <CheckCircle className="w-5 h-5 text-blue-400" title="Verified" />
+                    <span title="Verified"><CheckCircle className="w-5 h-5 text-blue-400" /></span>
                   )}
                 </div>
                 <p className="text-gray-400 text-sm">

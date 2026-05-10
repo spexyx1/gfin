@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { supabase } from '../lib/supabase';
+import { requireSupabase } from '../lib/supabase';
 
 export interface TransactionReputation {
   id: string;
@@ -39,10 +39,11 @@ export function useReputation() {
   const [error, setError] = useState<string | null>(null);
 
   const getMyReputation = async () => {
-    const { data: { user } } = await supabase.auth.getUser();
+    const db = requireSupabase();
+    const { data: { user } } = await db.auth.getUser();
     if (!user) return null;
 
-    const { data, error } = await supabase
+    const { data, error } = await db
       .from('transaction_reputation')
       .select('*')
       .eq('user_id', user.id)
@@ -53,7 +54,8 @@ export function useReputation() {
   };
 
   const getUserReputation = async (userId: string) => {
-    const { data, error } = await supabase
+    const db = requireSupabase();
+    const { data, error } = await db
       .from('transaction_reputation')
       .select('*')
       .eq('user_id', userId)
@@ -64,12 +66,13 @@ export function useReputation() {
   };
 
   const getReputationHistory = async (userId?: string) => {
-    const { data: { user } } = await supabase.auth.getUser();
+    const db = requireSupabase();
+    const { data: { user } } = await db.auth.getUser();
     if (!user) throw new Error('Not authenticated');
 
     const targetUserId = userId || user.id;
 
-    const { data, error } = await supabase
+    const { data, error } = await db
       .from('transaction_reputation_history')
       .select('*')
       .eq('user_id', targetUserId)
@@ -80,10 +83,11 @@ export function useReputation() {
   };
 
   const overrideSuspension = async (userId: string, reason: string) => {
-    const { data: { user } } = await supabase.auth.getUser();
+    const db = requireSupabase();
+    const { data: { user } } = await db.auth.getUser();
     if (!user) throw new Error('Not authenticated');
 
-    await supabase
+    await db
       .from('transaction_reputation')
       .update({
         is_suspended: false,
@@ -93,7 +97,7 @@ export function useReputation() {
       })
       .eq('user_id', userId);
 
-    const { error: overrideError } = await supabase
+    const { error: overrideError } = await db
       .from('suspension_overrides')
       .insert({
         user_id: userId,
@@ -103,7 +107,7 @@ export function useReputation() {
 
     if (overrideError) throw overrideError;
 
-    const { error: historyError } = await supabase
+    const { error: historyError } = await db
       .from('transaction_reputation_history')
       .insert({
         user_id: userId,
@@ -119,10 +123,11 @@ export function useReputation() {
   };
 
   const requestCollateralRedemption = async () => {
-    const { data: { user } } = await supabase.auth.getUser();
+    const db = requireSupabase();
+    const { data: { user } } = await db.auth.getUser();
     if (!user) throw new Error('Not authenticated');
 
-    const { error } = await supabase
+    const { error } = await db
       .from('transaction_reputation')
       .update({
         collateral_redemption_requested: true,
@@ -138,11 +143,12 @@ export function useReputation() {
     approve: boolean,
     notes: string
   ) => {
-    const { data: { user } } = await supabase.auth.getUser();
+    const db = requireSupabase();
+    const { data: { user } } = await db.auth.getUser();
     if (!user) throw new Error('Not authenticated');
 
     if (approve) {
-      const { error } = await supabase
+      const { error } = await db
         .from('transaction_reputation')
         .update({
           collateral_held: false,
@@ -153,7 +159,7 @@ export function useReputation() {
 
       if (error) throw error;
 
-      await supabase
+      await db
         .from('transaction_reputation_history')
         .insert({
           user_id: userId,
@@ -165,7 +171,7 @@ export function useReputation() {
           moderator_id: user.id
         });
     } else {
-      await supabase
+      await db
         .from('transaction_reputation')
         .update({
           collateral_redemption_requested: false,
@@ -173,7 +179,7 @@ export function useReputation() {
         })
         .eq('user_id', userId);
 
-      await supabase
+      await db
         .from('transaction_reputation_history')
         .insert({
           user_id: userId,
@@ -186,7 +192,8 @@ export function useReputation() {
   };
 
   const getAllSuspendedUsers = async () => {
-    const { data, error } = await supabase
+    const db = requireSupabase();
+    const { data, error } = await db
       .from('transaction_reputation')
       .select('*, profile:profiles!user_id(username, display_name)')
       .eq('is_suspended', true)
@@ -197,7 +204,8 @@ export function useReputation() {
   };
 
   const getCollateralRedemptionRequests = async () => {
-    const { data, error } = await supabase
+    const db = requireSupabase();
+    const { data, error } = await db
       .from('transaction_reputation')
       .select('*, profile:profiles!user_id(username, display_name, email)')
       .eq('collateral_redemption_requested', true)
@@ -208,7 +216,8 @@ export function useReputation() {
   };
 
   const liftExpiredSuspensions = async () => {
-    const { error } = await supabase.rpc('lift_expired_suspensions');
+    const db = requireSupabase();
+    const { error } = await db.rpc('lift_expired_suspensions');
     if (error) throw error;
   };
 

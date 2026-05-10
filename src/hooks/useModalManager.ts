@@ -20,7 +20,8 @@ export type ModalName =
   | 'advancedSearch'
   | 'reportListing'
   | 'securityAudit'
-  | 'documentation';
+  | 'documentation'
+  | 'prohibitedItems';
 
 interface ModalState {
   [key: string]: boolean;

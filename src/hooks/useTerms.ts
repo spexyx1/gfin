@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { supabase, requireSupabase, handleSupabaseError } from '../lib/supabase';
+import { requireSupabase, handleSupabaseError } from '../lib/supabase';
 import { logger } from '../utils/logger';
 
 interface TermsOfService {
@@ -26,6 +26,7 @@ export function useTerms() {
   const [currentTerms, setCurrentTerms] = useState<TermsOfService | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [needsTermsAcceptance, setNeedsTermsAcceptance] = useState(false);
 
   useEffect(() => {
     loadCurrentTerms();
@@ -222,6 +223,8 @@ export function useTerms() {
     currentTerms,
     isLoading,
     error,
+    needsTermsAcceptance,
+    setNeedsTermsAcceptance,
     loadCurrentTerms,
     checkUserAcceptance,
     acceptTerms,

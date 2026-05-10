@@ -8,6 +8,7 @@ export function useMessaging() {
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [messages, setMessages] = useState<Record<string, Message[]>>({});
+  const [userInfoCache, setUserInfoCache] = useState<Record<string, { name: string; avatar?: string; username?: string }>>({});
   const { user } = useAuth();
 
   // Load conversations and messages from Supabase
@@ -366,29 +367,32 @@ export function useMessaging() {
     }
   };
 
-  const getUserInfo = async (userId: string) => {
-    try {
-      const supabaseClient = requireSupabase();
-      
-      const { data: profile, error } = await supabaseClient
-        .from('profiles')
-        .select('username, display_name, avatar')
-        .eq('id', userId)
-        .single();
-
-      if (error || !profile) {
-        return { name: `User ${userId.slice(0, 6)}...${userId.slice(-4)}` };
+  const getUserInfo = (userId: string): { name: string; avatar?: string; username?: string } => {
+    if (userInfoCache[userId]) return userInfoCache[userId];
+    const fallback = { name: `User ${userId.slice(0, 6)}...${userId.slice(-4)}` };
+    (async () => {
+      try {
+        const supabaseClient = requireSupabase();
+        const { data: profile, error } = await supabaseClient
+          .from('profiles')
+          .select('username, display_name, avatar')
+          .eq('id', userId)
+          .single();
+        if (!error && profile) {
+          setUserInfoCache(prev => ({
+            ...prev,
+            [userId]: {
+              name: profile.display_name || profile.username,
+              avatar: profile.avatar,
+              username: profile.username,
+            },
+          }));
+        }
+      } catch (error) {
+        logger.error('Failed to get user info', 'useMessaging', error);
       }
-
-      return {
-        name: profile.display_name || profile.username,
-        avatar: profile.avatar,
-        username: profile.username,
-      };
-    } catch (error) {
-      logger.error('Failed to get user info', 'useMessaging', error);
-      return { name: `User ${userId.slice(0, 6)}...${userId.slice(-4)}` };
-    }
+    })();
+    return fallback;
   };
 
   const deleteConversation = async (conversationId: string) => {

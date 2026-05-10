@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Wifi, WifiOff, AlertCircle } from 'lucide-react';
-import { supabase } from '../lib/supabase';
+import { supabase, requireSupabase } from '../lib/supabase';
 import { motion, AnimatePresence } from 'framer-motion';
 import { logger } from '../utils/logger';
 
@@ -22,7 +22,13 @@ export function RealtimeStatusIndicator({
   const [showDetails, setShowDetails] = useState(false);
 
   useEffect(() => {
-    const testChannel = supabase.channel('connection-test');
+    if (!supabase) {
+      setStatus('disconnected');
+      return;
+    }
+
+    const db = requireSupabase();
+    const testChannel = db.channel('connection-test');
 
     testChannel
       .on('system', {}, (payload) => {
@@ -52,7 +58,7 @@ export function RealtimeStatusIndicator({
 
     const pingInterval = setInterval(async () => {
       try {
-        const { error } = await supabase.from('products').select('count').limit(1);
+        const { error } = await db.from('products').select('count').limit(1);
         if (error && status === 'connected') {
           setStatus('error');
         }

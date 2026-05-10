@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Plus, Trash2, CreditCard as Edit2, Save, X, CheckCircle, AlertCircle } from 'lucide-react';
-import { supabase } from '../lib/supabase';
+import { requireSupabase } from '../lib/supabase';
 import { logger } from '../utils/logger';
 
 interface Token {
@@ -41,10 +41,11 @@ export function SitemasterSwapControls() {
 
   const loadTokens = async () => {
     try {
-      const { data: session } = await supabase.auth.getSession();
+      const db = requireSupabase();
+      const { data: session } = await db.auth.getSession();
       if (!session.session) return;
 
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from('supported_swap_tokens')
         .select('*')
         .order('created_at', { ascending: false });
@@ -60,10 +61,11 @@ export function SitemasterSwapControls() {
 
   const handleAddToken = async () => {
     try {
-      const { data: session } = await supabase.auth.getSession();
+      const db = requireSupabase();
+      const { data: session } = await db.auth.getSession();
       if (!session.session?.user) return;
 
-      const { error } = await supabase
+      const { error } = await db
         .from('supported_swap_tokens')
         .insert({
           chain_id: parseInt(formData.chain_id),
@@ -94,7 +96,7 @@ export function SitemasterSwapControls() {
       const token = tokens.find(t => t.id === tokenId);
       if (!token) return;
 
-      const { error } = await supabase
+      const { error } = await requireSupabase()
         .from('supported_swap_tokens')
         .update({
           is_gasless_enabled: token.is_gasless_enabled,
@@ -116,7 +118,7 @@ export function SitemasterSwapControls() {
     if (!confirm('Are you sure you want to delete this token?')) return;
 
     try {
-      const { error } = await supabase
+      const { error } = await requireSupabase()
         .from('supported_swap_tokens')
         .delete()
         .eq('id', tokenId);

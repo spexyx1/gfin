@@ -4,9 +4,10 @@ import { useEffect } from 'react';
 interface GraffitiLogoProps {
   className?: string;
   animated?: boolean;
+  size?: 'xs' | 'sm' | 'header' | 'md' | 'lg';
 }
 
-export function GraffitiLogo({ className = '', animated = true }: GraffitiLogoProps) {
+export function GraffitiLogo({ className = '', animated = true, size: _size }: GraffitiLogoProps) {
   const ghettoControls = useAnimation();
   const financeControls = useAnimation();
 

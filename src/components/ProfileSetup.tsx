@@ -322,7 +322,7 @@ export function ProfileSetup({ isOpen, onClose }: ProfileSetupProps) {
                 <button
                   type="button"
                   onClick={() => setStep(step + 1)}
-                  disabled={step === 1 && (!formData.handle || !formData.displayName || error)}
+                  disabled={step === 1 && (!formData.handle || !formData.displayName || !!error)}
                   className="px-6 py-3 bg-luxe-gold hover:bg-luxe-gold/80 disabled:luxe-glass text-black rounded-xl transition-colors font-black uppercase"
                 >
                   Next

@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useTreasurer } from '../hooks/useTreasurer';
 import { Shield, Ban, AlertTriangle, DollarSign, Activity, Search, Plus, X, CreditCard, TrendingUp, Users, Fuel, Calendar } from 'lucide-react';
-import { supabase } from '../lib/supabase';
+import { requireSupabase } from '../lib/supabase';
 
 export function TreasurerDashboard() {
   const {
@@ -62,38 +62,39 @@ export function TreasurerDashboard() {
 
   const fetchCardStats = async () => {
     setCardStatsLoading(true);
+    const db = requireSupabase();
     const rangeStart = getDateRangeStart(cardDateRange);
     const ytdStart = getDateRangeStart('ytd');
 
-    const { data: txData } = await supabase
+    const { data: txData } = await db
       .from('card_transactions')
       .select('authorization_amount, settled_amount, interchange_fee_collected, platform_fee_collected, merchant_name, transaction_status, settled_at')
       .eq('transaction_status', 'settled')
       .gte('settled_at', rangeStart);
 
-    const { data: txYtd } = await supabase
+    const { data: txYtd } = await db
       .from('card_transactions')
       .select('settled_amount')
       .eq('transaction_status', 'settled')
       .gte('settled_at', ytdStart);
 
-    const { data: disputeData } = await supabase
+    const { data: disputeData } = await db
       .from('card_disputes')
       .select('resolution_amount')
       .eq('status', 'resolved_approved')
       .gte('resolved_at', rangeStart);
 
-    const { count: cardholderCount } = await supabase
+    const { count: cardholderCount } = await db
       .from('issued_cards')
       .select('*', { count: 'exact', head: true })
       .eq('card_status', 'active');
 
-    const { count: merchantCount } = await supabase
+    const { count: merchantCount } = await db
       .from('merchant_card_enrollment')
       .select('*', { count: 'exact', head: true })
       .eq('acceptance_status', 'active');
 
-    const { count: gasCount } = await supabase
+    const { count: gasCount } = await db
       .from('merchant_card_enrollment')
       .select('*', { count: 'exact', head: true })
       .eq('acceptance_status', 'active')

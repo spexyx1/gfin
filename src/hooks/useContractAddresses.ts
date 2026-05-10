@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '../lib/supabase';
+import { requireSupabase } from '../lib/supabase';
 import { logger } from '../utils/logger';
 
 interface ContractAddresses {
@@ -23,7 +23,8 @@ export const useContractAddresses = (network: string) => {
         setLoading(true);
         setError(null);
 
-        const { data, error: fetchError } = await supabase
+        const db = requireSupabase();
+        const { data, error: fetchError } = await db
           .from('contract_deployments')
           .select('contract_name, contract_address')
           .eq('network', network)

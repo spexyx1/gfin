@@ -181,8 +181,8 @@ export function OrderManagement({ isOpen, onClose }: OrderManagementProps) {
     }
   };
 
-  const buyerOrders = orders.filter(order => order.buyer === account);
-  const sellerOrders = orders.filter(order => order.seller === account);
+  const buyerOrders = orders.filter(order => order.buyerId === account);
+  const sellerOrders = orders.filter(order => order.sellerId === account);
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
@@ -249,14 +249,8 @@ export function OrderManagement({ isOpen, onClose }: OrderManagementProps) {
                     </div>
 
                     <div className="flex items-center gap-4 mb-4">
-                      <img
-                        src={order.productImage || ''}
-                        alt={order.productName || 'Product'}
-                        className="w-16 h-16 rounded-lg object-cover"
-                      />
                       <div>
-                        <h4 className="text-white font-medium">{order.productName || 'Product'}</h4>
-                        <p className="text-gray-400">Quantity: {order.quantity || 1}</p>
+                        <h4 className="text-white font-medium">{order.description || 'Product'}</h4>
                       </div>
                     </div>
 
@@ -457,14 +451,8 @@ export function OrderManagement({ isOpen, onClose }: OrderManagementProps) {
                       </div>
 
                       <div className="flex items-center gap-4 mb-4">
-                        <img
-                          src={order.productImage || ''}
-                          alt={order.productName || 'Product'}
-                          className="w-16 h-16 rounded-lg object-cover"
-                        />
                         <div>
-                          <h4 className="text-white font-medium">{order.productName || 'Product'}</h4>
-                          <p className="text-gray-400">Quantity: {order.quantity || 1}</p>
+                          <h4 className="text-white font-medium">{order.description || 'Product'}</h4>
                         </div>
                       </div>
 

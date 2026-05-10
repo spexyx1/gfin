@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '../lib/supabase';
+import { requireSupabase } from '../lib/supabase';
 import { useAuth } from './useAuth';
 import { logger } from '../utils/logger';
 
@@ -78,8 +78,9 @@ export function useSponsorship() {
   // Load active sponsorship requests
   const loadRequests = async () => {
     try {
+      const db = requireSupabase();
       // Fetch sponsorship requests
-      const { data: requests, error: requestsError } = await supabase
+      const { data: requests, error: requestsError } = await db
         .from('sponsorship_requests')
         .select('*')
         .eq('status', 'active')
@@ -94,7 +95,7 @@ export function useSponsorship() {
 
       // Fetch seller profiles for all requests
       const sellerIds = [...new Set(requests.map(r => r.seller_id))];
-      const { data: sellers, error: sellersError } = await supabase
+      const { data: sellers, error: sellersError } = await db
         .from('profiles')
         .select('id, username, rating')
         .in('id', sellerIds);
@@ -128,8 +129,9 @@ export function useSponsorship() {
     if (!user) return;
 
     try {
+      const db = requireSupabase();
       // Fetch investments
-      const { data: investments, error: investmentsError } = await supabase
+      const { data: investments, error: investmentsError } = await db
         .from('sponsorship_investments')
         .select('*')
         .eq('sponsor_id', user.id)
@@ -144,7 +146,7 @@ export function useSponsorship() {
 
       // Fetch related requests
       const requestIds = [...new Set(investments.map(i => i.request_id))];
-      const { data: requests, error: requestsError } = await supabase
+      const { data: requests, error: requestsError } = await db
         .from('sponsorship_requests')
         .select('id, title, revenue_percentage, seller_id')
         .in('id', requestIds);
@@ -179,7 +181,8 @@ export function useSponsorship() {
     if (!user) return;
 
     try {
-      const { data, error } = await supabase
+      const db = requireSupabase();
+      const { data, error } = await db
         .from('sponsorship_requests')
         .select('*')
         .eq('seller_id', user.id)
@@ -198,7 +201,8 @@ export function useSponsorship() {
     if (!user) return;
 
     try {
-      const { data, error } = await supabase
+      const db = requireSupabase();
+      const { data, error } = await db
         .from('sponsorship_transactions')
         .select('*')
         .or(`sponsor_id.eq.${user.id},seller_id.eq.${user.id}`)
@@ -218,7 +222,8 @@ export function useSponsorship() {
 
     setIsLoading(true);
     try {
-      const { data, error } = await supabase
+      const db = requireSupabase();
+      const { data, error } = await db
         .from('sponsorship_requests')
         .insert([
           {
@@ -255,8 +260,9 @@ export function useSponsorship() {
 
     setIsLoading(true);
     try {
+      const db = requireSupabase();
       // Check if request is still available
-      const { data: request, error: requestError } = await supabase
+      const { data: request, error: requestError } = await db
         .from('sponsorship_requests')
         .select('*')
         .eq('id', requestId)
@@ -271,7 +277,7 @@ export function useSponsorship() {
       }
 
       // Create investment
-      const { data: investment, error: investError } = await supabase
+      const { data: investment, error: investError } = await db
         .from('sponsorship_investments')
         .insert([
           {
@@ -305,7 +311,8 @@ export function useSponsorship() {
 
     setIsLoading(true);
     try {
-      const { error } = await supabase
+      const db = requireSupabase();
+      const { error } = await db
         .from('sponsorship_requests')
         .update({ status: 'cancelled' })
         .eq('id', requestId)
@@ -326,8 +333,9 @@ export function useSponsorship() {
   // Get analytics for a specific request
   const getRequestAnalytics = async (requestId: string) => {
     try {
+      const db = requireSupabase();
       // Get total investments
-      const { data: investments, error: invError } = await supabase
+      const { data: investments, error: invError } = await db
         .from('sponsorship_investments')
         .select('amount, revenue_earned')
         .eq('request_id', requestId);
@@ -335,7 +343,7 @@ export function useSponsorship() {
       if (invError) throw invError;
 
       // Get transaction history
-      const { data: transactions, error: txError } = await supabase
+      const { data: transactions, error: txError } = await db
         .from('sponsorship_transactions')
         .select('sponsor_cut, order_amount')
         .eq('request_id', requestId);
@@ -369,8 +377,9 @@ export function useSponsorship() {
   // Calculate sponsor payout for an order
   const calculateSponsorPayouts = async (orderId: string, sellerId: string, orderAmount: number) => {
     try {
+      const db = requireSupabase();
       // Find active sponsorships for this seller
-      const { data: activeRequests, error: reqError } = await supabase
+      const { data: activeRequests, error: reqError } = await db
         .from('sponsorship_requests')
         .select('*')
         .eq('seller_id', sellerId)
@@ -384,7 +393,7 @@ export function useSponsorship() {
 
       for (const request of activeRequests) {
         // Get all investments for this request
-        const { data: investments, error: invError } = await supabase
+        const { data: investments, error: invError } = await db
           .from('sponsorship_investments')
           .select('*')
           .eq('request_id', request.id)
@@ -411,7 +420,7 @@ export function useSponsorship() {
           });
 
           // Update investment revenue
-          await supabase
+          await db
             .from('sponsorship_investments')
             .update({
               revenue_earned: investment.revenue_earned + sponsorCut
@@ -432,7 +441,8 @@ export function useSponsorship() {
     if (!payouts || payouts.length === 0) return;
 
     try {
-      const { error } = await supabase
+      const db = requireSupabase();
+      const { error } = await db
         .from('sponsorship_transactions')
         .insert(payouts);
 
@@ -446,7 +456,8 @@ export function useSponsorship() {
   // Get seller's available selling limit from sponsorships
   const getSellerSponsorshipLimit = async (sellerId: string) => {
     try {
-      const { data: requests, error } = await supabase
+      const db = requireSupabase();
+      const { data: requests, error } = await db
         .from('sponsorship_requests')
         .select('amount_funded')
         .eq('seller_id', sellerId)

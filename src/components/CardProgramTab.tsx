@@ -3,7 +3,7 @@ import {
   CreditCard, CheckCircle, Clock, AlertCircle, Snowflake, Zap,
   Upload, Plus, ChevronRight, Eye, EyeOff, RefreshCw, Lock
 } from 'lucide-react';
-import { supabase } from '../lib/supabase';
+import { requireSupabase } from '../lib/supabase';
 import { useAuth } from '../hooks/useAuth';
 
 interface KycVerification {
@@ -79,7 +79,8 @@ export function CardProgramTab() {
   const [actionLoading, setActionLoading] = useState(false);
 
   const authHeaders = useCallback(async () => {
-    const { data: { session } } = await supabase.auth.getSession();
+    const db = requireSupabase();
+    const { data: { session } } = await db.auth.getSession();
     return {
       'Authorization': `Bearer ${session?.access_token ?? ''}`,
       'Content-Type': 'application/json',
@@ -109,7 +110,8 @@ export function CardProgramTab() {
       return;
     }
 
-    const { data: cardData } = await supabase
+    const db = requireSupabase();
+    const { data: cardData } = await db
       .from('issued_cards')
       .select('*')
       .eq('user_id', user.id)
@@ -125,7 +127,7 @@ export function CardProgramTab() {
 
     setCard(cardData as IssuedCard);
 
-    const { data: accountData } = await supabase
+    const { data: accountData } = await db
       .from('card_accounts')
       .select('*')
       .eq('user_id', user.id)
@@ -135,7 +137,7 @@ export function CardProgramTab() {
     if (accountData) {
       setAccount(accountData as CardAccount);
 
-      const { data: txData } = await supabase
+      const { data: txData } = await db
         .from('card_transactions')
         .select('*')
         .eq('card_id', cardData.id)
@@ -190,7 +192,7 @@ export function CardProgramTab() {
         body: JSON.stringify({ card_token: card.id }),
       });
 
-      await supabase
+      await requireSupabase()
         .from('issued_cards')
         .update({ card_status: card.card_status === 'frozen' ? 'active' : 'frozen' })
         .eq('id', card.id);
@@ -250,7 +252,7 @@ export function CardProgramTab() {
     if (!card) return;
     setActionLoading(true);
     try {
-      await supabase
+      await requireSupabase()
         .from('issued_cards')
         .update({
           physical_card_fulfillment_status: 'ordered',

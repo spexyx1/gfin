@@ -41,7 +41,7 @@ export const useWeb3 = () => {
 
   const checkNetwork = useCallback((currentChainId: number) => {
     const targetNetwork = getTargetNetwork();
-    const isCorrect = SUPPORTED_CHAIN_IDS.includes(currentChainId);
+    const isCorrect = (SUPPORTED_CHAIN_IDS as number[]).includes(currentChainId);
     setIsCorrectNetwork(isCorrect);
 
     if (currentChainId === SUPPORTED_NETWORKS.polygon.chainId) {
