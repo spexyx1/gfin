@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from './useAuth';
+import { logger } from '../utils/logger';
 
 export interface ProhibitedCategory {
   id: string;
@@ -84,7 +85,7 @@ export function useCommunityModeration() {
       if (error) throw error;
       setProhibitedCategories(data || []);
     } catch (error) {
-      console.error('Error fetching prohibited categories:', error);
+      logger.error('Error fetching prohibited categories', 'useCommunityModeration', error);
     }
   };
 
@@ -101,7 +102,7 @@ export function useCommunityModeration() {
       if (error) throw error;
       setReputation(data);
     } catch (error) {
-      console.error('Error fetching reputation:', error);
+      logger.error('Error fetching reputation', 'useCommunityModeration', error);
     } finally {
       setLoading(false);
     }
@@ -120,7 +121,7 @@ export function useCommunityModeration() {
       if (error) throw error;
       setRewards(data || []);
     } catch (error) {
-      console.error('Error fetching rewards:', error);
+      logger.error('Error fetching rewards', 'useCommunityModeration', error);
     }
   };
 
@@ -137,7 +138,7 @@ export function useCommunityModeration() {
       if (error) throw error;
       setReports(data || []);
     } catch (error) {
-      console.error('Error fetching reports:', error);
+      logger.error('Error fetching reports', 'useCommunityModeration', error);
     }
   };
 
@@ -187,7 +188,7 @@ export function useCommunityModeration() {
 
       return data;
     } catch (error) {
-      console.error('Error submitting report:', error);
+      logger.error('Error submitting report', 'useCommunityModeration', error);
       throw error;
     }
   };
@@ -202,7 +203,7 @@ export function useCommunityModeration() {
       if (error) throw error;
       return count || 0;
     } catch (error) {
-      console.error('Error getting report count:', error);
+      logger.error('Error getting report count', 'useCommunityModeration', error);
       return 0;
     }
   };
@@ -270,7 +271,7 @@ export function useCommunityModeration() {
       if (error) throw error;
       return data || [];
     } catch (error) {
-      console.error('Error fetching leaderboard:', error);
+      logger.error('Error fetching leaderboard', 'useCommunityModeration', error);
       return [];
     }
   };

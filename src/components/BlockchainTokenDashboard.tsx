@@ -5,10 +5,10 @@ import {
   RefreshCw, Clock, Activity
 } from 'lucide-react';
 import { useTokenManager } from '../hooks/useTokenManager';
-import { useSiteMaster } from '../hooks/useSiteMaster';
+import { useSitemasterRole } from '../hooks/useSitemasterRole';
 
 export function BlockchainTokenDashboard() {
-  const { issitemaster } = useSiteMaster();
+  const { issitemaster } = useSitemasterRole();
   const {
     tokenInfo,
     holders,

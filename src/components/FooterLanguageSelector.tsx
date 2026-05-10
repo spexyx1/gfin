@@ -3,6 +3,7 @@ import { Globe, Check, Search, X } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
+import { logger } from '../utils/logger';
 
 export function FooterLanguageSelector() {
   const { t } = useTranslation();
@@ -31,7 +32,7 @@ export function FooterLanguageSelector() {
       setIsOpen(false);
       setSearchQuery('');
     } catch (error) {
-      console.error('Failed to change language:', error);
+      logger.error('Failed to change language', 'FooterLanguageSelector', error);
     } finally {
       setIsChanging(false);
     }

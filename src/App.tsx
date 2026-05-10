@@ -43,7 +43,7 @@ import { useCart } from './hooks/useCart';
 import { useMessaging } from './hooks/useMessaging';
 import { useSocialSystem } from './hooks/useSocialSystem';
 import { useProducts } from './hooks/useProducts';
-import { useSiteMaster } from './hooks/useSiteMaster';
+import { useSitemasterRole } from './hooks/useSitemasterRole';
 import { useModalManager } from './hooks/useModalManager';
 import { useProductFilter } from './hooks/useProductFilter';
 import { logger } from './utils/logger';
@@ -72,7 +72,7 @@ function App() {
   const { getUnreadCount, createConversation } = useMessaging();
   const { getUserProfile } = useSocialSystem();
   const { products: allProducts, isLoading: productsLoading, loadProducts } = useProducts();
-  const { issitemaster } = useSiteMaster();
+  const { issitemaster } = useSitemasterRole();
   const { openModal, closeModal, isOpen, getData } = useModalManager();
 
 

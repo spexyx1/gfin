@@ -5,10 +5,10 @@ import {
   Settings, Gavel, Lock, Unlock
 } from 'lucide-react';
 import { useEscrowManager } from '../hooks/useEscrowManager';
-import { useSiteMaster } from '../hooks/useSiteMaster';
+import { useSitemasterRole } from '../hooks/useSitemasterRole';
 
 export function BlockchainEscrowDashboard() {
-  const { issitemaster } = useSiteMaster();
+  const { issitemaster } = useSitemasterRole();
   const {
     escrowSettings,
     deals,

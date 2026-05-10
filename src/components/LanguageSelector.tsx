@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Globe, Check, Search } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useTranslation } from 'react-i18next';
+import { logger } from '../utils/logger';
 
 export function LanguageSelector() {
   const { t } = useTranslation();
@@ -30,7 +31,7 @@ export function LanguageSelector() {
       setIsOpen(false);
       setSearchQuery('');
     } catch (error) {
-      console.error('Failed to change language:', error);
+      logger.error('Failed to change language', 'LanguageSelector', error);
     } finally {
       setIsChanging(false);
     }

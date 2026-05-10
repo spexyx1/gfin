@@ -1,3 +1,5 @@
+import { logger } from './logger';
+
 export interface CacheStats {
   totalItems: number;
   caches: {
@@ -31,7 +33,7 @@ export async function clearAllCaches(): Promise<boolean> {
     await Promise.all(cacheNames.map(name => caches.delete(name)));
     return true;
   } catch (error) {
-    console.error('Error clearing caches:', error);
+    logger.error('Error clearing caches', 'cacheManager', error);
     return false;
   }
 }
@@ -58,7 +60,7 @@ export async function getCacheStats(): Promise<CacheStats> {
 
     return stats;
   } catch (error) {
-    console.error('Error getting cache stats:', error);
+    logger.error('Error getting cache stats', 'cacheManager', error);
     return {
       totalItems: 0,
       caches: []
@@ -111,7 +113,7 @@ export async function estimateStorageUsage(): Promise<{
         available
       };
     } catch (error) {
-      console.error('Error estimating storage:', error);
+      logger.error('Error estimating storage', 'cacheManager', error);
     }
   }
 

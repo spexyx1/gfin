@@ -50,8 +50,7 @@ export function logEnvironmentStatus(): void {
   const result = validateEnvironment();
 
   if (!result.valid) {
-    console.error('Environment validation failed:');
-    result.errors.forEach(error => console.error(`  - ${error}`));
+    logger.error('Environment validation failed', 'validateEnv', result.errors);
   }
 
   if (result.warnings.length > 0) {

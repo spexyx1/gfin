@@ -7,6 +7,7 @@ import {
   formatBytes,
   type CacheStats
 } from '../utils/cacheManager';
+import { logger } from '../utils/logger';
 
 export function CacheManagement() {
   const [cacheStats, setCacheStats] = useState<CacheStats | null>(null);
@@ -30,7 +31,7 @@ export function CacheManagement() {
       setCacheStats(stats);
       setStorageInfo(storage);
     } catch (error) {
-      console.error('Error loading cache stats:', error);
+      logger.error('Error loading cache stats', 'CacheManagement', error);
     } finally {
       setIsRefreshing(false);
     }
@@ -56,7 +57,7 @@ export function CacheManagement() {
         alert('Failed to clear cache. Please try again.');
       }
     } catch (error) {
-      console.error('Error clearing cache:', error);
+      logger.error('Error clearing cache', 'CacheManagement', error);
       alert('Error clearing cache. Please try again.');
     } finally {
       setIsClearing(false);

@@ -6,7 +6,7 @@ import { useCart } from '../hooks/useCart';
 import { useMessaging } from '../hooks/useMessaging';
 import { useSellerProducts } from '../hooks/useSellerProducts';
 import { useSponsorship } from '../hooks/useSponsorship';
-import { useSiteMaster } from '../hooks/useSiteMaster';
+import { useSitemasterRole } from '../hooks/useSitemasterRole';
 import { useEnhancedSitemaster } from '../hooks/useEnhancedSitemaster';
 import { useNetworkStatus } from '../hooks/useNetworkStatus';
 import { useVideoCall } from '../hooks/useVideoCall';
@@ -52,7 +52,7 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
   const { getUnreadCount } = useMessaging();
   const { products, getProductStats } = useSellerProducts();
   const { myInvestments, myRequests } = useSponsorship();
-  const { issitemaster } = useSiteMaster();
+  const { issitemaster } = useSitemasterRole();
   const {
     flags,
     suspensions,
