@@ -62,12 +62,9 @@ contract CryptoMarketplaceEscrow is ReentrancyGuard, Ownable {
     
     function depositGhettoCollateral(uint256 _amount) external nonReentrant {
         require(_amount >= REQUIRED_GHETTO_COLLATERAL, "Minimum 100 GHETTO required");
-        require(
-            ghettoToken.transferFrom(msg.sender, address(this), _amount),
-            "GHETTO transfer failed"
-        );
-        
+        // CEI: update state before external call
         sellerGhettoCollateral[msg.sender] += _amount;
+        ghettoToken.safeTransferFrom(msg.sender, address(this), _amount);
         emit SellerCollateralDeposited(msg.sender, _amount);
     }
     
@@ -145,13 +142,9 @@ contract CryptoMarketplaceEscrow is ReentrancyGuard, Ownable {
         require(order.status == OrderStatus.Created, "Order cannot be funded");
         require(order.sellerAgreed, "Seller must agree to order first");
         
-        IERC20 paymentToken = IERC20(order.paymentToken);
-        require(
-            paymentToken.transferFrom(msg.sender, address(this), order.amount),
-            "Payment token transfer failed"
-        );
-        
+        // CEI: update state before external call
         order.status = OrderStatus.Funded;
+        IERC20(order.paymentToken).safeTransferFrom(msg.sender, address(this), order.amount);
         emit OrderFunded(_orderId, order.amount, order.paymentToken);
     }
     
@@ -204,9 +197,10 @@ contract CryptoMarketplaceEscrow is ReentrancyGuard, Ownable {
         sellerBalances[order.seller][order.paymentToken] += sellerAmount;
         sellerBalances[owner()][order.paymentToken] += platformFee;
         
-        // Release seller held GHETTO collateral
+        // CEI: update all state before emitting events
+        require(sellerHeldFunds[order.seller] >= order.amount, "Held funds underflow");
         sellerHeldFunds[order.seller] -= order.amount;
-        
+
         order.status = OrderStatus.Completed;
         emit OrderCompleted(_orderId);
         emit FundsReleased(_orderId, order.seller, sellerAmount, order.paymentToken);

@@ -1,16 +1,61 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "npm:@supabase/supabase-js@2";
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Client-Info, Apikey",
-};
+const ALLOWED_ORIGIN = Deno.env.get("ALLOWED_ORIGIN") ?? "https://ghetto.finance";
+
+function getCorsHeaders(req: Request): Record<string, string> {
+  const origin = req.headers.get("Origin") ?? "";
+  const allowedOrigin = origin === ALLOWED_ORIGIN ? origin : ALLOWED_ORIGIN;
+  return {
+    "Access-Control-Allow-Origin": allowedOrigin,
+    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Client-Info, Apikey",
+    "Vary": "Origin",
+  };
+}
 
 const MAX_RETRIES = 5;
 const RETRY_DELAYS = [60, 300, 900, 3600, 7200];
 
+// Block requests to private/loopback/link-local addresses to prevent SSRF
+function isSafeUrl(rawUrl: string): boolean {
+  let parsed: URL;
+  try {
+    parsed = new URL(rawUrl);
+  } catch {
+    return false;
+  }
+
+  if (parsed.protocol !== "https:") return false;
+
+  const hostname = parsed.hostname.toLowerCase();
+
+  // Block loopback
+  if (hostname === "localhost" || hostname === "127.0.0.1" || hostname === "::1") return false;
+
+  // Block private IPv4 ranges
+  const ipv4 = hostname.match(/^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/);
+  if (ipv4) {
+    const [, a, b] = ipv4.map(Number);
+    if (a === 10) return false;                        // 10.0.0.0/8
+    if (a === 172 && b >= 16 && b <= 31) return false; // 172.16.0.0/12
+    if (a === 192 && b === 168) return false;           // 192.168.0.0/16
+    if (a === 169 && b === 254) return false;           // 169.254.0.0/16 link-local
+    if (a === 0) return false;                         // 0.0.0.0/8
+    if (a === 127) return false;                       // 127.0.0.0/8
+  }
+
+  // Block metadata endpoints
+  if (hostname === "metadata.google.internal") return false;
+  if (hostname.endsWith(".internal")) return false;
+  if (hostname.endsWith(".local")) return false;
+
+  return true;
+}
+
 Deno.serve(async (req: Request) => {
+  const corsHeaders = getCorsHeaders(req);
+
   if (req.method === "OPTIONS") {
     return new Response(null, { status: 200, headers: corsHeaders });
   }
@@ -32,15 +77,8 @@ Deno.serve(async (req: Request) => {
 
     if (error || !pendingDeliveries || pendingDeliveries.length === 0) {
       return new Response(
-        JSON.stringify({
-          success: true,
-          message: "No pending webhooks to deliver",
-          processed: 0
-        }),
-        {
-          status: 200,
-          headers: { ...corsHeaders, "Content-Type": "application/json" }
-        }
+        JSON.stringify({ success: true, message: "No pending webhooks to deliver", processed: 0 }),
+        { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
@@ -58,23 +96,14 @@ Deno.serve(async (req: Request) => {
         successful: successCount,
         failed: pendingDeliveries.length - successCount
       }),
-      {
-        status: 200,
-        headers: { ...corsHeaders, "Content-Type": "application/json" }
-      }
+      { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
 
   } catch (error) {
     console.error("Webhook worker error:", error);
     return new Response(
-      JSON.stringify({
-        error: "Webhook processing failed",
-        errorCode: "WORKER_ERROR"
-      }),
-      {
-        status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" }
-      }
+      JSON.stringify({ error: "Webhook processing failed", errorCode: "WORKER_ERROR" }),
+      { status: 500, headers: { ...getCorsHeaders(req), "Content-Type": "application/json" } }
     );
   }
 });
@@ -83,6 +112,19 @@ async function processWebhook(supabase: any, delivery: any) {
   const startTime = Date.now();
 
   try {
+    // SSRF protection: only deliver to safe HTTPS endpoints
+    if (!isSafeUrl(delivery.endpoint_url)) {
+      await supabase
+        .from("webhook_deliveries")
+        .update({
+          delivery_status: "failed",
+          error_message: "Endpoint URL is not permitted",
+          delivered_at: new Date().toISOString()
+        })
+        .eq("id", delivery.id);
+      return;
+    }
+
     const { data: webhook } = await supabase
       .from("merchant_webhooks")
       .select("signing_secret")
@@ -149,10 +191,7 @@ async function processWebhook(supabase: any, delivery: any) {
 
       await supabase
         .from("merchant_webhooks")
-        .update({
-          last_success_at: new Date().toISOString(),
-          failure_count: 0
-        })
+        .update({ last_success_at: new Date().toISOString(), failure_count: 0 })
         .eq("id", delivery.webhook_id);
 
     } else {
@@ -194,11 +233,7 @@ async function handleFailure(
       .maybeSingle();
 
     const failureCount = (webhook?.failure_count || 0) + 1;
-
-    const updateData: any = {
-      failure_count: failureCount,
-      last_failure_at: new Date().toISOString()
-    };
+    const updateData: any = { failure_count: failureCount, last_failure_at: new Date().toISOString() };
 
     if (failureCount >= 10) {
       updateData.is_active = false;
@@ -206,10 +241,7 @@ async function handleFailure(
       updateData.disabled_reason = `Automatically disabled after ${failureCount} consecutive failures`;
     }
 
-    await supabase
-      .from("merchant_webhooks")
-      .update(updateData)
-      .eq("id", delivery.webhook_id);
+    await supabase.from("merchant_webhooks").update(updateData).eq("id", delivery.webhook_id);
 
   } else {
     const nextRetryDelay = RETRY_DELAYS[attemptNumber - 1] || 7200;
@@ -232,18 +264,9 @@ async function handleFailure(
 
 async function generateSignature(payload: string, secret: string): Promise<string> {
   const encoder = new TextEncoder();
-  const keyData = encoder.encode(secret);
-  const messageData = encoder.encode(payload);
-
   const key = await crypto.subtle.importKey(
-    "raw",
-    keyData,
-    { name: "HMAC", hash: "SHA-256" },
-    false,
-    ["sign"]
+    "raw", encoder.encode(secret), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]
   );
-
-  const signature = await crypto.subtle.sign("HMAC", key, messageData);
-  const hashArray = Array.from(new Uint8Array(signature));
-  return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
+  const signature = await crypto.subtle.sign("HMAC", key, encoder.encode(payload));
+  return Array.from(new Uint8Array(signature)).map(b => b.toString(16).padStart(2, "0")).join("");
 }
