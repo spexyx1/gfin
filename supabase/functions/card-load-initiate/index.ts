@@ -1,22 +1,13 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "npm:@supabase/supabase-js@2";
 
-const ALLOWED_ORIGIN = Deno.env.get("ALLOWED_ORIGIN") ?? "https://ghetto.finance";
-
-function getCorsHeaders(req: Request): Record<string, string> {
-  const origin = req.headers.get("Origin") ?? "";
-  const allowedOrigin = origin === ALLOWED_ORIGIN ? origin : ALLOWED_ORIGIN;
-  return {
-    "Access-Control-Allow-Origin": allowedOrigin,
-    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Client-Info, Apikey",
-    "Vary": "Origin",
-  };
-}
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Client-Info, Apikey",
+};
 
 Deno.serve(async (req: Request) => {
-  const corsHeaders = getCorsHeaders(req);
-
   if (req.method === "OPTIONS") {
     return new Response(null, { status: 200, headers: corsHeaders });
   }
@@ -201,12 +192,38 @@ Deno.serve(async (req: Request) => {
 
     if (insertError) throw insertError;
 
-    // Use atomic RPC to increment balance — avoids read-modify-write race condition
     if (loadStatus === "completed") {
-      await supabase.rpc("increment_card_balance", {
-        p_account_id: account_id,
-        p_amount: usd_amount,
-      });
+      await supabase
+        .from("card_accounts")
+        .update({
+          available_balance: supabase.rpc("increment_balance", {
+            account_id,
+            amount: usd_amount,
+          }),
+          ledger_balance: supabase.rpc("increment_balance", {
+            account_id,
+            amount: usd_amount,
+          }),
+          updated_at: new Date().toISOString(),
+        })
+        .eq("id", account_id);
+
+      const { data: currentAccount } = await supabase
+        .from("card_accounts")
+        .select("available_balance, ledger_balance")
+        .eq("id", account_id)
+        .maybeSingle();
+
+      if (currentAccount) {
+        await supabase
+          .from("card_accounts")
+          .update({
+            available_balance: Number(currentAccount.available_balance) + usd_amount,
+            ledger_balance: Number(currentAccount.ledger_balance) + usd_amount,
+            updated_at: new Date().toISOString(),
+          })
+          .eq("id", account_id);
+      }
     }
 
     return new Response(JSON.stringify({ success: true, data: load }), {
@@ -217,7 +234,7 @@ Deno.serve(async (req: Request) => {
     const message = err instanceof Error ? err.message : "Internal server error";
     return new Response(JSON.stringify({ error: message }), {
       status: 500,
-      headers: { ...getCorsHeaders(req), "Content-Type": "application/json" },
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   }
 });

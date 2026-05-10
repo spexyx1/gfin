@@ -1,22 +1,13 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "npm:@supabase/supabase-js@2";
 
-const ALLOWED_ORIGIN = Deno.env.get("ALLOWED_ORIGIN") ?? "https://ghetto.finance";
-
-function getCorsHeaders(req: Request): Record<string, string> {
-  const origin = req.headers.get("Origin") ?? "";
-  const allowedOrigin = origin === ALLOWED_ORIGIN ? origin : ALLOWED_ORIGIN;
-  return {
-    "Access-Control-Allow-Origin": allowedOrigin,
-    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Client-Info, Apikey, X-API-Key",
-    "Vary": "Origin",
-  };
-}
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Client-Info, Apikey, X-API-Key",
+};
 
 Deno.serve(async (req: Request) => {
-  const corsHeaders = getCorsHeaders(req);
-
   if (req.method === "OPTIONS") {
     return new Response(null, { status: 200, headers: corsHeaders });
   }
@@ -43,26 +34,26 @@ Deno.serve(async (req: Request) => {
 
     if (req.method === "GET" && pathParts.length === 4) {
       const orderId = pathParts[3];
-      return await getOrderDisputes(orderId, supabase, auth, corsHeaders);
+      return await getOrderDisputes(orderId, supabase, auth);
     }
 
     if (req.method === "GET" && pathParts.length === 5) {
       const disputeId = pathParts[4];
-      return await getDisputeDetails(disputeId, supabase, auth, corsHeaders);
+      return await getDisputeDetails(disputeId, supabase, auth);
     }
 
     if (req.method === "POST" && pathParts.includes("evidence")) {
       const disputeId = pathParts[4];
-      return await addEvidence(disputeId, req, supabase, auth, corsHeaders);
+      return await addEvidence(disputeId, req, supabase, auth);
     }
 
     if (req.method === "POST" && pathParts.includes("comments")) {
       const disputeId = pathParts[4];
-      return await addComment(disputeId, req, supabase, auth, corsHeaders);
+      return await addComment(disputeId, req, supabase, auth);
     }
 
     if (req.method === "GET" && pathParts.length === 3 && pathParts[2] === "disputes") {
-      return await listDisputes(url, supabase, auth, corsHeaders);
+      return await listDisputes(url, supabase, auth);
     }
 
     return new Response(
@@ -82,7 +73,7 @@ Deno.serve(async (req: Request) => {
       }),
       {
         status: 500,
-        headers: { ...getCorsHeaders(req), "Content-Type": "application/json" }
+        headers: { ...corsHeaders, "Content-Type": "application/json" }
       }
     );
   }
@@ -99,8 +90,7 @@ async function authenticateMerchant(req: Request, supabase: any) {
     method: "POST",
     headers: {
       "X-API-Key": apiKey,
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")}`,
+      "Content-Type": "application/json"
     }
   });
 
@@ -117,7 +107,7 @@ async function authenticateMerchant(req: Request, supabase: any) {
   };
 }
 
-async function getOrderDisputes(orderId: string, supabase: any, auth: any, corsHeaders: Record<string, string>) {
+async function getOrderDisputes(orderId: string, supabase: any, auth: any) {
   const { data: merchantOrder } = await supabase
     .from("merchant_orders")
     .select("id, order_id")
@@ -127,38 +117,80 @@ async function getOrderDisputes(orderId: string, supabase: any, auth: any, corsH
 
   if (!merchantOrder) {
     return new Response(
-      JSON.stringify({ error: "Order not found", errorCode: "ORDER_NOT_FOUND" }),
-      { status: 404, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      JSON.stringify({
+        error: "Order not found",
+        errorCode: "ORDER_NOT_FOUND"
+      }),
+      {
+        status: 404,
+        headers: { ...corsHeaders, "Content-Type": "application/json" }
+      }
     );
   }
 
   const { data: disputes, error } = await supabase
     .from("order_disputes")
-    .select(`id, reason, description, status, created_at, resolved_at, resolution, mediator_notes`)
+    .select(`
+      id,
+      reason,
+      description,
+      status,
+      created_at,
+      resolved_at,
+      resolution,
+      mediator_notes
+    `)
     .eq("order_id", orderId)
     .order("created_at", { ascending: false });
 
   if (error) {
     return new Response(
-      JSON.stringify({ error: "Failed to fetch disputes", errorCode: "FETCH_FAILED" }),
-      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      JSON.stringify({
+        error: "Failed to fetch disputes",
+        errorCode: "FETCH_FAILED"
+      }),
+      {
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" }
+      }
     );
   }
 
   return new Response(
-    JSON.stringify({ success: true, order_id: orderId, disputes: disputes || [], dispute_count: disputes?.length || 0 }),
-    { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+    JSON.stringify({
+      success: true,
+      order_id: orderId,
+      disputes: disputes || [],
+      dispute_count: disputes?.length || 0
+    }),
+    {
+      status: 200,
+      headers: { ...corsHeaders, "Content-Type": "application/json" }
+    }
   );
 }
 
-async function getDisputeDetails(disputeId: string, supabase: any, auth: any, corsHeaders: Record<string, string>) {
+async function getDisputeDetails(disputeId: string, supabase: any, auth: any) {
   const { data: dispute, error } = await supabase
     .from("order_disputes")
     .select(`
-      id, order_id, reason, description, status, created_at, resolved_at, resolution, mediator_notes,
+      id,
+      order_id,
+      reason,
+      description,
+      status,
+      created_at,
+      resolved_at,
+      resolution,
+      mediator_notes,
       orders!inner (
-        id, total_price, payment_token,
-        merchant_orders!inner (merchant_id, merchant_reference_id)
+        id,
+        total_price,
+        payment_token,
+        merchant_orders!inner (
+          merchant_id,
+          merchant_reference_id
+        )
       )
     `)
     .eq("id", disputeId)
@@ -166,18 +198,30 @@ async function getDisputeDetails(disputeId: string, supabase: any, auth: any, co
 
   if (error || !dispute) {
     return new Response(
-      JSON.stringify({ error: "Dispute not found", errorCode: "DISPUTE_NOT_FOUND" }),
-      { status: 404, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      JSON.stringify({
+        error: "Dispute not found",
+        errorCode: "DISPUTE_NOT_FOUND"
+      }),
+      {
+        status: 404,
+        headers: { ...corsHeaders, "Content-Type": "application/json" }
+      }
     );
   }
 
   const order = Array.isArray(dispute.orders) ? dispute.orders[0] : dispute.orders;
-  const merchantOrder = Array.isArray(order.merchant_orders) ? order.merchant_orders[0] : order.merchant_orders;
+  const merchantOrder = order.merchant_orders[0] || order.merchant_orders;
 
   if (merchantOrder.merchant_id !== auth.merchantId) {
     return new Response(
-      JSON.stringify({ error: "Access denied", errorCode: "ACCESS_DENIED" }),
-      { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      JSON.stringify({
+        error: "Access denied",
+        errorCode: "ACCESS_DENIED"
+      }),
+      {
+        status: 403,
+        headers: { ...corsHeaders, "Content-Type": "application/json" }
+      }
     );
   }
 
@@ -211,22 +255,36 @@ async function getDisputeDetails(disputeId: string, supabase: any, auth: any, co
         comments: comments || []
       }
     }),
-    { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+    {
+      status: 200,
+      headers: { ...corsHeaders, "Content-Type": "application/json" }
+    }
   );
 }
 
-async function listDisputes(url: URL, supabase: any, auth: any, corsHeaders: Record<string, string>) {
+async function listDisputes(url: URL, supabase: any, auth: any) {
   const status = url.searchParams.get("status");
-  const limit = Math.min(parseInt(url.searchParams.get("limit") || "50"), 100);
+  const limit = parseInt(url.searchParams.get("limit") || "50");
   const offset = parseInt(url.searchParams.get("offset") || "0");
 
-  const query = supabase
+  let query = supabase
     .from("order_disputes")
     .select(`
-      id, order_id, reason, description, status, created_at, resolved_at,
+      id,
+      order_id,
+      reason,
+      description,
+      status,
+      created_at,
+      resolved_at,
       orders!inner (
-        id, total_price, payment_token,
-        merchant_orders!inner (merchant_id, merchant_reference_id)
+        id,
+        total_price,
+        payment_token,
+        merchant_orders!inner (
+          merchant_id,
+          merchant_reference_id
+        )
       )
     `, { count: "exact" })
     .order("created_at", { ascending: false })
@@ -236,21 +294,27 @@ async function listDisputes(url: URL, supabase: any, auth: any, corsHeaders: Rec
 
   if (error) {
     return new Response(
-      JSON.stringify({ error: "Failed to fetch disputes", errorCode: "FETCH_FAILED" }),
-      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      JSON.stringify({
+        error: "Failed to fetch disputes",
+        errorCode: "FETCH_FAILED"
+      }),
+      {
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" }
+      }
     );
   }
 
   const merchantDisputes = disputes
     ?.filter(d => {
       const order = Array.isArray(d.orders) ? d.orders[0] : d.orders;
-      const merchantOrder = Array.isArray(order?.merchant_orders) ? order?.merchant_orders[0] : order?.merchant_orders;
+      const merchantOrder = order?.merchant_orders?.[0] || order?.merchant_orders;
       return merchantOrder?.merchant_id === auth.merchantId;
     })
     .filter(d => !status || d.status === status)
     .map(d => {
       const order = Array.isArray(d.orders) ? d.orders[0] : d.orders;
-      const merchantOrder = Array.isArray(order.merchant_orders) ? order.merchant_orders[0] : order.merchant_orders;
+      const merchantOrder = order.merchant_orders[0] || order.merchant_orders;
       return {
         id: d.id,
         order_id: d.order_id,
@@ -266,107 +330,193 @@ async function listDisputes(url: URL, supabase: any, auth: any, corsHeaders: Rec
     JSON.stringify({
       success: true,
       disputes: merchantDisputes,
-      pagination: { total: count ?? 0, limit, offset, has_more: (offset + limit) < (count ?? 0) }
+      pagination: {
+        total: merchantDisputes.length,
+        limit,
+        offset,
+        has_more: (offset + limit) < merchantDisputes.length
+      }
     }),
-    { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+    {
+      status: 200,
+      headers: { ...corsHeaders, "Content-Type": "application/json" }
+    }
   );
 }
 
-async function addEvidence(disputeId: string, req: Request, supabase: any, auth: any, corsHeaders: Record<string, string>) {
+async function addEvidence(disputeId: string, req: Request, supabase: any, auth: any) {
   const body = await req.json();
   const { evidence_type, description, file_url } = body;
 
   const { data: dispute } = await supabase
     .from("order_disputes")
-    .select(`id, orders!inner (merchant_orders!inner (merchant_id))`)
+    .select(`
+      id,
+      orders!inner (
+        merchant_orders!inner (
+          merchant_id
+        )
+      )
+    `)
     .eq("id", disputeId)
     .maybeSingle();
 
   if (!dispute) {
     return new Response(
-      JSON.stringify({ error: "Dispute not found", errorCode: "DISPUTE_NOT_FOUND" }),
-      { status: 404, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      JSON.stringify({
+        error: "Dispute not found",
+        errorCode: "DISPUTE_NOT_FOUND"
+      }),
+      {
+        status: 404,
+        headers: { ...corsHeaders, "Content-Type": "application/json" }
+      }
     );
   }
 
   const order = Array.isArray(dispute.orders) ? dispute.orders[0] : dispute.orders;
-  const merchantOrder = Array.isArray(order.merchant_orders) ? order.merchant_orders[0] : order.merchant_orders;
+  const merchantOrder = order.merchant_orders[0] || order.merchant_orders;
 
   if (merchantOrder.merchant_id !== auth.merchantId) {
     return new Response(
-      JSON.stringify({ error: "Access denied", errorCode: "ACCESS_DENIED" }),
-      { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      JSON.stringify({
+        error: "Access denied",
+        errorCode: "ACCESS_DENIED"
+      }),
+      {
+        status: 403,
+        headers: { ...corsHeaders, "Content-Type": "application/json" }
+      }
     );
   }
 
   const { data: evidence, error } = await supabase
     .from("dispute_evidence")
-    .insert({ dispute_id: disputeId, submitted_by: "merchant", evidence_type, description, file_url })
+    .insert({
+      dispute_id: disputeId,
+      submitted_by: "merchant",
+      evidence_type,
+      description,
+      file_url
+    })
     .select()
     .single();
 
   if (error) {
     return new Response(
-      JSON.stringify({ error: "Failed to add evidence", errorCode: "ADD_EVIDENCE_FAILED" }),
-      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      JSON.stringify({
+        error: "Failed to add evidence",
+        errorCode: "ADD_EVIDENCE_FAILED"
+      }),
+      {
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" }
+      }
     );
   }
 
   return new Response(
-    JSON.stringify({ success: true, evidence }),
-    { status: 201, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+    JSON.stringify({
+      success: true,
+      evidence
+    }),
+    {
+      status: 201,
+      headers: { ...corsHeaders, "Content-Type": "application/json" }
+    }
   );
 }
 
-async function addComment(disputeId: string, req: Request, supabase: any, auth: any, corsHeaders: Record<string, string>) {
+async function addComment(disputeId: string, req: Request, supabase: any, auth: any) {
   const body = await req.json();
   const { comment } = body;
 
   if (!comment || comment.trim().length === 0) {
     return new Response(
-      JSON.stringify({ error: "Comment text required", errorCode: "MISSING_COMMENT" }),
-      { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      JSON.stringify({
+        error: "Comment text required",
+        errorCode: "MISSING_COMMENT"
+      }),
+      {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" }
+      }
     );
   }
 
   const { data: dispute } = await supabase
     .from("order_disputes")
-    .select(`id, orders!inner (merchant_orders!inner (merchant_id))`)
+    .select(`
+      id,
+      orders!inner (
+        merchant_orders!inner (
+          merchant_id
+        )
+      )
+    `)
     .eq("id", disputeId)
     .maybeSingle();
 
   if (!dispute) {
     return new Response(
-      JSON.stringify({ error: "Dispute not found", errorCode: "DISPUTE_NOT_FOUND" }),
-      { status: 404, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      JSON.stringify({
+        error: "Dispute not found",
+        errorCode: "DISPUTE_NOT_FOUND"
+      }),
+      {
+        status: 404,
+        headers: { ...corsHeaders, "Content-Type": "application/json" }
+      }
     );
   }
 
   const order = Array.isArray(dispute.orders) ? dispute.orders[0] : dispute.orders;
-  const merchantOrder = Array.isArray(order.merchant_orders) ? order.merchant_orders[0] : order.merchant_orders;
+  const merchantOrder = order.merchant_orders[0] || order.merchant_orders;
 
   if (merchantOrder.merchant_id !== auth.merchantId) {
     return new Response(
-      JSON.stringify({ error: "Access denied", errorCode: "ACCESS_DENIED" }),
-      { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      JSON.stringify({
+        error: "Access denied",
+        errorCode: "ACCESS_DENIED"
+      }),
+      {
+        status: 403,
+        headers: { ...corsHeaders, "Content-Type": "application/json" }
+      }
     );
   }
 
   const { data: commentData, error } = await supabase
     .from("dispute_comments")
-    .insert({ dispute_id: disputeId, commenter_role: "merchant", comment_text: comment })
+    .insert({
+      dispute_id: disputeId,
+      commenter_role: "merchant",
+      comment_text: comment
+    })
     .select()
     .single();
 
   if (error) {
     return new Response(
-      JSON.stringify({ error: "Failed to add comment", errorCode: "ADD_COMMENT_FAILED" }),
-      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      JSON.stringify({
+        error: "Failed to add comment",
+        errorCode: "ADD_COMMENT_FAILED"
+      }),
+      {
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" }
+      }
     );
   }
 
   return new Response(
-    JSON.stringify({ success: true, comment: commentData }),
-    { status: 201, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+    JSON.stringify({
+      success: true,
+      comment: commentData
+    }),
+    {
+      status: 201,
+      headers: { ...corsHeaders, "Content-Type": "application/json" }
+    }
   );
 }

@@ -1,18 +1,11 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "npm:@supabase/supabase-js@2";
 
-const ALLOWED_ORIGIN = Deno.env.get("ALLOWED_ORIGIN") ?? "https://ghetto.finance";
-
-function getCorsHeaders(req: Request): Record<string, string> {
-  const origin = req.headers.get("Origin") ?? "";
-  const allowedOrigin = origin === ALLOWED_ORIGIN ? origin : ALLOWED_ORIGIN;
-  return {
-    "Access-Control-Allow-Origin": allowedOrigin,
-    "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Client-Info, Apikey",
-    "Vary": "Origin",
-  };
-}
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Client-Info, Apikey",
+};
 
 interface ProcessorConfig {
   processorName: string;
@@ -52,8 +45,7 @@ async function callProcessor(
   });
 
   if (!response.ok) {
-    // Sanitize: never surface raw processor response text to callers
-    throw new Error(`Processor request failed with status ${response.status}`);
+    throw new Error(`Processor error: ${response.status} ${await response.text()}`);
   }
 
   return response.json();
@@ -74,8 +66,13 @@ function buildSandboxResponse(method: string, path: string, body: unknown): unkn
     };
   }
 
-  if (path.includes("/freeze")) return { status: "frozen", updated: now };
-  if (path.includes("/unfreeze") || path.includes("/activate")) return { status: "active", updated: now };
+  if (path.includes("/freeze")) {
+    return { status: "frozen", updated: now };
+  }
+
+  if (path.includes("/unfreeze") || path.includes("/activate")) {
+    return { status: "active", updated: now };
+  }
 
   if (path.includes("/load")) {
     return {
@@ -85,7 +82,9 @@ function buildSandboxResponse(method: string, path: string, body: unknown): unkn
     };
   }
 
-  if (path.includes("/balance")) return { available: 0.00, pending: 0.00, ledger: 0.00, currency: "USD" };
+  if (path.includes("/balance")) {
+    return { available: 0.00, pending: 0.00, ledger: 0.00, currency: "USD" };
+  }
 
   if (path.includes("/pan")) {
     return {
@@ -100,8 +99,6 @@ function buildSandboxResponse(method: string, path: string, body: unknown): unkn
 }
 
 Deno.serve(async (req: Request) => {
-  const corsHeaders = getCorsHeaders(req);
-
   if (req.method === "OPTIONS") {
     return new Response(null, { status: 200, headers: corsHeaders });
   }
@@ -234,7 +231,7 @@ Deno.serve(async (req: Request) => {
     const message = err instanceof Error ? err.message : "Internal server error";
     return new Response(JSON.stringify({ error: message }), {
       status: 500,
-      headers: { ...getCorsHeaders(req), "Content-Type": "application/json" },
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   }
 });

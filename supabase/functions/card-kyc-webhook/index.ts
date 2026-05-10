@@ -1,22 +1,13 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "npm:@supabase/supabase-js@2";
 
-const ALLOWED_ORIGIN = Deno.env.get("ALLOWED_ORIGIN") ?? "https://ghetto.finance";
-
-function getCorsHeaders(req: Request): Record<string, string> {
-  const origin = req.headers.get("Origin") ?? "";
-  const allowedOrigin = origin === ALLOWED_ORIGIN ? origin : ALLOWED_ORIGIN;
-  return {
-    "Access-Control-Allow-Origin": allowedOrigin,
-    "Access-Control-Allow-Methods": "POST, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Client-Info, Apikey",
-    "Vary": "Origin",
-  };
-}
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Client-Info, Apikey",
+};
 
 Deno.serve(async (req: Request) => {
-  const corsHeaders = getCorsHeaders(req);
-
   if (req.method === "OPTIONS") {
     return new Response(null, { status: 200, headers: corsHeaders });
   }
@@ -37,17 +28,8 @@ Deno.serve(async (req: Request) => {
     const webhookSecret = Deno.env.get("KYC_WEBHOOK_SECRET") ?? "";
     const signatureHeader = req.headers.get("X-Webhook-Signature") ?? "";
 
-    // Fail-closed: reject the request if secret is configured but signature is missing or invalid
-    const body = await req.text();
-
-    if (webhookSecret) {
-      if (!signatureHeader) {
-        return new Response(JSON.stringify({ error: "Missing webhook signature" }), {
-          status: 401,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
-
+    if (webhookSecret && signatureHeader) {
+      const body = await req.text();
       const encoder = new TextEncoder();
       const keyData = encoder.encode(webhookSecret);
       const key = await crypto.subtle.importKey("raw", keyData, { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
@@ -62,7 +44,7 @@ Deno.serve(async (req: Request) => {
       }
     }
 
-    const payload = JSON.parse(body) as {
+    const payload = await req.json() as {
       inquiry_id?: string;
       reference_id?: string;
       status?: string;
@@ -153,7 +135,7 @@ Deno.serve(async (req: Request) => {
     const message = err instanceof Error ? err.message : "Internal server error";
     return new Response(JSON.stringify({ error: message }), {
       status: 500,
-      headers: { ...getCorsHeaders(req), "Content-Type": "application/json" },
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   }
 });

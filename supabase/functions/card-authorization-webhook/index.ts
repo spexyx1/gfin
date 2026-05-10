@@ -1,18 +1,11 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "npm:@supabase/supabase-js@2";
 
-const ALLOWED_ORIGIN = Deno.env.get("ALLOWED_ORIGIN") ?? "https://ghetto.finance";
-
-function getCorsHeaders(req: Request): Record<string, string> {
-  const origin = req.headers.get("Origin") ?? "";
-  const allowedOrigin = origin === ALLOWED_ORIGIN ? origin : ALLOWED_ORIGIN;
-  return {
-    "Access-Control-Allow-Origin": allowedOrigin,
-    "Access-Control-Allow-Methods": "POST, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Client-Info, Apikey",
-    "Vary": "Origin",
-  };
-}
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Client-Info, Apikey",
+};
 
 const GAS_STATION_MCCS = ["5541", "5542", "5983"];
 
@@ -38,8 +31,6 @@ interface FraudRule {
 }
 
 Deno.serve(async (req: Request) => {
-  const corsHeaders = getCorsHeaders(req);
-
   if (req.method === "OPTIONS") {
     return new Response(null, { status: 200, headers: corsHeaders });
   }
@@ -128,19 +119,12 @@ Deno.serve(async (req: Request) => {
       for (const rule of fraudRules as FraudRule[]) {
         const triggerResult = await evaluateFraudRule(supabase, rule, card, authPayload);
         if (triggerResult.triggered) {
-          // Strip full auth payload from fraud event to avoid storing card tokens and sensitive data
           await supabase.from("fraud_events").insert({
             card_id: card.id,
             rule_id: rule.id,
             rule_name: rule.rule_name,
             action_taken: rule.action,
-            event_details: {
-              merchant_name: authPayload.merchant_name,
-              merchant_mcc: authPayload.merchant_mcc,
-              amount: authPayload.amount,
-              currency: authPayload.currency,
-              reason: triggerResult.reason,
-            },
+            event_details: { auth_payload: authPayload, reason: triggerResult.reason },
           });
 
           if (rule.action === "decline") {
@@ -199,11 +183,14 @@ Deno.serve(async (req: Request) => {
       .select("id")
       .single();
 
-    // Atomic balance decrement using RPC to avoid read-modify-write race conditions
-    await supabase.rpc("decrement_card_balance", {
-      p_account_id: account.id,
-      p_amount: amount,
-    });
+    await supabase
+      .from("card_accounts")
+      .update({
+        available_balance: account.available_balance - amount,
+        pending_balance: account.available_balance - amount,
+        updated_at: now.toISOString(),
+      })
+      .eq("id", account.id);
 
     return new Response(JSON.stringify({
       decision: "approve",
@@ -216,7 +203,7 @@ Deno.serve(async (req: Request) => {
     const message = err instanceof Error ? err.message : "Internal server error";
     return new Response(JSON.stringify({ decision: "decline", error: message }), {
       status: 500,
-      headers: { ...getCorsHeaders(req), "Content-Type": "application/json" },
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   }
 });
@@ -269,8 +256,13 @@ async function evaluateFraudRule(
       .eq("card_id", card.id)
       .gte("authorized_at", windowStart);
 
-    if (mccCodes) query = query.in("merchant_mcc", mccCodes);
-    if (params.event_type === "decline") query = query.eq("transaction_status", "declined");
+    if (mccCodes) {
+      query = query.in("merchant_mcc", mccCodes);
+    }
+
+    if (params.event_type === "decline") {
+      query = query.eq("transaction_status", "declined");
+    }
 
     const { count } = await query;
     if ((count ?? 0) >= maxCount) {
