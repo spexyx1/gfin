@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { X, User, Settings, ShoppingBag, Wallet, MessageCircle, Share2, Package, TrendingUp, AlertCircle, Activity, Shield, Star, Award, Copy, Check, DollarSign, Users, Target, BarChart3, Clock, Wand2 } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { useReferrals } from '../hooks/useReferrals';
@@ -30,6 +31,7 @@ interface UserDashboardProps {
 type DashboardSection = 'overview' | 'orders' | 'wallet' | 'messages' | 'referrals' | 'listings' | 'sponsorships' | 'disputes' | 'activity' | 'settings' | 'sitemaster-users' | 'sitemaster-content' | 'sitemaster-flags' | 'sitemaster-settings' | 'sitemaster-escrow' | 'sitemaster-analytics' | 'sitemaster-wizardry';
 
 export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
+  const { t } = useTranslation();
   const [activeSection, setActiveSection] = useState<DashboardSection>('overview');
   const [showOrdersModal, setShowOrdersModal] = useState(false);
   const [showWalletModal, setShowWalletModal] = useState(false);
@@ -643,7 +645,7 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
   const renderSettings = () => (
     <div className="space-y-6">
       <div>
-        <h2 className="text-3xl font-black text-white mb-2">Account Settings</h2>
+        <h2 className="text-3xl font-black text-white mb-2">{t('settings.title')}</h2>
         <p className="text-gray-400">Manage your preferences and account information</p>
       </div>
 
@@ -766,7 +768,7 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
                 className="w-full px-4 py-3 luxe-glass hover:bg-gray-600 text-white rounded-lg transition-colors font-medium flex items-center justify-center space-x-2"
               >
                 <X className="w-5 h-5" />
-                <span>Close Dashboard</span>
+                <span>{t('common.close')}</span>
               </button>
             </div>
           </div>
@@ -786,7 +788,7 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
             {activeSection === 'orders' && (
               <div>
                 <div className="mb-6">
-                  <h2 className="text-3xl font-black text-white mb-2">My Orders</h2>
+                  <h2 className="text-3xl font-black text-white mb-2">{t('orders.myOrders')}</h2>
                   <p className="text-gray-400">Track and manage your purchases and sales</p>
                 </div>
                 <button
@@ -800,7 +802,7 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
             {activeSection === 'wallet' && (
               <div>
                 <div className="mb-6">
-                  <h2 className="text-3xl font-black text-white mb-2">My Wallet</h2>
+                  <h2 className="text-3xl font-black text-white mb-2">{t('wallet.title')}</h2>
                   <p className="text-gray-400">Manage your crypto balances and transactions</p>
                 </div>
                 <button
@@ -814,7 +816,7 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
             {activeSection === 'messages' && (
               <div>
                 <div className="mb-6">
-                  <h2 className="text-3xl font-black text-white mb-2">Messages</h2>
+                  <h2 className="text-3xl font-black text-white mb-2">{t('messages.title')}</h2>
                   <p className="text-gray-400">Communicate with buyers and sellers</p>
                 </div>
                 <button

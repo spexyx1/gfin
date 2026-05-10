@@ -38,6 +38,7 @@ const LegalPage = lazy(() => import('./components/LegalPage').then(m => ({ defau
 const ProhibitedItemsPage = lazy(() => import('./components/ProhibitedItemsPage').then(m => ({ default: m.ProhibitedItemsPage })));
 const ContactForm = lazy(() => import('./components/ContactForm').then(m => ({ default: m.ContactForm })));
 const BlockchainManagement = lazy(() => import('./components/BlockchainManagement').then(m => ({ default: m.BlockchainManagement })));
+import { useTranslation } from 'react-i18next';
 import { useAuth } from './hooks/useAuth';
 import { useCart } from './hooks/useCart';
 import { useMessaging } from './hooks/useMessaging';
@@ -67,6 +68,7 @@ function App() {
     tags: [],
   });
 
+  const { t } = useTranslation();
   const { user, logout } = useAuth();
   const { addToCart, getItemCount } = useCart();
   const { getUnreadCount, createConversation } = useMessaging();
@@ -198,22 +200,22 @@ function App() {
           <div className="text-center mb-6 sm:mb-8">
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl luxe-title mb-3 sm:mb-4 tracking-tight">
               <span className="bg-gradient-to-r from-[#FFEA00] via-[#FFD700] to-[#FF8C00] bg-clip-text text-transparent luxe-text-glow">
-                Buy & Sell
+                {t('marketplace.heroTitle1')}
               </span>
               <br />
               <span className="text-white inline-block relative">
-                Anythin<span className="relative inline-block">g<sup className="absolute top-1 -right-2 text-white text-base sm:text-lg">*</sup></span> With Crypto
+                {t('marketplace.heroTitle2')}<span className="relative inline-block">{t('marketplace.heroTitle3')}<sup className="absolute top-1 -right-2 text-white text-base sm:text-lg">*</sup></span> {t('marketplace.heroTitle4')}
               </span>
             </h1>
             <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-300 font-light max-w-3xl mx-auto leading-relaxed px-2">
-              Escrow-protected trades. Moderated disputes. Built-in privacy. No middleman.
+              {t('marketplace.heroSubtitle')}
             </p>
           </div>
 
           {/* Why Trade Here */}
           <div className="mb-6 sm:mb-10">
             <div className="text-center mb-4 sm:mb-6">
-              <p className="luxe-subtitle text-gray-500 tracking-widest text-xs mb-2">Why Trade Here</p>
+              <p className="luxe-subtitle text-gray-500 tracking-widest text-xs mb-2">{t('marketplace.whyTradeHere')}</p>
               <div className="w-16 h-0.5 bg-gradient-to-r from-transparent via-[#FFD700] to-transparent mx-auto"></div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 max-w-5xl mx-auto">
@@ -221,9 +223,9 @@ function App() {
                 <div className="w-14 h-14 bg-gradient-to-br from-[#22c55e]/20 to-[#16a34a]/20 rounded-xl flex items-center justify-center mb-4 group-hover:from-[#22c55e]/30 group-hover:to-[#16a34a]/30 transition-all">
                   <Shield className="w-7 h-7 text-[#22c55e]" />
                 </div>
-                <h3 className="text-xl luxe-title text-white mb-3">Escrow Protection</h3>
+                <h3 className="text-xl luxe-title text-white mb-3">{t('marketplace.escrowProtection')}</h3>
                 <p className="text-sm text-gray-400 font-light leading-relaxed">
-                  Your crypto is locked in a smart contract until you confirm delivery. Sellers also stake collateral, so both sides have skin in the game.
+                  {t('marketplace.escrowProtectionDesc')}
                 </p>
               </div>
 
@@ -231,9 +233,9 @@ function App() {
                 <div className="w-14 h-14 bg-gradient-to-br from-[#FFD700]/20 to-[#FF8C00]/20 rounded-xl flex items-center justify-center mb-4 group-hover:from-[#FFD700]/30 group-hover:to-[#FF8C00]/30 transition-all">
                   <Wallet className="w-7 h-7 text-[#FFD700]" />
                 </div>
-                <h3 className="text-xl luxe-title text-white mb-3">Pay With Any Crypto</h3>
+                <h3 className="text-xl luxe-title text-white mb-3">{t('marketplace.payWithAnyCrypto')}</h3>
                 <p className="text-sm text-gray-400 font-light leading-relaxed">
-                  Sellers choose their preferred token. If you hold something different, swap instantly through the built-in DEX. Paying with GHETTO is gas-free.
+                  {t('marketplace.payWithAnyCryptoDesc')}
                 </p>
               </div>
 
@@ -241,9 +243,9 @@ function App() {
                 <div className="w-14 h-14 bg-gradient-to-br from-gray-600/20 to-gray-500/20 rounded-xl flex items-center justify-center mb-4 group-hover:from-gray-600/30 group-hover:to-gray-500/30 transition-all">
                   <AtSign className="w-7 h-7 text-gray-400" />
                 </div>
-                <h3 className="text-xl luxe-title text-white mb-3">Private by Default</h3>
+                <h3 className="text-xl luxe-title text-white mb-3">{t('marketplace.privateByDefault')}</h3>
                 <p className="text-sm text-gray-400 font-light leading-relaxed">
-                  End-to-end encrypted messaging, stealth profile options, and no personal data required to trade.
+                  {t('marketplace.privateByDefaultDesc')}
                 </p>
               </div>
 
@@ -251,9 +253,9 @@ function App() {
                 <div className="w-14 h-14 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 rounded-xl flex items-center justify-center mb-4 group-hover:from-blue-500/30 group-hover:to-cyan-500/30 transition-all">
                   <Users className="w-7 h-7 text-cyan-400" />
                 </div>
-                <h3 className="text-xl luxe-title text-white mb-3">Moderated Disputes</h3>
+                <h3 className="text-xl luxe-title text-white mb-3">{t('marketplace.moderatedDisputes')}</h3>
                 <p className="text-sm text-gray-400 font-light leading-relaxed">
-                  If something goes wrong, trained moderators review the evidence and release funds to the right party.
+                  {t('marketplace.moderatedDisputesDesc')}
                 </p>
               </div>
             </div>
@@ -262,7 +264,7 @@ function App() {
           {/* How It Works */}
           <div className="luxe-glass rounded-xl p-6 max-w-4xl mx-auto">
             <div className="text-center mb-6">
-              <p className="text-sm font-normal text-gray-400 uppercase tracking-wider mb-2">How It Works</p>
+              <p className="text-sm font-normal text-gray-400 uppercase tracking-wider mb-2">{t('marketplace.howItWorks')}</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
@@ -270,9 +272,9 @@ function App() {
                 <div className="w-10 h-10 bg-yellow-500/20 rounded-full flex items-center justify-center mx-auto mb-3 border-2 border-yellow-500/50">
                   <span className="text-lg luxe-title text-yellow-400">1</span>
                 </div>
-                <h4 className="text-sm luxe-title text-neon-yellow mb-1">Browse</h4>
+                <h4 className="text-sm luxe-title text-neon-yellow mb-1">{t('marketplace.step1Title')}</h4>
                 <p className="text-xs text-gray-400 font-normal leading-relaxed">
-                  Find what you want and place an order
+                  {t('marketplace.step1Desc')}
                 </p>
               </div>
 
@@ -280,9 +282,9 @@ function App() {
                 <div className="w-10 h-10 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-3 border-2 border-green-500/50">
                   <span className="text-lg luxe-title text-green-400">2</span>
                 </div>
-                <h4 className="text-sm luxe-title text-neon-yellow mb-1">Pay</h4>
+                <h4 className="text-sm luxe-title text-neon-yellow mb-1">{t('marketplace.step2Title')}</h4>
                 <p className="text-xs text-gray-400 font-normal leading-relaxed">
-                  Send crypto — funds go straight into escrow
+                  {t('marketplace.step2Desc')}
                 </p>
               </div>
 
@@ -290,9 +292,9 @@ function App() {
                 <div className="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-3 border-2 border-blue-500/50">
                   <span className="text-lg luxe-title text-blue-400">3</span>
                 </div>
-                <h4 className="text-sm luxe-title text-neon-yellow mb-1">Receive</h4>
+                <h4 className="text-sm luxe-title text-neon-yellow mb-1">{t('marketplace.step3Title')}</h4>
                 <p className="text-xs text-gray-400 font-normal leading-relaxed">
-                  Seller ships the item with tracking
+                  {t('marketplace.step3Desc')}
                 </p>
               </div>
 
@@ -300,16 +302,16 @@ function App() {
                 <div className="w-10 h-10 bg-orange-500/20 rounded-full flex items-center justify-center mx-auto mb-3 border-2 border-orange-500/50">
                   <span className="text-lg luxe-title text-orange-400">4</span>
                 </div>
-                <h4 className="text-sm luxe-title text-neon-yellow mb-1">Confirm</h4>
+                <h4 className="text-sm luxe-title text-neon-yellow mb-1">{t('marketplace.step4Title')}</h4>
                 <p className="text-xs text-gray-400 font-normal leading-relaxed">
-                  Approve delivery and funds release to seller
+                  {t('marketplace.step4Desc')}
                 </p>
               </div>
             </div>
 
             <div className="pt-4 border-t border-white/10 text-center">
               <p className="text-xs text-gray-400 font-normal">
-                All transactions are secured and moderated by trained specialists
+                {t('marketplace.allTransactionsSecured')}
               </p>
             </div>
           </div>
@@ -322,18 +324,18 @@ function App() {
           {productsLoading ? (
             <div className="flex items-center justify-center py-16">
               <div className="w-8 h-8 border-2 border-neon-blue border-t-transparent rounded-full animate-spin"></div>
-              <span className="ml-3 text-neon-yellow font-normal">Loading products...</span>
+              <span className="ml-3 text-neon-yellow font-normal">{t('marketplace.loadingProducts')}</span>
             </div>
           ) : filteredProducts.length === 0 ? (
             <div className="text-center py-16">
               <div className="w-24 h-24 bg-gray-800/50 rounded-full flex items-center justify-center mb-6 mx-auto">
                 <Package className="w-12 h-12 text-gray-400" />
               </div>
-              <h3 className="text-xl luxe-title text-neon-yellow mb-2">No products found</h3>
+              <h3 className="text-xl luxe-title text-neon-yellow mb-2">{t('marketplace.noProducts')}</h3>
               <p className="text-gray-400 font-normal max-w-md mx-auto">
-                {searchTerm || searchFilters.query 
-                  ? 'Try adjusting your search terms or filters'
-                  : 'No products are currently available. Check back soon!'
+                {searchTerm || searchFilters.query
+                  ? t('marketplace.tryAdjustSearch')
+                  : t('marketplace.noProductsAvailable')
                 }
               </p>
               {(searchTerm || searchFilters.query) && (
@@ -355,7 +357,7 @@ function App() {
                   }}
                   className="mt-4 luxe-btn-primary px-6 py-3"
                 >
-                  Clear Filters
+                  {t('marketplace.clearFilters')}
                 </button>
               )}
             </div>
@@ -414,7 +416,7 @@ function App() {
                         className="luxe-btn-primary w-full py-2.5 sm:py-3 flex items-center justify-center space-x-2 font-normal text-center text-sm sm:text-base touch-friendly"
                       >
                         <ShoppingCart className="w-4 h-4" />
-                        <span>Add to Cart</span>
+                        <span>{t('product.addToCart')}</span>
                       </button>
 
                       <button
@@ -422,7 +424,7 @@ function App() {
                         className="luxe-btn-secondary w-full py-2 sm:py-2 flex items-center justify-center space-x-2 text-xs sm:text-sm font-normal text-center touch-friendly"
                       >
                         <MessageCircle className="w-4 h-4" />
-                        <span>Contact Seller</span>
+                        <span>{t('product.contactSeller')}</span>
                       </button>
                     </div>
                   </div>
@@ -435,7 +437,7 @@ function App() {
         {filteredProducts.length > 0 && (
           <div className="mt-16 text-center flex justify-center">
             <p className="text-gray-600 text-sm font-normal">
-              Showing {filteredProducts.length} of {allProducts.length} products
+              {t('marketplace.showing')} {filteredProducts.length} {t('marketplace.of')} {allProducts.length} {t('marketplace.products')}
             </p>
           </div>
         )}
@@ -467,7 +469,7 @@ function App() {
                 <Search className="absolute left-2 sm:left-3 top-1/2 transform -translate-y-1/2 text-gray-500 w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 <input
                   type="text"
-                  placeholder={isSocialPage ? "Search..." : "Search products..."}
+                  placeholder={isSocialPage ? t('marketplace.searchSocial') : t('marketplace.searchPlaceholder')}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   onFocus={() => setIsSearchFocused(true)}
@@ -478,7 +480,7 @@ function App() {
                   <button
                   onClick={() => openModal('advancedSearch')}
                   className="absolute right-2 sm:right-3 top-1/2 transform -translate-y-1/2 p-1.5 sm:p-2 text-gray-500 hover:text-[#FFD700] transition-colors touch-friendly"
-                  title="Advanced Search"
+                  title={t('nav.advancedSearch')}
                 >
                   <Filter className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 </button>
@@ -505,7 +507,7 @@ function App() {
                   }}
                   className="luxe-btn-primary px-3 py-1.5 text-xs touch-friendly"
                 >
-                  Login
+                  {t('auth.login')}
                 </button>
               )}
             </div>
@@ -516,7 +518,7 @@ function App() {
                 <Link
                   to="/sitemaster"
                   className="relative p-2 text-red-500 hover:text-red-400 transition-colors"
-                  title="Sitemaster Dashboard"
+                  title={t('nav.sitemasterDashboard')}
                 >
                   <Shield className="w-5 h-5" />
                 </Link>
@@ -525,7 +527,7 @@ function App() {
               <button
                 onClick={() => openModal('messages')}
                 className="relative p-2 text-gray-400 hover:text-white transition-colors"
-                title="Messages"
+                title={t('nav.messages')}
               >
                 <Mail className="w-5 h-5" />
                 {unreadMessageCount > 0 && (
@@ -537,21 +539,21 @@ function App() {
               <button
                 onClick={() => openModal('wallet')}
                 className="relative p-2 text-gray-400 hover:text-[#FFD700] transition-colors"
-                title="Wallet"
+                title={t('nav.wallet')}
               >
                 <Wallet className="w-5 h-5" />
               </button>
               <button
                 onClick={() => openModal('orders')}
                 className="relative p-2 text-gray-400 hover:text-white transition-colors"
-                title="My Orders"
+                title={t('nav.myOrders')}
               >
                 <ShoppingBag className="w-5 h-5" />
               </button>
               <button
                 onClick={() => openModal('sellerDashboard')}
                 className="relative p-2 text-gray-400 hover:text-white transition-colors"
-                title="Seller Dashboard"
+                title={t('nav.sellerDashboard')}
               >
                 <Briefcase className="w-5 h-5" />
               </button>
@@ -559,7 +561,7 @@ function App() {
               <Link
                 to="/social"
                 className="relative p-2 text-gray-400 hover:text-white transition-colors"
-                title="Social Platform"
+                title={t('nav.social')}
               >
                 <Globe className="w-5 h-5" />
               </Link>
@@ -567,7 +569,7 @@ function App() {
               <button
                 onClick={() => openModal('cart')}
                 className="relative p-2 text-gray-400 hover:text-white transition-colors"
-                title="Shopping Cart"
+                title={t('nav.shoppingCart')}
               >
                 <ShoppingCart className="w-5 h-5" />
                 {getItemCount() > 0 && (
@@ -592,7 +594,7 @@ function App() {
                     onClick={logout}
                     className="luxe-btn-secondary px-3 sm:px-4 py-2 text-xs sm:text-sm"
                   >
-                    Logout
+                    {t('auth.logout')}
                   </button>
                 </div>
               ) : (
@@ -603,7 +605,7 @@ function App() {
                   }}
                   className="luxe-btn-primary px-4 sm:px-6 py-2 text-sm flex-shrink-0"
                 >
-                  Login
+                  {t('auth.login')}
                 </button>
               )}
             </div>
@@ -675,10 +677,10 @@ function App() {
                 </div>
                 <div className="flex-1">
                   <h3 className="text-sm sm:text-base luxe-subtitle luxe-text-neon mb-1">
-                    <sup className="text-[#FFD700] mr-1">*</sup>Legal Items Only
+                    <sup className="text-[#FFD700] mr-1">*</sup>{t('marketplace.legalItemsOnly')}
                   </h3>
                   <p className="text-xs sm:text-sm text-gray-400 font-light leading-relaxed">
-                    All illegal goods are strictly prohibited. Community moderation rewards users who help keep the marketplace safe.
+                    {t('marketplace.legalItemsDesc')}
                   </p>
                 </div>
               </div>
@@ -686,7 +688,7 @@ function App() {
                 onClick={() => openModal('prohibitedItems')}
                 className="luxe-btn-neon px-4 sm:px-6 py-2 sm:py-2.5 text-xs sm:text-sm w-full sm:w-auto"
               >
-                View Policy
+                {t('marketplace.viewPolicy')}
               </button>
             </div>
           </div>
@@ -703,41 +705,41 @@ function App() {
                 <GraffitiLogo size="sm" />
               </div>
               <p className="text-xs font-bold leading-relaxed mb-3 bg-gradient-to-br from-gray-300 via-gray-400 to-gray-500 bg-clip-text text-transparent" style={{textShadow: '0 0 20px rgba(255,255,255,0.3)'}}>
-                Decentralized P2P marketplace with blockchain-powered escrow protection and military-grade encryption.
+                {t('nav.footerAbout')}
               </p>
               <div className="flex items-center justify-center md:justify-start space-x-2 text-xs">
                 <Shield className="w-3 h-3 text-green-400" style={{filter: 'drop-shadow(0 0 10px rgba(74,222,128,0.5))'}} />
-                <span className="font-bold bg-gradient-to-r from-green-300 to-green-400 bg-clip-text text-transparent">End-to-End Encrypted</span>
+                <span className="font-bold bg-gradient-to-r from-green-300 to-green-400 bg-clip-text text-transparent">{t('nav.endToEndEncrypted')}</span>
               </div>
             </div>
 
             {/* Platform Section */}
             <div className="text-center md:text-left">
-              <h4 className="font-black mb-3 text-xs uppercase tracking-wider bg-gradient-to-br from-gray-200 via-gray-300 to-gray-400 bg-clip-text text-transparent" style={{textShadow: '0 0 30px rgba(255,255,255,0.5)'}}>Platform</h4>
+              <h4 className="font-black mb-3 text-xs uppercase tracking-wider bg-gradient-to-br from-gray-200 via-gray-300 to-gray-400 bg-clip-text text-transparent" style={{textShadow: '0 0 30px rgba(255,255,255,0.5)'}}>{t('nav.platform')}</h4>
               <ul className="space-y-2">
                 <li>
                   <Link to="/" className="text-xs font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent hover:from-white hover:to-gray-200 transition-all">
-                    Marketplace
+                    {t('nav.marketplace')}
                   </Link>
                 </li>
                 <li>
                   <Link to="/social" className="text-xs font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent hover:from-white hover:to-gray-200 transition-all">
-                    Social Network
+                    {t('nav.socialNetwork')}
                   </Link>
                 </li>
                 <li>
                   <button onClick={() => openModal('sellerDashboard')} className="text-xs font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent hover:from-white hover:to-gray-200 transition-all">
-                    Seller Dashboard
+                    {t('nav.sellerDashboard')}
                   </button>
                 </li>
                 <li>
                   <button onClick={() => openModal('wallet')} className="text-xs font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent hover:from-white hover:to-gray-200 transition-all">
-                    Wallet
+                    {t('nav.wallet')}
                   </button>
                 </li>
                 <li>
                   <button onClick={() => openModal('orders')} className="text-xs font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent hover:from-white hover:to-gray-200 transition-all">
-                    My Orders
+                    {t('nav.myOrders')}
                   </button>
                 </li>
               </ul>
@@ -745,26 +747,26 @@ function App() {
 
             {/* Support Section */}
             <div className="text-center md:text-left">
-              <h4 className="font-black mb-3 text-xs uppercase tracking-wider bg-gradient-to-br from-gray-200 via-gray-300 to-gray-400 bg-clip-text text-transparent" style={{textShadow: '0 0 30px rgba(255,255,255,0.5)'}}>Support</h4>
+              <h4 className="font-black mb-3 text-xs uppercase tracking-wider bg-gradient-to-br from-gray-200 via-gray-300 to-gray-400 bg-clip-text text-transparent" style={{textShadow: '0 0 30px rgba(255,255,255,0.5)'}}>{t('nav.support')}</h4>
               <ul className="space-y-2">
                 <li>
                   <button onClick={() => openModal('faq')} className="text-xs font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent hover:from-white hover:to-gray-200 transition-all">
-                    FAQ
+                    {t('nav.faq')}
                   </button>
                 </li>
                 <li>
                   <button onClick={() => openModal('contact')} className="text-xs font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent hover:from-white hover:to-gray-200 transition-all">
-                    Contact Us
+                    {t('nav.contactUs')}
                   </button>
                 </li>
                 <li>
                   <button onClick={() => openModal('legal')} className="text-xs font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent hover:from-white hover:to-gray-200 transition-all">
-                    Privacy Policy
+                    {t('nav.privacyPolicy')}
                   </button>
                 </li>
                 <li>
                   <button onClick={() => openModal('legal')} className="text-xs font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent hover:from-white hover:to-gray-200 transition-all">
-                    Terms of Service
+                    {t('nav.terms')}
                   </button>
                 </li>
               </ul>
@@ -772,21 +774,21 @@ function App() {
 
             {/* Resources Section */}
             <div className="text-center md:text-left">
-              <h4 className="font-black mb-3 text-xs uppercase tracking-wider bg-gradient-to-br from-gray-200 via-gray-300 to-gray-400 bg-clip-text text-transparent" style={{textShadow: '0 0 30px rgba(255,255,255,0.5)'}}>Resources</h4>
+              <h4 className="font-black mb-3 text-xs uppercase tracking-wider bg-gradient-to-br from-gray-200 via-gray-300 to-gray-400 bg-clip-text text-transparent" style={{textShadow: '0 0 30px rgba(255,255,255,0.5)'}}>{t('nav.resources')}</h4>
               <ul className="space-y-2">
                 <li>
                   <button onClick={() => openModal('securityAudit')} className="text-xs font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent hover:from-white hover:to-gray-200 transition-all">
-                    Security Audits
+                    {t('nav.securityAudits')}
                   </button>
                 </li>
                 <li>
                   <button onClick={() => openModal('documentation')} className="text-xs font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent hover:from-white hover:to-gray-200 transition-all">
-                    Documentation
+                    {t('nav.documentation')}
                   </button>
                 </li>
                 <li>
                   <a href="mailto:info@ghetto.finance" className="text-xs font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent hover:from-white hover:to-gray-200 transition-all">
-                    Business Inquiries
+                    {t('nav.businessInquiries')}
                   </a>
                 </li>
               </ul>
@@ -794,30 +796,30 @@ function App() {
 
             {/* Security & Trust Section */}
             <div className="text-center md:text-left">
-              <h4 className="font-black mb-3 text-xs uppercase tracking-wider bg-gradient-to-br from-green-200 via-green-300 to-green-400 bg-clip-text text-transparent" style={{textShadow: '0 0 30px rgba(74,222,128,0.5)'}}>Security & Trust</h4>
+              <h4 className="font-black mb-3 text-xs uppercase tracking-wider bg-gradient-to-br from-green-200 via-green-300 to-green-400 bg-clip-text text-transparent" style={{textShadow: '0 0 30px rgba(74,222,128,0.5)'}}>{t('nav.securityTrust')}</h4>
               <div className="space-y-2">
                 <div className="flex items-start justify-center md:justify-start space-x-2">
                   <Shield className="w-3 h-3 text-green-400 mt-0.5 flex-shrink-0" style={{filter: 'drop-shadow(0 0 8px rgba(74,222,128,0.5))'}} />
                   <span className="text-xs font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent leading-tight">
-                    AES-256 Encryption
+                    {t('nav.aes256Encryption')}
                   </span>
                 </div>
                 <div className="flex items-start justify-center md:justify-start space-x-2">
                   <Shield className="w-3 h-3 text-blue-400 mt-0.5 flex-shrink-0" style={{filter: 'drop-shadow(0 0 8px rgba(96,165,250,0.5))'}} />
                   <span className="text-xs font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent leading-tight">
-                    Contract Audited
+                    {t('nav.contractAudited')}
                   </span>
                 </div>
                 <div className="flex items-start justify-center md:justify-start space-x-2">
                   <Shield className="w-3 h-3 text-yellow-400 mt-0.5 flex-shrink-0" style={{filter: 'drop-shadow(0 0 8px rgba(250,204,21,0.5))'}} />
                   <span className="text-xs font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent leading-tight">
-                    Zero-Knowledge Privacy
+                    {t('nav.zeroKnowledgePrivacy')}
                   </span>
                 </div>
                 <div className="flex items-start justify-center md:justify-start space-x-2">
                   <Shield className="w-3 h-3 text-cyan-400 mt-0.5 flex-shrink-0" style={{filter: 'drop-shadow(0 0 8px rgba(34,211,238,0.5))'}} />
                   <span className="text-xs font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent leading-tight">
-                    Decentralized
+                    {t('nav.decentralized')}
                   </span>
                 </div>
               </div>
@@ -840,11 +842,11 @@ function App() {
               <div className="flex items-center space-x-4 text-xs">
                 <span className="flex items-center space-x-1.5">
                   <Shield className="w-3 h-3 text-gray-300" style={{filter: 'drop-shadow(0 0 8px rgba(255,255,255,0.4))'}} />
-                  <span className="font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent">Blockchain Secured</span>
+                  <span className="font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent">{t('nav.blockchainSecured')}</span>
                 </span>
                 <span className="flex items-center space-x-1.5">
                   <DollarSign className="w-3 h-3 text-gray-300" style={{filter: 'drop-shadow(0 0 8px rgba(255,255,255,0.4))'}} />
-                  <span className="font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent">Multi-Crypto</span>
+                  <span className="font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent">{t('nav.multiCrypto')}</span>
                 </span>
                 <FooterLanguageSelector />
               </div>

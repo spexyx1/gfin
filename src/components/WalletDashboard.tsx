@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { X, Wallet, Send, CreditCard, ArrowUpDown, TrendingUp, Plus, Minus, Link, Shield, Eye, Repeat } from 'lucide-react';
 import { useWallet } from '../hooks/useWallet';
 import { useWeb3 } from '../hooks/useWeb3';
@@ -17,6 +18,7 @@ interface WalletDashboardProps {
 }
 
 export function WalletDashboard({ isOpen, onClose, initialTab }: WalletDashboardProps) {
+  const { t } = useTranslation();
   const { balances, transactions, isLoading, sendCrypto, buyCrypto, swapCrypto, getTotalBalance } = useWallet();
   const { account, isConnected, chainId, isCorrectNetwork, networkName } = useWeb3();
   const { placeBuyOrder, placeSellOrder, orders } = useExchange();
@@ -100,7 +102,7 @@ export function WalletDashboard({ isOpen, onClose, initialTab }: WalletDashboard
         <div className="lg:hidden flex items-center justify-between p-4 border-b border-white/10 luxe-glass">
           <div className="flex items-center space-x-2">
             <Wallet className="h-5 w-5 text-luxe-gold" />
-            <h2 className="text-base font-black text-white uppercase luxe-title">Wallet</h2>
+            <h2 className="text-base font-black text-white uppercase luxe-title">{t('wallet.title')}</h2>
           </div>
           <button
             onClick={onClose}
@@ -116,7 +118,7 @@ export function WalletDashboard({ isOpen, onClose, initialTab }: WalletDashboard
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
                 <Wallet className="h-6 w-6 text-luxe-gold" />
-                <h2 className="text-lg font-black text-white uppercase luxe-title">Wallet</h2>
+                <h2 className="text-lg font-black text-white uppercase luxe-title">{t('wallet.title')}</h2>
               </div>
               <button
                 onClick={onClose}
@@ -158,7 +160,7 @@ export function WalletDashboard({ isOpen, onClose, initialTab }: WalletDashboard
           {/* Total Balance */}
           <div className="p-6 border-t border-white/10">
             <div className="text-center">
-              <p className="text-gray-400 text-sm font-medium mb-1">Total Balance</p>
+              <p className="text-gray-400 text-sm font-medium mb-1">{t('wallet.balance')}</p>
               <p className="text-2xl font-black text-white">
                 ${getTotalBalance().toLocaleString()}
               </p>
@@ -296,7 +298,7 @@ export function WalletDashboard({ isOpen, onClose, initialTab }: WalletDashboard
 
               {/* Recent Transactions */}
               <div>
-                <h4 className="text-lg font-black text-white mb-4 uppercase">Recent Transactions</h4>
+                <h4 className="text-lg font-black text-white mb-4 uppercase">{t('wallet.transactions')}</h4>
                 <div className="space-y-3">
                   {transactions.slice(0, 5).map((tx) => (
                     <div key={tx.id} className="luxe-glass rounded-xl p-4 border border-white/10">

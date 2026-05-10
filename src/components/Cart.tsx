@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { X, Minus, Plus, ShoppingCart, CreditCard, Shield, CheckCircle } from 'lucide-react';
 import { useCart } from '../hooks/useCart';
 import { useWeb3 } from '../hooks/useWeb3';
@@ -14,6 +15,7 @@ interface CartProps {
 }
 
 export function Cart({ isOpen, onClose }: CartProps) {
+  const { t } = useTranslation();
   const { items, updateQuantity, removeFromCart, getTotal, clearCart } = useCart();
   const { account, connectWallet, networkName } = useWeb3();
   const { createEscrow, fundOrder, checkTokenBalance, calculateTotalFee, isLoading } = useEscrow();
@@ -137,7 +139,7 @@ export function Cart({ isOpen, onClose }: CartProps) {
           <div className="flex items-center justify-between border-b border-white/10 p-6">
             <div className="flex items-center space-x-2">
               <ShoppingCart className="h-5 w-5 text-luxe-gold" />
-              <h2 className="text-xl font-black text-gray-200 uppercase">CART</h2>
+              <h2 className="text-xl font-black text-gray-200 uppercase">{t('cart.title')}</h2>
             </div>
             <button
               onClick={onClose}
@@ -160,7 +162,7 @@ export function Cart({ isOpen, onClose }: CartProps) {
             ) : items.length === 0 ? (
               <div className="flex flex-col items-center justify-center h-full text-center">
                 <ShoppingCart className="h-16 w-16 text-gray-600 mb-4" />
-                <p className="text-gray-400 text-lg mb-2 font-black uppercase">YOUR CART IS EMPTY</p>
+                <p className="text-gray-400 text-lg mb-2 font-black uppercase">{t('cart.emptyCart')}</p>
                 <p className="text-gray-500 text-sm font-bold uppercase">ADD PRODUCTS TO GET STARTED</p>
               </div>
             ) : (
@@ -248,7 +250,7 @@ export function Cart({ isOpen, onClose }: CartProps) {
               {/* Price Breakdown */}
               <div className="space-y-2">
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-400">Subtotal:</span>
+                  <span className="text-gray-400">{t('cart.subtotal')}:</span>
                   <span className="text-gray-200">{cartTotal.toFixed(2)} GHETTO</span>
                 </div>
                 <div className="flex items-center justify-between text-sm">
@@ -258,7 +260,7 @@ export function Cart({ isOpen, onClose }: CartProps) {
               </div>
 
               <div className="flex items-center justify-between text-lg font-black uppercase">
-                <span className="text-gray-200">TOTAL:</span>
+                <span className="text-gray-200">{t('cart.total')}:</span>
                 <span className="text-gray-200">{totalWithFees.toFixed(2)} {selectedPaymentToken}</span>
               </div>
               
@@ -289,7 +291,7 @@ export function Cart({ isOpen, onClose }: CartProps) {
                 <span>
                   {checkoutStep === 'funding' ? 'FUNDING ORDERS...' :
                    isLoading ? 'PROCESSING...' : 
-                   account ? 'SECURE CHECKOUT' : 'CONNECT WALLET'}
+                   account ? t('cart.checkout') : 'CONNECT WALLET'}
                 </span>
               </button>
             </div>

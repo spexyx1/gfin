@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Star, Shield, ShoppingCart, Zap, MessageCircle, Flag } from 'lucide-react';
 import { Product } from '../types';
 
@@ -11,14 +12,15 @@ interface ProductCardProps {
   onReportListing: (product: Product) => void;
 }
 
-export const ProductCard: React.FC<ProductCardProps> = ({ 
-  product, 
-  onAddToCart, 
-  onContactSeller, 
-  onBuyNow, 
-  onMakeOffer, 
+export const ProductCard: React.FC<ProductCardProps> = ({
+  product,
+  onAddToCart,
+  onContactSeller,
+  onBuyNow,
+  onMakeOffer,
   onReportListing,
 }) => {
+  const { t } = useTranslation();
 
   return (
     <div className="luxe-card overflow-hidden group">
@@ -36,7 +38,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         </div>
         {!product.inStock && (
           <div className="absolute inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center">
-            <span className="text-white text-sm sm:text-base font-bold uppercase tracking-wider">Out of Stock</span>
+            <span className="text-white text-sm sm:text-base font-bold uppercase tracking-wider">{t('product.outOfStock')}</span>
           </div>
         )}
       </div>
@@ -90,10 +92,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             {product.inStock ? (
               <>
                 <Zap className="w-4 h-4" />
-                <span>Buy Now</span>
+                <span>{t('product.buyNow')}</span>
               </>
             ) : (
-              <span>Out of Stock</span>
+              <span>{t('product.outOfStock')}</span>
             )}
           </button>
 
@@ -110,10 +112,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             {product.inStock ? (
               <>
                 <ShoppingCart className="w-4 h-4" />
-                <span>Add to Cart</span>
+                <span>{t('product.addToCart')}</span>
               </>
             ) : (
-              <span>Out of Stock</span>
+              <span>{t('product.outOfStock')}</span>
             )}
           </button>
 
@@ -128,7 +130,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                   : 'luxe-glass text-gray-600 cursor-not-allowed'
               }`}
             >
-              <span>Make Offer</span>
+              <span>{t('product.makeOffer')}</span>
             </button>
 
             <button
@@ -136,7 +138,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               className="py-2 sm:py-2.5 luxe-btn-secondary rounded-lg transition-all duration-300 flex items-center justify-center space-x-1 sm:space-x-2 text-xs sm:text-sm luxe-subtitle touch-friendly"
             >
               <MessageCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-              <span>Contact</span>
+              <span>{t('nav.contact')}</span>
             </button>
           </div>
 
@@ -146,7 +148,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             className="w-full py-2 luxe-glass hover:bg-red-900/20 text-gray-500 hover:text-red-400 rounded-lg transition-all duration-300 flex items-center justify-center space-x-2 text-xs luxe-subtitle border border-white/10/50 hover:border-red-500/50"
           >
             <Flag className="w-3 h-3" />
-            <span>Report Listing</span>
+            <span>{t('product.reportListing')}</span>
           </button>
         </div>
       </div>

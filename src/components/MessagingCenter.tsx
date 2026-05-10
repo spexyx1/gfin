@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { X, Send, MessageCircle, User, Clock, Check, CheckCheck, Trash2, Package, Video, PhoneCall } from 'lucide-react';
 import { useMessaging } from '../hooks/useMessaging';
 import { useWeb3 } from '../hooks/useWeb3';
@@ -14,6 +15,7 @@ interface MessagingCenterProps {
 }
 
 export function MessagingCenter({ isOpen, onClose, initialConversationId, onStartCall, activeCallConversationId }: MessagingCenterProps) {
+  const { t } = useTranslation();
   const [selectedConversationId, setSelectedConversationId] = useState<string | null>(initialConversationId || null);
   const [newMessage, setNewMessage] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -67,7 +69,7 @@ export function MessagingCenter({ isOpen, onClose, initialConversationId, onStar
         <div className="w-1/3 border-r border-gray-100 flex flex-col">
           <div className="p-6 border-b border-gray-100">
             <div className="flex items-center justify-between">
-              <h2 className="text-xl font-medium text-black">Messages</h2>
+              <h2 className="text-xl font-medium text-black">{t('messages.title')}</h2>
               <button
                 onClick={onClose}
                 className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
@@ -81,7 +83,7 @@ export function MessagingCenter({ isOpen, onClose, initialConversationId, onStar
             {conversations.length === 0 ? (
               <div className="flex flex-col items-center justify-center h-full p-6 text-center">
                 <MessageCircle className="w-16 h-16 text-gray-300 mb-4" />
-                <p className="text-gray-600 text-lg mb-2 font-medium">No conversations</p>
+                <p className="text-gray-600 text-lg mb-2 font-medium">{t('messages.noMessages')}</p>
                 <p className="text-gray-500 text-sm leading-relaxed">Contact sellers to start chatting</p>
               </div>
             ) : (
@@ -297,7 +299,7 @@ export function MessagingCenter({ isOpen, onClose, initialConversationId, onStar
                     className="px-6 py-3 bg-black hover:luxe-glass disabled:bg-gray-300 text-white rounded-2xl transition-all duration-200 flex items-center space-x-2 self-end"
                   >
                     <Send className="w-4 h-4" />
-                    <span>Send</span>
+                    <span>{t('messages.send')}</span>
                   </button>
                 </div>
               </div>

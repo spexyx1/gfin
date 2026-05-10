@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { X, User, AtSign, MapPin, Globe, Camera, Store, Palette } from 'lucide-react';
 import { useSocialSystem } from '../hooks/useSocialSystem';
 import { useAuth } from '../hooks/useAuth';
@@ -9,6 +10,7 @@ interface ProfileSetupProps {
 }
 
 export function ProfileSetup({ isOpen, onClose }: ProfileSetupProps) {
+  const { t } = useTranslation();
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     handle: '',
@@ -89,7 +91,7 @@ export function ProfileSetup({ isOpen, onClose }: ProfileSetupProps) {
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-white/10">
           <h2 className="text-2xl font-black text-white uppercase">
-            {step === 1 ? 'Create Profile' : step === 2 ? 'Store Setup' : 'Complete Setup'}
+            {step === 1 ? t('profile.editProfile') : step === 2 ? 'Store Setup' : 'Complete Setup'}
           </h2>
           <button
             onClick={onClose}
@@ -331,7 +333,7 @@ export function ProfileSetup({ isOpen, onClose }: ProfileSetupProps) {
                   disabled={isLoading}
                   className="px-6 py-3 bg-luxe-gold hover:bg-luxe-gold/80 disabled:luxe-glass text-black rounded-xl transition-colors font-black uppercase"
                 >
-                  {isLoading ? 'Creating...' : 'Create Profile'}
+                  {isLoading ? t('common.loading') : t('profile.editProfile')}
                 </button>
               )}
             </div>

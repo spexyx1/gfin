@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Plus, Package, DollarSign, Eye, Trash2, Camera, Star, Shield, X, Search, Filter, ChevronDown, ChevronUp, LayoutDashboard, ShoppingBag, Wallet, CreditCard as Edit, Menu, TrendingUp, Activity, Clock, CheckCircle } from 'lucide-react';
 import { useSellerProducts } from '../hooks/useSellerProducts';
 import { useWeb3 } from '../hooks/useWeb3';
@@ -19,6 +20,7 @@ type SortDirection = 'asc' | 'desc';
 type DashboardSection = 'overview' | 'products' | 'collateral' | 'create' | 'edit';
 
 export function SellerDashboard({ isOpen, onClose }: SellerDashboardProps) {
+  const { t } = useTranslation();
   const [activeSection, setActiveSection] = useState<DashboardSection>('overview');
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [editingProduct, setEditingProduct] = useState<SellerProduct | null>(null);
@@ -355,7 +357,7 @@ export function SellerDashboard({ isOpen, onClose }: SellerDashboardProps) {
             >
               <Menu className="w-6 h-6 text-gray-400" />
             </button>
-            <h2 className="text-2xl font-bold text-white">Seller Dashboard</h2>
+            <h2 className="text-2xl font-bold text-white">{t('seller.title')}</h2>
           </div>
           <button
             onClick={onClose}
@@ -498,7 +500,7 @@ export function SellerDashboard({ isOpen, onClose }: SellerDashboardProps) {
             {activeSection === 'products' && (
               <div className="p-6 space-y-6">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-xl font-bold text-white">Products</h3>
+                  <h3 className="text-xl font-bold text-white">{t('seller.myProducts')}</h3>
                   <button
                     onClick={() => {
                       resetForm();
@@ -1017,7 +1019,7 @@ export function SellerDashboard({ isOpen, onClose }: SellerDashboardProps) {
                         }}
                         className="px-8 py-3 luxe-glass hover:bg-gray-600 text-white rounded-lg transition-colors font-semibold"
                       >
-                        Cancel
+                        {t('common.cancel')}
                       </button>
                     </div>
                   </form>
@@ -1083,7 +1085,7 @@ export function SellerDashboard({ isOpen, onClose }: SellerDashboardProps) {
                     onClick={() => setShowCollateralDeposit(false)}
                     className="px-6 py-3 luxe-glass hover:bg-gray-600 text-white rounded-lg transition-colors"
                   >
-                    Cancel
+                    {t('common.cancel')}
                   </button>
                 </div>
               </div>
@@ -1167,7 +1169,7 @@ export function SellerDashboard({ isOpen, onClose }: SellerDashboardProps) {
                     onClick={() => setShowCollateralWithdraw(false)}
                     className="px-6 py-3 luxe-glass hover:bg-gray-600 text-white rounded-lg transition-colors"
                   >
-                    Cancel
+                    {t('common.cancel')}
                   </button>
                 </div>
               </div>

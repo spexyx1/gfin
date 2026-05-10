@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, useRef, useCallback, ReactNode } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { supabase } from '../lib/supabase';
 import i18n, { ensureLocaleLoaded } from '../i18n';
@@ -35,10 +35,14 @@ function resolveInitialLanguage(): string {
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const { user } = useAuth();
+  const userRef = useRef(user);
+  userRef.current = user;
+
   const [currentLanguage, setCurrentLanguage] = useState<string>(() => resolveInitialLanguage());
   const [isRTL, setIsRTL] = useState<boolean>(() => isRTLLanguage(resolveInitialLanguage()));
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
+  // Stable: does not depend on user — accesses it via ref for DB writes
   const applyLanguage = useCallback(async (languageCode: string, persistToDb: boolean) => {
     const normalized = SUPPORTED_LANGUAGES.find(l => l.code === languageCode)
       ? languageCode
@@ -62,16 +66,17 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
       // ignore storage errors
     }
 
-    if (persistToDb && user) {
+    const currentUser = userRef.current;
+    if (persistToDb && currentUser && supabase) {
       const { error } = await supabase
         .from('profiles')
         .update({ preferred_language: normalized })
-        .eq('id', user.id);
+        .eq('id', currentUser.id);
       if (error) {
         logger.error('Failed to save preferred language', 'LanguageContext', error);
       }
     }
-  }, [user]);
+  }, []); // stable — no deps change identity
 
   const changeLanguage = useCallback(async (languageCode: string) => {
     try {
@@ -82,38 +87,43 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     }
   }, [applyLanguage]);
 
+  // Runs once on mount for initial load from localStorage/navigator
   useEffect(() => {
     let cancelled = false;
-    const initializeLanguage = async () => {
+    const initLanguage = async () => {
       try {
-        let languageToUse = resolveInitialLanguage();
-
-        if (user) {
-          const { data: profile, error } = await supabase
-            .from('profiles')
-            .select('preferred_language')
-            .eq('id', user.id)
-            .maybeSingle();
-
-          if (!error && profile?.preferred_language) {
-            languageToUse = profile.preferred_language;
-          }
-        }
-
-        if (cancelled) return;
-        await applyLanguage(languageToUse, false);
+        await applyLanguage(resolveInitialLanguage(), false);
       } catch (error) {
         logger.error('Failed to initialize language', 'LanguageContext', error);
-        if (!cancelled) await applyLanguage('en', false);
       } finally {
         if (!cancelled) setIsLoading(false);
       }
     };
+    initLanguage();
+    return () => { cancelled = true; };
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-    initializeLanguage();
-    return () => {
-      cancelled = true;
-    };
+  // Separate effect: when a user logs in, load their DB preference if it differs
+  useEffect(() => {
+    if (!user?.id || !supabase) return;
+    let cancelled = false;
+
+    supabase
+      .from('profiles')
+      .select('preferred_language')
+      .eq('id', user.id)
+      .maybeSingle()
+      .then(({ data: profile, error }) => {
+        if (cancelled || error || !profile?.preferred_language) return;
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (profile.preferred_language !== stored) {
+          applyLanguage(profile.preferred_language, false).catch(err =>
+            logger.error('Failed to apply DB language preference', 'LanguageContext', err)
+          );
+        }
+      });
+
+    return () => { cancelled = true; };
   }, [user?.id, applyLanguage]);
 
   const value: LanguageContextType = {

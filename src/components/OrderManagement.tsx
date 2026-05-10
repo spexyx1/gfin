@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { X, Package, Clock, CheckCircle, AlertTriangle, Truck, DollarSign, ExternalLink, Calendar, MapPin, CreditCard as Edit3, Zap, Info } from 'lucide-react';
 import { useWeb3 } from '../hooks/useWeb3';
 import { useEscrow } from '../hooks/useEscrow';
@@ -11,6 +12,7 @@ interface OrderManagementProps {
 }
 
 export function OrderManagement({ isOpen, onClose }: OrderManagementProps) {
+  const { t } = useTranslation();
   const {
     orders,
     agreeToOrder,
@@ -186,7 +188,7 @@ export function OrderManagement({ isOpen, onClose }: OrderManagementProps) {
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
       <div className="luxe-glass-strong rounded-2xl border border-white/10 w-full max-w-4xl max-h-[90vh] overflow-hidden">
         <div className="flex items-center justify-between p-6 border-b border-white/10">
-          <h2 className="text-2xl font-bold text-white">Order Management</h2>
+          <h2 className="text-2xl font-bold text-white">{t('orders.title')}</h2>
           <button
             onClick={onClose}
             className="p-2 hover:luxe-glass rounded-lg transition-colors"
@@ -224,7 +226,7 @@ export function OrderManagement({ isOpen, onClose }: OrderManagementProps) {
               {buyerOrders.length === 0 ? (
                 <div className="text-center py-12">
                   <Package className="w-16 h-16 text-gray-600 mx-auto mb-4" />
-                  <p className="text-gray-400 text-lg">No purchases yet</p>
+                  <p className="text-gray-400 text-lg">{t('orders.noOrders')}</p>
                   <p className="text-gray-500">Your orders will appear here</p>
                 </div>
               ) : (
@@ -232,7 +234,7 @@ export function OrderManagement({ isOpen, onClose }: OrderManagementProps) {
                   <div key={order.id} className="luxe-glass rounded-xl p-6 border border-white/10">
                     <div className="flex items-start justify-between mb-4">
                       <div>
-                        <h3 className="text-lg font-semibold text-white mb-2">Order #{order.id}</h3>
+                        <h3 className="text-lg font-semibold text-white mb-2">{t('orders.orderNumber')} #{order.id}</h3>
                         <div className={`flex items-center gap-2 ${getStatusColor(order.status)}`}>
                           {getStatusIcon(order.status)}
                           <span className="font-medium">{getStatusDisplayText(order.status)}</span>
@@ -404,7 +406,7 @@ export function OrderManagement({ isOpen, onClose }: OrderManagementProps) {
               {sellerOrders.length === 0 ? (
                 <div className="text-center py-12">
                   <DollarSign className="w-16 h-16 text-gray-600 mx-auto mb-4" />
-                  <p className="text-gray-400 text-lg">No sales yet</p>
+                  <p className="text-gray-400 text-lg">{t('orders.noOrders')}</p>
                   <p className="text-gray-500">Your sales will appear here</p>
                 </div>
               ) : (
@@ -433,7 +435,7 @@ export function OrderManagement({ isOpen, onClose }: OrderManagementProps) {
                     <div key={order.id} className="luxe-glass rounded-xl p-6 border border-white/10">
                       <div className="flex items-start justify-between mb-4">
                         <div>
-                          <h3 className="text-lg font-semibold text-white mb-2">Order #{order.id}</h3>
+                          <h3 className="text-lg font-semibold text-white mb-2">{t('orders.orderNumber')} #{order.id}</h3>
                           <div className={`flex items-center gap-2 ${getStatusColor(order.status)}`}>
                             {getStatusIcon(order.status)}
                             <span className="font-medium">{getStatusDisplayText(order.status)}</span>
@@ -659,7 +661,7 @@ export function OrderManagement({ isOpen, onClose }: OrderManagementProps) {
                     }}
                     className="px-6 py-3 luxe-glass hover:bg-gray-600 text-white rounded-lg transition-colors"
                   >
-                    Cancel
+                    {t('common.cancel')}
                   </button>
                 </div>
               </div>
@@ -734,7 +736,7 @@ export function OrderManagement({ isOpen, onClose }: OrderManagementProps) {
                     onClick={() => setShowShippingForm(null)}
                     className="px-6 py-3 luxe-glass hover:bg-gray-600 text-white rounded-lg transition-colors"
                   >
-                    Cancel
+                    {t('common.cancel')}
                   </button>
                 </div>
               </div>
@@ -804,7 +806,7 @@ export function OrderManagement({ isOpen, onClose }: OrderManagementProps) {
                     onClick={() => setShowTrackingForm(null)}
                     className="px-6 py-3 luxe-glass hover:bg-gray-600 text-white rounded-lg transition-colors"
                   >
-                    Cancel
+                    {t('common.cancel')}
                   </button>
                 </div>
               </div>
