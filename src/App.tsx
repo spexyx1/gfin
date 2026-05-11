@@ -2,7 +2,6 @@ import React, { useState, useMemo, lazy, Suspense } from 'react';
 import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import { Shield, Search, ShoppingCart, User, Wallet, TrendingUp, Package, MessageCircle, Store, CreditCard, Users, AtSign, Filter, Globe, Mail, DollarSign, ShoppingBag, Briefcase, CircleUser as UserCircle, Smartphone } from 'lucide-react';
 import { SearchFilters } from './components/AdvancedSearch';
-import { GraffitiLogo } from './components/GraffitiLogo';
 import { AuthModal } from './components/AuthModal';
 import { PWAInstallButton } from './components/PWAInstallButton';
 import { MobileNetworkIndicator } from './components/MobileNetworkIndicator';
@@ -458,8 +457,7 @@ function App() {
           <div className="flex items-center justify-between py-2 sm:py-3 lg:py-0 lg:h-16 gap-2 sm:gap-3 lg:gap-0">
             <div className="flex items-center flex-shrink-0">
               <Link to="/" className="flex items-center hover:opacity-90 transition-opacity">
-                <GraffitiLogo size="xs" className="lg:hidden" />
-                <GraffitiLogo size="header" className="hidden lg:block" />
+                <span className="text-white font-black text-xl tracking-wide">GHETTO FINANCE</span>
               </Link>
             </div>
 
@@ -702,7 +700,7 @@ function App() {
             {/* About Section */}
             <div className="text-center md:text-left md:col-span-1">
               <div className="flex items-center justify-center md:justify-start mb-3">
-                <GraffitiLogo size="sm" />
+                <span className="text-white font-black text-lg tracking-wide">GHETTO FINANCE</span>
               </div>
               <p className="text-xs font-bold leading-relaxed mb-3 bg-gradient-to-br from-gray-300 via-gray-400 to-gray-500 bg-clip-text text-transparent" style={{textShadow: '0 0 20px rgba(255,255,255,0.3)'}}>
                 {t('nav.footerAbout')}
