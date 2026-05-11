@@ -158,7 +158,7 @@ export function GraffitiLogo({ className = '', animated = true, size: _size }: G
 
   return (
     <motion.svg
-      viewBox="0 0 600 100"
+      viewBox="0 0 860 100"
       className={`h-8 w-auto ${className}`}
       style={{ overflow: 'visible' }}
     >
@@ -264,7 +264,7 @@ export function GraffitiLogo({ className = '', animated = true, size: _size }: G
         {financeLetters.map((letter, i) => (
           <motion.text
             key={`finance-${i}`}
-            x={20 + i * 72}
+            x={352 + i * 72}
             y="75"
             fontSize="80"
             fontWeight="900"
@@ -320,7 +320,7 @@ export function GraffitiLogo({ className = '', animated = true, size: _size }: G
         {/* Blurred shadow behind for depth */}
         <g opacity="0.35" filter={`url(#${gId('graffiti-blur')})`}>
           <text
-            x="300" y="38"
+            x="430" y="38"
             fontSize="30"
             fontWeight="900"
             fontFamily="Arial Black, sans-serif"
@@ -331,8 +331,8 @@ export function GraffitiLogo({ className = '', animated = true, size: _size }: G
             WELCOME TO
           </text>
           <text
-            x="300" y="82"
-            fontSize="50"
+            x="430" y="88"
+            fontSize="52"
             fontWeight="900"
             fontFamily="Arial Black, sans-serif"
             textAnchor="middle"
@@ -345,7 +345,7 @@ export function GraffitiLogo({ className = '', animated = true, size: _size }: G
 
         {/* "WELCOME" */}
         <text
-          x="74" y="38"
+          x="170" y="38"
           fontSize="30"
           fontWeight="900"
           fontFamily="Arial Black, sans-serif"
@@ -361,7 +361,7 @@ export function GraffitiLogo({ className = '', animated = true, size: _size }: G
 
         {/* "TO" */}
         <text
-          x="368" y="38"
+          x="520" y="38"
           fontSize="30"
           fontWeight="900"
           fontFamily="Arial Black, sans-serif"
@@ -377,7 +377,7 @@ export function GraffitiLogo({ className = '', animated = true, size: _size }: G
 
         {/* "DA" */}
         <text
-          x="113" y="88"
+          x="230" y="88"
           fontSize="52"
           fontWeight="900"
           fontFamily="Arial Black, sans-serif"
@@ -393,7 +393,7 @@ export function GraffitiLogo({ className = '', animated = true, size: _size }: G
 
         {/* "HOOD" */}
         <text
-          x="240" y="88"
+          x="370" y="88"
           fontSize="52"
           fontWeight="900"
           fontFamily="Arial Black, sans-serif"
