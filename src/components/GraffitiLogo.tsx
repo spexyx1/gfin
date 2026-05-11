@@ -20,7 +20,6 @@ export function GraffitiLogo({ className = '', animated = true, size: _size }: G
   const hoodControls = useAnimation();
 
   const ghettoLetters = 'GHETTO'.split('');
-  const financeLetters = 'FINANCE'.split('');
 
   useEffect(() => {
     if (!animated) return;
@@ -261,35 +260,22 @@ export function GraffitiLogo({ className = '', animated = true, size: _size }: G
           </motion.text>
         ))}
 
-        {financeLetters.map((letter, i) => (
-          <motion.text
-            key={`finance-${i}`}
-            x={416 + i * 62}
-            y="75"
-            fontSize="80"
-            fontWeight="900"
-            fontFamily="Arial Black, sans-serif"
-            letterSpacing="0"
-            custom={i}
-            animate={financeControls}
-            initial={{ opacity: 0, y: 20, rotateZ: -5 }}
-            style={{
-              fill: [
-                `url(#${gId('neonPink')})`,
-                `url(#${gId('neonLime')})`,
-                `url(#${gId('neonOrange')})`,
-                `url(#${gId('neonPurple')})`,
-                `url(#${gId('neonRed')})`,
-                `url(#${gId('neonCyan')})`,
-                `url(#${gId('neonPink')})`,
-              ][i % 7],
-              textAnchor: 'start',
-              filter: 'drop-shadow(0 0 4px currentColor)',
-            }}
-          >
-            {letter}
-          </motion.text>
-        ))}
+        <motion.text
+          x={420}
+          y="75"
+          fontSize="80"
+          fontWeight="900"
+          fontFamily="Arial Black, sans-serif"
+          animate={financeControls}
+          initial={{ opacity: 0, y: 20, rotateZ: -5 }}
+          style={{
+            fill: `url(#${gId('neonPink')})`,
+            textAnchor: 'start',
+            filter: 'drop-shadow(0 0 4px #ff006e)',
+          }}
+        >
+          FINANCE
+        </motion.text>
       </g>
 
       {/* Shadow drip layer */}
