@@ -235,7 +235,7 @@ export function GraffitiLogo({ className = '', animated = true, size: _size }: G
         {ghettoLetters.map((letter, i) => (
           <motion.text
             key={`ghetto-${i}`}
-            x={20 + i * 52}
+            x={20 + i * 58}
             y="75"
             fontSize="80"
             fontWeight="900"
@@ -264,7 +264,7 @@ export function GraffitiLogo({ className = '', animated = true, size: _size }: G
         {financeLetters.map((letter, i) => (
           <motion.text
             key={`finance-${i}`}
-            x={352 + i * 72}
+            x={416 + i * 62}
             y="75"
             fontSize="80"
             fontWeight="900"
@@ -297,7 +297,7 @@ export function GraffitiLogo({ className = '', animated = true, size: _size }: G
         {ghettoLetters.map((letter, i) => (
           <text
             key={`ghetto-shadow-${i}`}
-            x={20 + i * 52 + 2}
+            x={20 + i * 58 + 2}
             y="77"
             fontSize="80"
             fontWeight="900"
