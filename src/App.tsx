@@ -37,6 +37,7 @@ const LegalPage = lazy(() => import('./components/LegalPage').then(m => ({ defau
 const ProhibitedItemsPage = lazy(() => import('./components/ProhibitedItemsPage').then(m => ({ default: m.ProhibitedItemsPage })));
 const ContactForm = lazy(() => import('./components/ContactForm').then(m => ({ default: m.ContactForm })));
 const BlockchainManagement = lazy(() => import('./components/BlockchainManagement').then(m => ({ default: m.BlockchainManagement })));
+const DownloadApp = lazy(() => import('./components/DownloadApp').then(m => ({ default: m.DownloadApp })));
 import { useTranslation } from 'react-i18next';
 import { useAuth } from './hooks/useAuth';
 import { useCart } from './hooks/useCart';
@@ -626,6 +627,7 @@ function App() {
             <Route path="/blockchain" element={<BlockchainManagement />} />
             <Route path="/treasurer" element={<TreasurerDashboard />} />
             <Route path="/mediator" element={<MediatorDashboard />} />
+            <Route path="/download" element={<DownloadApp />} />
           </Routes>
         </Suspense>
       </ErrorBoundary>
