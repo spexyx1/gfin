@@ -565,6 +565,14 @@ function App() {
                 <Globe className="w-5 h-5" />
               </Link>
 
+              <Link
+                to="/download"
+                className="relative p-2 text-gray-400 hover:text-[#FFD700] transition-colors"
+                title="Download Mobile App"
+              >
+                <Smartphone className="w-5 h-5" />
+              </Link>
+
               <button
                 onClick={() => openModal('cart')}
                 className="relative p-2 text-gray-400 hover:text-white transition-colors"
@@ -742,6 +750,12 @@ function App() {
                     {t('nav.myOrders')}
                   </button>
                 </li>
+                <li>
+                  <Link to="/download" className="text-xs font-bold bg-gradient-to-r from-yellow-300 to-orange-400 bg-clip-text text-transparent hover:from-yellow-200 hover:to-orange-300 transition-all flex items-center gap-1">
+                    <Smartphone className="w-3 h-3 text-yellow-400 flex-shrink-0" />
+                    Get the App
+                  </Link>
+                </li>
               </ul>
             </div>
 
@@ -828,6 +842,27 @@ function App() {
 
           {/* Bottom Section */}
           <div className="border-t border-white/10 pt-6">
+            {/* Download App Banner */}
+            <div className="max-w-xl mx-auto mb-6">
+              <Link
+                to="/download"
+                className="flex items-center justify-between gap-4 px-5 py-4 rounded-xl border border-yellow-500/30 bg-gradient-to-r from-yellow-500/10 to-orange-500/10 hover:from-yellow-500/20 hover:to-orange-500/20 transition-all group"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-yellow-500/20 flex items-center justify-center flex-shrink-0">
+                    <Smartphone className="w-5 h-5 text-yellow-400" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-bold text-white">Download the Native App</p>
+                    <p className="text-xs text-gray-400">Android APK &amp; iOS TestFlight beta</p>
+                  </div>
+                </div>
+                <span className="text-xs font-bold px-3 py-1.5 rounded-lg bg-yellow-500/20 text-yellow-400 border border-yellow-500/30 group-hover:bg-yellow-500/30 transition-all whitespace-nowrap">
+                  Get App
+                </span>
+              </Link>
+            </div>
+
             <div className="max-w-md mx-auto mb-6">
               <PWAInstallButton />
             </div>

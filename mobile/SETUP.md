@@ -1,78 +1,113 @@
-# GHETTO FINANCE Mobile App
-
-Native iOS and Android app for the GHETTO FINANCE marketplace platform.
+# GHETTO FINANCE Mobile App — Setup Guide
 
 ## Prerequisites
 
-- Node.js 18+
-- React Native CLI: `npm install -g @react-native-community/cli`
-- For iOS: Xcode 15+, CocoaPods
-- For Android: Android Studio, JDK 17, Android SDK 34
+Install these tools on your local machine before starting:
 
-## Setup
+| Tool | Version | Download |
+|------|---------|----------|
+| Node.js | 18+ | https://nodejs.org |
+| React Native CLI | latest | `npm install -g @react-native-community/cli` |
+| JDK | 17 | https://adoptium.net |
+| Android Studio | latest | https://developer.android.com/studio |
+| Watchman (macOS) | latest | `brew install watchman` |
+| Xcode (iOS, Mac only) | 15+ | App Store |
+| CocoaPods (iOS, Mac only) | latest | `brew install cocoapods` |
 
-1. Install dependencies:
+---
+
+## Step 1 — Install JS Dependencies
+
 ```bash
 cd mobile
 npm install
 ```
 
-2. Configure Supabase:
-Edit `src/lib/supabase.ts` and replace the placeholder values with your actual Supabase project URL and anon key (same values as the web project's `.env` file).
+---
 
-3. iOS setup:
-```bash
-cd ios && pod install && cd ..
-```
+## Step 2 — Android Setup
 
-4. Run the app:
+### Configure Android Studio
+1. Open Android Studio
+2. Go to **SDK Manager** → install Android SDK 34
+3. Go to **AVD Manager** → create a Pixel 7 emulator (API 34)
+4. Ensure `ANDROID_HOME` is set in your shell profile:
+   ```bash
+   export ANDROID_HOME=$HOME/Library/Android/sdk  # macOS
+   export PATH=$PATH:$ANDROID_HOME/platform-tools
+   ```
+
+### Run on emulator or device
 ```bash
-# Android
 npm run android
-
-# iOS
-npm run ios
 ```
 
-## Building for Release
-
-### Android APK (for direct download from website)
-
+### Build release APK for distribution
 ```bash
 cd android
 ./gradlew assembleRelease
 ```
+APK location: `android/app/build/outputs/apk/release/app-release-unsigned.apk`
 
-The APK will be at: `android/app/build/outputs/apk/release/app-release.apk`
+To sign the APK for distribution:
+```bash
+# 1. Generate a keystore (do this once and keep it safe)
+keytool -genkey -v -keystore ghetto-finance.keystore -alias ghetto-finance -keyalg RSA -keysize 2048 -validity 10000
 
-Upload this APK to Supabase Storage or any file host, then add the download URL to the `app_releases` table via the Sitemaster dashboard.
+# 2. Sign the APK
+zipalign -v 4 app-release-unsigned.apk app-release-aligned.apk
+apksigner sign --ks ghetto-finance.keystore --out app-release-signed.apk app-release-aligned.apk
+```
 
-### iOS (for TestFlight)
+---
 
+## Step 3 — iOS Setup (Mac only)
+
+### Install pods
+```bash
+cd ios && pod install && cd ..
+```
+
+### Run on simulator or device
+```bash
+npm run ios
+```
+
+### Build for TestFlight
 1. Open `ios/GhettoFinance.xcworkspace` in Xcode
-2. Select "Any iOS Device" as build target
-3. Product > Archive
-4. Distribute to App Store Connect
-5. In App Store Connect, add the build to TestFlight
+2. Select your team in **Signing & Capabilities**
+3. Set bundle ID to `com.ghettofinance` (or your registered ID)
+4. Choose **Any iOS Device** as build target
+5. **Product → Archive**
+6. In the Organizer, click **Distribute App → App Store Connect → Upload**
+7. Go to App Store Connect → TestFlight → Add your APK to a beta group
+8. Share the TestFlight invite link on the `/download` page
+
+---
+
+## Step 4 — Publish to Download Page
+
+Once you have a signed APK or TestFlight link, insert a record in the `app_releases` Supabase table. The `/download` page on ghetto.finance will automatically show it.
+
+Example SQL (run from Supabase dashboard or ask Claude Code):
+```sql
+INSERT INTO app_releases (platform, version, download_url, changelog, file_size_mb, min_os_version, is_latest)
+VALUES (
+  'android',
+  '1.0.0-beta',
+  'https://your-download-url/ghetto-finance-1.0.0.apk',
+  'Initial beta release. Full marketplace, messaging, wallet, and social features.',
+  45,
+  '8.0',
+  true
+);
+```
+
+---
 
 ## Architecture
 
-- Connects to the same Supabase backend as the web app
-- All data syncs in real-time between web and mobile
-- Same authentication system (one account works everywhere)
-- Real-time subscriptions for orders, messages, and products
-
-## Project Structure
-
-```
-mobile/
-  App.tsx                 - App entry point
-  src/
-    screens/             - All app screens
-    components/          - Reusable UI components
-    hooks/               - Data fetching hooks (mirrored from web)
-    lib/                 - Supabase client
-    navigation/          - React Navigation setup
-    config/              - Theme, constants
-    types/               - TypeScript type definitions
-```
+- Same Supabase backend as the web app (credentials pre-configured)
+- Real-time sync for orders, messages, and products
+- One account works across web and mobile
+- Deep links: `ghettofinance://` and `https://ghetto.finance`
