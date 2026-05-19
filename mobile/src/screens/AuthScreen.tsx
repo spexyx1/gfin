@@ -10,6 +10,7 @@ import {
   ScrollView,
   ActivityIndicator,
   Alert,
+  Image,
 } from 'react-native';
 import { colors, spacing, borderRadius, typography } from '../config/theme';
 import { useAuth } from '../hooks/useAuth';
@@ -57,8 +58,11 @@ export function AuthScreen() {
         keyboardShouldPersistTaps="handled"
       >
         <View style={styles.header}>
-          <Text style={styles.logo}>GHETTO</Text>
-          <Text style={styles.logoSub}>FINANCE</Text>
+          <Image
+            source={require('../../assets/logo.png')}
+            style={styles.logoImage}
+            resizeMode="contain"
+          />
           <Text style={styles.tagline}>Secure P2P Marketplace</Text>
         </View>
 
@@ -154,19 +158,12 @@ const styles = StyleSheet.create({
   header: {
     alignItems: 'center',
     marginBottom: spacing.xxxl,
+    paddingHorizontal: spacing.lg,
   },
-  logo: {
-    fontSize: 42,
-    fontWeight: '900',
-    color: colors.primary,
-    letterSpacing: 4,
-  },
-  logoSub: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: colors.primary,
-    letterSpacing: 8,
-    marginTop: -4,
+  logoImage: {
+    width: 280,
+    height: 80,
+    marginBottom: spacing.sm,
   },
   tagline: {
     ...typography.bodySmall,

@@ -8,6 +8,7 @@ import {
   StyleSheet,
   RefreshControl,
   Image,
+  ImageBackground,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -71,7 +72,11 @@ export function MarketplaceScreen() {
       <View style={styles.header}>
         <View style={styles.headerTop}>
           <View>
-            <Text style={styles.logoText}>GHETTO FINANCE</Text>
+            <Image
+              source={require('../assets/logo.png')}
+              style={styles.logoImage}
+              resizeMode="contain"
+            />
             <Text style={styles.subtitle}>P2P Marketplace</Text>
           </View>
           <TouchableOpacity style={styles.cartButton} onPress={handleCartPress}>
@@ -162,11 +167,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: spacing.md,
   },
-  logoText: {
-    fontSize: 20,
-    fontWeight: '900',
-    color: colors.primary,
-    letterSpacing: 2,
+  logoImage: {
+    width: 160,
+    height: 44,
   },
   subtitle: {
     ...typography.caption,

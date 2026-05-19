@@ -457,8 +457,12 @@ function App() {
         <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
           <div className="flex items-center justify-between py-2 sm:py-3 lg:py-0 lg:h-16 gap-2 sm:gap-3 lg:gap-0">
             <div className="flex items-center flex-shrink-0">
-              <Link to="/" className="flex items-center hover:opacity-90 transition-opacity">
-                <span className="text-white font-black text-xl tracking-wide">GHETTO FINANCE</span>
+              <Link to="/" className="flex items-center hover:opacity-95 transition-opacity">
+                <img
+                  src="/icons/ChatGPT_Image_May_19,_2026,_04_35_57_PM.png"
+                  alt="GHETTO FINANCE"
+                  className="h-10 w-auto object-contain"
+                />
               </Link>
             </div>
 
@@ -710,7 +714,11 @@ function App() {
             {/* About Section */}
             <div className="text-center md:text-left md:col-span-1">
               <div className="flex items-center justify-center md:justify-start mb-3">
-                <span className="text-white font-black text-lg tracking-wide">GHETTO FINANCE</span>
+                <img
+                  src="/icons/ChatGPT_Image_May_19,_2026,_04_35_57_PM.png"
+                  alt="GHETTO FINANCE"
+                  className="h-8 w-auto object-contain"
+                />
               </div>
               <p className="text-xs font-bold leading-relaxed mb-3 bg-gradient-to-br from-gray-300 via-gray-400 to-gray-500 bg-clip-text text-transparent" style={{textShadow: '0 0 20px rgba(255,255,255,0.3)'}}>
                 {t('nav.footerAbout')}
