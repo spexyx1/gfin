@@ -14,10 +14,9 @@ const sizeClasses: Record<NonNullable<GraffitiLogoProps['size']>, string> = {
 export function GraffitiLogo({ className = '', size = 'header' }: GraffitiLogoProps) {
   return (
     <img
-      src="/icons/ChatGPT_Image_May_19,_2026,_04_35_57_PM.png"
+      src="/icons/ghetto_finance_bubble_neon_transparent_cropped.png"
       alt="GHETTO FINANCE"
       className={`w-auto object-contain ${sizeClasses[size]} ${className}`}
-      style={{ mixBlendMode: 'screen' }}
     />
   );
 }
