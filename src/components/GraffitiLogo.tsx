@@ -17,7 +17,7 @@ export function GraffitiLogo({ className = '', size = 'header' }: GraffitiLogoPr
       src="/icons/ChatGPT_Image_May_19,_2026,_04_35_57_PM.png"
       alt="GHETTO FINANCE"
       className={`w-auto object-contain ${sizeClasses[size]} ${className}`}
-      style={{ backgroundColor: 'rgba(30,30,30,0.75)' }}
+      style={{ mixBlendMode: 'screen' }}
     />
   );
 }
