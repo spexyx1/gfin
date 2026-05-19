@@ -461,8 +461,8 @@ function App() {
                 <img
                   src="/icons/ChatGPT_Image_May_19,_2026,_04_35_57_PM.png"
                   alt="GHETTO FINANCE"
-                  className="h-10 w-auto object-contain"
-                  style={{ mixBlendMode: 'screen' }}
+                  className="h-10 w-auto object-contain rounded"
+                  style={{ backgroundColor: 'rgba(30,30,30,0.75)' }}
                 />
               </Link>
             </div>
@@ -718,8 +718,8 @@ function App() {
                 <img
                   src="/icons/ChatGPT_Image_May_19,_2026,_04_35_57_PM.png"
                   alt="GHETTO FINANCE"
-                  className="h-8 w-auto object-contain"
-                  style={{ mixBlendMode: 'screen' }}
+                  className="h-8 w-auto object-contain rounded"
+                  style={{ backgroundColor: 'rgba(30,30,30,0.75)' }}
                 />
               </div>
               <p className="text-xs font-bold leading-relaxed mb-3 bg-gradient-to-br from-gray-300 via-gray-400 to-gray-500 bg-clip-text text-transparent" style={{textShadow: '0 0 20px rgba(255,255,255,0.3)'}}>
