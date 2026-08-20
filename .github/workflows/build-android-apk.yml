@@ -38,9 +38,18 @@ jobs:
           cache-dependency-path: mobile/package-lock.json
 
       - name: Install JS dependencies
-        run: npm ci || npm install
+        run: npm install --legacy-peer-deps
 
-      - name: Generate debug keystore (if not provided)
+      - name: Generate Gradle wrapper
+        working-directory: mobile/android
+        run: |
+          if [ ! -f gradlew ]; then
+            # Generate the wrapper using the gradle-wrapper.properties distribution
+            gradle wrapper --gradle-version 8.6 --distribution-type all
+          fi
+          chmod +x gradlew
+
+      - name: Generate debug keystore
         run: |
           if [ ! -f android/app/debug.keystore ]; then
             keytool -genkey -v \
