@@ -24,9 +24,9 @@ async function main() {
   if (network.chainId === 137n) {
     // Polygon Mainnet
     usdcAddress = "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174";
-  } else if (network.chainId === 80001n) {
-    // Mumbai Testnet
-    usdcAddress = "0x0FA8781a83E46826621b3BC094Ea2A0212e71B23";
+  } else if (network.chainId === 80002n) {
+    // Polygon Amoy Testnet
+    usdcAddress = "0x41e94eb019c0762f9bfcf9fb1e58925f63d7efd1";
   } else {
     // Local/Hardhat - use a mock address
     usdcAddress = "0x0000000000000000000000000000000000000001";

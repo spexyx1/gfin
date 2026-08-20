@@ -8,7 +8,7 @@ dotenv.config();
 
 const config: HardhatUserConfig = {
   solidity: {
-    version: "0.8.19",
+    version: "0.8.20",
     settings: {
       optimizer: {
         enabled: true,
@@ -17,21 +17,18 @@ const config: HardhatUserConfig = {
     },
   },
   networks: {
-    // Polygon Mumbai Testnet
-    polygonMumbai: {
-      url: process.env.POLYGON_MUMBAI_RPC_URL || "https://rpc-mumbai.maticvigil.com",
+    polygonAmoy: {
+      url: process.env.POLYGON_AMOY_RPC_URL || "https://rpc-amoy.polygon.technology",
       accounts: process.env.DEPLOYER_PRIVATE_KEY ? [process.env.DEPLOYER_PRIVATE_KEY] : [],
-      chainId: 80001,
-      gasPrice: 20000000000, // 20 gwei
+      chainId: 80002,
+      gasPrice: 20000000000,
     },
-    // Polygon Mainnet
     polygon: {
       url: process.env.POLYGON_MAINNET_RPC_URL || "https://polygon-rpc.com",
       accounts: process.env.DEPLOYER_PRIVATE_KEY ? [process.env.DEPLOYER_PRIVATE_KEY] : [],
       chainId: 137,
-      gasPrice: 50000000000, // 50 gwei
+      gasPrice: 50000000000,
     },
-    // Local development
     hardhat: {
       chainId: 31337,
     },
@@ -45,7 +42,7 @@ const config: HardhatUserConfig = {
   etherscan: {
     apiKey: {
       polygon: process.env.POLYGONSCAN_API_KEY || "",
-      polygonMumbai: process.env.POLYGONSCAN_API_KEY || "",
+      polygonAmoy: process.env.POLYGONSCAN_API_KEY || "",
     },
   },
 };

@@ -30,11 +30,11 @@ export const BLOCKCHAIN_CONFIG = {
       rpcUrl: 'https://polygon-rpc.com',
       blockExplorer: 'https://polygonscan.com',
     },
-    polygonMumbai: {
-      id: 80001,
-      name: 'Polygon Mumbai',
-      rpcUrl: 'https://rpc-mumbai.maticvigil.com',
-      blockExplorer: 'https://mumbai.polygonscan.com',
+    polygonAmoy: {
+      id: 80002,
+      name: 'Polygon Amoy',
+      rpcUrl: 'https://rpc-amoy.polygon.technology',
+      blockExplorer: 'https://amoy.polygonscan.com',
     },
   },
   defaultChain: 137,

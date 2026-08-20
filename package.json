@@ -9,11 +9,11 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "compile": "hardhat compile",
-    "deploy:mumbai": "hardhat run scripts/deploy-all.ts --network polygonMumbai",
+    "deploy:amoy": "hardhat run scripts/deploy-all.ts --network polygonAmoy",
     "deploy:polygon": "hardhat run scripts/deploy-all.ts --network polygon",
-    "deploy:token:mumbai": "hardhat run scripts/deploy-ghetto-token.ts --network polygonMumbai",
+    "deploy:token:amoy": "hardhat run scripts/deploy-ghetto-token.ts --network polygonAmoy",
     "deploy:token:polygon": "hardhat run scripts/deploy-ghetto-token.ts --network polygon",
-    "deploy:escrow:mumbai": "hardhat run scripts/deploy-escrow.ts --network polygonMumbai",
+    "deploy:escrow:amoy": "hardhat run scripts/deploy-escrow.ts --network polygonAmoy",
     "deploy:escrow:polygon": "hardhat run scripts/deploy-escrow.ts --network polygon"
   },
   "dependencies": {

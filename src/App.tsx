@@ -1,6 +1,6 @@
 import React, { useState, useMemo, lazy, Suspense } from 'react';
-import { Routes, Route, Link, useLocation } from 'react-router-dom';
-import { Shield, Search, ShoppingCart, User, Wallet, TrendingUp, Package, MessageCircle, Store, CreditCard, Users, AtSign, Filter, Globe, Mail, DollarSign, ShoppingBag, Briefcase, CircleUser as UserCircle, Smartphone } from 'lucide-react';
+import { Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom';
+import { Shield, Search, ShoppingCart, Wallet, Package, MessageCircle, Users, AtSign, Filter, Globe, Mail, DollarSign, ShoppingBag, Briefcase, CircleUser as UserCircle, Smartphone } from 'lucide-react';
 import { SearchFilters } from './components/AdvancedSearch';
 import { AuthModal } from './components/AuthModal';
 import { PWAInstallButton } from './components/PWAInstallButton';
@@ -42,7 +42,6 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from './hooks/useAuth';
 import { useCart } from './hooks/useCart';
 import { useMessaging } from './hooks/useMessaging';
-import { useSocialSystem } from './hooks/useSocialSystem';
 import { useProducts } from './hooks/useProducts';
 import { useSitemasterRole } from './hooks/useSitemasterRole';
 import { useModalManager } from './hooks/useModalManager';
@@ -52,6 +51,7 @@ import { logger } from './utils/logger';
 
 function App() {
   const location = useLocation();
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
   const [isSearchFocused, setIsSearchFocused] = useState(false);
@@ -72,8 +72,7 @@ function App() {
   const { user, logout } = useAuth();
   const { addToCart, getItemCount } = useCart();
   const { getUnreadCount, createConversation } = useMessaging();
-  const { getUserProfile } = useSocialSystem();
-  const { products: allProducts, isLoading: productsLoading, loadProducts } = useProducts();
+  const { products: allProducts, isLoading: productsLoading } = useProducts();
   const { issitemaster } = useSitemasterRole();
   const { openModal, closeModal, isOpen, getData } = useModalManager();
 
@@ -650,11 +649,11 @@ function App() {
 
       {/* Mobile Bottom Navigation */}
       <MobileBottomNav
-        activeView={location.pathname === '/social' ? 'home' : 'home'}
+        activeView={location.pathname === '/social' ? 'social' : 'home'}
         onNavigate={(view) => {
           switch (view) {
             case 'home':
-              window.location.href = '/';
+              navigate('/');
               break;
             case 'cart':
               openModal('cart');
