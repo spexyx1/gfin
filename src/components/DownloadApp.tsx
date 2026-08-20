@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Smartphone, Download, Apple, Shield, Zap, RefreshCw, ArrowLeft } from 'lucide-react';
+import { Smartphone, Download, Apple, Shield, Zap, RefreshCw, ArrowLeft, Share } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 
@@ -156,7 +156,7 @@ export function DownloadApp() {
               </div>
               <div>
                 <h3 className="text-lg font-bold">iOS</h3>
-                <p className="text-gray-500 text-sm">TestFlight Beta</p>
+                <p className="text-gray-500 text-sm">Install via Safari</p>
               </div>
             </div>
 
@@ -184,19 +184,49 @@ export function DownloadApp() {
                 </a>
               </>
             ) : (
-              <div className="space-y-2 mb-4 text-sm">
-                <div className="flex justify-between text-gray-400">
-                  <span>Version</span>
-                  <span className="text-white font-medium">1.0.0-beta</span>
+              <>
+                <div className="space-y-2 mb-4 text-sm">
+                  <div className="flex justify-between text-gray-400">
+                    <span>Version</span>
+                    <span className="text-white font-medium">PWA</span>
+                  </div>
+                  <div className="flex justify-between text-gray-400">
+                    <span>Requires</span>
+                    <span className="text-white font-medium">iOS 15.0+</span>
+                  </div>
                 </div>
-                <div className="flex justify-between text-gray-400">
-                  <span>Requires</span>
-                  <span className="text-white font-medium">iOS 15.0+</span>
+                <div className="rounded-xl bg-blue-500/10 border border-blue-500/20 p-4 mb-4">
+                  <p className="text-sm text-gray-300 mb-3 font-medium">Install as a Progressive Web App:</p>
+                  <ol className="space-y-2 text-sm text-gray-400">
+                    <li className="flex gap-2">
+                      <span className="text-blue-400 font-bold flex-shrink-0">1.</span>
+                      <span>Open this page in <strong className="text-white">Safari</strong> on your iPhone</span>
+                    </li>
+                    <li className="flex gap-2">
+                      <span className="text-blue-400 font-bold flex-shrink-0">2.</span>
+                      <span>Tap the <Share className="inline w-4 h-4 text-blue-400 align-middle" /> <strong className="text-white">Share</strong> button at the bottom</span>
+                    </li>
+                    <li className="flex gap-2">
+                      <span className="text-blue-400 font-bold flex-shrink-0">3.</span>
+                      <span>Scroll down and tap <strong className="text-white">Add to Home Screen</strong></span>
+                    </li>
+                    <li className="flex gap-2">
+                      <span className="text-blue-400 font-bold flex-shrink-0">4.</span>
+                      <span>Tap <strong className="text-white">Add</strong> -- the app appears on your home screen</span>
+                    </li>
+                  </ol>
                 </div>
-                <div className="mt-4 py-3 px-4 bg-gray-800 text-gray-400 font-medium rounded-xl text-center text-sm">
-                  Coming Soon
-                </div>
-              </div>
+                <button
+                  onClick={() => {
+                    if (navigator.share) {
+                      navigator.share({ title: 'GHETTO FINANCE', url: window.location.href });
+                    }
+                  }}
+                  className="block w-full py-3 px-4 bg-blue-500 hover:bg-blue-400 text-white font-bold rounded-xl text-center transition-colors"
+                >
+                  Add to Home Screen
+                </button>
+              </>
             )}
           </div>
         </div>
@@ -221,6 +251,36 @@ export function DownloadApp() {
                 <span className="text-yellow-400 font-bold">3</span>
               </div>
               <p className="text-sm text-gray-300">App installs on your home screen. Sign in with your account</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="mb-12">
+          <h2 className="text-xl font-bold mb-4 text-center">How to Install (iOS)</h2>
+          <div className="grid sm:grid-cols-4 gap-4">
+            <div className="p-4 bg-gray-900/50 border border-gray-800 rounded-xl text-center">
+              <div className="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center mx-auto mb-3">
+                <span className="text-blue-400 font-bold">1</span>
+              </div>
+              <p className="text-sm text-gray-300">Open this site in Safari on your iPhone or iPad</p>
+            </div>
+            <div className="p-4 bg-gray-900/50 border border-gray-800 rounded-xl text-center">
+              <div className="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center mx-auto mb-3">
+                <span className="text-blue-400 font-bold">2</span>
+              </div>
+              <p className="text-sm text-gray-300">Tap the Share button at the bottom of Safari</p>
+            </div>
+            <div className="p-4 bg-gray-900/50 border border-gray-800 rounded-xl text-center">
+              <div className="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center mx-auto mb-3">
+                <span className="text-blue-400 font-bold">3</span>
+              </div>
+              <p className="text-sm text-gray-300">Scroll down and select "Add to Home Screen"</p>
+            </div>
+            <div className="p-4 bg-gray-900/50 border border-gray-800 rounded-xl text-center">
+              <div className="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center mx-auto mb-3">
+                <span className="text-blue-400 font-bold">4</span>
+              </div>
+              <p className="text-sm text-gray-300">Tap Add. The app launches full-screen from your home screen</p>
             </div>
           </div>
         </div>

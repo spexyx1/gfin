@@ -80,11 +80,11 @@ export function WalletScreen() {
     setRefreshing(false);
   };
 
-  const activeOrders = orders.filter(o => !['completed', 'cancelled'].includes(o.status));
-  const completedOrders = orders.filter(o => ['completed', 'cancelled'].includes(o.status));
+  const activeOrders = orders.filter(o => !(['completed', 'cancelled'] as const).includes(o.status));
+  const completedOrders = orders.filter(o => (['completed', 'cancelled'] as const).includes(o.status));
 
   const totalEscrow = activeOrders
-    .filter(o => ['funded', 'shipped', 'delivered', 'awaiting_release'].includes(o.status))
+    .filter(o => (['funded', 'shipped', 'delivered', 'awaiting_release'] as const).includes(o.status))
     .reduce((sum, o) => sum + o.amount, 0);
 
   return (

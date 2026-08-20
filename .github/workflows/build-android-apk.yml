@@ -1,0 +1,111 @@
+name: Build Android APK
+
+on:
+  workflow_dispatch:
+    inputs:
+      version_name:
+        description: 'Version name (e.g. 1.0.0)'
+        required: true
+        default: '1.0.0'
+      version_code:
+        description: 'Version code (integer, e.g. 1)'
+        required: true
+        default: '1'
+
+jobs:
+  build-android:
+    name: Build Release APK
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: mobile
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: npm
+          cache-dependency-path: mobile/package-lock.json
+
+      - name: Install JS dependencies
+        run: npm ci || npm install
+
+      - name: Generate debug keystore (if not provided)
+        run: |
+          if [ ! -f android/app/debug.keystore ]; then
+            keytool -genkey -v \
+              -keystore android/app/debug.keystore \
+              -alias androiddebugkey \
+              -keyalg RSA -keysize 2048 \
+              -validity 10000 \
+              -storepass android \
+              -keypass android \
+              -dname "CN=Debug, OU=Debug, O=Debug, L=Debug, ST=Debug, C=US"
+          fi
+
+      - name: Set version
+        run: |
+          sed -i "s/versionCode 1/versionCode ${{ github.event.inputs.version_code || 1 }}/g" android/app/build.gradle
+          sed -i "s/versionName \"1.0.0\"/versionName \"${{ github.event.inputs.version_name || '1.0.0' }}\"/g" android/app/build.gradle
+
+      - name: Build Release APK
+        working-directory: mobile/android
+        run: ./gradlew assembleRelease --no-daemon -x lint
+
+      - name: Rename APK
+        run: |
+          cp android/app/build/outputs/apk/release/app-release.apk \
+            ghetto-finance-${{ github.event.inputs.version_name || '1.0.0' }}.apk
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ghetto-finance-apk
+          path: mobile/ghetto-finance-*.apk
+          retention-days: 90
+
+      - name: Upload to Supabase Storage (optional)
+        if: ${{ vars.SUPABASE_URL != '' }}
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+        run: |
+          VERSION="${{ github.event.inputs.version_name || '1.0.0' }}"
+          FILE_SIZE=$(stat -c%s "ghetto-finance-${VERSION}.apk" 2>/dev/null || stat -f%z "ghetto-finance-${VERSION}.apk")
+          FILE_SIZE_MB=$((FILE_SIZE / 1048576))
+
+          curl -s -X POST \
+            "${SUPABASE_URL}/storage/v1/object/app-releases/ghetto-finance-${VERSION}.apk" \
+            -H "Authorization: Bearer ${SUPABASE_SERVICE_KEY}" \
+            -H "Content-Type: application/vnd.android.package-archive" \
+            --data-binary "@ghetto-finance-${VERSION}.apk"
+
+          DOWNLOAD_URL="${SUPABASE_URL}/storage/v1/object/public/app-releases/ghetto-finance-${VERSION}.apk"
+
+          curl -s -X POST \
+            "${SUPABASE_URL}/rest/v1/app_releases" \
+            -H "apikey: ${SUPABASE_SERVICE_KEY}" \
+            -H "Authorization: Bearer ${SUPABASE_SERVICE_KEY}" \
+            -H "Content-Type: application/json" \
+            -H "Prefer: return=representation" \
+            -d "{
+              \"platform\": \"android\",
+              \"version\": \"${VERSION}\",
+              \"download_url\": \"${DOWNLOAD_URL}\",
+              \"changelog\": \"GHETTO FINANCE mobile app v${VERSION}. Full marketplace, messaging, wallet, social feed, and order tracking.\",
+              \"file_size_mb\": ${FILE_SIZE_MB},
+              \"min_os_version\": \"8.0\",
+              \"is_latest\": true
+            }"
+
+          echo "APK published at: ${DOWNLOAD_URL}"

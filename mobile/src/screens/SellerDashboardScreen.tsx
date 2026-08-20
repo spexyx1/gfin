@@ -72,7 +72,7 @@ export function SellerDashboardScreen() {
     .filter(o => o.status === 'completed')
     .reduce((sum, o) => sum + o.amount, 0);
 
-  const pendingOrders = orders.filter(o => !['completed', 'cancelled'].includes(o.status));
+  const pendingOrders = orders.filter(o => !(['completed', 'cancelled'] as const).includes(o.status));
 
   return (
     <View style={styles.container}>

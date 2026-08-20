@@ -124,6 +124,28 @@ export type Database = {
         };
         Update: Partial<Database['public']['Tables']['messages']['Insert']>;
       };
+      social_posts: {
+        Row: {
+          id: string;
+          user_id: string;
+          content: string;
+          likes: number;
+          comments_count: number;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          content: string;
+          likes?: number;
+          comments_count?: number;
+        };
+        Update: {
+          content?: string;
+          likes?: number;
+          comments_count?: number;
+        };
+      };
     };
   };
 };
