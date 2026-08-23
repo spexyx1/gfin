@@ -130,11 +130,12 @@ jobs:
           FILE_SIZE=$(stat -c%s "ghetto-finance-${VERSION}.apk" 2>/dev/null || stat -f%z "ghetto-finance-${VERSION}.apk")
           FILE_SIZE_MB=$((FILE_SIZE / 1048576))
 
-          echo "Uploading APK to Supabase Storage..."
+          echo "Uploading APK to Supabase Storage (upsert)..."
           HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" -X POST \
-            "${SUPABASE_URL}/storage/v1/object/app-releases/ghetto-finance-${VERSION}.apk" \
+            "${SUPABASE_URL}/storage/v1/object/app-releases/ghetto-finance-${VERSION}.apk?upsert=true" \
             -H "Authorization: Bearer ${SUPABASE_SERVICE_KEY}" \
             -H "Content-Type: application/vnd.android.package-archive" \
+            -H "x-upsert: true" \
             --data-binary "@ghetto-finance-${VERSION}.apk")
 
           if [ "$HTTP_STATUS" != "200" ]; then
@@ -152,13 +153,13 @@ jobs:
             -H "Content-Type: application/json" \
             -d '{"is_latest": false}'
 
-          echo "Creating release record in database..."
-          curl -s -X POST \
+          echo "Upserting release record in database..."
+          DB_STATUS=$(curl -s -o /dev/null -w "%{http_code}" -X POST \
             "${SUPABASE_URL}/rest/v1/app_releases" \
             -H "apikey: ${SUPABASE_SERVICE_KEY}" \
             -H "Authorization: Bearer ${SUPABASE_SERVICE_KEY}" \
             -H "Content-Type: application/json" \
-            -H "Prefer: return=representation" \
+            -H "Prefer: return=representation,resolution=merge-duplicates" \
             -d "{
               \"platform\": \"android\",
               \"version\": \"${VERSION}\",
@@ -167,6 +168,11 @@ jobs:
               \"file_size_mb\": ${FILE_SIZE_MB},
               \"min_os_version\": \"7.0\",
               \"is_latest\": true
-            }"
+            }")
+
+          if [ "$DB_STATUS" != "201" ] && [ "$DB_STATUS" != "200" ]; then
+            echo "Database upsert failed with HTTP $DB_STATUS"
+            exit 1
+          fi
 
           echo "APK published at: ${DOWNLOAD_URL}"
