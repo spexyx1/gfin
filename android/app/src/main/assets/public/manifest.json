@@ -1,0 +1,141 @@
+{
+    "name": "GHETTO FINANCE - Secure P2P Marketplace",
+    "short_name": "GHETTO FINANCE",
+    "description": "Decentralized P2P marketplace with blockchain-powered escrow protection. Trade anything legal with crypto. Privacy-focused, lightweight, and secure.",
+    "start_url": "/",
+    "scope": "/",
+    "display": "standalone",
+    "display_override": ["standalone", "fullscreen", "minimal-ui"],
+    "background_color": "#000000",
+    "theme_color": "#FFFF00",
+    "orientation": "portrait-primary",
+    "prefer_related_applications": false,
+    "icons": [
+        {
+            "src": "/icons/icon-72x72.svg",
+            "sizes": "72x72",
+            "type": "image/svg+xml",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/icons/icon-96x96.svg",
+            "sizes": "96x96",
+            "type": "image/svg+xml",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/icons/icon-128x128.svg",
+            "sizes": "128x128",
+            "type": "image/svg+xml",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/icons/icon-144x144.svg",
+            "sizes": "144x144",
+            "type": "image/svg+xml",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/icons/icon-152x152.svg",
+            "sizes": "152x152",
+            "type": "image/svg+xml",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/icons/icon-192x192.svg",
+            "sizes": "192x192",
+            "type": "image/svg+xml",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/icons/icon-384x384.svg",
+            "sizes": "384x384",
+            "type": "image/svg+xml",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/icons/icon-512x512.svg",
+            "sizes": "512x512",
+            "type": "image/svg+xml",
+            "purpose": "any maskable"
+        }
+    ],
+    "categories": [
+        "finance",
+        "shopping",
+        "social"
+    ],
+    "screenshots": [
+        {
+            "src": "/screenshots/desktop-1.png",
+            "sizes": "1280x720",
+            "type": "image/png",
+            "form_factor": "wide"
+        },
+        {
+            "src": "/screenshots/mobile-1.png",
+            "sizes": "750x1334",
+            "type": "image/png",
+            "form_factor": "narrow"
+        }
+    ],
+    "share_target": {
+        "action": "/",
+        "method": "GET",
+        "params": {
+            "title": "title",
+            "text": "text",
+            "url": "url"
+        }
+    },
+    "shortcuts": [
+        {
+            "name": "Browse Marketplace",
+            "short_name": "Browse",
+            "description": "Browse products and services",
+            "url": "/",
+            "icons": [
+                {
+                    "src": "/icons/icon-96x96.svg",
+                    "sizes": "96x96"
+                }
+            ]
+        },
+        {
+            "name": "My Wallet",
+            "short_name": "Wallet",
+            "description": "Access your crypto wallet",
+            "url": "/?wallet=true",
+            "icons": [
+                {
+                    "src": "/icons/icon-96x96.svg",
+                    "sizes": "96x96"
+                }
+            ]
+        },
+        {
+            "name": "Messages",
+            "short_name": "Messages",
+            "description": "View your messages",
+            "url": "/?messages=true",
+            "icons": [
+                {
+                    "src": "/icons/icon-96x96.svg",
+                    "sizes": "96x96"
+                }
+            ]
+        },
+        {
+            "name": "Social Platform",
+            "short_name": "Social",
+            "description": "Access the social platform",
+            "url": "/social",
+            "icons": [
+                {
+                    "src": "/icons/icon-96x96.svg",
+                    "sizes": "96x96"
+                }
+            ]
+        }
+    ]
+}
