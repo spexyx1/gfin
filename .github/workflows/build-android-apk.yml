@@ -89,16 +89,19 @@ jobs:
           fi
 
       - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v4
+        uses: gradle/actions/setup-gradle@v6
         with:
-          gradle-version: 8.14.3
+          gradle-version: '8.14.3'
+
+      - name: Verify Gradle installation
+        run: gradle --version
 
       - name: Build Release APK
         working-directory: android
         env:
           ANDROID_HOME: ${{ env.ANDROID_HOME }}
           ANDROID_SDK_ROOT: ${{ env.ANDROID_HOME }}
-        run: gradle assembleRelease --no-daemon
+        run: gradle assembleRelease --no-daemon --console=plain --stacktrace
 
       - name: Rename APK
         run: |
