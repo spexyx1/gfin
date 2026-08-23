@@ -35,11 +35,9 @@ jobs:
           java-version: 21
 
       - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
+        uses: android-actions/setup-android@v3.2.0
         with:
-          packages: |
-            platforms;android-36
-            build-tools;36.0.0
+          packages: 'tools platform-tools platforms;android-36 build-tools;36.0.0'
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -92,6 +90,9 @@ jobs:
 
       - name: Build Release APK
         working-directory: android
+        env:
+          ANDROID_HOME: ${{ env.ANDROID_HOME }}
+          ANDROID_SDK_ROOT: ${{ env.ANDROID_HOME }}
         run: |
           chmod +x gradlew
           ./gradlew assembleRelease --no-daemon
