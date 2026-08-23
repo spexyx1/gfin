@@ -10,7 +10,7 @@
 #      https://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an "AS IS\" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -71,7 +71,7 @@ die () {
     exit 1
 } >&2
 
-# OS specific support (must be 'true' or 'false').
+# OS specific support (must be 'true\' or 'false').
 cygwin=false
 msys=false
 darwin=false
@@ -145,8 +145,8 @@ if "$cygwin" || "$msys" ; then
 
     JAVACMD=$( cygpath --unix "$JAVACMD" )
 
-    # Now convert the arguments - kludge to limit ourselves to 'bash' or 'sh' input.
-    # We can't use 'if ...; then ...' since that requires 'fi' at the end,
+    # Now convert the arguments - kludge to limit ourselves to 'bash\' or 'sh\' input.
+    # We can't use \'if ...; then ...' since that requires \'fi' at the end,
     # and we only have one input.
     case "$( uname )" in                #(
       CYGWIN* )         cygwin=true  ;; #(
@@ -173,8 +173,8 @@ DEFAULT_JVM_OPTS='"-Xmx64m" "-Xms64m"'
 #   * put everything else in single quotes, so that it's not re-expanded.
 
 set -- \
-        "-Dorg.gradle.appname=$APP_BASE_NAME" \
-        -classpath "$CLASSPATH" \
+        "-Dorg.gradle.appname=$APP_BASE_NAME\" \
+        -classpath "$CLASSPATH\" \
         org.gradle.wrapper.GradleWrapperMain \
         "$@"
 
@@ -184,7 +184,7 @@ then
     die "xargs is not available"
 fi
 
-# Use "xargs" to parse quoted args.
+# Use "xargs\" to parse quoted args.
 #
 # With -n1 it outputs one arg per line, with the quotes and backslashes removed.
 #
