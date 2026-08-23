@@ -28,11 +28,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up JDK 17
+      - name: Set up JDK 21
         uses: actions/setup-java@v5
         with:
           distribution: temurin
-          java-version: 17
+          java-version: 21
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -44,6 +44,15 @@ jobs:
         run: npm ci
 
       - name: Build web app
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL || 'https://nnlwgwlvdrvwbmzeugfe.supabase.co' }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ubHdnd2x2ZHJ2d2JtemV1Z2ZlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkwODI2MjgsImV4cCI6MjA3NDY1ODYyOH0.7IMMcK-tLMgYWnAZFK6oxXXeTOoRb_3OJl269ySU5uI' }}
+          VITE_REOWN_PROJECT_ID: ${{ secrets.VITE_REOWN_PROJECT_ID || 'b9b4eef80d3ef333b26790780966d938' }}
+          VITE_NETWORK_ENV: mainnet
+          VITE_CHAIN_ID: '137'
+          VITE_GHETTO_TOKEN_ADDRESS: '0x3176b45b7295Bdac9cFeF845aEde3C40ed2d0DE3'
+          VITE_ESCROW_CONTRACT_ADDRESS: '0xC05B7db1C24027BC062088F8F10C38836e660392'
+          VITE_USDC_ADDRESS: '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359'
         run: npm run build
 
       - name: Sync Capacitor
@@ -55,7 +64,7 @@ jobs:
           sed -i "s/versionCode 1/versionCode ${{ github.event.inputs.version_code || 1 }}/g" app/build.gradle
           sed -i "s/versionName \"1.0\"/versionName \"${{ github.event.inputs.version_name || '1.0.0' }}\"/g" app/build.gradle
 
-      - name: Generate debug keystore
+      - name: Generate signing keystore
         working-directory: android/app
         run: |
           if [ ! -f debug.keystore ]; then
