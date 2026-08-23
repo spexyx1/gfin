@@ -3,7 +3,10 @@ name: Build Android APK
 on:
   push:
     paths:
-      - 'mobile/**'
+      - 'src/**'
+      - 'android/**'
+      - 'capacitor.config.ts'
+      - 'package.json'
       - '.github/workflows/build-android-apk.yml'
   workflow_dispatch:
     inputs:
@@ -20,9 +23,6 @@ jobs:
   build-android:
     name: Build Release APK
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: mobile
 
     steps:
       - name: Checkout code
@@ -34,26 +34,33 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: '8.6'
-
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
-          cache-dependency-path: mobile/package-lock.json
 
-      - name: Install JS dependencies
-        run: npm install --legacy-peer-deps
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build web app
+        run: npm run build
+
+      - name: Sync Capacitor
+        run: npx cap sync android
+
+      - name: Set version
+        working-directory: android
+        run: |
+          sed -i "s/versionCode 1/versionCode ${{ github.event.inputs.version_code || 1 }}/g" app/build.gradle
+          sed -i "s/versionName \"1.0\"/versionName \"${{ github.event.inputs.version_name || '1.0.0' }}\"/g" app/build.gradle
 
       - name: Generate debug keystore
+        working-directory: android/app
         run: |
-          if [ ! -f android/app/debug.keystore ]; then
+          if [ ! -f debug.keystore ]; then
             keytool -genkey -v \
-              -keystore android/app/debug.keystore \
+              -keystore debug.keystore \
               -alias androiddebugkey \
               -keyalg RSA -keysize 2048 \
               -validity 10000 \
@@ -62,33 +69,23 @@ jobs:
               -dname "CN=Debug, OU=Debug, O=Debug, L=Debug, ST=Debug, C=US"
           fi
 
-      - name: Set version
-        run: |
-          sed -i "s/versionCode 1/versionCode ${{ github.event.inputs.version_code || 1 }}/g" android/app/build.gradle
-          sed -i "s/versionName \"1.0.0\"/versionName \"${{ github.event.inputs.version_name || '1.0.0' }}\"/g" android/app/build.gradle
-
-      - name: Generate Gradle wrapper jar
-        working-directory: mobile/android
-        run: |
-          if [ ! -f gradle/wrapper/gradle-wrapper.jar ]; then
-            gradle wrapper --gradle-version 8.6 --distribution-type all
-          fi
-          chmod +x gradlew
-
       - name: Build Release APK
-        working-directory: mobile/android
-        run: ./gradlew assembleRelease --no-daemon -x lint
+        working-directory: android
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleRelease --no-daemon
 
       - name: Rename APK
         run: |
+          VERSION="${{ github.event.inputs.version_name || '1.0.0' }}"
           cp android/app/build/outputs/apk/release/app-release.apk \
-            ghetto-finance-${{ github.event.inputs.version_name || '1.0.0' }}.apk
+            ghetto-finance-${VERSION}.apk
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: ghetto-finance-apk
-          path: mobile/ghetto-finance-*.apk
+          path: ghetto-finance-*.apk
           retention-days: 90
 
       - name: Upload to Supabase Storage (optional)
@@ -121,7 +118,7 @@ jobs:
               \"download_url\": \"${DOWNLOAD_URL}\",
               \"changelog\": \"GHETTO FINANCE mobile app v${VERSION}. Full marketplace, messaging, wallet, social feed, and order tracking.\",
               \"file_size_mb\": ${FILE_SIZE_MB},
-              \"min_os_version\": \"8.0\",
+              \"min_os_version\": \"7.0\",
               \"is_latest\": true
             }"
 

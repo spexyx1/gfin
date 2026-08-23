@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">GHETTO FINANCE</string>
+    <string name="title_activity_main">GHETTO FINANCE</string>
+    <string name="package_name">com.ghettofinance</string>
+    <string name="custom_url_scheme">com.ghettofinance</string>
+</resources>

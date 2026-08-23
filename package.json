@@ -17,6 +17,8 @@
     "deploy:escrow:polygon": "hardhat run scripts/deploy-escrow.ts --network polygon"
   },
   "dependencies": {
+    "@capacitor/android": "^8.5.0",
+    "@capacitor/core": "^8.5.0",
     "@openzeppelin/contracts": "^5.4.0",
     "@reown/appkit": "^1.8.17",
     "@reown/appkit-adapter-ethers": "^1.8.17",
@@ -34,6 +36,7 @@
     "recharts": "^3.1.2"
   },
   "devDependencies": {
+    "@capacitor/cli": "^8.5.0",
     "@eslint/js": "^9.9.1",
     "@types/node": "^24.5.2",
     "@types/react": "^18.3.5",
