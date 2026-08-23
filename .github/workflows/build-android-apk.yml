@@ -88,14 +88,17 @@ jobs:
               -dname "CN=Debug, OU=Debug, O=Debug, L=Debug, ST=Debug, C=US"
           fi
 
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: 8.14.3
+
       - name: Build Release APK
         working-directory: android
         env:
           ANDROID_HOME: ${{ env.ANDROID_HOME }}
           ANDROID_SDK_ROOT: ${{ env.ANDROID_HOME }}
-        run: |
-          chmod +x gradlew
-          ./gradlew assembleRelease --no-daemon
+        run: gradle assembleRelease --no-daemon
 
       - name: Rename APK
         run: |
