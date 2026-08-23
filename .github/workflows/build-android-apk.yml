@@ -117,11 +117,15 @@ jobs:
           retention-days: 90
 
       - name: Publish APK to Supabase Storage
-        if: ${{ secrets.SUPABASE_SERVICE_KEY != '' }}
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL || 'https://nnlwgwlvdrvwbmzeugfe.supabase.co' }}
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
         run: |
+          if [ -z "$SUPABASE_SERVICE_KEY" ]; then
+            echo "SUPABASE_SERVICE_KEY is not configured; keeping the APK as a GitHub artifact."
+            exit 0
+          fi
+
           VERSION="${{ github.event.inputs.version_name || '1.0.0' }}"
           FILE_SIZE=$(stat -c%s "ghetto-finance-${VERSION}.apk" 2>/dev/null || stat -f%z "ghetto-finance-${VERSION}.apk")
           FILE_SIZE_MB=$((FILE_SIZE / 1048576))
