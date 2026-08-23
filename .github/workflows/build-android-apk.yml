@@ -116,24 +116,39 @@ jobs:
           path: ghetto-finance-*.apk
           retention-days: 90
 
-      - name: Upload to Supabase Storage (optional)
-        if: ${{ vars.SUPABASE_URL != '' }}
+      - name: Publish APK to Supabase Storage
+        if: ${{ secrets.SUPABASE_SERVICE_KEY != '' }}
         env:
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL || 'https://nnlwgwlvdrvwbmzeugfe.supabase.co' }}
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
         run: |
           VERSION="${{ github.event.inputs.version_name || '1.0.0' }}"
           FILE_SIZE=$(stat -c%s "ghetto-finance-${VERSION}.apk" 2>/dev/null || stat -f%z "ghetto-finance-${VERSION}.apk")
           FILE_SIZE_MB=$((FILE_SIZE / 1048576))
 
-          curl -s -X POST \
+          echo "Uploading APK to Supabase Storage..."
+          HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" -X POST \
             "${SUPABASE_URL}/storage/v1/object/app-releases/ghetto-finance-${VERSION}.apk" \
             -H "Authorization: Bearer ${SUPABASE_SERVICE_KEY}" \
             -H "Content-Type: application/vnd.android.package-archive" \
-            --data-binary "@ghetto-finance-${VERSION}.apk"
+            --data-binary "@ghetto-finance-${VERSION}.apk")
+
+          if [ "$HTTP_STATUS" != "200" ]; then
+            echo "Storage upload failed with HTTP $HTTP_STATUS"
+            exit 1
+          fi
 
           DOWNLOAD_URL="${SUPABASE_URL}/storage/v1/object/public/app-releases/ghetto-finance-${VERSION}.apk"
 
+          echo "Marking previous Android releases as not latest..."
+          curl -s -o /dev/null -X PATCH \
+            "${SUPABASE_URL}/rest/v1/app_releases?platform=eq.android" \
+            -H "apikey: ${SUPABASE_SERVICE_KEY}" \
+            -H "Authorization: Bearer ${SUPABASE_SERVICE_KEY}" \
+            -H "Content-Type: application/json" \
+            -d '{"is_latest": false}'
+
+          echo "Creating release record in database..."
           curl -s -X POST \
             "${SUPABASE_URL}/rest/v1/app_releases" \
             -H "apikey: ${SUPABASE_SERVICE_KEY}" \
