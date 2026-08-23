@@ -131,8 +131,9 @@ jobs:
           FILE_SIZE_MB=$((FILE_SIZE / 1048576))
 
           echo "Uploading APK to Supabase Storage (upsert)..."
-          HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" -X POST \
-            "${SUPABASE_URL}/storage/v1/object/app-releases/ghetto-finance-${VERSION}.apk?upsert=true" \
+          STORAGE_RESPONSE=$(mktemp)
+          HTTP_STATUS=$(curl -sS -o "$STORAGE_RESPONSE" -w "%{http_code}" -X POST \
+            "${SUPABASE_URL}/storage/v1/object/app-releases/ghetto-finance-${VERSION}.apk" \
             -H "Authorization: Bearer ${SUPABASE_SERVICE_KEY}" \
             -H "Content-Type: application/vnd.android.package-archive" \
             -H "x-upsert: true" \
@@ -140,6 +141,7 @@ jobs:
 
           if [ "$HTTP_STATUS" != "200" ]; then
             echo "Storage upload failed with HTTP $HTTP_STATUS"
+            cat "$STORAGE_RESPONSE"
             exit 1
           fi
 
@@ -155,7 +157,7 @@ jobs:
 
           echo "Upserting release record in database..."
           DB_STATUS=$(curl -s -o /dev/null -w "%{http_code}" -X POST \
-            "${SUPABASE_URL}/rest/v1/app_releases" \
+            "${SUPABASE_URL}/rest/v1/app_releases?on_conflict=platform%2Cversion" \
             -H "apikey: ${SUPABASE_SERVICE_KEY}" \
             -H "Authorization: Bearer ${SUPABASE_SERVICE_KEY}" \
             -H "Content-Type: application/json" \
