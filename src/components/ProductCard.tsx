@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Star, Shield, ShoppingCart, Zap, MessageCircle, Flag } from 'lucide-react';
+import { Star, Shield, ShoppingCart, Zap, MessageCircle, Flag, Share2, Copy, Check } from 'lucide-react';
 import { Product } from '../types';
 
 interface ProductCardProps {
@@ -21,6 +21,28 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   onReportListing,
 }) => {
   const { t } = useTranslation();
+  const [showShare, setShowShare] = useState(false);
+  const [linkCopied, setLinkCopied] = useState(false);
+
+  const productUrl = `${window.location.origin}?product=${product.id}`;
+
+  function handleShareCopy() {
+    navigator.clipboard.writeText(productUrl);
+    setLinkCopied(true);
+    setTimeout(() => setLinkCopied(false), 2000);
+  }
+
+  function shareTwitter() {
+    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(product.title + ' - ' + product.price + ' GHETTO')}&url=${encodeURIComponent(productUrl)}`, '_blank');
+  }
+
+  function shareWhatsApp() {
+    window.open(`https://wa.me/?text=${encodeURIComponent(product.title + ' ' + product.price + ' GHETTO ' + productUrl)}`, '_blank');
+  }
+
+  function shareTelegram() {
+    window.open(`https://t.me/share/url?url=${encodeURIComponent(productUrl)}&text=${encodeURIComponent(product.title + ' - ' + product.price + ' GHETTO')}`, '_blank');
+  }
 
   return (
     <div className="luxe-card overflow-hidden group">
@@ -142,14 +164,35 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             </button>
           </div>
 
-          {/* Report Listing Button */}
-          <button
-            onClick={() => onReportListing(product)}
-            className="w-full py-2 luxe-glass hover:bg-red-900/20 text-gray-500 hover:text-red-400 rounded-lg transition-all duration-300 flex items-center justify-center space-x-2 text-xs luxe-subtitle border border-white/10/50 hover:border-red-500/50"
-          >
-            <Flag className="w-3 h-3" />
-            <span>{t('product.reportListing')}</span>
-          </button>
+          {/* Share & Report Row */}
+          <div className="flex gap-2">
+            <div className="relative flex-1">
+              <button
+                onClick={() => setShowShare(!showShare)}
+                className="w-full py-2 luxe-glass hover:bg-amber-900/20 text-gray-500 hover:text-amber-400 rounded-lg transition-all duration-300 flex items-center justify-center space-x-2 text-xs luxe-subtitle border border-white/10 hover:border-amber-500/50"
+              >
+                <Share2 className="w-3 h-3" />
+                <span>{t('product.share', 'Share')}</span>
+              </button>
+              {showShare && (
+                <div className="absolute bottom-full left-0 right-0 mb-1 p-2 luxe-glass rounded-lg border border-white/10 flex gap-1 z-10">
+                  <button onClick={shareTwitter} className="flex-1 py-1.5 text-[10px] font-medium text-[#1DA1F2] bg-[#1DA1F2]/10 rounded hover:bg-[#1DA1F2]/20 transition-colors">X</button>
+                  <button onClick={shareWhatsApp} className="flex-1 py-1.5 text-[10px] font-medium text-[#25D366] bg-[#25D366]/10 rounded hover:bg-[#25D366]/20 transition-colors">WA</button>
+                  <button onClick={shareTelegram} className="flex-1 py-1.5 text-[10px] font-medium text-[#0088cc] bg-[#0088cc]/10 rounded hover:bg-[#0088cc]/20 transition-colors">TG</button>
+                  <button onClick={handleShareCopy} className="flex-1 py-1.5 text-[10px] font-medium text-gray-300 bg-white/5 rounded hover:bg-white/10 transition-colors">
+                    {linkCopied ? <Check className="w-3 h-3 mx-auto text-green-400" /> : <Copy className="w-3 h-3 mx-auto" />}
+                  </button>
+                </div>
+              )}
+            </div>
+            <button
+              onClick={() => onReportListing(product)}
+              className="flex-1 py-2 luxe-glass hover:bg-red-900/20 text-gray-500 hover:text-red-400 rounded-lg transition-all duration-300 flex items-center justify-center space-x-2 text-xs luxe-subtitle border border-white/10 hover:border-red-500/50"
+            >
+              <Flag className="w-3 h-3" />
+              <span>{t('product.reportListing')}</span>
+            </button>
+          </div>
         </div>
       </div>
     </div>

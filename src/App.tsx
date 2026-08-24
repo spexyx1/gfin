@@ -1,6 +1,6 @@
 import React, { useState, useMemo, lazy, Suspense } from 'react';
 import { Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom';
-import { Shield, Search, ShoppingCart, Wallet, Package, MessageCircle, Users, AtSign, Filter, Globe, Mail, DollarSign, ShoppingBag, Briefcase, CircleUser as UserCircle, Smartphone } from 'lucide-react';
+import { Shield, Search, ShoppingCart, Wallet, Package, MessageCircle, Users, AtSign, Filter, Globe, Mail, DollarSign, ShoppingBag, Briefcase, CircleUser as UserCircle, Smartphone, Share2 } from 'lucide-react';
 import { SearchFilters } from './components/AdvancedSearch';
 import { AuthModal } from './components/AuthModal';
 import { PWAInstallButton } from './components/PWAInstallButton';
@@ -38,6 +38,10 @@ const ProhibitedItemsPage = lazy(() => import('./components/ProhibitedItemsPage'
 const ContactForm = lazy(() => import('./components/ContactForm').then(m => ({ default: m.ContactForm })));
 const BlockchainManagement = lazy(() => import('./components/BlockchainManagement').then(m => ({ default: m.BlockchainManagement })));
 const DownloadApp = lazy(() => import('./components/DownloadApp').then(m => ({ default: m.DownloadApp })));
+const HowItWorks = lazy(() => import('./components/HowItWorks'));
+import PlatformStats from './components/PlatformStats';
+import ReferralBanner from './components/ReferralBanner';
+import OnboardingChecklist from './components/OnboardingChecklist';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from './hooks/useAuth';
 import { useCart } from './hooks/useCart';
@@ -191,6 +195,29 @@ function App() {
       <main className={`max-w-7xl mx-auto px-4 sm:px-6 transition-all duration-500 ease-in-out ${
         isSearchFocused ? 'pt-4 pb-16' : 'py-8 sm:py-12 lg:py-16'
       }`}>
+        {/* Platform Stats - Social Proof */}
+        <PlatformStats />
+
+        {/* Referral Banner */}
+        <ReferralBanner
+          referralCode={user?.user_metadata?.referral_code}
+          onSignUpClick={() => { setAuthMode('signup'); openModal('auth'); }}
+          isLoggedIn={!!user}
+        />
+
+        {/* Onboarding Checklist for logged-in users */}
+        {user && (
+          <div className="mb-8">
+            <OnboardingChecklist
+              userId={user.id}
+              onNavigate={(action) => {
+                if (action === 'profile') openModal('profileSetup');
+                else if (action === 'sell') openModal('seller');
+              }}
+            />
+          </div>
+        )}
+
         {/* Hero Section */}
         <div className={`transition-all duration-500 ease-in-out ${
           isSearchFocused ? 'h-0 mb-0 opacity-0 overflow-hidden pointer-events-none' : 'mb-8 sm:mb-12 opacity-100'
@@ -425,6 +452,17 @@ function App() {
                         <MessageCircle className="w-4 h-4" />
                         <span>{t('product.contactSeller')}</span>
                       </button>
+
+                      <button
+                        onClick={() => {
+                          const url = `${window.location.origin}?product=${product.id}`;
+                          navigator.clipboard.writeText(url);
+                        }}
+                        className="w-full py-1.5 luxe-glass hover:bg-amber-900/20 text-gray-500 hover:text-amber-400 rounded-lg transition-all duration-300 flex items-center justify-center space-x-1.5 text-xs border border-white/10 hover:border-amber-500/50"
+                      >
+                        <Share2 className="w-3 h-3" />
+                        <span>{t('product.share', 'Share')}</span>
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -640,6 +678,7 @@ function App() {
             <Route path="/treasurer" element={<TreasurerDashboard />} />
             <Route path="/mediator" element={<MediatorDashboard />} />
             <Route path="/download" element={<DownloadApp />} />
+            <Route path="/how-it-works" element={<HowItWorks />} />
           </Routes>
         </Suspense>
       </ErrorBoundary>
@@ -772,6 +811,11 @@ function App() {
             <div className="text-center md:text-left">
               <h4 className="font-black mb-3 text-xs uppercase tracking-wider bg-gradient-to-br from-gray-200 via-gray-300 to-gray-400 bg-clip-text text-transparent" style={{textShadow: '0 0 30px rgba(255,255,255,0.5)'}}>{t('nav.support')}</h4>
               <ul className="space-y-2">
+                <li>
+                  <Link to="/how-it-works" className="text-xs font-bold bg-gradient-to-r from-amber-300 to-yellow-400 bg-clip-text text-transparent hover:from-amber-200 hover:to-yellow-300 transition-all">
+                    {t('nav.howItWorks', 'How It Works')}
+                  </Link>
+                </li>
                 <li>
                   <button onClick={() => openModal('faq')} className="text-xs font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent hover:from-white hover:to-gray-200 transition-all">
                     {t('nav.faq')}
