@@ -39,8 +39,6 @@ const ContactForm = lazy(() => import('./components/ContactForm').then(m => ({ d
 const BlockchainManagement = lazy(() => import('./components/BlockchainManagement').then(m => ({ default: m.BlockchainManagement })));
 const DownloadApp = lazy(() => import('./components/DownloadApp').then(m => ({ default: m.DownloadApp })));
 const HowItWorks = lazy(() => import('./components/HowItWorks'));
-import PlatformStats from './components/PlatformStats';
-import ReferralBanner from './components/ReferralBanner';
 import OnboardingChecklist from './components/OnboardingChecklist';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from './hooks/useAuth';
@@ -195,16 +193,6 @@ function App() {
       <main className={`max-w-7xl mx-auto px-4 sm:px-6 transition-all duration-500 ease-in-out ${
         isSearchFocused ? 'pt-4 pb-16' : 'py-8 sm:py-12 lg:py-16'
       }`}>
-        {/* Platform Stats - Social Proof */}
-        <PlatformStats />
-
-        {/* Referral Banner */}
-        <ReferralBanner
-          referralCode={user?.user_metadata?.referral_code}
-          onSignUpClick={() => { setAuthMode('signup'); openModal('auth'); }}
-          isLoggedIn={!!user}
-        />
-
         {/* Onboarding Checklist for logged-in users */}
         {user && (
           <div className="mb-8">
