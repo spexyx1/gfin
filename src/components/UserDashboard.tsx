@@ -22,6 +22,7 @@ import { VideoCallModal } from './VideoCallModal';
 import { IncomingCallNotification } from './IncomingCallNotification';
 import { CacheManagement } from './CacheManagement';
 import { LanguageSelector } from './LanguageSelector';
+import { EmailNotificationSettings } from './EmailNotificationSettings';
 
 interface UserDashboardProps {
   isOpen: boolean;
@@ -102,14 +103,6 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
 
   const [unreadMessages, setUnreadMessages] = useState(0);
   const [redeemAmount, setRedeemAmount] = useState('');
-  const [notificationSettings, setNotificationSettings] = useState({
-    orderUpdates: true,
-    messageNotifications: true,
-    disputeUpdates: true,
-    referralNotifications: true,
-    marketingEmails: false,
-    securityAlerts: true,
-  });
   const [platformStats, setPlatformStats] = useState<any>(null);
   const [smSearchQuery, setSmSearchQuery] = useState('');
   const [smSearchResults, setSmSearchResults] = useState<any[]>([]);
@@ -653,31 +646,7 @@ export function UserDashboard({ isOpen, onClose }: UserDashboardProps) {
         <LanguageSelector />
       </div>
 
-      <div className="luxe-glass rounded-2xl p-6 border border-white/10">
-        <h3 className="text-xl font-black text-white mb-4">Notification Preferences</h3>
-        <div className="space-y-4">
-          {Object.entries(notificationSettings).map(([key, value]) => (
-            <div key={key} className="flex items-center justify-between">
-              <div>
-                <p className="text-white font-medium capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}</p>
-                <p className="text-gray-400 text-sm">Receive notifications for {key.replace(/([A-Z])/g, ' $1').toLowerCase()}</p>
-              </div>
-              <button
-                onClick={() => setNotificationSettings({ ...notificationSettings, [key]: !value })}
-                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                  value ? 'bg-luxe-gold' : 'bg-gray-600'
-                }`}
-              >
-                <span
-                  className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                    value ? 'translate-x-6' : 'translate-x-1'
-                  }`}
-                />
-              </button>
-            </div>
-          ))}
-        </div>
-      </div>
+      <EmailNotificationSettings userId={user.id} />
 
       <div className="luxe-glass rounded-2xl p-6 border border-white/10">
         <h3 className="text-xl font-black text-white mb-4">Account Information</h3>

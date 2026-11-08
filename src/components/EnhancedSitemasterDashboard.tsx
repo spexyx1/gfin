@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { useMailUnread } from '../hooks/useMailUnread';
 import { useEnhancedSitemaster } from '../hooks/useEnhancedSitemaster';
 import { useBusinessInquiries } from '../hooks/useBusinessInquiries';
 import { SitemasterAnalytics } from './SitemasterAnalytics';
@@ -49,6 +51,7 @@ export function EnhancedSitemasterDashboard() {
     getAllTransactions,
     refresh
   } = useEnhancedSitemaster();
+  const { unread: mailUnread } = useMailUnread(true);
 
   const {
     inquiries,
@@ -198,12 +201,26 @@ export function EnhancedSitemasterDashboard() {
   return (
     <div className="min-h-screen luxe-glass-strong">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
-            <Shield className="h-8 w-8 text-orange-600" />
-            Sitemaster Dashboard
-          </h1>
-          <p className="mt-2 text-gray-600">Complete platform control and administration</p>
+        <div className="mb-8 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
+              <Shield className="h-8 w-8 text-orange-600" />
+              Sitemaster Dashboard
+            </h1>
+            <p className="mt-2 text-gray-600">Complete platform control and administration</p>
+          </div>
+          <Link
+            to="/mail"
+            className="group inline-flex items-center gap-2.5 self-start sm:self-auto rounded-xl bg-black text-white px-5 py-3 font-semibold shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all"
+          >
+            <Mail className="h-5 w-5 text-[#FFD700]" />
+            Open Mail
+            {mailUnread > 0 && (
+              <span className="min-w-[24px] rounded-full bg-[#FFD700] text-black text-xs font-bold px-2 py-0.5 text-center">
+                {mailUnread > 999 ? '999+' : mailUnread}
+              </span>
+            )}
+          </Link>
         </div>
 
         {error && (

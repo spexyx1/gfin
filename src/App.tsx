@@ -39,6 +39,8 @@ const ContactForm = lazy(() => import('./components/ContactForm').then(m => ({ d
 const BlockchainManagement = lazy(() => import('./components/BlockchainManagement').then(m => ({ default: m.BlockchainManagement })));
 const DownloadApp = lazy(() => import('./components/DownloadApp').then(m => ({ default: m.DownloadApp })));
 const HowItWorks = lazy(() => import('./components/HowItWorks'));
+const MailApp = lazy(() => import('./components/mail/MailApp').then(m => ({ default: m.MailApp })));
+const UnsubscribePage = lazy(() => import('./components/UnsubscribePage').then(m => ({ default: m.UnsubscribePage })));
 import OnboardingChecklist from './components/OnboardingChecklist';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from './hooks/useAuth';
@@ -470,6 +472,18 @@ function App() {
 
     </>
   );
+  const standalonePage = location.pathname === '/mail' || location.pathname.startsWith('/mail/')
+    ? <MailApp />
+    : location.pathname === '/unsubscribe' ? <UnsubscribePage /> : null;
+
+  if (standalonePage) {
+    return (
+      <ErrorBoundary>
+        <Suspense fallback={<div className="min-h-screen bg-[#0b0b0c]" />}>{standalonePage}</Suspense>
+      </ErrorBoundary>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-black">
       <MobileNetworkIndicator />

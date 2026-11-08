@@ -1,0 +1,53 @@
+{
+  "projectId": "55874890",
+  "functions": {
+    "card-authorization-webhook": {
+      "hasChanged": false,
+      "hash": "8d3d8e95fa24e5699154fe42b3eada90ad612df483d8ad5db1705212bcceb79f"
+    },
+    "card-kyc-submit": {
+      "hasChanged": false,
+      "hash": "2082814271c6acb3ad7a66752dcf062998f4f5a9a9562f7383bd003e9ab2ebc7"
+    },
+    "card-kyc-webhook": {
+      "hasChanged": false,
+      "hash": "d0090974cdcbc9b3aa61b784f715448988a42f06f0784b0f1fea90cc8cb991f8"
+    },
+    "card-load-initiate": {
+      "hasChanged": false,
+      "hash": "7e0e5e83b19216e2eb7077bbef0e3c6222f6ace454dd461bd17263965fff13d1"
+    },
+    "card-processor-adapter": {
+      "hasChanged": false,
+      "hash": "82a76f376edc64f7066c95c32e404a2729f6041cd8c621aa105e6acc32a4090d"
+    },
+    "merchant-api-disputes": {
+      "hasChanged": false,
+      "hash": "c585c7d3f03805c060e837621a122d48d185e25da39f43eca64bb733614a0eb7"
+    },
+    "merchant-api-info": {
+      "hasChanged": false,
+      "hash": "74acc6ba921bf316960e8f054597dcb99c3daa710e58879ae468ae973aaa9d2a"
+    },
+    "merchant-api-orders": {
+      "hasChanged": false,
+      "hash": "650b245987290516abb21361a78913fa3057a206c0251f8f9adb8250d1074fdd"
+    },
+    "merchant-auth": {
+      "hasChanged": false,
+      "hash": "d4f81666f2deb6942a6c8304f110823bb959425300b98b1945b1b87396c2c0d5"
+    },
+    "webhook-worker": {
+      "hasChanged": false,
+      "hash": "3796939b29daee1f566fb45d5d3c04956b07a74ab2aa86f13e95bea2a93365e2"
+    },
+    "email-send": {
+      "hasChanged": false,
+      "hash": "5aa4f80d05b9c5b4cc85a06990837cf3bb436238e9e2763b22a8cb7ccc91ed6a"
+    },
+    "email-unsubscribe": {
+      "hasChanged": false,
+      "hash": "b5102be92ffddbc1ad68a76824a392cad4f840d0976f6e45ce7e49f4597d9d30"
+    }
+  }
+}
