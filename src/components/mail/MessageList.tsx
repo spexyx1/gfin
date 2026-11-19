@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Archive, Loader2, Mail, MailOpen, Menu, Paperclip, RefreshCw, Search, Star, Trash2, AlertCircle, Inbox, X } from 'lucide-react';
+import { Archive, Loader2, Mail, MailOpen, Menu, Paperclip, RefreshCw, Search, Star, Trash2, AlertCircle, Inbox, X, ShieldAlert } from 'lucide-react';
 import type { MailLabel, MailMessage } from './mailTypes';
 import { formatListDate, initials, messageDate, senderLabel } from './mailTypes';
 
@@ -199,6 +199,11 @@ export function MessageList(p: Props) {
                     {(m.labels.length > 0 || m.status === 'failed' || (m.delivered_to && m.direction === 'inbound')) && (
                       <div className="flex flex-wrap items-center gap-1 mt-1.5">
                         {m.status === 'failed' && <span className="text-[10px] font-medium rounded px-1.5 py-0.5 bg-red-500/15 text-red-300">Failed</span>}
+                        {m.is_suspicious && (
+                          <span className="flex items-center gap-1 text-[10px] font-medium rounded px-1.5 py-0.5 bg-amber-500/15 text-amber-300">
+                            <ShieldAlert className="h-3 w-3" /> Suspicious
+                          </span>
+                        )}
                         {m.delivered_to && m.direction === 'inbound' && (
                           <span className="text-[10px] rounded px-1.5 py-0.5 bg-white/5 text-neutral-400">{m.delivered_to}</span>
                         )}

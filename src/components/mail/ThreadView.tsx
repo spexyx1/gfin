@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import {
-  AlertCircle, Archive, ArrowLeft, ChevronDown, Forward, Inbox, Loader2, Mail, Reply, ReplyAll, RotateCcw, ShieldAlert, ShieldCheck, Star, Tag, Trash2, Check,
+  AlertCircle, Archive, ArrowLeft, ChevronDown, Forward, Inbox, Loader2, Mail, Reply, ReplyAll, RotateCcw, ShieldAlert, ShieldCheck, Star, Tag, Trash2, Check, ShieldX,
 } from 'lucide-react';
 import type { MailAttachment, MailLabel, MailMessage } from './mailTypes';
 import { formatFullDate, initials, messageDate } from './mailTypes';
@@ -71,9 +71,10 @@ export function ThreadView(p: Props) {
   const folder = last.folder;
   const threadLabels = Array.from(new Set(p.messages.flatMap((m) => m.labels)));
   const anyStarred = p.messages.some((m) => m.is_starred);
+  const suspiciousMsgs = p.messages.filter((m) => m.is_suspicious);
+  const showSuspicious = suspiciousMsgs.length > 0 && folder !== 'trash';
 
   const run = async (a: ThreadAction) => {
-    if (a === 'delete' && !window.confirm('Delete this conversation forever? This cannot be undone.')) return;
     setBusy(a);
     setActionError('');
     try {
@@ -153,6 +154,19 @@ export function ThreadView(p: Props) {
 
       <div className="flex-1 overflow-y-auto">
         <div className="max-w-3xl mx-auto px-4 sm:px-8 py-6">
+          {showSuspicious && (
+            <div className="mb-5 rounded-xl border border-amber-500/30 bg-amber-500/10 px-4 py-3">
+              <p className="flex items-center gap-2 text-sm font-medium text-amber-300">
+                <ShieldX className="h-4 w-4 shrink-0" /> This message was flagged as suspicious
+              </p>
+              <ul className="mt-1.5 space-y-0.5">
+                {Array.from(new Set(suspiciousMsgs.flatMap((m) => m.suspicion_reasons))).map((r) => (
+                  <li key={r} className="text-xs text-amber-200/80">• {r}</li>
+                ))}
+              </ul>
+              <p className="text-xs text-amber-200/60 mt-1.5">Don't click links, download attachments, or reply with personal information.</p>
+            </div>
+          )}
           <h1 className="text-xl sm:text-2xl font-semibold tracking-tight leading-tight">{last.subject || '(no subject)'}</h1>
           {(threadLabels.length > 0 || actionError) && (
             <div className="flex flex-wrap gap-1.5 mt-3">
@@ -196,7 +210,7 @@ export function ThreadView(p: Props) {
                   {open && (
                     <div className="px-4 pb-4 sm:pl-16 animate-[fadeIn_.2s_ease-out]">
                       <MailBody message={m} />
-                      <AttachmentChips attachments={atts} />
+                      <AttachmentChips attachments={atts} senderDomain={m.from_address.split('@')[1] ?? ''} />
                     </div>
                   )}
                 </div>

@@ -16,6 +16,16 @@ import { MessageList } from './MessageList';
 import { ThreadView, type ReplyMode, type ThreadAction } from './ThreadView';
 import { ComposeModal } from './ComposeModal';
 import { MailSettings } from './MailSettings';
+import { ConfirmDialog } from './ConfirmDialog';
+
+export interface PendingConfirm {
+  kind: 'confirm' | 'warning';
+  title: string;
+  body: string;
+  reasons?: string[];
+  confirmLabel: string;
+  run: () => Promise<void>;
+}
 
 const MAIL_FAVICON =
   "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%23FFD700'/><path d='M14 22h36v22H14z' fill='none' stroke='%23000' stroke-width='4' stroke-linejoin='round'/><path d='M14 22l18 13 18-13' fill='none' stroke='%23000' stroke-width='4' stroke-linejoin='round'/></svg>";
@@ -100,6 +110,7 @@ function Inbox({ unread, refreshUnread, onSignOut, username }: InboxProps) {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [toast, setToast] = useState<{ msg: string; error: boolean } | null>(null);
+  const [pending, setPending] = useState<PendingConfirm | null>(null);
   const [defaultFrom, setDefaultFrom] = useState(() => localStorage.getItem(DEFAULT_FROM_KEY) ?? '');
   const reqId = useRef(0);
 
@@ -209,7 +220,7 @@ function Inbox({ unread, refreshUnread, onSignOut, username }: InboxProps) {
     setThread([]);
   };
 
-  const threadAction = async (a: ThreadAction) => {
+  const runThreadAction = async (a: ThreadAction) => {
     const ms = thread;
     if (a === 'unread') {
       await updateMessages(ms.filter((m) => m.direction === 'inbound').map((m) => m.id), { is_read: false });
@@ -229,6 +240,30 @@ function Inbox({ unread, refreshUnread, onSignOut, username }: InboxProps) {
     closeThread();
     refreshUnread();
     loadList(false);
+  };
+
+  const threadAction = (a: ThreadAction) => {
+    const suspicious = thread.some((m) => m.is_suspicious);
+    if (a === 'delete') {
+      setPending({
+        kind: 'confirm',
+        title: 'Delete forever?',
+        body: 'This conversation and its attachments will be permanently deleted. This cannot be undone.',
+        confirmLabel: 'Delete forever',
+        run: () => runThreadAction(a),
+      });
+    } else if (a === 'spam' && !suspicious) {
+      setPending({
+        kind: 'confirm',
+        title: 'Report as spam?',
+        body: 'The conversation will be moved to the Spam folder.',
+        confirmLabel: 'Report spam',
+        run: () => runThreadAction(a),
+      });
+    } else {
+      setPending(null);
+      runThreadAction(a).catch((err) => showToast(err instanceof Error ? err.message : 'Action failed', true));
+    }
   };
 
   const bulk = async (ids: string[], action: 'read' | 'unread' | 'archive' | 'trash') => {
@@ -437,6 +472,23 @@ function Inbox({ unread, refreshUnread, onSignOut, username }: InboxProps) {
           }}
           onMailboxesChanged={loadMeta}
           onClose={() => setSettingsOpen(false)}
+        />
+      )}
+
+      {pending && (
+        <ConfirmDialog
+          kind={pending.kind}
+          title={pending.title}
+          body={pending.body}
+          reasons={pending.reasons}
+          confirmLabel={pending.confirmLabel}
+          busy={false}
+          onConfirm={() => {
+            const run = pending.run;
+            setPending(null);
+            run().catch((err) => showToast(err instanceof Error ? err.message : 'Action failed', true));
+          }}
+          onCancel={() => setPending(null)}
         />
       )}
 

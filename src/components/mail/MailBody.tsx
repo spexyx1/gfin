@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
-import { Download, FileText, Image as ImageIcon, Loader2, Paperclip } from 'lucide-react';
+import { AlertTriangle, Download, FileText, Image as ImageIcon, Loader2, Paperclip } from 'lucide-react';
 import type { MailAttachment, MailMessage } from './mailTypes';
 import { formatBytes } from './mailTypes';
 import { attachmentUrl } from './mailApi';
+import { ConfirmDialog } from './ConfirmDialog';
 
 const FRAME_BASE = `<meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="script-src 'none'; object-src 'none'; frame-src 'none'; form-action 'none'"><base target="_blank"><style>html,body{margin:0;padding:0;background:#fff;color:#111;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:14px;line-height:1.5;word-wrap:break-word}img{max-width:100%;height:auto}body{padding:16px}blockquote{border-left:3px solid #ddd;margin:0 0 0 4px;padding-left:12px;color:#555}</style>`;
 
@@ -44,9 +45,12 @@ export function MailBody({ message }: { message: MailMessage }) {
   );
 }
 
-export function AttachmentChips({ attachments }: { attachments: MailAttachment[] }) {
+const RISKY_TYPES = /executable|zip|rar|7z|tar|gz|script|ms-?dos|vnd\.microsoft|macro/i;
+
+export function AttachmentChips({ attachments, senderDomain }: { attachments: MailAttachment[]; senderDomain: string }) {
   const [busy, setBusy] = useState<string | null>(null);
   const [error, setError] = useState('');
+  const [confirmAtt, setConfirmAtt] = useState<MailAttachment | null>(null);
 
   const open = async (a: MailAttachment) => {
     setBusy(a.id);
@@ -58,6 +62,15 @@ export function AttachmentChips({ attachments }: { attachments: MailAttachment[]
       setError(err instanceof Error ? err.message : 'Could not open attachment');
     } finally {
       setBusy(null);
+    }
+  };
+
+  const request = (a: MailAttachment) => {
+    const risky = RISKY_TYPES.test(a.content_type) || /\.(zip|rar|7z|tar|gz|exe|scr|bat|cmd|js|jar|htm|html?|docm|xlsm|lnk|iso|apk)$/i.test(a.filename);
+    if (risky) {
+      setConfirmAtt(a);
+    } else {
+      open(a);
     }
   };
 
@@ -74,7 +87,7 @@ export function AttachmentChips({ attachments }: { attachments: MailAttachment[]
           return (
             <button
               key={a.id}
-              onClick={() => open(a)}
+              onClick={() => request(a)}
               className="group flex items-center gap-2.5 rounded-lg border border-white/10 bg-white/[0.03] pl-2.5 pr-3 py-2 text-left hover:border-[#FFD700]/40 hover:bg-white/[0.05] transition max-w-[240px]"
             >
               <Icon className="h-4 w-4 text-neutral-400 shrink-0" />
@@ -88,6 +101,21 @@ export function AttachmentChips({ attachments }: { attachments: MailAttachment[]
         })}
       </div>
       {error && <p className="text-xs text-red-400 mt-2">{error}</p>}
+      {confirmAtt && (
+        <ConfirmDialog
+          kind="warning"
+          title="Download this attachment?"
+          body={`"${confirmAtt.filename}" contains a file type that can carry malware. Only open it if you trust the sender (${senderDomain || 'unknown sender'}) and expected this file.`}
+          confirmLabel="Download anyway"
+          onConfirm={() => {
+            const a = confirmAtt;
+            setConfirmAtt(null);
+            open(a);
+          }}
+          onCancel={() => setConfirmAtt(null)}
+          busy={busy !== null}
+        />
+      )}
     </div>
   );
 }

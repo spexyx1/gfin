@@ -36,6 +36,8 @@ export interface MailMessage {
   error: string | null;
   is_read: boolean;
   is_starred: boolean;
+  is_suspicious: boolean;
+  suspicion_reasons: string[];
   labels: string[];
   has_attachments: boolean;
   sent_at: string | null;
